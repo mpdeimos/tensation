@@ -1,0 +1,55 @@
+<project name="Tensor" basedir="." default="help">
+
+  <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask"
+           classpath="./lib/jarjar-1.0.jar"/>
+
+  <target name="help">
+    <java classname="org.apache.tools.ant.Main">
+      <arg value="-projecthelp" />
+    </java>
+  </target>
+
+  <target name="clean" description="Clean build output">
+    <delete dir="./build" />
+  </target>
+
+  <target name="build" description="Comiple classes">
+    <mkdir dir="./build" />
+    <mkdir dir="./build/classes" />
+
+    <javac destdir="./build/classes" debug="true" source="1.6" target="1.6">
+      <src path="./src"/>
+      <classpath>
+        <fileset dir="./lib" includes="*.jar" />
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="jar" description="Create Jars" depends="build" >
+
+    <mkdir dir="./build/tmp/" />
+    <mkdir dir="./build/jars/" />
+
+    <!-- UI (Stage 1) -->
+  <jarjar jarfile="./build/tmp/tensor-swt.jar">
+      <fileset dir="./build/classes" includes="**/tensor/*.class" />
+      <fileset dir="./build/classes" includes="**/tensor/**/*.class" />
+    </jarjar>
+    
+    <!-- UI (Stage 2) -->
+  <jarjar jarfile="./build/jars/tensor.jar">
+      <manifest>
+        <attribute name="Main-Class" value="com.mpdeimos.swt.loader.SWTLoader" />
+        <attribute name="Class-Path" value="." />
+        <!--attribute name="Git-Revision" value="${git.revision}" />
+        <attribute name="Implementation-Version" value="${git.tag}" /-->
+      </manifest>
+      <fileset dir="./build/classes" includes="**/swt/loader/*.class" />
+      <fileset dir="./build/tmp" includes="tensor-swt.jar" />
+      <fileset dir="./lib" includes="swt-*.jar" />
+      <zipfileset excludes="META-INF/*.MF" src="lib/jar-in-jar-loader.jar"/>
+  </jarjar>
+
+   </target>
+
+</project>

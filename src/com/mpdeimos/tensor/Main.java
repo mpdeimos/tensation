@@ -3,11 +3,16 @@
  */
 package com.mpdeimos.tensor;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.Log.LogLevel;
 
 /**
- * The main class for the Tensor Program.
+ * The main class for the Tensor program.
  * 
  * @author mpdeimos
  *
@@ -24,7 +29,18 @@ public class Main
 		// global exception handler 
 		try
 		{
-			throw new NullPointerException();
+			Display display = new Display();
+			Shell shell = new Shell(display);
+			Label label = new Label(shell, SWT.NONE);
+			label.setText("Hello World");
+			label.pack();
+			shell.pack();
+			shell.open();
+			while (!shell.isDisposed()) {
+				if (!display.readAndDispatch())
+					display.sleep();
+			}
+			display.dispose();
 		}
 		catch (Exception e)
 		{
