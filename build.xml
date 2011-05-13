@@ -47,6 +47,7 @@
       <fileset dir="./build/classes" includes="**/swt/loader/*.class" />
       <fileset dir="./build/tmp" includes="tensor-swt.jar" />
       <fileset dir="./lib" includes="swt-*.jar" />
+      <fileset dir="./" includes="swtloader.properties" />
       <zipfileset excludes="META-INF/*.MF" src="lib/jar-in-jar-loader.jar"/>
   </jarjar>
 

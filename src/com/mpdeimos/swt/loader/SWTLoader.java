@@ -3,11 +3,17 @@
  */
 package com.mpdeimos.swt.loader;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Properties;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import org.eclipse.jdt.internal.jarinjarloader.RsrcURLStreamHandlerFactory;
 
@@ -18,14 +24,41 @@ import org.eclipse.jdt.internal.jarinjarloader.RsrcURLStreamHandlerFactory;
  * 
  */
 public class SWTLoader {
+	private static String className;
+	private static String jarName;
+
 	public static void main(String[] args) throws Throwable {
+		Properties props = new Properties();
+		InputStream propsStream = SWTLoader.class.getResourceAsStream("/swtloader.properties");
+		if (propsStream == null)
+		{
+			System.err.println("Launch failed: Failed to find swtloader.properties");
+			System.exit(0);
+		}
+		
+		props.load(propsStream);
+		
+		jarName = props.getProperty("jar");
+		System.err.println(jarName);
+		if (jarName == null)
+		{
+			System.err.println("Launch failed: jar property not set");
+			System.exit(0);
+		}	
+		
+		className = props.getProperty("class");
+		if (className == null)
+		{
+			System.err.println("Launch failed: class property not set");
+			System.exit(0);
+		}	
+		
 		ClassLoader cl = getSWTClassloader();
 		Thread.currentThread().setContextClassLoader(cl);
+		
 		try {
 			try {
-				System.err.println("Launching InTrace UI ...");
-				Class<?> c = Class.forName(
-						"com.mpdeimos.tensor.Main", true, cl);
+				Class<?> c = Class.forName(className, true, cl);
 				Method main = c.getMethod("main",
 						new Class[] { args.getClass() });
 				main.invoke((Object) null, new Object[] { args });
@@ -46,7 +79,7 @@ public class SWTLoader {
 			}
 		} catch (ClassNotFoundException ex) {
 			System.err
-					.println("Launch failed: Failed to find main class - org.intrace.client.gui.TraceClient");
+					.println("Launch failed: Failed to find main class " + className);
 		} catch (NoSuchMethodException ex) {
 			System.err.println("Launch failed: Failed to find main method");
 		} catch (InvocationTargetException ex) {
@@ -69,12 +102,12 @@ public class SWTLoader {
 		URL.setURLStreamHandlerFactory(new RsrcURLStreamHandlerFactory(parent));
 		String swtFileName = getSwtJarName();
 		try {
-			URL intraceFileUrl = new URL("rsrc:tensor-swt.jar");
+			URL wrappedJarUrl = new URL("rsrc:" + jarName);
 			URL swtFileUrl = new URL("rsrc:" + swtFileName);
 			System.err.println("Using SWT Jar: " + swtFileName);
-			ClassLoader cl = new URLClassLoader(new URL[] { intraceFileUrl,
+			ClassLoader cl = new URLClassLoader(new URL[] { wrappedJarUrl,
 					swtFileUrl }, parent);
-
+			
 			try {
 				// Check we can now load the SWT class
 				Class.forName("org.eclipse.swt.widgets.Layout", true, cl);
