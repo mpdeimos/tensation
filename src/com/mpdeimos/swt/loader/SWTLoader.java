@@ -3,7 +3,6 @@
  */
 package com.mpdeimos.swt.loader;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -11,9 +10,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
 import org.eclipse.jdt.internal.jarinjarloader.RsrcURLStreamHandlerFactory;
 
