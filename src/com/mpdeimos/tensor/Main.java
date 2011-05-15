@@ -34,7 +34,7 @@ public class Main
 			Label label = new Label(shell, SWT.NONE);
 			label.setText("Hello World");
 			label.pack();
-			shell.pack();
+			shell.setSize(300, 400);
 			shell.open();
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch())
