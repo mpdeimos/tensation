@@ -3,16 +3,20 @@
  */
 package com.mpdeimos.tensor;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.UIManager;
+
+import com.mpdeimos.tensor.ui.MainWindow;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.Log.LogLevel;
 
 /**
- * The main class for the Tensor program.
+ * The main class for the Tensor Program.
  * 
  * @author mpdeimos
  *
@@ -29,18 +33,8 @@ public class Main
 		// global exception handler 
 		try
 		{
-			Display display = new Display();
-			Shell shell = new Shell(display);
-			Label label = new Label(shell, SWT.NONE);
-			label.setText("Hello World");
-			label.pack();
-			shell.setSize(300, 400);
-			shell.open();
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch())
-					display.sleep();
-			}
-			display.dispose();
+			MainWindow mw = new MainWindow();
+			mw.display();
 		}
 		catch (Exception e)
 		{
