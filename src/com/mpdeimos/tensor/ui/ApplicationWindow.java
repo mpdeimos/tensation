@@ -1,8 +1,7 @@
 package com.mpdeimos.tensor.ui;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.Frame;
-import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -10,12 +9,16 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import com.mpdeimos.tensor.action.ExitAction;
 import com.mpdeimos.tensor.res.R;
 import com.mpdeimos.tensor.util.Log;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
 
 /**
  * Represents the main application window
@@ -90,11 +93,23 @@ public class ApplicationWindow extends JFrame implements WindowListener {
 		// file menu
 		JMenu menuFile = new JMenu(R.strings.getString("window.menu.file")); //$NON-NLS-1$
 		
-		JMenuItem item = new JMenuItem(new ExitAction());
+		ExitAction exitAction = new ExitAction();
+		JMenuItem item = new JMenuItem(exitAction);
 		menuFile.add(item);
 		menuBar.add(menuFile);
 		
 		this.setJMenuBar(menuBar);
+		
+		JToolBar toolBar = new JToolBar();
+		toolBar.setOrientation(SwingConstants.VERTICAL);
+		getContentPane().add(toolBar, BorderLayout.WEST);
+		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.setAction(exitAction);
+		toolBar.add(btnNewButton);
+		
+		JToolBar toolBar_1 = new JToolBar();
+		getContentPane().add(toolBar_1, BorderLayout.NORTH);
 	}
 
 	/**
