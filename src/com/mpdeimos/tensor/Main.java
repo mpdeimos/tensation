@@ -3,15 +3,7 @@
  */
 package com.mpdeimos.tensor;
 
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.UIManager;
-
-import com.mpdeimos.tensor.ui.MainWindow;
+import com.mpdeimos.tensor.ui.ApplicationWindow;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.Log.LogLevel;
 
@@ -23,23 +15,17 @@ import com.mpdeimos.tensor.util.Log.LogLevel;
  */
 public class Main
 {
-	public static final String LOG_TAG = "main";
+	/** log tag */
+	public static final String LOG_TAG = "main"; //$NON-NLS-1$
 	
+	/**
+	 * application entry point 
+	 */
 	public static void main(String[] args)
 	{
-		Log.setLevel(LogLevel.DEBUG); // TODO add cli switch
-		Log.d(LOG_TAG, "started...");
+		Log.setLevel(LogLevel.VERBOSE); // TODO add cli switch
+		Log.d(LOG_TAG, "started..."); //$NON-NLS-1$
 		
-		// global exception handler 
-		try
-		{
-			MainWindow mw = new MainWindow();
-			mw.display();
-		}
-		catch (Exception e)
-		{
-			Log.e(LOG_TAG, "Catched uncought exception", e);
-			System.exit(0);
-		}
+		ApplicationWindow.createAndDisplay();
 	}
 }

@@ -10,32 +10,64 @@ package com.mpdeimos.tensor.util;
  *
  */
 public class Log {
+	/**
+	 * Enumeration of different logging levels, sorted by severity.
+	 */
 	public static enum LogLevel
 	{
-		DEBUG("DEBUG"),
-		INFO("INFO"),
-		WARN("WARN"),
-		ERROR("ERROR");
+		/** verbose logging level */
+		VERBOSE("VERBOSE"), //$NON-NLS-1$
 		
+		/** debug logging level */
+		DEBUG("DEBUG"), //$NON-NLS-1$
+		
+		/** info logging level */
+		INFO("INFO"), //$NON-NLS-1$
+		
+		/** warning logging level */
+		WARN("WARN"), //$NON-NLS-1$
+		
+		/** error logging level */
+		ERROR("ERROR"); //$NON-NLS-1$
+		
+		/** string representation of logging level */
 		private String prefix;
 
+		/**
+		 * Constructor.
+		 */
 		LogLevel(String prefix)
 		{
 			this.prefix = prefix;
 		}
 		
+		/**
+		 * @return the human readable string representation of a logging level 
+		 */
 		protected String getPrefix()
 		{
 			return this.prefix;
 		}
 	}
 
-	// internal log level
+	/** internal logging level */
 	private static LogLevel level = LogLevel.WARN;
 	
+	/** sets the global logging level */
 	public static void setLevel(LogLevel level)
 	{
 		Log.level = level;
+	}
+	
+	/**
+	 * Logs a message with level VERBOSE.
+	 * 
+	 * @param tag		The message tag.
+	 * @param message	The message to log.
+	 */
+	public static void v(String tag, String message)
+	{
+		log(LogLevel.VERBOSE, tag, message);
 	}
 	
 	/**
@@ -108,19 +140,19 @@ public class Log {
 		if (!StringUtil.isNullOrEmpty(message))
 		{
 			messageBuilder.append(message);
-			messageBuilder.append("\n");
+			messageBuilder.append(StringUtil.NEWLINE);
 		}
 		messageBuilder.append(t.getClass().getName());
-		messageBuilder.append("\n");
+		messageBuilder.append(StringUtil.NEWLINE);
 		if (!StringUtil.isNullOrEmpty(t.getMessage()))
 		{
 			messageBuilder.append(t.getMessage());
-			messageBuilder.append("\n");
+			messageBuilder.append(StringUtil.NEWLINE);
 		}
 		for (StackTraceElement e : t.getStackTrace())
 		{
-			messageBuilder.append("\t" + e.toString());
-			messageBuilder.append("\n");
+			messageBuilder.append(StringUtil.TABULATOR + e.toString());
+			messageBuilder.append(StringUtil.NEWLINE);
 		}
 		
 		log(LogLevel.ERROR, tag, messageBuilder.toString());
@@ -134,11 +166,10 @@ public class Log {
 		if (level.ordinal() < Log.level.ordinal())
 			return;
 		
-		String out = String.format("[%s] [%s] %s", level.getPrefix(), tag, message);
+		String out = String.format("[%s] [%s] %s", level.getPrefix(), tag, message); //$NON-NLS-1$
 		if (level.equals(LogLevel.ERROR))
 			System.err.println(out);
 		else
 			System.out.println(out);
 	}
-
 }
