@@ -24,7 +24,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		Log.setLevel(LogLevel.VERBOSE); // TODO add cli switch
-		Log.d(LOG_TAG, "started..."); //$NON-NLS-1$
+		Log.v(LOG_TAG, "started..."); //$NON-NLS-1$
 		
 		ApplicationWindow.createAndDisplay();
 	}

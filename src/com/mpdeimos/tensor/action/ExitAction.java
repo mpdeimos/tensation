@@ -22,7 +22,7 @@ public class ExitAction extends AbstractAction {
 	 * Constructor.
 	 */
 	public ExitAction() {
-		super(R.strings.getString("window.menu.file.exit"), new ImageIcon(R.drawable.getURL("window-exit"))); //$NON-NLS-1$ //$NON-NLS-2$
+		super(R.strings.getString("window_menu_file_exit"), new ImageIcon(R.drawable.getURL("window_exit"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override

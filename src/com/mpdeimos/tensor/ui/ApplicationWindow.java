@@ -72,7 +72,7 @@ public class ApplicationWindow extends JFrame implements WindowListener {
 			Log.e(LOG_TAG, "setting native look failed", e); //$NON-NLS-1$
 		}
 		
-		this.setTitle(R.strings.getString("window.main.title")); //$NON-NLS-1$
+		this.setTitle(R.strings.getString("window_main_title")); //$NON-NLS-1$
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.addWindowListener(this);
 		this.setBounds(50, 50, 400, 400);
@@ -91,7 +91,7 @@ public class ApplicationWindow extends JFrame implements WindowListener {
 		JMenuBar menuBar = new JMenuBar();
 		
 		// file menu
-		JMenu menuFile = new JMenu(R.strings.getString("window.menu.file")); //$NON-NLS-1$
+		JMenu menuFile = new JMenu(R.strings.getString("window_menu_file")); //$NON-NLS-1$
 		
 		ExitAction exitAction = new ExitAction();
 		JMenuItem item = new JMenuItem(exitAction);
