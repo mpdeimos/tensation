@@ -3,8 +3,10 @@ package com.mpdeimos.tensor.action;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 
-import com.mpdeimos.tensor.res.R;
+import resources.R;
+
 import com.mpdeimos.tensor.ui.ApplicationWindow;
 
 
@@ -20,7 +22,7 @@ public class ExitAction extends AbstractAction {
 	 * Constructor.
 	 */
 	public ExitAction() {
-		super(R.strings.getString("window.menu.file.exit")); //$NON-NLS-1$
+		super(R.strings.getString("window.menu.file.exit"), new ImageIcon(R.drawable.getURL("window-exit"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override

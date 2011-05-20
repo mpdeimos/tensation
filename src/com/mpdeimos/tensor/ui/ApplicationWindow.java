@@ -5,20 +5,20 @@ import java.awt.EventQueue;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
+import resources.R;
+
 import com.mpdeimos.tensor.action.ExitAction;
-import com.mpdeimos.tensor.res.R;
 import com.mpdeimos.tensor.util.Log;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
 
 /**
  * Represents the main application window
@@ -104,9 +104,9 @@ public class ApplicationWindow extends JFrame implements WindowListener {
 		toolBar.setOrientation(SwingConstants.VERTICAL);
 		getContentPane().add(toolBar, BorderLayout.WEST);
 		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setAction(exitAction);
-		toolBar.add(btnNewButton);
+		JButton exitButton = new JButton(exitAction);
+		exitButton.setHideActionText(true);
+		toolBar.add(exitButton);
 		
 		JToolBar toolBar_1 = new JToolBar();
 		getContentPane().add(toolBar_1, BorderLayout.NORTH);
