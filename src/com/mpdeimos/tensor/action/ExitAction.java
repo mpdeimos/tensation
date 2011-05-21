@@ -29,5 +29,4 @@ public class ExitAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		ApplicationWindow.getApplicationWindow().exit();
 	}
-
 }

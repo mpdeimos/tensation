@@ -2,18 +2,20 @@ package com.mpdeimos.tensor.ui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+import javax.swing.border.EtchedBorder;
 
 import resources.R;
 
@@ -26,7 +28,7 @@ import com.mpdeimos.tensor.util.Log;
  * @author mpdeimos
  *
  */
-public class ApplicationWindow extends JFrame implements WindowListener {
+public class ApplicationWindow extends JFrame {
 	/** log tag */
 	private final static String LOG_TAG = "ApplicationWindow"; //$NON-NLS-1$
 	
@@ -74,7 +76,7 @@ public class ApplicationWindow extends JFrame implements WindowListener {
 		
 		this.setTitle(R.strings.getString("window_main_title")); //$NON-NLS-1$
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		this.addWindowListener(this);
+		this.addWindowListener(new WindowListener());
 		this.setBounds(50, 50, 400, 400);
 //		GraphicsEnvironment env =
 //			GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -82,6 +84,37 @@ public class ApplicationWindow extends JFrame implements WindowListener {
 //		this.setExtendedState(this.getExtendedState() | Frame.MAXIMIZED_BOTH);
 		
 		initializeMenu();
+		initializeCanvas();
+		initializeToolbars();
+	}
+
+	/**
+	 * initializes the window toolbars
+	 */
+	private void initializeToolbars() {
+		JToolBar sideToolBar = new JToolBar();
+		sideToolBar.setOrientation(SwingConstants.VERTICAL);
+		getContentPane().add(sideToolBar, BorderLayout.WEST);
+		
+		JButton exitButton = new JButton(new ExitAction());
+		exitButton.setHideActionText(true);
+		sideToolBar.add(exitButton);
+		
+		JToolBar topToolBar = new JToolBar();
+		getContentPane().add(topToolBar, BorderLayout.NORTH);
+	}
+
+	/**
+	 * initializes the painting canvas
+	 */
+	private void initializeCanvas() {
+		JPanel drawingPanelOuter = new JPanel();
+		drawingPanelOuter.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		getContentPane().add(drawingPanelOuter, BorderLayout.CENTER);
+		drawingPanelOuter.setLayout(new BorderLayout(0, 0));
+
+		DrawingCanvas drawingPanel = new DrawingCanvas();
+		drawingPanelOuter.add(drawingPanel);
 	}
 
 	/**
@@ -93,23 +126,11 @@ public class ApplicationWindow extends JFrame implements WindowListener {
 		// file menu
 		JMenu menuFile = new JMenu(R.strings.getString("window_menu_file")); //$NON-NLS-1$
 		
-		ExitAction exitAction = new ExitAction();
-		JMenuItem item = new JMenuItem(exitAction);
+		JMenuItem item = new JMenuItem(new ExitAction());
 		menuFile.add(item);
 		menuBar.add(menuFile);
 		
 		this.setJMenuBar(menuBar);
-		
-		JToolBar toolBar = new JToolBar();
-		toolBar.setOrientation(SwingConstants.VERTICAL);
-		getContentPane().add(toolBar, BorderLayout.WEST);
-		
-		JButton exitButton = new JButton(exitAction);
-		exitButton.setHideActionText(true);
-		toolBar.add(exitButton);
-		
-		JToolBar toolBar_1 = new JToolBar();
-		getContentPane().add(toolBar_1, BorderLayout.NORTH);
 	}
 
 	/**
@@ -118,45 +139,15 @@ public class ApplicationWindow extends JFrame implements WindowListener {
 	public void exit() {
 		this.dispose();
 	}
-
-	@Override
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent arg0) {
-		Log.v(LOG_TAG, "Main window closed"); //$NON-NLS-1$
-	}
-
-	@Override
-	public void windowClosing(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	
+	/**
+	 * Listener for window events
+	 */
+	private class WindowListener extends WindowAdapter
+	{
+		@Override
+		public void windowClosed(WindowEvent arg0) {
+			Log.v(LOG_TAG, "Main window closed"); //$NON-NLS-1$
+		}
 	}
 }
