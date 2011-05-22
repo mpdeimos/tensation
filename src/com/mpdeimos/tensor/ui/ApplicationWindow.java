@@ -41,6 +41,7 @@ public class ApplicationWindow extends JFrame {
 	public static void createAndDisplay() {
 		EventQueue.invokeLater(new Runnable() {
 
+			@Override
 			public void run() {
 				applicationWindow = new ApplicationWindow();
 				applicationWindow.setVisible(true);

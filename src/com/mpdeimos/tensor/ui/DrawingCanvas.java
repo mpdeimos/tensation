@@ -1,21 +1,25 @@
 package com.mpdeimos.tensor.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
-import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
+import com.mpdeimos.tensor.model.EpsilonTensor;
+import com.mpdeimos.tensor.model.IModelChangedListener;
+import com.mpdeimos.tensor.model.IModelData;
+import com.mpdeimos.tensor.model.ModelRoot;
+import com.mpdeimos.tensor.part.EditPartFactory;
+import com.mpdeimos.tensor.part.IEditPart;
 import com.mpdeimos.tensor.util.Log;
-import javax.swing.border.EtchedBorder;
 
 /**
  * Holds the drawing canvas for our diagram.
@@ -26,9 +30,12 @@ public class DrawingCanvas extends JPanel {
 	/** log tag */
 	public static final String LOG_TAG = "DrawingCanvas"; //$NON-NLS-1$
 	
-	/** just for testing purpose - moving stuff */
-	private int x, y = 0;
-
+	/** the EditPart factory */
+	private EditPartFactory editPartFactory = new EditPartFactory();
+	
+	/** list of all known EditParts. */
+	private List<IEditPart> editParts = new ArrayList<IEditPart>();
+	
 	/**
 	 * Create the panel.
 	 */
@@ -36,16 +43,25 @@ public class DrawingCanvas extends JPanel {
         setBackground(Color.white);
         addMouseMotionListener(new MouseMotionListener());
         addMouseListener(new MouseListener());
+        
+        // FIXME - this needs to be factored out
+        ModelRoot root = new ModelRoot();
+        root.addModelChangedListener(new ModelChangedListener());
+        
+        root.addChild(new EpsilonTensor(new Point(30, 30)));
+        root.addChild(new EpsilonTensor(new Point(30, 50)));
 	}
 	
-    public void paint(Graphics g) {
+	@Override
+	public void paint(Graphics g) {
     	super.paint(g);
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Dimension d = getSize();
+        Graphics2D gfx = (Graphics2D) g;
+        gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        g2.draw(new Ellipse2D.Double(x, y, 20, 20));
-       
+        for (IEditPart part : editParts)
+        {
+        	part.draw(gfx);
+        }
     }
 
     /**
@@ -57,10 +73,7 @@ public class DrawingCanvas extends JPanel {
     	public void mouseMoved(MouseEvent e) {
     		super.mouseMoved(e);
     		
-    		x = e.getX();
-    		y = e.getY();
-    		
-    		DrawingCanvas.this.repaint();
+//    		DrawingCanvas.this.repaint();
     	}
     }
     
@@ -70,5 +83,33 @@ public class DrawingCanvas extends JPanel {
     private class MouseListener extends MouseAdapter
     {
     	// nothing todo yet
+    }
+    
+    /**
+     * listener class for model data changes
+     */
+    private class ModelChangedListener implements IModelChangedListener
+    {
+
+		@Override
+		public void onModelChanged(IModelData model) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onChildAdded(IModelData child) {
+			Log.v(LOG_TAG, "added new child to model"); //$NON-NLS-1$
+			
+			IEditPart part = editPartFactory.createEditPart(child);
+			editParts.add(part);
+			
+			repaint();
+		}
+
+		@Override
+		public void onChildRemoved(IModelData child) {
+			// TODO !!
+		}
     }
 }
