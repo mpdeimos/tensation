@@ -11,14 +11,17 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 
+import com.mpdeimos.tensor.action.DrawTensorAction;
+import com.mpdeimos.tensor.editpart.EditPartFactory;
+import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.model.IModelChangedListener;
 import com.mpdeimos.tensor.model.IModelData;
 import com.mpdeimos.tensor.model.ModelRoot;
-import com.mpdeimos.tensor.part.EditPartFactory;
-import com.mpdeimos.tensor.part.IEditPart;
 import com.mpdeimos.tensor.util.Log;
 
 /**
@@ -35,6 +38,15 @@ public class DrawingCanvas extends JPanel {
 	
 	/** list of all known EditParts. */
 	private List<IEditPart> editParts = new ArrayList<IEditPart>();
+
+	/** the current drawing action */
+	private AbstractAction action = null;
+	
+	/** the EditPart corresponding to the current action TODO maybe create action base class that 'knows' what to do */
+	private IEditPart actionPart = null;
+
+	/** root model */
+	private ModelRoot root;
 	
 	/**
 	 * Create the panel.
@@ -44,12 +56,11 @@ public class DrawingCanvas extends JPanel {
         addMouseMotionListener(new MouseMotionListener());
         addMouseListener(new MouseListener());
         
-        // FIXME - this needs to be factored out
-        ModelRoot root = new ModelRoot();
+        root = new ModelRoot();
         root.addModelChangedListener(new ModelChangedListener());
         
         root.addChild(new EpsilonTensor(new Point(30, 30)));
-        root.addChild(new EpsilonTensor(new Point(30, 50)));
+        root.addChild(new EpsilonTensor(new Point(80, 50)));
 	}
 	
 	@Override
@@ -62,6 +73,11 @@ public class DrawingCanvas extends JPanel {
         {
         	part.draw(gfx);
         }
+        
+        if (actionPart != null)
+        {
+        	actionPart.draw(gfx);
+        }
     }
 
     /**
@@ -73,7 +89,15 @@ public class DrawingCanvas extends JPanel {
     	public void mouseMoved(MouseEvent e) {
     		super.mouseMoved(e);
     		
-//    		DrawingCanvas.this.repaint();
+    		if (action instanceof DrawTensorAction)
+    		{
+	    		actionPart = editPartFactory.createEditPart(new EpsilonTensor(e.getPoint()));
+    		}
+    		else
+    		{
+    			actionPart = null;
+    		}
+    		DrawingCanvas.this.repaint();
     	}
     }
     
@@ -82,7 +106,21 @@ public class DrawingCanvas extends JPanel {
      */
     private class MouseListener extends MouseAdapter
     {
-    	// nothing todo yet
+    	@Override
+    	public void mouseClicked(MouseEvent e) {
+    		super.mouseClicked(e);
+    		
+    		if (e.getButton() == MouseEvent.BUTTON3)
+    		{
+    			action = null;
+    			return;
+    		}
+    		
+    		if (action instanceof DrawTensorAction && e.getButton() == MouseEvent.BUTTON1)
+    		{
+    			root.addChild(new EpsilonTensor(e.getPoint()));
+    		}
+    	}
     }
     
     /**
@@ -112,4 +150,9 @@ public class DrawingCanvas extends JPanel {
 			// TODO !!
 		}
     }
+
+    /** performs an action on the canvas */ 
+	public void performAction(AbstractAction action) {
+		this.action  = action;
+	}
 }

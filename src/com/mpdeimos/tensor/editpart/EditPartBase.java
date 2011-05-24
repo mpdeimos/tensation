@@ -1,4 +1,4 @@
-package com.mpdeimos.tensor.part;
+package com.mpdeimos.tensor.editpart;
 
 import java.awt.Graphics2D;
 

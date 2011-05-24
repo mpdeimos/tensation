@@ -19,6 +19,7 @@ import javax.swing.border.EtchedBorder;
 
 import resources.R;
 
+import com.mpdeimos.tensor.action.DrawTensorAction;
 import com.mpdeimos.tensor.action.ExitAction;
 import com.mpdeimos.tensor.util.Log;
 
@@ -34,6 +35,9 @@ public class ApplicationWindow extends JFrame {
 	
 	/** singleton window instance */
 	private static ApplicationWindow applicationWindow;
+
+	/** the drawing canvas of our app */
+	private DrawingCanvas drawingPanel;
 
 	/**
 	 * Launch the application.
@@ -84,8 +88,8 @@ public class ApplicationWindow extends JFrame {
 //			        this.setMaximizedBounds(env.getMaximumWindowBounds());
 //		this.setExtendedState(this.getExtendedState() | Frame.MAXIMIZED_BOTH);
 		
-		initializeMenu();
 		initializeCanvas();
+		initializeMenu();
 		initializeToolbars();
 	}
 
@@ -97,6 +101,9 @@ public class ApplicationWindow extends JFrame {
 		sideToolBar.setOrientation(SwingConstants.VERTICAL);
 		getContentPane().add(sideToolBar, BorderLayout.WEST);
 		
+		JButton drawTensorButton = new JButton(new DrawTensorAction(this.drawingPanel));
+		drawTensorButton.setHideActionText(true);
+		sideToolBar.add(drawTensorButton);
 		JButton exitButton = new JButton(new ExitAction());
 		exitButton.setHideActionText(true);
 		sideToolBar.add(exitButton);
@@ -114,7 +121,7 @@ public class ApplicationWindow extends JFrame {
 		getContentPane().add(drawingPanelOuter, BorderLayout.CENTER);
 		drawingPanelOuter.setLayout(new BorderLayout(0, 0));
 
-		DrawingCanvas drawingPanel = new DrawingCanvas();
+		drawingPanel = new DrawingCanvas();
 		drawingPanelOuter.add(drawingPanel);
 	}
 

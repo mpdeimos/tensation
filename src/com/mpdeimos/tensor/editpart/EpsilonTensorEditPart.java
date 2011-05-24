@@ -1,4 +1,4 @@
-package com.mpdeimos.tensor.part;
+package com.mpdeimos.tensor.editpart;
 
 import com.mpdeimos.tensor.figure.EpsilonTensorFigure;
 import com.mpdeimos.tensor.model.IModelData;
