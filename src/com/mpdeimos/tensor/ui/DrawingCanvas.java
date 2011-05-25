@@ -44,6 +44,7 @@ public class DrawingCanvas extends JPanel {
 	/** root model */
 	private ModelRoot root;
 
+	/** mouse event listener */
 	private MouseListener mouseListener;
 	
 	/**
@@ -63,8 +64,8 @@ public class DrawingCanvas extends JPanel {
 	}
 	
 	@Override
-	public void paint(Graphics g) {
-    	super.paint(g);
+	public void paintComponent(Graphics g) {
+    	super.paintComponent(g);
         Graphics2D gfx = (Graphics2D) g;
         gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
