@@ -1,6 +1,6 @@
 package com.mpdeimos.tensor.model;
 
-import com.mpdeimos.tensor.util.ImmutalList;
+import com.mpdeimos.tensor.util.ImmutableList;
 
 /**
  * Base interface for data model objects.
@@ -12,7 +12,7 @@ public interface IModelData {
 	/**
 	 * @return the children of this data model object
 	 */
-	public ImmutalList<IModelData> getChildren();
+	public ImmutableList<IModelData> getChildren();
 	
 	/** adds a child to this object */
 	public void addChild(IModelData child);

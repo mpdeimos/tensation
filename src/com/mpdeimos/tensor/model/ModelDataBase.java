@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import com.mpdeimos.tensor.util.ImmutalList;
+import com.mpdeimos.tensor.util.ImmutableList;
 
 
 /**
@@ -25,11 +25,11 @@ public abstract class ModelDataBase implements IModelData {
 	private List<IModelData> children = null;
 
 	@Override
-	public ImmutalList<IModelData> getChildren() {
+	public ImmutableList<IModelData> getChildren() {
 		if (children == null)
 			return null;
 		
-		return new ImmutalList<IModelData>(children);
+		return new ImmutableList<IModelData>(children);
 	}
 	
 	@Override

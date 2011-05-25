@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputAdapter;
 
 import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.editpart.EditPartFactory;
@@ -42,14 +43,17 @@ public class DrawingCanvas extends JPanel {
 	
 	/** root model */
 	private ModelRoot root;
+
+	private MouseListener mouseListener;
 	
 	/**
 	 * Create the panel.
 	 */
 	public DrawingCanvas() {
         setBackground(Color.white);
-        addMouseMotionListener(new MouseMotionListener());
-        addMouseListener(new MouseListener());
+        mouseListener = new MouseListener();
+        addMouseMotionListener(mouseListener);
+        addMouseListener(mouseListener);
         
         root = new ModelRoot();
         root.addModelChangedListener(new ModelChangedListener());
@@ -76,9 +80,9 @@ public class DrawingCanvas extends JPanel {
     }
 
     /**
-     * listener class for mouse motion events
+     * listener class for mouse events
      */
-    private class MouseMotionListener extends MouseMotionAdapter
+    private class MouseListener extends MouseInputAdapter
     {
     	@Override
     	public void mouseMoved(MouseEvent e) {
@@ -89,13 +93,7 @@ public class DrawingCanvas extends JPanel {
     			canvasAction.doOnMouseMove(e);
     		}
     	}
-    }
-    
-    /**
-     * listener class for mouse events
-     */
-    private class MouseListener extends MouseAdapter
-    {
+
     	@Override
     	public void mouseClicked(MouseEvent e) {
     		super.mouseClicked(e);

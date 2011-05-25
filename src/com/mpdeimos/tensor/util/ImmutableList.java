@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Immutal List implementation. raises illegal state exception on each write access. 
+ * Immutable List implementation. raises illegal state exception on each write access. 
  * 
  * @author mpdeimos
  *
  */
-public class ImmutalList<T> implements List<T>{
+public class ImmutableList<T> implements List<T>{
 	/** The list backing up this ImmutalList */
 	private List<T> backend;
 	
 	/** Constructs an Immutal list using a given list as backend */
-	public ImmutalList(List<T> backend)
+	public ImmutableList(List<T> backend)
 	{
 		this.backend = backend;
 	}
@@ -123,7 +123,7 @@ public class ImmutalList<T> implements List<T>{
 
 	@Override
 	public List<T> subList(int fromIndex, int toIndex) {
-		return new ImmutalList<T>(backend.subList(fromIndex, toIndex));
+		return new ImmutableList<T>(backend.subList(fromIndex, toIndex));
 	}
 
 	@Override
