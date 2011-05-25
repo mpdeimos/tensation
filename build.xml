@@ -1,0 +1,51 @@
+<project name="Tensor" basedir="." default="help">
+
+	<target name="help">
+		<java classname="org.apache.tools.ant.Main">
+			<arg value="-projecthelp" />
+		</java>
+	</target>
+
+	<target name="clean" description="Clean build output">
+		<delete dir="./build" />
+	</target>
+
+	<target name="build" description="Comiple classes">
+		<mkdir dir="./build" />
+		<mkdir dir="./build/classes" />
+
+		<javac destdir="./build/classes" debug="true" source="1.6" target="1.6">
+			<src path="./src"/>
+			<src path="./res"/>
+			<!--classpath>
+				<fileset dir="./lib" includes="*.jar" />
+			</classpath-->
+		</javac>
+	</target>
+
+	<target name="getbzrdetails">
+		<exec executable="bzr" outputproperty="bzr.revision">
+			<arg value="revno" />
+		</exec>
+	</target>
+
+	<target name="jar" description="Create Jars" depends="build">
+
+		<mkdir dir="./build/tmp/" />
+		<mkdir dir="./build/jars/" />
+
+		<jar jarfile="./build/jars/tensor.jar">
+			<manifest>
+				<attribute name="Main-Class" value="com.mpdeimos.tensor.Main" />
+				<attribute name="Class-Path" value="." />
+				<attribute name="Bzr-Revision" value="${bzr.revision}" />
+	        		<attribute name="Implementation-Version" value="${bzr.revision}" />
+			</manifest>
+			<fileset dir="./build/classes" includes="**/*" />
+			<fileset dir="./res" includes="strings/*.properties" />
+			<fileset dir="./res" includes="drawable/*.png" />
+		</jar>
+
+	</target>
+
+</project>
