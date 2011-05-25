@@ -11,13 +11,11 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 
-import com.mpdeimos.tensor.action.DrawTensorAction;
+import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.editpart.EditPartFactory;
 import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.model.IModelChangedListener;
 import com.mpdeimos.tensor.model.IModelData;
@@ -40,11 +38,8 @@ public class DrawingCanvas extends JPanel {
 	private List<IEditPart> editParts = new ArrayList<IEditPart>();
 
 	/** the current drawing action */
-	private AbstractAction action = null;
+	private ICanvasAction canvasAction = null;
 	
-	/** the EditPart corresponding to the current action TODO maybe create action base class that 'knows' what to do */
-	private IEditPart actionPart = null;
-
 	/** root model */
 	private ModelRoot root;
 	
@@ -74,9 +69,9 @@ public class DrawingCanvas extends JPanel {
         	part.draw(gfx);
         }
         
-        if (actionPart != null)
+        if (canvasAction != null)
         {
-        	actionPart.draw(gfx);
+        	canvasAction.drawOverlay(gfx);
         }
     }
 
@@ -89,15 +84,10 @@ public class DrawingCanvas extends JPanel {
     	public void mouseMoved(MouseEvent e) {
     		super.mouseMoved(e);
     		
-    		if (action instanceof DrawTensorAction)
+    		if (canvasAction != null)
     		{
-	    		actionPart = editPartFactory.createEditPart(new EpsilonTensor(e.getPoint()));
+    			canvasAction.doOnMouseMove(e);
     		}
-    		else
-    		{
-    			actionPart = null;
-    		}
-    		DrawingCanvas.this.repaint();
     	}
     }
     
@@ -110,16 +100,17 @@ public class DrawingCanvas extends JPanel {
     	public void mouseClicked(MouseEvent e) {
     		super.mouseClicked(e);
     		
+    		if (canvasAction != null)
+    		{
+    			if (canvasAction.doOnMouseClicked(e))
+    				return;
+    		}
+
     		if (e.getButton() == MouseEvent.BUTTON3)
     		{
-    			action = null;
-    			return;
+    			stopCanvasAction();
     		}
     		
-    		if (action instanceof DrawTensorAction && e.getButton() == MouseEvent.BUTTON1)
-    		{
-    			root.addChild(new EpsilonTensor(e.getPoint()));
-    		}
     	}
     }
     
@@ -152,7 +143,23 @@ public class DrawingCanvas extends JPanel {
     }
 
     /** performs an action on the canvas */ 
-	public void performAction(AbstractAction action) {
-		this.action  = action;
+	public void startCanvasAction(ICanvasAction action) {
+		this.canvasAction  = action;
+		Log.d(LOG_TAG, "Started canvas action: " + this.canvasAction); //$NON-NLS-1$
+	}
+	
+	/** stops the current canvas action */
+	public void stopCanvasAction()
+	{
+		Log.d(LOG_TAG, "Stopped canvas action: " + this.canvasAction); //$NON-NLS-1$
+		this.canvasAction = null;
+		repaint();
+	}
+	
+	/** @return the model */
+	public ModelRoot getModel()
+	{
+		// FIXME this is really bad practice!
+		return root;
 	}
 }

@@ -22,11 +22,6 @@ public class EpsilonTensorFigure implements IFigure {
 	/** size of the center circle in pixels */
 	private static final int CENTER_CIRCLE_SIZE = 6;
 	
-	/** midpoint of the image (x) */
-	private static final int MIDPOINT_X = 10;
-	/** midpoint of the image (y) */
-	private static final int MIDPOINT_Y = 10;
-	
 	private static final Stroke CONNECTOR_STROKE = new BasicStroke(1f);
 	
 	/** associated EditPart */
