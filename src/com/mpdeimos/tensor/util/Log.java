@@ -65,9 +65,9 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void v(String tag, String message)
+	public static void v(String tag, String message, Object... args)
 	{
-		log(LogLevel.VERBOSE, tag, message);
+		log(LogLevel.VERBOSE, tag, message, args);
 	}
 	
 	/**
@@ -76,9 +76,9 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void d(String tag, String message)
+	public static void d(String tag, String message, Object... args)
 	{
-		log(LogLevel.DEBUG, tag, message);
+		log(LogLevel.DEBUG, tag, message, args);
 	}
 	
 	/**
@@ -87,9 +87,9 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void i(String tag, String message)
+	public static void i(String tag, String message, Object... args)
 	{
-		log(LogLevel.INFO, tag, message);
+		log(LogLevel.INFO, tag, message, args);
 	}
 	
 	/**
@@ -98,9 +98,9 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void w(String tag, String message)
+	public static void w(String tag, String message, Object... args)
 	{
-		log(LogLevel.WARN, tag, message);
+		log(LogLevel.WARN, tag, message, args);
 	}
 	
 	/**
@@ -109,9 +109,9 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void e(String tag, String message)
+	public static void e(String tag, String message, Object... args)
 	{
-		log(LogLevel.ERROR, tag, message);
+		log(LogLevel.ERROR, tag, message, args);
 	}
 	
 	/**
@@ -161,12 +161,13 @@ public class Log {
 	/**
 	 * Internal logging.
 	 */
-	private static void log(LogLevel level, String tag, String message)
+	private static void log(LogLevel level, String tag, String message, Object... args)
 	{
 		if (level.ordinal() < Log.level.ordinal())
 			return;
 		
-		String out = String.format("[%s] [%s] %s", level.getPrefix(), tag, message); //$NON-NLS-1$
+		String fmt = String.format(message, args);
+		String out = String.format("%7s | %18.18s | %18.18s  ||  %s", level.getPrefix(), Thread.currentThread().getName(), tag, fmt); //$NON-NLS-1$
 		if (level.equals(LogLevel.ERROR))
 			System.err.println(out);
 		else

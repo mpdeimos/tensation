@@ -144,13 +144,13 @@ public class DrawingCanvas extends JPanel {
     /** performs an action on the canvas */ 
 	public void startCanvasAction(ICanvasAction action) {
 		this.canvasAction  = action;
-		Log.d(LOG_TAG, "Started canvas action: " + this.canvasAction); //$NON-NLS-1$
+		Log.d(LOG_TAG, "Started canvas action: %s", this.canvasAction); //$NON-NLS-1$
 	}
 	
 	/** stops the current canvas action */
 	public void stopCanvasAction()
 	{
-		Log.d(LOG_TAG, "Stopped canvas action: " + this.canvasAction); //$NON-NLS-1$
+		Log.d(LOG_TAG, "Stopped canvas action: %s", this.canvasAction); //$NON-NLS-1$
 		this.canvasAction = null;
 		repaint();
 	}
