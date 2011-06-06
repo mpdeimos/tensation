@@ -9,6 +9,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 
 import com.mpdeimos.tensor.editpart.EpsilonTensorEditPart;
+import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 
 /**
@@ -17,21 +18,25 @@ import com.mpdeimos.tensor.model.EpsilonTensor;
  * @author mpdeimos
  *
  */
-public class EpsilonTensorFigure implements IFigure {
+public class EpsilonTensorFigure extends FigureBase {
 
 	/** size of the center circle in pixels */
-	private static final int CENTER_CIRCLE_SIZE = 6;
+	private static final int CENTER_CIRCLE_RADIUS = 4;
 	
-	private static final Stroke CONNECTOR_STROKE = new BasicStroke(1f);
+	/** offset of the connector stroke to the circle */
+	private static final int CONNECTOR_STROKE_OFFSET = 2;
 	
-	/** associated EditPart */
-	private final EpsilonTensorEditPart editPart;
+	/** length of the connector strokes */
+	private static final int CONNECTOR_STROKE_LENGTH = 8;
+	
+	/** the style of the connector stroke */
+	private static final Stroke CONNECTOR_STROKE = new BasicStroke(1.1f);
 
 	/**
 	 * Constructor.
 	 */
-	public EpsilonTensorFigure(EpsilonTensorEditPart epsilonTensorEditPart) {
-		this.editPart = epsilonTensorEditPart;
+	public EpsilonTensorFigure(IEditPart editPart) {
+		super(editPart);
 	}
 
 	@Override
@@ -42,12 +47,22 @@ public class EpsilonTensorFigure implements IFigure {
 		int y = (int)position.getY();
 		
 		gfx.setStroke(CONNECTOR_STROKE);
-		Ellipse2D circle = new Ellipse2D.Double(x-3, y-3, CENTER_CIRCLE_SIZE, CENTER_CIRCLE_SIZE);
-//		Shape line = new Line2D.Double(((double)x+MIDPOINT_X)+0.5, x+0, ((double)x+MIDPOINT_X)+0.5, x+MIDPOINT_Y-6);
-//		gfx.draw(line);
-//		gfx.drawLine(x+MIDPOINT_X-1, x+0, x+MIDPOINT_X-1, x+MIDPOINT_Y-6);
-		
+		Ellipse2D circle = new Ellipse2D.Double(x-CENTER_CIRCLE_RADIUS+0.5, y-CENTER_CIRCLE_RADIUS+0.5, 2*CENTER_CIRCLE_RADIUS-0.5, 2*CENTER_CIRCLE_RADIUS-0.5);
 		gfx.fill(circle);
+		
+		int max = 300;
+		for (int i = 0; i < max; i++)
+		{
+			double ang = (((double)i)/max+tensor.getRotation()/360)*2*Math.PI;
+			ang %= 2*Math.PI;
+			Shape line = new Line2D.Double(
+					x+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET)*Math.sin(ang),
+					y+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET)*Math.cos(ang),
+					x+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET+CONNECTOR_STROKE_LENGTH)*Math.sin(ang),
+					y+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET+CONNECTOR_STROKE_LENGTH)*Math.cos(ang));
+			gfx.draw(line);
+		}
+		
 	}
 	
 }

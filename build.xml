@@ -6,6 +6,10 @@
 		</java>
 	</target>
 
+	<target name="run">
+		<java jar="./build/jars/tensor.jar" fork="true"/>
+	</target>
+
 	<target name="clean" description="Clean build output">
 		<delete dir="./build" />
 	</target>

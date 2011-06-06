@@ -1,6 +1,8 @@
 package com.mpdeimos.tensor.editpart;
 
+import com.mpdeimos.tensor.EditPart;
 import com.mpdeimos.tensor.figure.EpsilonTensorFigure;
+import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.model.IModelData;
 
 /**
@@ -9,6 +11,7 @@ import com.mpdeimos.tensor.model.IModelData;
  * @author mpdeimos
  *
  */
+@EditPart(model=EpsilonTensor.class)
 public class EpsilonTensorEditPart extends EditPartBase {
 
 	/** Constructor. */

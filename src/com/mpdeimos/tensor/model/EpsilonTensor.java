@@ -12,6 +12,9 @@ public class EpsilonTensor extends ModelDataBase {
 	
 	/** Position of the object in screen coordinates. */
 	private final Point position;
+	
+	/** Rotation of the current figure */
+	private short rotation = 0;
 
 	/**
 	 * Constructor.
@@ -34,6 +37,13 @@ public class EpsilonTensor extends ModelDataBase {
 	 */
 	public Point getPosition() {
 		return position;
+	}
+
+	/**
+	 * @return the rotation of this figure in degrees
+	 */
+	public double getRotation() {
+		return rotation;
 	}
 
 }

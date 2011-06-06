@@ -167,7 +167,7 @@ public class Log {
 			return;
 		
 		String fmt = String.format(message, args);
-		String out = String.format("%7s | %18.18s | %18.18s  ||  %s", level.getPrefix(), Thread.currentThread().getName(), tag, fmt); //$NON-NLS-1$
+		String out = String.format(" %7s | %16.16s | %18.18s |  %s", level.getPrefix(), Thread.currentThread().getName(), tag, fmt); //$NON-NLS-1$
 		if (level.equals(LogLevel.ERROR))
 			System.err.println(out);
 		else
