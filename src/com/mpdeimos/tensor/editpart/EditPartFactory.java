@@ -18,9 +18,6 @@ import com.mpdeimos.tensor.util.PackageUtils;
 @SuppressWarnings("unchecked")
 public class EditPartFactory {
 	
-	/** The log tag */
-	private static final String LOG_TAG = "EditPartFactory"; //$NON-NLS-1$
-	
 	/** static map for the edit part factory */
 	private static HashMap<Class<? extends IModelData>, Class<? extends IEditPart>> map = new HashMap<Class<? extends IModelData>, Class<? extends IEditPart>>();
 
@@ -53,7 +50,7 @@ public class EditPartFactory {
 		
 		if (clazz == null)
 		{
-			Log.e(LOG_TAG, "Could not create EditPart for %s due to a missing EditPart annotation", modelData.getClass().getSimpleName()); //$NON-NLS-1$
+			Log.e(this, "Could not create EditPart for %s due to a missing EditPart annotation", modelData.getClass().getSimpleName()); //$NON-NLS-1$
 			return null;
 		}
 		
@@ -61,7 +58,7 @@ public class EditPartFactory {
 			Constructor<? extends IEditPart> constructor = clazz.getConstructor(IModelData.class);
 			return constructor.newInstance(modelData);
 		} catch (Exception e) {
-			Log.e(LOG_TAG, e);
+			Log.e(this, e);
 		}
 		
 		return null;

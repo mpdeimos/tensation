@@ -12,8 +12,6 @@ import com.mpdeimos.tensor.util.Log;
  *
  */
 public class R {
-	/** log tag */
-	private static final String LOG_TAG = "R" ; //$NON-NLS-1$
 	
 	/** string resource provider */
 	public static final StringResourceProvider strings = new StringResourceProvider();
@@ -34,7 +32,7 @@ public class R {
 			URL url = R.class.getResource(String.format("/drawable/%s.png", name)); //$NON-NLS-1$
 			if (url == null)
 			{
-				Log.w(LOG_TAG, "Drawable not found: " + name); //$NON-NLS-1$
+				Log.w(R.class, "Drawable not found: " + name); //$NON-NLS-1$
 				url = R.class.getResource(String.format("/drawable/default.png", name)); //$NON-NLS-1$
 			}
 			
@@ -69,7 +67,7 @@ public class R {
 			{
 				if (str == null)
 				{
-					Log.w(LOG_TAG, "String not found: " + key); //$NON-NLS-1$
+					Log.w(R.class, "String not found: " + key); //$NON-NLS-1$
 					str = NOT_FOUND;
 				}
 			}

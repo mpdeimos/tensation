@@ -29,9 +29,7 @@ import com.mpdeimos.tensor.util.Log;
  * @author mpdeimos
  */
 public class DrawingCanvas extends JPanel {
-	/** log tag */
-	public static final String LOG_TAG = "DrawingCanvas"; //$NON-NLS-1$
-	
+
 	/** the EditPart factory */
 	private EditPartFactory editPartFactory = new EditPartFactory();
 	
@@ -127,7 +125,7 @@ public class DrawingCanvas extends JPanel {
 
 		@Override
 		public void onChildAdded(IModelData child) {
-			Log.v(LOG_TAG, "added new child to model"); //$NON-NLS-1$
+			Log.v(DrawingCanvas.this, "added new child to model"); //$NON-NLS-1$
 			
 			IEditPart part = editPartFactory.createEditPart(child);
 			editParts.add(part);
@@ -144,13 +142,13 @@ public class DrawingCanvas extends JPanel {
     /** performs an action on the canvas */ 
 	public void startCanvasAction(ICanvasAction action) {
 		this.canvasAction  = action;
-		Log.d(LOG_TAG, "Started canvas action: %s", this.canvasAction); //$NON-NLS-1$
+		Log.d(this, "Started canvas action: %s", this.canvasAction); //$NON-NLS-1$
 	}
 	
 	/** stops the current canvas action */
 	public void stopCanvasAction()
 	{
-		Log.d(LOG_TAG, "Stopped canvas action: %s", this.canvasAction); //$NON-NLS-1$
+		Log.d(this, "Stopped canvas action: %s", this.canvasAction); //$NON-NLS-1$
 		this.canvasAction = null;
 		repaint();
 	}

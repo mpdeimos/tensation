@@ -15,16 +15,13 @@ import com.mpdeimos.tensor.util.Log.LogLevel;
  */
 public class Main
 {
-	/** log tag */
-	public static final String LOG_TAG = "main"; //$NON-NLS-1$
-	
 	/**
 	 * application entry point 
 	 */
 	public static void main(String[] args)
 	{
 		Log.setLevel(LogLevel.VERBOSE); // TODO add cli switch
-		Log.v(LOG_TAG, "started..."); //$NON-NLS-1$
+		Log.v(Main.class, "started..."); //$NON-NLS-1$
 		
 		ApplicationWindow.createAndDisplay();
 	}

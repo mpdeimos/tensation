@@ -30,8 +30,6 @@ import com.mpdeimos.tensor.util.Log;
  *
  */
 public class ApplicationWindow extends JFrame {
-	/** log tag */
-	private final static String LOG_TAG = "ApplicationWindow"; //$NON-NLS-1$
 	
 	/** singleton window instance */
 	private static ApplicationWindow applicationWindow;
@@ -76,7 +74,7 @@ public class ApplicationWindow extends JFrame {
 			        UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			// just swallow and continue w/ ugly java look and feel
-			Log.e(LOG_TAG, "setting native look failed", e); //$NON-NLS-1$
+			Log.e(this, "setting native look failed", e); //$NON-NLS-1$
 		}
 		
 		this.setTitle(R.strings.getString("window_main_title")); //$NON-NLS-1$
@@ -155,7 +153,7 @@ public class ApplicationWindow extends JFrame {
 	{
 		@Override
 		public void windowClosed(WindowEvent arg0) {
-			Log.v(LOG_TAG, "Main window closed"); //$NON-NLS-1$
+			Log.v(ApplicationWindow.this, "Main window closed"); //$NON-NLS-1$
 		}
 	}
 }

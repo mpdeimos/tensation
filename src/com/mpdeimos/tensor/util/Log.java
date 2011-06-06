@@ -65,7 +65,7 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void v(String tag, String message, Object... args)
+	public static void v(Object tag, String message, Object... args)
 	{
 		log(LogLevel.VERBOSE, tag, message, args);
 	}
@@ -76,7 +76,7 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void d(String tag, String message, Object... args)
+	public static void d(Object tag, String message, Object... args)
 	{
 		log(LogLevel.DEBUG, tag, message, args);
 	}
@@ -87,7 +87,7 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void i(String tag, String message, Object... args)
+	public static void i(Object tag, String message, Object... args)
 	{
 		log(LogLevel.INFO, tag, message, args);
 	}
@@ -98,7 +98,7 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void w(String tag, String message, Object... args)
+	public static void w(Object tag, String message, Object... args)
 	{
 		log(LogLevel.WARN, tag, message, args);
 	}
@@ -109,7 +109,7 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void e(String tag, String message, Object... args)
+	public static void e(Object tag, String message, Object... args)
 	{
 		log(LogLevel.ERROR, tag, message, args);
 	}
@@ -120,7 +120,7 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void e(String tag, Throwable t)
+	public static void e(Object tag, Throwable t)
 	{
 		StringBuilder message = new StringBuilder();
 		message.append(t.getMessage());
@@ -134,7 +134,7 @@ public class Log {
 	 * @param tag		The message tag.
 	 * @param message	The message to log.
 	 */
-	public static void e(String tag, String message, Throwable t)
+	public static void e(Object tag, String message, Throwable t)
 	{
 		StringBuilder messageBuilder = new StringBuilder();
 		if (!StringUtil.isNullOrEmpty(message))
@@ -161,10 +161,19 @@ public class Log {
 	/**
 	 * Internal logging.
 	 */
-	private static void log(LogLevel level, String tag, String message, Object... args)
+	private static void log(LogLevel level, Object tag, String message, Object... args)
 	{
 		if (level.ordinal() < Log.level.ordinal())
 			return;
+		
+		if (tag instanceof Class<?>)
+		{
+			tag = ((Class<?>) tag).getSimpleName();
+		}
+		else if (!(tag instanceof String))
+		{
+			tag = tag.getClass().getSimpleName();
+		}
 		
 		String fmt = String.format(message, args);
 		String out = String.format(" %7s | %16.16s | %18.18s |  %s", level.getPrefix(), Thread.currentThread().getName(), tag, fmt); //$NON-NLS-1$
