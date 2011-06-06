@@ -3,14 +3,19 @@ package com.mpdeimos.tensor.figure;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
 
 import com.mpdeimos.tensor.editpart.EpsilonTensorEditPart;
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.model.EpsilonTensor;
+import com.mpdeimos.tensor.util.PointUtil;
 
 /**
  * Drawing class for an EpsilonTensor
@@ -27,7 +32,7 @@ public class EpsilonTensorFigure extends FigureBase {
 	private static final int CONNECTOR_STROKE_OFFSET = 2;
 	
 	/** length of the connector strokes */
-	private static final int CONNECTOR_STROKE_LENGTH = 8;
+	private static final int CONNECTOR_STROKE_LENGTH = 10;
 	
 	/** the style of the connector stroke */
 	private static final Stroke CONNECTOR_STROKE = new BasicStroke(1.1f);
@@ -47,21 +52,42 @@ public class EpsilonTensorFigure extends FigureBase {
 		int y = (int)position.getY();
 		
 		gfx.setStroke(CONNECTOR_STROKE);
-		Ellipse2D circle = new Ellipse2D.Double(x-CENTER_CIRCLE_RADIUS+0.5, y-CENTER_CIRCLE_RADIUS+0.5, 2*CENTER_CIRCLE_RADIUS-0.5, 2*CENTER_CIRCLE_RADIUS-0.5);
+		Ellipse2D circle = new Ellipse2D.Double(x-CENTER_CIRCLE_RADIUS+0.5, y-CENTER_CIRCLE_RADIUS+0.5, 2*CENTER_CIRCLE_RADIUS-1, 2*CENTER_CIRCLE_RADIUS-1);
 		gfx.fill(circle);
 		
-		int max = 300;
+		int max = 3;
 		for (int i = 0; i < max; i++)
 		{
 			double ang = (((double)i)/max+tensor.getRotation()/360)*2*Math.PI;
 			ang %= 2*Math.PI;
-			Shape line = new Line2D.Double(
-					x+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET)*Math.sin(ang),
-					y+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET)*Math.cos(ang),
-					x+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET+CONNECTOR_STROKE_LENGTH)*Math.sin(ang),
-					y+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET+CONNECTOR_STROKE_LENGTH)*Math.cos(ang));
+			double sin = Math.sin(ang);
+			double cos = Math.cos(ang);
+			Point2D bottom = new Point2D.Double(
+					x+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET)*cos,
+					y+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET)*sin);
+			Point2D top = new Point2D.Double(
+					x+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET+CONNECTOR_STROKE_LENGTH)*cos,
+					y+(CENTER_CIRCLE_RADIUS+CONNECTOR_STROKE_OFFSET+CONNECTOR_STROKE_LENGTH)*sin);
+			Point2D triangleL = new Point2D.Double(CONNECTOR_STROKE_OFFSET+CONNECTOR_STROKE_LENGTH,-CENTER_CIRCLE_RADIUS);
+			PointUtil.rotate(triangleL, ang);
+			PointUtil.move(triangleL, x, y);
+			
+			Point2D triangleR = new Point2D.Double(CONNECTOR_STROKE_OFFSET+CONNECTOR_STROKE_LENGTH,CENTER_CIRCLE_RADIUS);
+			PointUtil.rotate(triangleR, ang);
+			PointUtil.move(triangleR, x, y);
+			
+			Shape line = new Line2D.Double(bottom, top);
+			
 			gfx.draw(line);
+			
+			GeneralPath triangle = new GeneralPath();
+			triangle.moveTo(top.getX(), top.getY());
+			triangle.lineTo(triangleL.getX(), triangleL.getY());
+			triangle.lineTo(triangleR.getX(), triangleR.getY());
+			triangle.closePath();
+			gfx.fill(triangle);
 		}
+		
 		
 	}
 	

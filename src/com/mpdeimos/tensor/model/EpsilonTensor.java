@@ -43,7 +43,7 @@ public class EpsilonTensor extends ModelDataBase {
 	 * @return the rotation of this figure in degrees
 	 */
 	public double getRotation() {
-		return rotation;
+		return 0;
 	}
 
 }
