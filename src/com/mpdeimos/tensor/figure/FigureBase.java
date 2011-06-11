@@ -13,7 +13,7 @@ import com.mpdeimos.tensor.editpart.IEditPart;
  * @author mpdeimos
  *
  */
-public class FigureBase implements IFigure {
+public abstract class FigureBase implements IFigure {
 	
 	/** The shapes to be drawn on the canvas */
 	protected List<Shape> shapes;

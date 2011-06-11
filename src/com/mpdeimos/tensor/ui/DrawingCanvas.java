@@ -170,4 +170,10 @@ public class DrawingCanvas extends JPanel {
 		// FIXME this is really bad practice!
 		return root;
 	}
+	
+	/** @return the edit parts */
+	public List<IEditPart> getEditParts()
+	{
+		return this.editParts;
+	}
 }

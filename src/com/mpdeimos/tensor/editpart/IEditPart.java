@@ -1,6 +1,7 @@
 package com.mpdeimos.tensor.editpart;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 
 import com.mpdeimos.tensor.model.IModelData;
 
@@ -20,5 +21,8 @@ public interface IEditPart {
 	
 	/** @return the linked data model object */
 	public IModelData getModelData();
+
+	/** performs a check whether the mouse hovers this EditPart */
+	public void isMouseOver(Point point);
 
 }

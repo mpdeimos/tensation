@@ -21,6 +21,7 @@ import resources.R;
 
 import com.mpdeimos.tensor.action.DrawTensorAction;
 import com.mpdeimos.tensor.action.ExitAction;
+import com.mpdeimos.tensor.action.SelectEditPartAction;
 import com.mpdeimos.tensor.util.Log;
 
 /**
@@ -99,6 +100,9 @@ public class ApplicationWindow extends JFrame {
 		sideToolBar.setOrientation(SwingConstants.VERTICAL);
 		getContentPane().add(sideToolBar, BorderLayout.WEST);
 		
+		JButton selectEditPartButton = new JButton(new SelectEditPartAction(this.drawingPanel));
+		selectEditPartButton.setHideActionText(true);
+		sideToolBar.add(selectEditPartButton);
 		JButton drawTensorButton = new JButton(new DrawTensorAction(this.drawingPanel));
 		drawTensorButton.setHideActionText(true);
 		sideToolBar.add(drawTensorButton);

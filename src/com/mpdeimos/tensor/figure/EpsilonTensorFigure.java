@@ -1,9 +1,12 @@
 package com.mpdeimos.tensor.figure;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
@@ -37,6 +40,8 @@ public class EpsilonTensorFigure extends FigureBase {
 	/** the style of the connector stroke */
 	private static final Stroke CONNECTOR_STROKE = new BasicStroke(1.1f);
 
+	private boolean selected = false;
+
 	/**
 	 * Constructor.
 	 */
@@ -46,6 +51,11 @@ public class EpsilonTensorFigure extends FigureBase {
 
 	@Override
 	public void draw(Graphics2D gfx) {
+		
+		Color oldPaint = gfx.getColor();
+		if (selected)
+			gfx.setColor(Color.BLUE);
+		
 		EpsilonTensor tensor = (EpsilonTensor)editPart.getModelData();
 		Point position = tensor.getPosition();
 		int x = (int)position.getX();
@@ -88,7 +98,18 @@ public class EpsilonTensorFigure extends FigureBase {
 			gfx.fill(triangle);
 		}
 		
+		gfx.setColor(oldPaint);
+	}
+	
+	@Override
+	public void isMouseOver(Point point) {
+		Rectangle r = new Rectangle((int)point.getX() - CENTER_CIRCLE_RADIUS,
+					(int)point.getY() - CENTER_CIRCLE_RADIUS,
+					(int)point.getX() + CENTER_CIRCLE_RADIUS,
+					(int)point.getY() + CENTER_CIRCLE_RADIUS);
 		
+		selected = r.contains(point);
+			
 	}
 	
 }
