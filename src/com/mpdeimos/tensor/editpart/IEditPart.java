@@ -23,6 +23,6 @@ public interface IEditPart {
 	public IModelData getModelData();
 
 	/** performs a check whether the mouse hovers this EditPart */
-	public void isMouseOver(Point point);
+	public boolean isMouseOver(Point point);
 
 }

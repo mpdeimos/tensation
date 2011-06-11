@@ -40,8 +40,6 @@ public class EpsilonTensorFigure extends FigureBase {
 	/** the style of the connector stroke */
 	private static final Stroke CONNECTOR_STROKE = new BasicStroke(1.1f);
 
-	private boolean selected = false;
-
 	/**
 	 * Constructor.
 	 */
@@ -51,10 +49,6 @@ public class EpsilonTensorFigure extends FigureBase {
 
 	@Override
 	public void draw(Graphics2D gfx) {
-		
-		Color oldPaint = gfx.getColor();
-		if (selected)
-			gfx.setColor(Color.BLUE);
 		
 		EpsilonTensor tensor = (EpsilonTensor)editPart.getModelData();
 		Point position = tensor.getPosition();
@@ -97,19 +91,18 @@ public class EpsilonTensorFigure extends FigureBase {
 			triangle.closePath();
 			gfx.fill(triangle);
 		}
-		
-		gfx.setColor(oldPaint);
 	}
 	
 	@Override
-	public void isMouseOver(Point point) {
-		Rectangle r = new Rectangle((int)point.getX() - CENTER_CIRCLE_RADIUS,
-					(int)point.getY() - CENTER_CIRCLE_RADIUS,
-					(int)point.getX() + CENTER_CIRCLE_RADIUS,
-					(int)point.getY() + CENTER_CIRCLE_RADIUS);
+	public boolean isMouseOver(Point point) {
+		EpsilonTensor tensor = (EpsilonTensor)editPart.getModelData();
+		Point position = tensor.getPosition();
+		Rectangle r = new Rectangle((int)position.getX() - CENTER_CIRCLE_RADIUS,
+					(int)position.getY() - CENTER_CIRCLE_RADIUS,
+					2*CENTER_CIRCLE_RADIUS,
+					2*CENTER_CIRCLE_RADIUS);
 		
-		selected = r.contains(point);
-			
+		return r.contains(point);
 	}
 	
 }

@@ -14,7 +14,7 @@ public interface IFigure {
 	/** draws the object to the provided canvas */
 	public void draw(Graphics2D gfx);
 
-	/** performs a check wether the mouse is positioned over this figure */
-	public void isMouseOver(Point point);
+	/** performs a check whether the mouse is positioned over this figure */
+	public boolean isMouseOver(Point point);
 
 }

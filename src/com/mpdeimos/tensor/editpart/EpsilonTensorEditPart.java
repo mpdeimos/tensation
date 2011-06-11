@@ -1,7 +1,5 @@
 package com.mpdeimos.tensor.editpart;
 
-import java.awt.Point;
-
 import com.mpdeimos.tensor.EditPart;
 import com.mpdeimos.tensor.figure.EpsilonTensorFigure;
 import com.mpdeimos.tensor.model.EpsilonTensor;
@@ -21,10 +19,5 @@ public class EpsilonTensorEditPart extends EditPartBase {
 		super(modelData);
 		setFigure(new EpsilonTensorFigure(this));
 	}
-
-	@Override
-	public void isMouseOver(Point point) {
-		this.getFigure().isMouseOver(point);
-	}
-
+	
 }
