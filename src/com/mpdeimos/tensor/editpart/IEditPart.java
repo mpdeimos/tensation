@@ -2,6 +2,7 @@ package com.mpdeimos.tensor.editpart;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import com.mpdeimos.tensor.model.IModelData;
 
@@ -24,5 +25,8 @@ public interface IEditPart {
 
 	/** performs a check whether the mouse hovers this EditPart */
 	public boolean isMouseOver(Point point);
+	
+	/** @return the bounding rectangle */
+	public Rectangle getBoundingRectangle();
 
 }

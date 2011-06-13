@@ -89,7 +89,7 @@ public class EpsilonTensorFigure extends FigureBase {
 	}
 	
 	@Override
-	public boolean isMouseOver(Point point) {
+	public boolean containsPoints(Point point) {
 		EpsilonTensor tensor = (EpsilonTensor)editPart.getModelData();
 		Point position = tensor.getPosition();
 		Rectangle r = new Rectangle((int)position.getX() - CENTER_CIRCLE_RADIUS,
@@ -98,6 +98,17 @@ public class EpsilonTensorFigure extends FigureBase {
 					2*CENTER_CIRCLE_RADIUS);
 		
 		return r.contains(point);
+	}
+	
+	@Override
+	public Rectangle getBoundingRectangle() {
+		
+		EpsilonTensor tensor = (EpsilonTensor)editPart.getModelData();
+		Point position = tensor.getPosition();
+		
+		int offset = CONNECTOR_STROKE_LENGTH + CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET;
+		
+		return new Rectangle((int)position.getX() - offset, (int)position.getY() - offset, 2*offset, 2*offset);
 	}
 	
 }

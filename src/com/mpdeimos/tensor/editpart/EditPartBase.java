@@ -3,6 +3,7 @@ package com.mpdeimos.tensor.editpart;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.IModelData;
@@ -70,8 +71,13 @@ public abstract class EditPartBase implements IEditPart {
 
 	@Override
 	public boolean isMouseOver(Point point) {
-		isMouseOver = this.getFigure().isMouseOver(point);
+		isMouseOver = this.getFigure().containsPoints(point);
 		
 		return isMouseOver;
+	}
+	
+	@Override
+	public Rectangle getBoundingRectangle() {
+		return this.getFigure().getBoundingRectangle();
 	}
 }
