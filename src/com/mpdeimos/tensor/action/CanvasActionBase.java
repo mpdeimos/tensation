@@ -49,4 +49,9 @@ public abstract class CanvasActionBase extends AbstractAction implements ICanvas
 	public boolean doOnMousePressed(MouseEvent e) {
 		return false;
 	}
+	
+	@Override
+	public boolean doOnMouseDragged(MouseEvent e) {
+		return false;
+	}
 }

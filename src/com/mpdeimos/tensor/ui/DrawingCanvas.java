@@ -137,6 +137,16 @@ public class DrawingCanvas extends JPanel {
     			canvasAction.doOnMouseReleased(e);
     		}
     	}
+    	
+    	@Override
+    	public void mouseDragged(MouseEvent e) {
+    		super.mouseDragged(e);
+    		
+    		if (canvasAction != null)
+    		{
+    			canvasAction.doOnMouseDragged(e);
+    		}
+    	}
     }
     
     /**
@@ -147,7 +157,6 @@ public class DrawingCanvas extends JPanel {
 
 		@Override
 		public void onModelChanged(IModelData model) {
-			Log.d(this, "model changed");
 			repaint();
 		}
 

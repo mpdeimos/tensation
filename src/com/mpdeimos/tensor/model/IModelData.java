@@ -25,4 +25,5 @@ public interface IModelData {
 	
 	/** removes each instance of this listener from listening to model changes of this object */
 	public boolean removeModelDataChangedListener(IModelChangedListener listener);
+
 }

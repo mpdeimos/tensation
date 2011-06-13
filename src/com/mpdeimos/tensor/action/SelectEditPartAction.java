@@ -63,9 +63,6 @@ public class SelectEditPartAction extends CanvasActionBase {
 		{
 			selectedEditPart.getBoundingRectangle();
 			
-			if (moveEditPart(e.getPoint()))
-				return true;
-			
 			if (selectedEditPart.getBoundingRectangle().contains(e.getPoint()))
 			{
 				drawingPanel.setCursor(new Cursor(Cursor.MOVE_CURSOR));
@@ -131,18 +128,21 @@ public class SelectEditPartAction extends CanvasActionBase {
 	public boolean doOnMouseReleased(MouseEvent e) {
 		super.doOnMousePressed(e);
 		
-		return moveEditPart(e.getPoint());
+		moveStartPointDelta = null;
+		
+		return false;
 	}
 	
-	private boolean moveEditPart(Point curPos)
+	@Override
+	public boolean doOnMouseDragged(MouseEvent e)
 	{
 		if (selectedEditPart != null 
 				&& selectedEditPart instanceof IMovableEditPart
 				&& moveStartPointDelta != null)
 		{
+			Point curPos = e.getPoint();
 			curPos.translate(moveStartPointDelta.x, moveStartPointDelta.y);
 			((IMovableEditPart)selectedEditPart).setPosition(curPos);
-			moveStartPointDelta = null;
 			return true;
 		}
 		

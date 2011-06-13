@@ -22,10 +22,14 @@ public interface ICanvasAction {
 	/** being called when the mouse button is released */
 	public boolean doOnMouseReleased(MouseEvent e);
 	
+	/** being called if the mouse is moved on the canvas with a button clicked */
+	public boolean doOnMouseDragged(MouseEvent e);
+	
 	/** being called during the paint cycle of the canvas */
 	public boolean drawOverlay(Graphics2D gfx);
 	
 	/** stops the current canvas action */
 	public void stopAction();
+
 
 }

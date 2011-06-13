@@ -8,5 +8,9 @@ package com.mpdeimos.tensor.model;
  *
  */
 public class ModelRoot extends ModelDataBase {
- // nothing special yet
+
+	/** Constructor. */
+	public ModelRoot() {
+		super(null);
+	}
 }

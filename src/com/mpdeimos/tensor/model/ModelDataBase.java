@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.mpdeimos.tensor.util.ImmutableList;
 
-
 /**
  * Abstract base class for model data
  * 
@@ -23,6 +22,14 @@ public abstract class ModelDataBase implements IModelData {
 
 	/** the children of this model */
 	private List<IModelData> children = null;
+
+	/** Parent model */
+	private final IModelData parent;
+	
+	/** Constructor. */
+	public ModelDataBase(IModelData parent) {
+		this.parent = parent;
+	}
 
 	@Override
 	public ImmutableList<IModelData> getChildren() {
@@ -76,6 +83,9 @@ public abstract class ModelDataBase implements IModelData {
 		{
 			listener.onModelChanged(model);
 		}
+		
+		if (parent != null && parent instanceof ModelDataBase)
+			((ModelDataBase)parent).fireOnModelDataChanged(model);
 	}
 	
 	/** fires the onChildAdded callback for all listeners */
@@ -85,6 +95,9 @@ public abstract class ModelDataBase implements IModelData {
 		{
 			listener.onChildAdded(child);
 		}
+		
+		if (parent != null && parent instanceof ModelDataBase)
+			((ModelDataBase)parent).fireOnModelDataChanged(child);
 	}
 	
 	/** fires the onChildRemoved callback for all listeners */
@@ -94,6 +107,9 @@ public abstract class ModelDataBase implements IModelData {
 		{
 			listener.onChildRemoved(child);
 		}
+		
+		if (parent != null && parent instanceof ModelDataBase)
+			((ModelDataBase)parent).fireOnModelDataChanged(child);
 	}
 	
 }
