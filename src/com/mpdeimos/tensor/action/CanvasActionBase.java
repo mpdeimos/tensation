@@ -1,6 +1,7 @@
 package com.mpdeimos.tensor.action;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -38,6 +39,14 @@ public abstract class CanvasActionBase extends AbstractAction implements ICanvas
 	public void actionPerformed(ActionEvent e) {
 		putValue(Action.SELECTED_KEY, true);
 	}
-
 	
+	@Override
+	public boolean doOnMouseReleased(MouseEvent e) {
+		return false;
+	}
+	
+	@Override
+	public boolean doOnMousePressed(MouseEvent e) {
+		return false;
+	}
 }

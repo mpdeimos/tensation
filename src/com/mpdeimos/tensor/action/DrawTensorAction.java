@@ -37,7 +37,7 @@ public class DrawTensorAction extends CanvasActionBase {
 		super(drawingPanel, R.strings.getString("window_action_draw"), new ImageIcon(R.drawable.getURL("draw"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		this.position = new Point(0,0);
-		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(position));
+		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(null, position));
 	}
 	
 	@Override
@@ -59,7 +59,7 @@ public class DrawTensorAction extends CanvasActionBase {
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
 			ModelRoot root = drawingPanel.getModel();
-			root.addChild(new EpsilonTensor(e.getPoint()));
+			root.addChild(new EpsilonTensor(root, e.getPoint()));
 			
 			return true;
 		}

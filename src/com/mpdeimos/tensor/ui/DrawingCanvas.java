@@ -55,8 +55,8 @@ public class DrawingCanvas extends JPanel {
         root = new ModelRoot();
         root.addModelChangedListener(new ModelChangedListener());
         
-        root.addChild(new EpsilonTensor(new Point(30, 30)));
-        root.addChild(new EpsilonTensor(new Point(80, 50)));
+        root.addChild(new EpsilonTensor(root, new Point(30, 30)));
+        root.addChild(new EpsilonTensor(root, new Point(80, 50)));
 	}
 	
 	@Override
@@ -116,7 +116,26 @@ public class DrawingCanvas extends JPanel {
     		{
     			stopCanvasAction();
     		}
+    	}
+    	
+    	@Override
+    	public void mousePressed(MouseEvent e) {
+    		super.mousePressed(e);
     		
+    		if (canvasAction != null)
+    		{
+    			canvasAction.doOnMousePressed(e);
+    		}
+    	}
+    	
+    	@Override
+    	public void mouseReleased(MouseEvent e) {
+    		super.mouseReleased(e);
+    		
+    		if (canvasAction != null)
+    		{
+    			canvasAction.doOnMouseReleased(e);
+    		}
     	}
     }
     
@@ -128,8 +147,8 @@ public class DrawingCanvas extends JPanel {
 
 		@Override
 		public void onModelChanged(IModelData model) {
-			// TODO Auto-generated method stub
-			
+			Log.d(this, "model changed");
+			repaint();
 		}
 
 		@Override

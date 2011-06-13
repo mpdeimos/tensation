@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
@@ -17,8 +18,10 @@ import javax.swing.ImageIcon;
 import resources.R;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.editpart.IMovableEditPart;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.util.Log;
+import com.mpdeimos.tensor.util.PointUtil;
 
 /**
  * Action for drawing tensors
@@ -29,6 +32,10 @@ import com.mpdeimos.tensor.util.Log;
 public class SelectEditPartAction extends CanvasActionBase {
 	/** The currently selected EditPart. */
 	private IEditPart selectedEditPart;
+
+	private Point moveStartPoint;
+
+	private Point moveStartPointDelta;
 	
 	/** The stroke of selection rectangle. */
 	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] {3f , 3f}, 0);
@@ -55,6 +62,9 @@ public class SelectEditPartAction extends CanvasActionBase {
 		if (selectedEditPart != null)
 		{
 			selectedEditPart.getBoundingRectangle();
+			
+			if (moveEditPart(e.getPoint()))
+				return true;
 			
 			if (selectedEditPart.getBoundingRectangle().contains(e.getPoint()))
 			{
@@ -95,6 +105,44 @@ public class SelectEditPartAction extends CanvasActionBase {
 			}
 			
 			drawingPanel.repaint();
+			return true;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean doOnMousePressed(MouseEvent e) {
+		super.doOnMousePressed(e);
+		
+		if (selectedEditPart != null 
+				&& selectedEditPart instanceof IMovableEditPart
+				&& selectedEditPart.getBoundingRectangle().contains(e.getPoint()))
+		{
+			Point curPos = ((IMovableEditPart)selectedEditPart).getPosition();
+			moveStartPointDelta = PointUtil.getDelta(e.getPoint(), curPos);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean doOnMouseReleased(MouseEvent e) {
+		super.doOnMousePressed(e);
+		
+		return moveEditPart(e.getPoint());
+	}
+	
+	private boolean moveEditPart(Point curPos)
+	{
+		if (selectedEditPart != null 
+				&& selectedEditPart instanceof IMovableEditPart
+				&& moveStartPointDelta != null)
+		{
+			curPos.translate(moveStartPointDelta.x, moveStartPointDelta.y);
+			((IMovableEditPart)selectedEditPart).setPosition(curPos);
+			moveStartPointDelta = null;
 			return true;
 		}
 		
