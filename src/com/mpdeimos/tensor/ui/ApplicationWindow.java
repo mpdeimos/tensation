@@ -100,13 +100,12 @@ public class ApplicationWindow extends JFrame {
 		sideToolBar.setOrientation(SwingConstants.VERTICAL);
 		getContentPane().add(sideToolBar, BorderLayout.WEST);
 		
-		JButton selectEditPartButton = new JButton(new SelectEditPartAction(this.drawingPanel));
-		selectEditPartButton.setHideActionText(true);
+		JButton selectEditPartButton = new ToolBarButton(sideToolBar, new SelectEditPartAction(this.drawingPanel));
 		sideToolBar.add(selectEditPartButton);
-		JButton drawTensorButton = new JButton(new DrawTensorAction(this.drawingPanel));
+		JButton drawTensorButton = new ToolBarButton(sideToolBar, new DrawTensorAction(this.drawingPanel));
 		drawTensorButton.setHideActionText(true);
 		sideToolBar.add(drawTensorButton);
-		JButton exitButton = new JButton(new ExitAction());
+		JButton exitButton = new ToolBarButton(sideToolBar, new ExitAction());
 		exitButton.setHideActionText(true);
 		sideToolBar.add(exitButton);
 		

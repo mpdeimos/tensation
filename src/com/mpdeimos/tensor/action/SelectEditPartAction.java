@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import resources.R;
@@ -18,23 +17,19 @@ import com.mpdeimos.tensor.ui.DrawingCanvas;
  * @author mpdeimos
  *
  */
-public class SelectEditPartAction extends AbstractAction implements ICanvasAction {
-
-	/** back reference to the drawing panel. */
-	private final DrawingCanvas drawingPanel;
+public class SelectEditPartAction extends CanvasActionBase {
 	
 	/**
 	 * Constructor.
-	 * @param drawingPanel 
 	 */
 	public SelectEditPartAction(DrawingCanvas drawingPanel)
 	{
-		super(R.strings.getString("window_action_select"), new ImageIcon(R.drawable.getURL("select"))); //$NON-NLS-1$ //$NON-NLS-2$
-		this.drawingPanel = drawingPanel;
+		super(drawingPanel, R.strings.getString("window_action_select"), new ImageIcon(R.drawable.getURL("select"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
 		drawingPanel.startCanvasAction(this);
 	}
 
@@ -64,4 +59,5 @@ public class SelectEditPartAction extends AbstractAction implements ICanvasActio
 	public boolean drawOverlay(Graphics2D gfx) {
 		return false;
 	}
+	
 }

@@ -1,21 +1,16 @@
 package com.mpdeimos.tensor.figure;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 
-import com.mpdeimos.tensor.editpart.EpsilonTensorEditPart;
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.util.PointUtil;

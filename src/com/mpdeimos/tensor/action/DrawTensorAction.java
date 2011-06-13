@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import resources.R;
@@ -21,11 +20,8 @@ import com.mpdeimos.tensor.ui.DrawingCanvas;
  * @author mpdeimos
  *
  */
-public class DrawTensorAction extends AbstractAction implements ICanvasAction {
+public class DrawTensorAction extends CanvasActionBase {
 
-	/** back reference to the drawing panel. */
-	private final DrawingCanvas drawingPanel;
-	
 	/** position of the current drawing figure */
 	private final Point position;
 
@@ -38,15 +34,15 @@ public class DrawTensorAction extends AbstractAction implements ICanvasAction {
 	 */
 	public DrawTensorAction(DrawingCanvas drawingPanel)
 	{
-		super(R.strings.getString("window_action_draw"), new ImageIcon(R.drawable.getURL("draw"))); //$NON-NLS-1$ //$NON-NLS-2$
-		this.drawingPanel = drawingPanel;
+		super(drawingPanel, R.strings.getString("window_action_draw"), new ImageIcon(R.drawable.getURL("draw"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		this.position = new Point(0,0);
 		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(position));
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
 		drawingPanel.startCanvasAction(this);
 	}
 
@@ -62,7 +58,6 @@ public class DrawTensorAction extends AbstractAction implements ICanvasAction {
 		
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
-//		drawingPanel.stopCanvasAction();
 			ModelRoot root = drawingPanel.getModel();
 			root.addChild(new EpsilonTensor(e.getPoint()));
 			
@@ -77,4 +72,5 @@ public class DrawTensorAction extends AbstractAction implements ICanvasAction {
 		editPart.draw(gfx);
 		return true;
 	}
+
 }

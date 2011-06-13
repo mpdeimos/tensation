@@ -18,4 +18,7 @@ public interface ICanvasAction {
 	
 	/** being called during the paint cycle of the canvas */
 	public boolean drawOverlay(Graphics2D gfx);
+	
+	/** stops the current canvas action */
+	public void stopAction();
 }

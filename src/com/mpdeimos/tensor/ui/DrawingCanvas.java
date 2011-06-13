@@ -5,9 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,14 +150,27 @@ public class DrawingCanvas extends JPanel {
 
     /** performs an action on the canvas */ 
 	public void startCanvasAction(ICanvasAction action) {
-		this.canvasAction  = action;
+		stopCanvasAction();
+		
+		this.canvasAction = action;
 		Log.d(this, "Started canvas action: %s", this.canvasAction); //$NON-NLS-1$
 	}
+	
+	/** flag for determining if we've stopped the current action */
+	private boolean stopCanvasActionMyChange = false;
 	
 	/** stops the current canvas action */
 	public void stopCanvasAction()
 	{
+		if (stopCanvasActionMyChange || this.canvasAction == null)
+			return;
+		
 		Log.d(this, "Stopped canvas action: %s", this.canvasAction); //$NON-NLS-1$
+		
+		stopCanvasActionMyChange = true;
+		this.canvasAction.stopAction();
+		stopCanvasActionMyChange = false;
+		
 		this.canvasAction = null;
 		repaint();
 	}

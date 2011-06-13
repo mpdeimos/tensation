@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.util.List;
 
-import com.mpdeimos.tensor.editpart.EpsilonTensorEditPart;
 import com.mpdeimos.tensor.editpart.IEditPart;
 
 /**
