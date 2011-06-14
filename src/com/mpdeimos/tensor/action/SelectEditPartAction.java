@@ -33,8 +33,7 @@ public class SelectEditPartAction extends CanvasActionBase {
 	/** The currently selected EditPart. */
 	private IEditPart selectedEditPart;
 
-	private Point moveStartPoint;
-
+	/** The offset to the EditPart position when in moving mode. */
 	private Point moveStartPointDelta;
 	
 	/** The stroke of selection rectangle. */
@@ -59,6 +58,8 @@ public class SelectEditPartAction extends CanvasActionBase {
 
 	@Override
 	public boolean doOnMouseMove(MouseEvent e) {
+		drawingPanel.setCursor(Cursor.getDefaultCursor());
+		
 		if (selectedEditPart != null)
 		{
 			selectedEditPart.getBoundingRectangle();
@@ -79,8 +80,6 @@ public class SelectEditPartAction extends CanvasActionBase {
 		
 		if (over)
 			drawingPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		else
-			drawingPanel.setCursor(Cursor.getDefaultCursor());
 		
 		drawingPanel.repaint();
 		return true;
@@ -117,18 +116,9 @@ public class SelectEditPartAction extends CanvasActionBase {
 				&& selectedEditPart.getBoundingRectangle().contains(e.getPoint()))
 		{
 			Point curPos = ((IMovableEditPart)selectedEditPart).getPosition();
-			moveStartPointDelta = PointUtil.getDelta(e.getPoint(), curPos);
+			moveStartPointDelta = PointUtil.getDelta(curPos, e.getPoint());
 			return true;
 		}
-		
-		return false;
-	}
-	
-	@Override
-	public boolean doOnMouseReleased(MouseEvent e) {
-		super.doOnMousePressed(e);
-		
-		moveStartPointDelta = null;
 		
 		return false;
 	}
@@ -145,6 +135,15 @@ public class SelectEditPartAction extends CanvasActionBase {
 			((IMovableEditPart)selectedEditPart).setPosition(curPos);
 			return true;
 		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean doOnMouseReleased(MouseEvent e) {
+		super.doOnMousePressed(e);
+		
+		moveStartPointDelta = null;
 		
 		return false;
 	}
