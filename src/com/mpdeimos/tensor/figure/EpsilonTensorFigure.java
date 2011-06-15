@@ -106,18 +106,18 @@ public class EpsilonTensorFigure extends FigureBase {
 		gfx.setStroke(CONNECTOR_STROKE);
 		super.draw(gfx);
 	}
-	
-	@Override
-	public boolean containsPoints(Point point) {
-		EpsilonTensor tensor = (EpsilonTensor)editPart.getModelData();
-		Point position = tensor.getPosition();
-		Rectangle r = new Rectangle((int)position.getX() - CENTER_CIRCLE_RADIUS,
-					(int)position.getY() - CENTER_CIRCLE_RADIUS,
-					2*CENTER_CIRCLE_RADIUS,
-					2*CENTER_CIRCLE_RADIUS);
-		
-		return r.contains(point);
-	}
+//	
+//	@Override
+//	public boolean containsPoints(Point point) {
+//		EpsilonTensor tensor = (EpsilonTensor)editPart.getModelData();
+//		Point position = tensor.getPosition();
+//		Rectangle r = new Rectangle((int)position.getX() - CENTER_CIRCLE_RADIUS,
+//					(int)position.getY() - CENTER_CIRCLE_RADIUS,
+//					2*CENTER_CIRCLE_RADIUS,
+//					2*CENTER_CIRCLE_RADIUS);
+//		
+//		return r.contains(point);
+//	}
 	
 	@Override
 	public Rectangle getBoundingRectangle() {

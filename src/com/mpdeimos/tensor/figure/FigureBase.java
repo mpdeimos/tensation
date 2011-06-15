@@ -1,6 +1,8 @@
 package com.mpdeimos.tensor.figure;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,5 +48,18 @@ public abstract class FigureBase implements IFigure {
 			feature.draw(gfx);
 		}
 	}
-
+	
+	@Override
+	public boolean containsPoints(Point point) {
+		for (Feature feature : features)
+		{
+			for (Shape shape : feature.getShapes())
+			{
+				if (shape.contains(point))
+					return true;
+			}
+		}
+		
+		return false;
+	}
 }
