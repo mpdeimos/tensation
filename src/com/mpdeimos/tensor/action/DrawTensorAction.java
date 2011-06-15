@@ -48,7 +48,7 @@ public class DrawTensorAction extends CanvasActionBase {
 
 	@Override
 	public boolean doOnMouseMove(MouseEvent e) {
-		position.setLocation(e.getPoint());
+		editPart.setPosition(e.getPoint());
 		drawingPanel.repaint();
 		return true;
 	}

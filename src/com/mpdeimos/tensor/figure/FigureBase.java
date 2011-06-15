@@ -1,7 +1,7 @@
 package com.mpdeimos.tensor.figure;
 
 import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
@@ -14,8 +14,8 @@ import com.mpdeimos.tensor.editpart.IEditPart;
  */
 public abstract class FigureBase implements IFigure {
 	
-	/** The shapes to be drawn on the canvas */
-	protected List<Shape> shapes;
+	/** The features to be drawn on the canvas */
+	protected final List<Feature> features;
 	
 	/** associated EditPart */
 	protected final IEditPart editPart;
@@ -23,13 +23,27 @@ public abstract class FigureBase implements IFigure {
 	/** Constructor. */
 	FigureBase(IEditPart editPart) {
 		this.editPart = editPart;
+		features = new ArrayList<Feature>(0);
+		updateShapes();
+	}
+	
+	@Override
+	public void redraw()
+	{
+		updateShapes();
+	}
+	
+	/** Updates the shape Objects. */
+	public void updateShapes()
+	{
+		features.clear();
 	}
 
 	@Override
 	public void draw(Graphics2D gfx) {
-		for (Shape shape : shapes)
+		for (Feature feature : features)
 		{
-			gfx.draw(shape);
+			feature.draw(gfx);
 		}
 	}
 

@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import com.mpdeimos.tensor.figure.IFigure;
+import com.mpdeimos.tensor.model.IModelChangedListener;
 import com.mpdeimos.tensor.model.IModelData;
 
 /**
@@ -16,7 +17,7 @@ import com.mpdeimos.tensor.model.IModelData;
  */
 public abstract class EditPartBase implements IEditPart {
 
-	/** Flag whether the mouse is hovered over this editpart. */
+	/** Flag whether the mouse is hovered over this EditPart. */
 	private boolean isMouseOver;
 
 	/** the data model object linked to this EditPart */
@@ -30,6 +31,8 @@ public abstract class EditPartBase implements IEditPart {
 	 */
 	public EditPartBase(IModelData modelData) {
 		this.model = modelData;
+		
+		model.addModelChangedListener(new ModelChangedListener());
 	}
 	
 	/**
@@ -38,7 +41,6 @@ public abstract class EditPartBase implements IEditPart {
 	protected void setFigure(IFigure figure)
 	{
 		this.figure = figure;
-		
 	}
 	
 	@Override
@@ -79,5 +81,26 @@ public abstract class EditPartBase implements IEditPart {
 	@Override
 	public Rectangle getBoundingRectangle() {
 		return this.getFigure().getBoundingRectangle();
+	}
+	
+	/** private model data change listener */
+	private class ModelChangedListener implements IModelChangedListener
+	{
+
+		@Override
+		public void onModelChanged(IModelData model) {
+			figure.redraw();
+		}
+
+		@Override
+		public void onChildAdded(IModelData child) {
+			figure.redraw();
+		}
+
+		@Override
+		public void onChildRemoved(IModelData child) {
+			figure.redraw();
+		}
+		
 	}
 }

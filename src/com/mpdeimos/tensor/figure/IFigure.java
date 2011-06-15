@@ -20,5 +20,8 @@ public interface IFigure {
 
 	/** @return the bounding rectangle */
 	public Rectangle getBoundingRectangle();
-
+	
+	/** Schedules a figure redraw. */
+	public void redraw();
+	
 }

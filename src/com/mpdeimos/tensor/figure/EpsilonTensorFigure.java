@@ -10,8 +10,11 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.figure.Feature.EDrawingMode;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.util.PointUtil;
 
@@ -41,20 +44,26 @@ public class EpsilonTensorFigure extends FigureBase {
 	public EpsilonTensorFigure(IEditPart editPart) {
 		super(editPart);
 	}
-
+	
 	@Override
-	public void draw(Graphics2D gfx) {
+	public void updateShapes()
+	{
+		super.updateShapes();
+		
+		// TODO global var in model data
+		int max = 3;
+		
+		List<Shape> lines = new ArrayList<Shape>(max);
+		List<Shape> fills = new ArrayList<Shape>(max+1);
 		
 		EpsilonTensor tensor = (EpsilonTensor)editPart.getModelData();
 		Point position = tensor.getPosition();
 		int x = (int)position.getX();
 		int y = (int)position.getY();
 		
-		gfx.setStroke(CONNECTOR_STROKE);
 		Ellipse2D circle = new Ellipse2D.Double(x-CENTER_CIRCLE_RADIUS+0.5, y-CENTER_CIRCLE_RADIUS+0.5, 2*CENTER_CIRCLE_RADIUS-1, 2*CENTER_CIRCLE_RADIUS-1);
-		gfx.fill(circle);
+		fills.add(circle);
 		
-		int max = 3;
 		for (int i = 0; i < max; i++)
 		{
 			double ang = (((double)i)/max+tensor.getRotation()/360)*2*Math.PI;
@@ -77,15 +86,25 @@ public class EpsilonTensorFigure extends FigureBase {
 			
 			Shape line = new Line2D.Double(bottom, top);
 			
-			gfx.draw(line);
+			lines.add(line);
 			
 			GeneralPath triangle = new GeneralPath();
 			triangle.moveTo(top.getX(), top.getY());
 			triangle.lineTo(triangleL.getX(), triangleL.getY());
 			triangle.lineTo(triangleR.getX(), triangleR.getY());
 			triangle.closePath();
-			gfx.fill(triangle);
+			fills.add(triangle);
 		}
+		
+		features.add(new Feature(EDrawingMode.STROKE, lines));
+		features.add(new Feature(EDrawingMode.FILL, fills));
+	}
+
+	@Override
+	public void draw(Graphics2D gfx) {
+		// FIXME add to feature
+		gfx.setStroke(CONNECTOR_STROKE);
+		super.draw(gfx);
 	}
 	
 	@Override
