@@ -58,7 +58,6 @@ public class SelectEditPartAction extends CanvasActionBase {
 
 	@Override
 	public boolean doOnMouseMove(MouseEvent e) {
-		drawingPanel.setCursor(Cursor.getDefaultCursor());
 		
 		if (selectedEditPart != null)
 		{
@@ -72,6 +71,7 @@ public class SelectEditPartAction extends CanvasActionBase {
 			}
 		}
 		
+		
 		boolean over = false;
 		for (IEditPart editPart : drawingPanel.getEditParts())
 		{
@@ -80,6 +80,8 @@ public class SelectEditPartAction extends CanvasActionBase {
 		
 		if (over)
 			drawingPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		else
+			drawingPanel.setCursor(Cursor.getDefaultCursor());
 		
 		drawingPanel.repaint();
 		return true;

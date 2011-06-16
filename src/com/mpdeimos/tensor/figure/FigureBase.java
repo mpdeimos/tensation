@@ -2,6 +2,7 @@ package com.mpdeimos.tensor.figure;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +52,27 @@ public abstract class FigureBase implements IFigure {
 	
 	@Override
 	public boolean containsPoints(Point point) {
+		
 		for (Feature feature : features)
 		{
 			for (Shape shape : feature.getShapes())
 			{
 				if (shape.contains(point))
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean intersects(Rectangle rect) {
+		
+		for (Feature feature : features)
+		{
+			for (Shape shape : feature.getShapes())
+			{
+				if (shape.intersects(rect))
 					return true;
 			}
 		}

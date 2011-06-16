@@ -18,6 +18,9 @@ public interface IFigure {
 	/** performs a check whether a point hits this figure */
 	public boolean containsPoints(Point point);
 
+	/** performs a check whether a rectangle intersects this figure */
+	public boolean intersects(Rectangle rect);
+	
 	/** @return the bounding rectangle */
 	public Rectangle getBoundingRectangle();
 	

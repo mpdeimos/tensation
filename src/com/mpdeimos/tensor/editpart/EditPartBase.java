@@ -73,7 +73,11 @@ public abstract class EditPartBase implements IEditPart {
 
 	@Override
 	public boolean isMouseOver(Point point) {
-		isMouseOver = this.getFigure().containsPoints(point);
+		// TODO maybe do this in the action
+		int offset = 2;
+		Rectangle rect = new Rectangle(point.x - offset, point.y - offset, 4 , 4);
+		
+		isMouseOver = this.getFigure().intersects(rect);
 		
 		return isMouseOver;
 	}

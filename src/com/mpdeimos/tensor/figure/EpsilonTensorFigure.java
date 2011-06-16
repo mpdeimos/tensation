@@ -96,14 +96,14 @@ public class EpsilonTensorFigure extends FigureBase {
 			fills.add(triangle);
 		}
 		
-		features.add(new Feature(EDrawingMode.STROKE, lines));
+		Feature lineFeatures = new Feature(EDrawingMode.STROKE, lines);
+		lineFeatures.setStroke(CONNECTOR_STROKE);
+		features.add(lineFeatures);
 		features.add(new Feature(EDrawingMode.FILL, fills));
 	}
 
 	@Override
 	public void draw(Graphics2D gfx) {
-		// FIXME add to feature
-		gfx.setStroke(CONNECTOR_STROKE);
 		super.draw(gfx);
 	}
 //	
