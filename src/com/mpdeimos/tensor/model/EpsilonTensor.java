@@ -14,7 +14,7 @@ public class EpsilonTensor extends ModelDataBase {
 	private final Point position;
 	
 	/** Rotation of the current figure */
-	private double rotation = 90;
+	private double rotation = 45;
 
 	/**
 	 * Constructor.

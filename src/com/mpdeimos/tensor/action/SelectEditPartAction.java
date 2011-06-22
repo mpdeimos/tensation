@@ -37,11 +37,18 @@ public class SelectEditPartAction extends CanvasActionBase {
 	/** The offset to the EditPart position when in moving mode. */
 	private Dimension moveStartPointDelta;
 	
+	/** The Point where the rotation indicator is shown */
+	private Point rotationIndicator;
+	
+	/** The offset to the rotation indicator when in rotating mode. */
+	private Dimension rotationIndicatortDelta;
+	
 	/** The stroke of selection rectangle. */
 	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] {3f , 3f}, 0);
 	
 	/** the offset of the selection rectangle. */
 	private static int EDITPART_SELECTION_STROKE_OFFSET = 3;
+
 
 	/**
 	 * Constructor.
@@ -65,7 +72,17 @@ public class SelectEditPartAction extends CanvasActionBase {
 		
 		if (selectedEditPart != null)
 		{
-			selectedEditPart.getBoundingRectangle();
+			Rectangle r = selectedEditPart.getBoundingRectangle();
+			
+			if (rotationIndicator != null)
+			{
+				if (hasHitRotationIndicator(r, e))
+				{
+					drawingPanel.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+					drawingPanel.repaint();
+					return true;
+				}
+			}
 			
 			if (selectedEditPart.getBoundingRectangle().contains(e.getPoint()))
 			{
@@ -91,6 +108,11 @@ public class SelectEditPartAction extends CanvasActionBase {
 		return true;
 	}
 
+	/** determines whether the rotation indicator has been hit by this mouse event. */
+	private boolean hasHitRotationIndicator(Rectangle r, MouseEvent e) {
+		return rotationIndicator.distance(e.getPoint().x - r.getCenterX(), e.getPoint().y - r.getCenterY()) < 10;
+	}
+
 	@Override
 	public boolean doOnMousePressed(MouseEvent e) {
 		super.doOnMousePressed(e);
@@ -103,6 +125,22 @@ public class SelectEditPartAction extends CanvasActionBase {
 				if(editPart.isMouseOver(e.getPoint()))
 				{
 					selectedEditPart = editPart;
+					
+					if (selectedEditPart instanceof IRotatableEditPart)
+					{
+						Rectangle r = selectedEditPart.getBoundingRectangle();
+						IRotatableEditPart rotatableEditPart = (IRotatableEditPart) selectedEditPart;
+						
+						rotationIndicator = new Point(((int)r.getWidth()/2)+EDITPART_SELECTION_STROKE_OFFSET,
+								(-(int)r.getHeight()/2)-EDITPART_SELECTION_STROKE_OFFSET);
+			
+						PointUtil.rotate(rotationIndicator, rotatableEditPart.getRotation()/180*Math.PI);
+					}
+					else
+					{
+						rotationIndicator = null;
+					}
+					
 					break;
 				}
 			}
@@ -166,19 +204,13 @@ public class SelectEditPartAction extends CanvasActionBase {
 			gfx.setStroke(s);
 			
 			
-			if (selectedEditPart instanceof IRotatableEditPart)
+			if (selectedEditPart instanceof IRotatableEditPart
+					&& rotationIndicator != null)
 			{
-				IRotatableEditPart rotatableEditPart = (IRotatableEditPart) selectedEditPart;
 				try {
 					Image img = ImageIO.read(R.drawable.getURL("circle-green")); //$NON-NLS-1$
 					
-					Point p = new Point(((int)r.getWidth()/2)+EDITPART_SELECTION_STROKE_OFFSET,
-										(-(int)r.getHeight()/2)-EDITPART_SELECTION_STROKE_OFFSET);
-					
-					// FIXME
-					PointUtil.rotate(p, rotatableEditPart.getRotation()/180*Math.PI);
-					
-					gfx.drawImage(img, (int)r.getCenterX() + p.x - 8, (int)r.getCenterY() + p.y - 8, null);
+					gfx.drawImage(img, (int)r.getCenterX() + rotationIndicator.x - 8, (int)r.getCenterY() + rotationIndicator.y - 8, null);
 				} catch (IOException e) {
 					Log.e(this, "Could not load image"); //$NON-NLS-1$
 				}
