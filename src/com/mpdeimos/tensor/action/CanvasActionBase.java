@@ -38,6 +38,7 @@ public abstract class CanvasActionBase extends AbstractAction implements ICanvas
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		putValue(Action.SELECTED_KEY, true);
+		drawingPanel.startCanvasAction(this);
 	}
 	
 	@Override
@@ -52,6 +53,16 @@ public abstract class CanvasActionBase extends AbstractAction implements ICanvas
 	
 	@Override
 	public boolean doOnMouseDragged(MouseEvent e) {
+		return false;
+	}
+	
+	@Override
+	public boolean doOnMouseClicked(MouseEvent e) {
+		return false;
+	}
+	
+	@Override
+	public boolean doOnMouseMove(MouseEvent e) {
 		return false;
 	}
 }

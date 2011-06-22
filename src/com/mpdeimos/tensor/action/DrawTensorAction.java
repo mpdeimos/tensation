@@ -2,7 +2,6 @@ package com.mpdeimos.tensor.action;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
@@ -40,12 +39,6 @@ public class DrawTensorAction extends CanvasActionBase {
 		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(null, position));
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		super.actionPerformed(e);
-		drawingPanel.startCanvasAction(this);
-	}
-
 	@Override
 	public boolean doOnMouseMove(MouseEvent e) {
 		editPart.setPosition(e.getPoint());

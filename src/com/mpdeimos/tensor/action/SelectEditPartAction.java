@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -51,9 +50,12 @@ public class SelectEditPartAction extends CanvasActionBase {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		super.actionPerformed(e);
-		drawingPanel.startCanvasAction(this);
+	public void stopAction() {
+		super.stopAction();
+
+		// reset some stuff
+		this.selectedEditPart = null;
+		this.moveStartPointDelta = null;
 	}
 
 	@Override
@@ -88,7 +90,8 @@ public class SelectEditPartAction extends CanvasActionBase {
 	}
 
 	@Override
-	public boolean doOnMouseClicked(MouseEvent e) {
+	public boolean doOnMousePressed(MouseEvent e) {
+		super.doOnMousePressed(e);
 		
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
@@ -102,25 +105,18 @@ public class SelectEditPartAction extends CanvasActionBase {
 				}
 			}
 			
+			if (selectedEditPart != null 
+					&& selectedEditPart instanceof IMovableEditPart
+					&& selectedEditPart.getBoundingRectangle().contains(e.getPoint()))
+			{
+				Point curPos = ((IMovableEditPart)selectedEditPart).getPosition();
+				moveStartPointDelta = PointUtil.getDelta(curPos, e.getPoint());
+			}
+
 			drawingPanel.repaint();
 			return true;
 		}
 		
-		return false;
-	}
-	
-	@Override
-	public boolean doOnMousePressed(MouseEvent e) {
-		super.doOnMousePressed(e);
-		
-		if (selectedEditPart != null 
-				&& selectedEditPart instanceof IMovableEditPart
-				&& selectedEditPart.getBoundingRectangle().contains(e.getPoint()))
-		{
-			Point curPos = ((IMovableEditPart)selectedEditPart).getPosition();
-			moveStartPointDelta = PointUtil.getDelta(curPos, e.getPoint());
-			return true;
-		}
 		
 		return false;
 	}
@@ -181,5 +177,4 @@ public class SelectEditPartAction extends CanvasActionBase {
 		
 		return false;
 	}
-	
 }
