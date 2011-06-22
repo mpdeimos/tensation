@@ -2,6 +2,7 @@ package com.mpdeimos.tensor.action;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -33,7 +34,7 @@ public class SelectEditPartAction extends CanvasActionBase {
 	private IEditPart selectedEditPart;
 
 	/** The offset to the EditPart position when in moving mode. */
-	private Point moveStartPointDelta;
+	private Dimension moveStartPointDelta;
 	
 	/** The stroke of selection rectangle. */
 	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] {3f , 3f}, 0);
@@ -129,7 +130,7 @@ public class SelectEditPartAction extends CanvasActionBase {
 				&& moveStartPointDelta != null)
 		{
 			Point curPos = e.getPoint();
-			curPos.translate(moveStartPointDelta.x, moveStartPointDelta.y);
+			curPos.translate(moveStartPointDelta.width, moveStartPointDelta.height);
 			((IMovableEditPart)selectedEditPart).setPosition(curPos);
 			return true;
 		}

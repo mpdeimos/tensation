@@ -1,5 +1,6 @@
 package com.mpdeimos.tensor.util;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
@@ -33,7 +34,10 @@ public class PointUtil {
 		return p;
 	}
 
-	public static Point getDelta(Point p1, Point p2) {
-		return new Point(p1.x - p2.x, p1.y - p2.y);
+	/**
+	 * @return the distance between two points as dimension
+	 */
+	public static Dimension getDelta(Point p1, Point p2) {
+		return new Dimension(p1.x - p2.x, p1.y - p2.y);
 	}
 }

@@ -165,7 +165,8 @@ public class DrawingCanvas extends JPanel {
 			Log.v(DrawingCanvas.this, "added new child to model"); //$NON-NLS-1$
 			
 			IEditPart part = editPartFactory.createEditPart(child);
-			editParts.add(part);
+			if (part != null)
+				editParts.add(part);
 			
 			repaint();
 		}
