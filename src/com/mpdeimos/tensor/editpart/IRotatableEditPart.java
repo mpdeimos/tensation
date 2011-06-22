@@ -15,5 +15,5 @@ public interface IRotatableEditPart {
 	public double getRotation();
 	
 	/** Sets the rotation of the current EditPart in degrees. */
-	public void setPosition(double degrees);
+	public void setRotation(double degrees);
 }

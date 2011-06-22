@@ -36,7 +36,7 @@ public class EpsilonTensorEditPart extends EditPartBase implements IMovableEditP
 	}
 
 	@Override
-	public void setPosition(double degrees) {
+	public void setRotation(double degrees) {
 		((EpsilonTensor)(this.getModelData())).setRotation(degrees);
 	}
 	
