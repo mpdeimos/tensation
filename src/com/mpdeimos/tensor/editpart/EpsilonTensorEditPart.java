@@ -2,7 +2,6 @@ package com.mpdeimos.tensor.editpart;
 
 import java.awt.Point;
 
-import com.mpdeimos.tensor.EditPart;
 import com.mpdeimos.tensor.figure.EpsilonTensorFigure;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.model.IModelData;
@@ -13,8 +12,7 @@ import com.mpdeimos.tensor.model.IModelData;
  * @author mpdeimos
  *
  */
-@EditPart(model=EpsilonTensor.class)
-public class EpsilonTensorEditPart extends EditPartBase implements IMovableEditPart {
+public class EpsilonTensorEditPart extends EditPartBase implements IMovableEditPart, IRotatableEditPart {
 
 	/** Constructor. */
 	public EpsilonTensorEditPart(IModelData modelData) {
@@ -30,6 +28,16 @@ public class EpsilonTensorEditPart extends EditPartBase implements IMovableEditP
 	@Override
 	public void setPosition(Point p) {
 		((EpsilonTensor)(this.getModelData())).setPosition(p);
+	}
+
+	@Override
+	public double getRotation() {
+		return ((EpsilonTensor)(this.getModelData())).getRotation();
+	}
+
+	@Override
+	public void setPosition(double degrees) {
+		((EpsilonTensor)(this.getModelData())).setRotation(degrees);
 	}
 	
 }

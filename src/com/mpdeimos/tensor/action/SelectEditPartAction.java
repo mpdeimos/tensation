@@ -19,6 +19,7 @@ import resources.R;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.editpart.IMovableEditPart;
+import com.mpdeimos.tensor.editpart.IRotatableEditPart;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.PointUtil;
@@ -164,14 +165,23 @@ public class SelectEditPartAction extends CanvasActionBase {
 			
 			gfx.setStroke(s);
 			
-			try {
-				Image img = ImageIO.read(R.drawable.getURL("circle-green")); //$NON-NLS-1$
-				
-				gfx.drawImage(img,
-						(int)r.getMaxX()+EDITPART_SELECTION_STROKE_OFFSET-8,
-						(int)r.getY()-EDITPART_SELECTION_STROKE_OFFSET-8,null);
-			} catch (IOException e) {
-				Log.e(this, "Could not load image"); //$NON-NLS-1$
+			
+			if (selectedEditPart instanceof IRotatableEditPart)
+			{
+				IRotatableEditPart rotatableEditPart = (IRotatableEditPart) selectedEditPart;
+				try {
+					Image img = ImageIO.read(R.drawable.getURL("circle-green")); //$NON-NLS-1$
+					
+					Point p = new Point(((int)r.getWidth()/2)+EDITPART_SELECTION_STROKE_OFFSET,
+										(-(int)r.getHeight()/2)-EDITPART_SELECTION_STROKE_OFFSET);
+					
+					// FIXME
+					PointUtil.rotate(p, rotatableEditPart.getRotation()/180*Math.PI);
+					
+					gfx.drawImage(img, (int)r.getCenterX() + p.x - 8, (int)r.getCenterY() + p.y - 8, null);
+				} catch (IOException e) {
+					Log.e(this, "Could not load image"); //$NON-NLS-1$
+				}
 			}
 			return true;
 		}

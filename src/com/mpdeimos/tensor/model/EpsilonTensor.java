@@ -14,12 +14,12 @@ public class EpsilonTensor extends ModelDataBase {
 	private final Point position;
 	
 	/** Rotation of the current figure */
-	private short rotation = 0;
+	private double rotation = 90;
 
 	/**
 	 * Constructor.
 	 */
-	public EpsilonTensor(ModelDataBase /** TODO */ parent)
+	public EpsilonTensor(ModelDataBase parent)
 	{
 		this(parent, new Point(0,0));
 	}
@@ -50,6 +50,12 @@ public class EpsilonTensor extends ModelDataBase {
 	/** Sets the position of the current point. TODO refactor to base interface */
 	public void setPosition(Point p) {
 		this.position.setLocation(p);
+		fireOnModelDataChanged(this);
+	}
+	
+	/** Sets the rotation of the current point in degrees. TODO refactor to base interface */
+	public void setRotation(double rotation) {
+		this.rotation = rotation;
 		fireOnModelDataChanged(this);
 	}
 
