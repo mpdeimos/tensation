@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.figure.Feature.EDrawingMode;
+import com.mpdeimos.tensor.figure.ShapePack.EDrawingMode;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.util.PointUtil;
 
@@ -96,10 +96,10 @@ public class EpsilonTensorFigure extends FigureBase {
 			fills.add(triangle);
 		}
 		
-		Feature lineFeatures = new Feature(EDrawingMode.STROKE, lines);
-		lineFeatures.setStroke(CONNECTOR_STROKE);
-		features.add(lineFeatures);
-		features.add(new Feature(EDrawingMode.FILL, fills));
+		ShapePack linePack = new ShapePack(EDrawingMode.STROKE, lines);
+		linePack.setStroke(CONNECTOR_STROKE);
+		shapePacks.add(linePack);
+		shapePacks.add(new ShapePack(EDrawingMode.FILL, fills));
 	}
 
 	@Override

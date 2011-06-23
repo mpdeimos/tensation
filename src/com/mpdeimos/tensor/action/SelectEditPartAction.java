@@ -43,9 +43,6 @@ public class SelectEditPartAction extends CanvasActionBase {
 	/** The offset to the rotation indicator when in rotating mode. */
 	private Dimension rotationStartPointDelta;
 	
-	/** The start angle of the EditPart rotation. */
-	private double rotationStartAngle = 0;
-	
 	/** The stroke of selection rectangle. */
 	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] {3f , 3f}, 0);
 	
@@ -129,7 +126,6 @@ public class SelectEditPartAction extends CanvasActionBase {
 				
 				if (hasHitRotationIndicator(r, e))
 				{
-					rotationStartAngle = ((IRotatableEditPart)selectedEditPart).getRotation();
 					Point curPos = new Point(e.getPoint());
 					PointUtil.move(curPos, -(int)r.getCenterX(), -(int)r.getCenterY());
 					rotationStartPointDelta = PointUtil.getDelta(curPos, rotationIndicator);

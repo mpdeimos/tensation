@@ -13,7 +13,7 @@ import com.mpdeimos.tensor.util.ImmutableList;
  * @author mpdeimos
  *
  */
-public class Feature
+public class ShapePack
 {
 	/** List of Shapes this Feature constists of. */
 	private final List<Shape> shapes;
@@ -34,7 +34,7 @@ public class Feature
 	}
 
 	/** Constructor. */
-	Feature(EDrawingMode mode, List<Shape> shapes)
+	ShapePack(EDrawingMode mode, List<Shape> shapes)
 	{
 		this.mode = mode;
 		this.shapes = shapes;

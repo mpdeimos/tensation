@@ -17,8 +17,8 @@ import com.mpdeimos.tensor.editpart.IEditPart;
  */
 public abstract class FigureBase implements IFigure {
 	
-	/** The features to be drawn on the canvas */
-	protected final List<Feature> features;
+	/** The shapes to be drawn on the canvas */
+	protected final List<ShapePack> shapePacks;
 	
 	/** associated EditPart */
 	protected final IEditPart editPart;
@@ -26,7 +26,7 @@ public abstract class FigureBase implements IFigure {
 	/** Constructor. */
 	FigureBase(IEditPart editPart) {
 		this.editPart = editPart;
-		features = new ArrayList<Feature>(0);
+		shapePacks = new ArrayList<ShapePack>(0);
 		updateShapes();
 	}
 	
@@ -39,21 +39,21 @@ public abstract class FigureBase implements IFigure {
 	/** Updates the shape Objects. */
 	public void updateShapes()
 	{
-		features.clear();
+		shapePacks.clear();
 	}
 
 	@Override
 	public void draw(Graphics2D gfx) {
-		for (Feature feature : features)
+		for (ShapePack pack : shapePacks)
 		{
-			feature.draw(gfx);
+			pack.draw(gfx);
 		}
 	}
 	
 	@Override
 	public boolean containsPoints(Point point) {
 		
-		for (Feature feature : features)
+		for (ShapePack feature : shapePacks)
 		{
 			for (Shape shape : feature.getShapes())
 			{
@@ -68,9 +68,9 @@ public abstract class FigureBase implements IFigure {
 	@Override
 	public boolean intersects(Rectangle rect) {
 		
-		for (Feature feature : features)
+		for (ShapePack pack : shapePacks)
 		{
-			for (Shape shape : feature.getShapes())
+			for (Shape shape : pack.getShapes())
 			{
 				if (shape.intersects(rect))
 					return true;
