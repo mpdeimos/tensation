@@ -3,13 +3,18 @@ package com.mpdeimos.tensor.editpart;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.mpdeimos.tensor.editpart.feature.FeatureBase;
 import com.mpdeimos.tensor.editpart.feature.IFeature;
 import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.IModelChangedListener;
 import com.mpdeimos.tensor.model.IModelData;
+import com.mpdeimos.tensor.util.Log;
 
 /**
  * abstract base class for EditParts.
@@ -29,7 +34,7 @@ public abstract class EditPartBase implements IFeatureEditPart {
 	private IFigure figure;
 	
 	/** The list of Features linked to this EditPart. Default is null. */
-	protected List<IFeature> features;
+	protected List<IFeature> features = new ArrayList<IFeature>();
 
 	/**
 	 * Constructor.
@@ -38,6 +43,30 @@ public abstract class EditPartBase implements IFeatureEditPart {
 		this.model = modelData;
 		
 		model.addModelChangedListener(new ModelChangedListener());
+		
+		for (Class<?> editPartIfc : this.getClass().getInterfaces())
+		{
+			if (IFeatureEditPart.class.isAssignableFrom(editPartIfc))
+			{
+				for (Class<?> feature : editPartIfc.getClasses())
+				{
+					if (FeatureBase.class.isAssignableFrom(feature))
+					{
+						try {
+							@SuppressWarnings("unchecked") // is checked
+							Constructor<? extends IFeature> constructor = (Constructor<? extends IFeature>) feature.getConstructor(editPartIfc);
+							features.add(constructor.newInstance(this));
+						} catch (InvocationTargetException e) {
+							if (e.getCause() instanceof RuntimeException)
+								throw (RuntimeException) e.getCause();
+							Log.e(this, e);
+						} catch (Exception e) {
+							Log.e(this, e);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	/**

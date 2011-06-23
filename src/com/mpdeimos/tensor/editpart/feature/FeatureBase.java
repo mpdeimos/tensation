@@ -1,5 +1,6 @@
 package com.mpdeimos.tensor.editpart.feature;
 
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
 import com.mpdeimos.tensor.ui.DrawingCanvas;
@@ -44,5 +45,15 @@ public abstract class FeatureBase<T extends IFeatureEditPart> implements IFeatur
 	@Override
 	public boolean doOnMouseMoved(DrawingCanvas canvas, MouseEvent e) {
 		return false;
-	}	
+	}
+	
+	@Override
+	public boolean drawOverlay(DrawingCanvas canvas, Graphics2D gfx) {
+		return false;
+	}
+
+	@Override
+	public void doOnEditPartSelected(boolean selected) {
+		// nothing
+	}
 }

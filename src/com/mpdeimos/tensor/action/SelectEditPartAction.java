@@ -2,7 +2,6 @@ package com.mpdeimos.tensor.action;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -15,11 +14,9 @@ import javax.swing.ImageIcon;
 import resources.R;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.editpart.IMovableEditPart;
 import com.mpdeimos.tensor.editpart.feature.IFeature;
 import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
-import com.mpdeimos.tensor.util.PointUtil;
 
 /**
  * Action for drawing tensors
@@ -30,9 +27,6 @@ import com.mpdeimos.tensor.util.PointUtil;
 public class SelectEditPartAction extends CanvasActionBase {
 	/** The currently selected EditPart. */
 	private IEditPart selectedEditPart;
-
-	/** The offset to the EditPart position when in moving mode. */
-	private Dimension moveStartPointDelta;
 	
 	/** The stroke of selection rectangle. */
 	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] {3f , 3f}, 0);
@@ -55,7 +49,6 @@ public class SelectEditPartAction extends CanvasActionBase {
 
 		// reset some stuff
 		this.selectedEditPart = null;
-		this.moveStartPointDelta = null;
 		canvas.setCursor(Cursor.getDefaultCursor());
 	}
 
@@ -65,16 +58,6 @@ public class SelectEditPartAction extends CanvasActionBase {
 		
 		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_MOVED))
 			return true;
-		
-		if (selectedEditPart != null)
-		{
-			if (selectedEditPart.getBoundingRectangle().contains(e.getPoint()))
-			{
-				canvas.setCursor(new Cursor(Cursor.MOVE_CURSOR));
-				canvas.repaint();
-				return true;
-			}
-		}
 		
 		boolean over = false;
 		for (IEditPart editPart : canvas.getEditParts())
@@ -109,29 +92,19 @@ public class SelectEditPartAction extends CanvasActionBase {
 		
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
-			if (selectedEditPart != null 
-					&& selectedEditPart instanceof IMovableEditPart
-					&& selectedEditPart.getBoundingRectangle().contains(e.getPoint()))
+			if (selectedEditPart != null)
+				selectedEditPart.setSelected(false);
+			
+			selectedEditPart = null;
+			for (IEditPart editPart : canvas.getEditParts())
 			{
-				Point curPos = ((IMovableEditPart)selectedEditPart).getPosition();
-				moveStartPointDelta = PointUtil.getDelta(curPos, e.getPoint());
-			}
-			else
-			{
-				if (selectedEditPart != null)
-					selectedEditPart.setSelected(false);
-				
-				selectedEditPart = null;
-				for (IEditPart editPart : canvas.getEditParts())
+				if(isMouseOver(editPart, e.getPoint()))
 				{
-					if(isMouseOver(editPart, e.getPoint()))
-					{
-						selectedEditPart = editPart;
-						selectedEditPart.setSelected(true);
-						
-						// call us again, so we can do simple drag'n'drop
-						return doOnMousePressed(e);
-					}
+					selectedEditPart = editPart;
+					selectedEditPart.setSelected(true);
+					
+					// call us again, so we can do simple drag'n'drop
+					return doOnMousePressed(e);
 				}
 			}
 			
@@ -145,15 +118,7 @@ public class SelectEditPartAction extends CanvasActionBase {
 	@Override
 	public boolean doOnMouseDragged(MouseEvent e)
 	{
-		if (selectedEditPart != null 
-				&& selectedEditPart instanceof IMovableEditPart
-				&& moveStartPointDelta != null)
-		{
-			Point curPos = e.getPoint();
-			curPos.translate(moveStartPointDelta.width, moveStartPointDelta.height);
-			((IMovableEditPart)selectedEditPart).setPosition(curPos);
-			return true;
-		}
+		super.doOnMouseDragged(e);
 		
 		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_DRAGGED))
 			return true;
@@ -165,7 +130,8 @@ public class SelectEditPartAction extends CanvasActionBase {
 	public boolean doOnMouseReleased(MouseEvent e) {
 		super.doOnMousePressed(e);
 		
-		moveStartPointDelta = null;
+		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_RELEASED))
+			return true;
 		
 		return false;
 	}

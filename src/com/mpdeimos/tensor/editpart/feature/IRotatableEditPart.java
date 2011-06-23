@@ -14,8 +14,6 @@ import javax.imageio.ImageIO;
 import resources.R;
 
 import com.mpdeimos.tensor.action.SelectEditPartAction;
-import com.mpdeimos.tensor.model.IModelData;
-import com.mpdeimos.tensor.model.ModelChangedAdapter;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.PointUtil;
@@ -42,20 +40,9 @@ public interface IRotatableEditPart extends IFeatureEditPart {
 		/** The offset to the rotation indicator when in rotating mode. */
 		private Dimension rotationStartPointDelta;
 
-		/** The bounding rectangle of this EditPart. */
-		private Rectangle r;
-		
 		/** Constructor. */
 		public Feature(IRotatableEditPart editPart) {
 			super(editPart);
-			
-			r = this.editPart.getBoundingRectangle();
-			this.editPart.getModelData().addModelChangedListener(new ModelChangedAdapter() {
-				@Override
-				public void onModelChanged(IModelData model) {
-					r = Feature.this.editPart.getBoundingRectangle();
-				}
-			});
 		}
 		
 		@Override
@@ -80,6 +67,8 @@ public interface IRotatableEditPart extends IFeatureEditPart {
 		public boolean doOnMouseDragged(DrawingCanvas canvas, MouseEvent e) {
 			if (rotationStartPointDelta != null)
 			{
+				Rectangle r = this.editPart.getBoundingRectangle();
+				
 				Point curPos = e.getPoint();
 				curPos.translate(-(int)r.getCenterX()+rotationStartPointDelta.width, -(int)r.getCenterY()+rotationStartPointDelta.height);
 				double ang = Math.atan(curPos.getY()/curPos.getX())/Math.PI*180 + 45;
@@ -99,6 +88,7 @@ public interface IRotatableEditPart extends IFeatureEditPart {
 		public boolean doOnMouseMoved(DrawingCanvas canvas, MouseEvent e) {
 			if (rotationIndicator != null)
 			{
+				Rectangle r = this.editPart.getBoundingRectangle();
 				if (hasHitRotationIndicator(r, e))
 				{
 					canvas.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
@@ -120,15 +110,21 @@ public interface IRotatableEditPart extends IFeatureEditPart {
 		public void doOnEditPartSelected(boolean selected)
 		{
 			if (selected)
+			{
+				Rectangle r = this.editPart.getBoundingRectangle();
 				updateRoatationIndicator(r, editPart.getRotation());
+			}
 			else
+			{
 				rotationIndicator = null;
+			}
 		}
 		
 		@Override
 		public boolean drawOverlay(DrawingCanvas canvas, Graphics2D gfx)
 		{
 			try {
+				Rectangle r = this.editPart.getBoundingRectangle();
 				Image img = ImageIO.read(R.drawable.getURL("circle-green")); //$NON-NLS-1$
 				gfx.drawImage(img, (int)r.getCenterX() + rotationIndicator.x - 8, (int)r.getCenterY() + rotationIndicator.y - 8, null);
 				

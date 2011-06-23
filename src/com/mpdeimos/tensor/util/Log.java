@@ -122,10 +122,7 @@ public class Log {
 	 */
 	public static void e(Object tag, Throwable t)
 	{
-		StringBuilder message = new StringBuilder();
-		message.append(t.getMessage());
-		message.append(t.getStackTrace());
-		log(LogLevel.ERROR, tag, message.toString());
+		e(tag, null, t);
 	}
 	
 	/**
