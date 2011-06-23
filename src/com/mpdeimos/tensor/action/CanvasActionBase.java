@@ -27,6 +27,7 @@ public abstract class CanvasActionBase extends AbstractAction implements ICanvas
 	{
 		super(name, icon);
 		this.canvas = canvas;
+		this.putValue(Action.SHORT_DESCRIPTION, name);
 	}
 
 	@Override
