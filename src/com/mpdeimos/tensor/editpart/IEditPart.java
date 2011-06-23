@@ -1,7 +1,6 @@
 package com.mpdeimos.tensor.editpart;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 
 import com.mpdeimos.tensor.model.IModelData;
@@ -23,10 +22,15 @@ public interface IEditPart {
 	/** @return the linked data model object */
 	public IModelData getModelData();
 
-	/** performs a check whether the mouse hovers this EditPart */
-	public boolean isMouseOver(Point point);
+	/** performs a check whether the Rectangle intersects the EditPart. */
+	public boolean intersects(Rectangle rect);
 	
 	/** @return the bounding rectangle */
 	public Rectangle getBoundingRectangle();
+	
+	/** sets the selection status of the EditPart. */
+	public void setSelected(boolean selected);
 
+	/** sets the highlight status of the EditPart. */
+	void setHighlighted(boolean highlighted);
 }

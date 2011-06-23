@@ -40,9 +40,9 @@ public class DrawTensorAction extends CanvasActionBase {
 	}
 	
 	@Override
-	public boolean doOnMouseMove(MouseEvent e) {
+	public boolean doOnMouseMoved(MouseEvent e) {
 		editPart.setPosition(e.getPoint());
-		drawingPanel.repaint();
+		canvas.repaint();
 		return true;
 	}
 
@@ -51,7 +51,7 @@ public class DrawTensorAction extends CanvasActionBase {
 		
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
-			ModelRoot root = drawingPanel.getModel();
+			ModelRoot root = canvas.getModel();
 			root.addChild(new EpsilonTensor(root, e.getPoint()));
 			
 			return true;

@@ -98,7 +98,7 @@ public class DrawingCanvas extends JPanel {
     		
     		if (canvasAction != null)
     		{
-    			canvasAction.doOnMouseMove(e);
+    			canvasAction.doOnMouseMoved(e);
     		}
     	}
 

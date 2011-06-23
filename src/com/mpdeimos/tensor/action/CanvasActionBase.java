@@ -18,27 +18,27 @@ import com.mpdeimos.tensor.ui.DrawingCanvas;
 public abstract class CanvasActionBase extends AbstractAction implements ICanvasAction {
 
 	/** back reference to the drawing panel. */
-	protected final DrawingCanvas drawingPanel;
+	protected final DrawingCanvas canvas;
 	
 	/**
 	 * Constructor.
 	 */
-	public CanvasActionBase(DrawingCanvas drawingPanel, String name, ImageIcon icon)
+	public CanvasActionBase(DrawingCanvas canvas, String name, ImageIcon icon)
 	{
 		super(name, icon);
-		this.drawingPanel = drawingPanel;
+		this.canvas = canvas;
 	}
 
 	@Override
 	public void stopAction() {
 		putValue(Action.SELECTED_KEY, false);
-		drawingPanel.stopCanvasAction();
+		canvas.stopCanvasAction();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		putValue(Action.SELECTED_KEY, true);
-		drawingPanel.startCanvasAction(this);
+		canvas.startCanvasAction(this);
 	}
 	
 	@Override
@@ -62,7 +62,7 @@ public abstract class CanvasActionBase extends AbstractAction implements ICanvas
 	}
 	
 	@Override
-	public boolean doOnMouseMove(MouseEvent e) {
+	public boolean doOnMouseMoved(MouseEvent e) {
 		return false;
 	}
 }

@@ -2,9 +2,11 @@ package com.mpdeimos.tensor.editpart;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.List;
 
+import com.mpdeimos.tensor.editpart.feature.IFeature;
+import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.IModelChangedListener;
 import com.mpdeimos.tensor.model.IModelData;
@@ -15,16 +17,19 @@ import com.mpdeimos.tensor.model.IModelData;
  * @author mpdeimos
  *
  */
-public abstract class EditPartBase implements IEditPart {
+public abstract class EditPartBase implements IFeatureEditPart {
 
 	/** Flag whether the mouse is hovered over this EditPart. */
-	private boolean isMouseOver;
-
+	private boolean highlighted;
+	
 	/** the data model object linked to this EditPart */
 	private IModelData model;
 	
 	/** the figure for drawing this object */
 	private IFigure figure;
+	
+	/** The list of Features linked to this EditPart. Default is null. */
+	protected List<IFeature> features;
 
 	/**
 	 * Constructor.
@@ -56,12 +61,12 @@ public abstract class EditPartBase implements IEditPart {
 	@Override
 	public void draw(Graphics2D gfx) {
 		Color oldPaint = gfx.getColor();
-		if (isMouseOver)
+		if (highlighted)
 			gfx.setColor(Color.BLUE);
 
 		getFigure().draw(gfx);
 		
-		if (isMouseOver)
+		if (highlighted)
 			gfx.setColor(oldPaint);
 	}
 	
@@ -72,14 +77,8 @@ public abstract class EditPartBase implements IEditPart {
 	}
 
 	@Override
-	public boolean isMouseOver(Point point) {
-		// TODO maybe do this in the action
-		int offset = 2;
-		Rectangle rect = new Rectangle(point.x - offset, point.y - offset, 4 , 4);
-		
-		isMouseOver = this.getFigure().intersects(rect);
-		
-		return isMouseOver;
+	public boolean intersects(Rectangle rect) {
+		return this.getFigure().intersects(rect);
 	}
 	
 	@Override
@@ -106,5 +105,23 @@ public abstract class EditPartBase implements IEditPart {
 			figure.redraw();
 		}
 		
+	}
+	
+	@Override
+	public List<IFeature> getFeatures() {
+		return features;
+	}
+	
+	@Override
+	public void setSelected(boolean selected) {
+		for (IFeature feature : getFeatures())
+		{
+			feature.doOnEditPartSelected(selected);
+		}
+	}
+	
+	@Override
+	public void setHighlighted(boolean highlighted) {
+		this.highlighted = highlighted;
 	}
 }

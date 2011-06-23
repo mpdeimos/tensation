@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
  */
 public interface ICanvasAction {
 	/** being called if the mouse is moved on the canvas */
-	public boolean doOnMouseMove(MouseEvent e);
+	public boolean doOnMouseMoved(MouseEvent e);
 	
 	/** being called when the mouse clicked on the canvas */
 	public boolean doOnMouseClicked(MouseEvent e);
