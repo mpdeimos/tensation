@@ -28,12 +28,14 @@ public class SelectEditPartAction extends CanvasActionBase {
 	/** The currently selected EditPart. */
 	private IEditPart selectedEditPart;
 	
+	/** The currently highlighted EditPart. */
+	private IEditPart highlightedEditPart;
+	
 	/** The stroke of selection rectangle. */
 	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] {3f , 3f}, 0);
 	
 	/** the offset of the selection rectangle. */
 	public static int EDITPART_SELECTION_STROKE_OFFSET = 3;
-
 
 	/**
 	 * Constructor.
@@ -56,23 +58,31 @@ public class SelectEditPartAction extends CanvasActionBase {
 	public boolean doOnMouseMoved(MouseEvent e) {
 		super.doOnMouseMoved(e);
 		
+		if (highlightedEditPart != null)
+			highlightedEditPart.setHighlighted(false);
+		
 		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_MOVED))
 			return true;
 		
-		boolean over = false;
+		highlightedEditPart = null;
 		for (IEditPart editPart : canvas.getEditParts())
 		{
+			if (editPart == selectedEditPart)
+				continue;
+			
 			boolean tmpOver = isMouseOver(editPart, e.getPoint());
-			over |= tmpOver;
 			
-			if (editPart == selectedEditPart) // reference comp is ok here
-				tmpOver = false;
+			if (tmpOver && highlightedEditPart == null)
+				highlightedEditPart = editPart;
 			
-			editPart.setHighlighted(tmpOver);
+			editPart.setHighlighted(false);
 		}
 		
-		if (over)
+		if (highlightedEditPart != null)
+		{
+			highlightedEditPart.setHighlighted(true);
 			canvas.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		}
 		else
 			canvas.setCursor(Cursor.getDefaultCursor());
 		
@@ -103,13 +113,15 @@ public class SelectEditPartAction extends CanvasActionBase {
 					selectedEditPart = editPart;
 					selectedEditPart.setSelected(true);
 					
-					// call us again, so we can do simple drag'n'drop
-					return doOnMousePressed(e);
+					canvas.repaint();
+					
+					handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_PRESSED);
+					
+					return true;
 				}
 			}
 			
-			canvas.repaint();
-			return true;
+			return false;
 		}
 		
 		return false;

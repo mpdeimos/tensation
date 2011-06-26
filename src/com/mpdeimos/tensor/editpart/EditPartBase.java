@@ -35,12 +35,16 @@ public abstract class EditPartBase implements IFeatureEditPart {
 	
 	/** The list of Features linked to this EditPart. Default is null. */
 	protected List<IFeature> features = new ArrayList<IFeature>();
+	
+	/** @return the newly created figure for this EditPart. */ 
+	abstract protected IFigure createFigure();
 
 	/**
 	 * Constructor.
 	 */
 	public EditPartBase(IModelData modelData) {
 		this.model = modelData;
+		this.figure = createFigure();
 		
 		model.addModelChangedListener(new ModelChangedListener());
 		
@@ -67,14 +71,6 @@ public abstract class EditPartBase implements IFeatureEditPart {
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Sets the figure of this EditPart
-	 */
-	protected void setFigure(IFigure figure)
-	{
-		this.figure = figure;
 	}
 	
 	@Override

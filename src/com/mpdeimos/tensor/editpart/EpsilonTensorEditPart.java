@@ -1,10 +1,13 @@
 package com.mpdeimos.tensor.editpart;
 
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import com.mpdeimos.tensor.editpart.feature.IMovableEditPart;
 import com.mpdeimos.tensor.editpart.feature.IRotatableEditPart;
 import com.mpdeimos.tensor.figure.EpsilonTensorFigure;
+import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.model.IModelData;
 
@@ -19,7 +22,11 @@ public class EpsilonTensorEditPart extends EditPartBase implements IRotatableEdi
 	/** Constructor. */
 	public EpsilonTensorEditPart(IModelData modelData) {
 		super(modelData);
-		setFigure(new EpsilonTensorFigure(this));
+	}
+	
+	@Override
+	protected IFigure createFigure() {
+		return new EpsilonTensorFigure(this);
 	}
 
 	@Override
@@ -40,5 +47,11 @@ public class EpsilonTensorEditPart extends EditPartBase implements IRotatableEdi
 	@Override
 	public void setRotation(double degrees) {
 		((EpsilonTensor)(this.getModelData())).setRotation(degrees);
+	}
+	
+	@Override
+	public Dimension getRotationIndicatorOffset() {
+		Rectangle r = this.getBoundingRectangle();
+		return new Dimension((int)Math.sqrt(r.getWidth()*r.getWidth()/4 + r.getHeight()*r.getHeight()/4), 0);
 	}
 }

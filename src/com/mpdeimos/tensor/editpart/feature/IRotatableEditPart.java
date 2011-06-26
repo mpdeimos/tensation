@@ -30,6 +30,9 @@ public interface IRotatableEditPart extends IFeatureEditPart {
 	
 	/** Sets the rotation of the current EditPart in degrees. */
 	public void setRotation(double degrees);
+	
+	/** @return the position of the rotation indicator. */
+	public Dimension getRotationIndicatorOffset();
 
 	/** The feature for interacting with this EditPart. */
 	class Feature extends FeatureBase<IRotatableEditPart>
@@ -40,9 +43,17 @@ public interface IRotatableEditPart extends IFeatureEditPart {
 		/** The offset to the rotation indicator when in rotating mode. */
 		private Dimension rotationStartPointDelta;
 
+		/** the rotation indicator offset. */
+		private Dimension indicatorOffset;
+
+		/** the initial rotation of the indicator. */
+		private double indicatorRoatation;
+
 		/** Constructor. */
 		public Feature(IRotatableEditPart editPart) {
 			super(editPart);
+			indicatorOffset = editPart.getRotationIndicatorOffset();
+			indicatorRoatation = Math.atan(indicatorOffset.height/indicatorOffset.width);
 		}
 		
 		@Override
@@ -71,11 +82,11 @@ public interface IRotatableEditPart extends IFeatureEditPart {
 				
 				Point curPos = e.getPoint();
 				curPos.translate(-(int)r.getCenterX()+rotationStartPointDelta.width, -(int)r.getCenterY()+rotationStartPointDelta.height);
-				double ang = Math.atan(curPos.getY()/curPos.getX())/Math.PI*180 + 45;
+				double ang = (Math.atan(curPos.getY()/curPos.getX()) - indicatorRoatation)/Math.PI*180;
 				if (curPos.getX() < 0)
 					ang += 180;
 				
-				updateRoatationIndicator(r, ang);
+				updateRoatationIndicator(ang);
 				editPart.setRotation(ang);
 				
 				return true;
@@ -111,8 +122,7 @@ public interface IRotatableEditPart extends IFeatureEditPart {
 		{
 			if (selected)
 			{
-				Rectangle r = this.editPart.getBoundingRectangle();
-				updateRoatationIndicator(r, editPart.getRotation());
+				updateRoatationIndicator(editPart.getRotation());
 			}
 			else
 			{
@@ -125,7 +135,7 @@ public interface IRotatableEditPart extends IFeatureEditPart {
 		{
 			try {
 				Rectangle r = this.editPart.getBoundingRectangle();
-				Image img = ImageIO.read(R.drawable.getURL("circle-green")); //$NON-NLS-1$
+				Image img = ImageIO.read(R.drawable.getURL("overlay-rotate")); //$NON-NLS-1$
 				gfx.drawImage(img, (int)r.getCenterX() + rotationIndicator.x - 8, (int)r.getCenterY() + rotationIndicator.y - 8, null);
 				
 				return true;
@@ -142,9 +152,9 @@ public interface IRotatableEditPart extends IFeatureEditPart {
 		}
 
 		/** updates the rotation indicator */
-		private void updateRoatationIndicator(Rectangle r, double degrees) {
-			rotationIndicator = new Point(((int)r.getWidth()/2)+SelectEditPartAction.EDITPART_SELECTION_STROKE_OFFSET,
-					(-(int)r.getHeight()/2)-SelectEditPartAction.EDITPART_SELECTION_STROKE_OFFSET);
+		private void updateRoatationIndicator(double degrees) {
+			rotationIndicator = new Point(indicatorOffset.width+(int)Math.signum(indicatorOffset.width)*SelectEditPartAction.EDITPART_SELECTION_STROKE_OFFSET,
+											indicatorOffset.height+(int)Math.signum(indicatorOffset.height)*SelectEditPartAction.EDITPART_SELECTION_STROKE_OFFSET);
 
 			PointUtil.rotate(rotationIndicator, degrees/180*Math.PI);
 		}
