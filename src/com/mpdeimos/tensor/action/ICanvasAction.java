@@ -3,13 +3,15 @@ package com.mpdeimos.tensor.action;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
+import javax.swing.Action;
+
 /**
  * Base interface for drawing canvas actions.
  * 
  * @author mpdeimos
  *
  */
-public interface ICanvasAction {
+public interface ICanvasAction extends Action {
 	/** being called if the mouse is moved on the canvas */
 	public boolean doOnMouseMoved(MouseEvent e);
 	

@@ -38,6 +38,9 @@ public class ApplicationWindow extends JFrame {
 	/** the drawing canvas of our app */
 	private DrawingCanvas drawingPanel;
 
+	/** the default button for canvas actions. */
+	private ToolBarButton selectEditPartButton;
+
 	/**
 	 * Launch the application.
 	 */
@@ -100,7 +103,7 @@ public class ApplicationWindow extends JFrame {
 		sideToolBar.setOrientation(SwingConstants.VERTICAL);
 		getContentPane().add(sideToolBar, BorderLayout.WEST);
 		
-		JButton selectEditPartButton = new ToolBarButton(sideToolBar, new SelectEditPartAction(this.drawingPanel));
+		selectEditPartButton = new ToolBarButton(sideToolBar,  new SelectEditPartAction(this.drawingPanel));
 		sideToolBar.add(selectEditPartButton);
 		JButton drawTensorButton = new ToolBarButton(sideToolBar, new DrawTensorAction(this.drawingPanel));
 		drawTensorButton.setHideActionText(true);
@@ -108,6 +111,8 @@ public class ApplicationWindow extends JFrame {
 		JButton exitButton = new ToolBarButton(sideToolBar, new ExitAction());
 		exitButton.setHideActionText(true);
 		sideToolBar.add(exitButton);
+		
+		startDefaultToolbarAction();
 		
 		JToolBar topToolBar = new JToolBar();
 		getContentPane().add(topToolBar, BorderLayout.NORTH);
@@ -122,7 +127,7 @@ public class ApplicationWindow extends JFrame {
 		getContentPane().add(drawingPanelOuter, BorderLayout.CENTER);
 		drawingPanelOuter.setLayout(new BorderLayout(0, 0));
 
-		drawingPanel = new DrawingCanvas();
+		drawingPanel = new DrawingCanvas(this);
 		drawingPanelOuter.add(drawingPanel);
 	}
 
@@ -140,6 +145,12 @@ public class ApplicationWindow extends JFrame {
 		menuBar.add(menuFile);
 		
 		this.setJMenuBar(menuBar);
+	}
+	
+	/** Starts the default toolbar action. */
+	protected void startDefaultToolbarAction()
+	{
+		this.selectEditPartButton.doClick();
 	}
 
 	/**

@@ -42,12 +42,16 @@ public class DrawingCanvas extends JPanel {
 
 	/** mouse event listener */
 	private MouseListener mouseListener;
+
+	/** the linked application window. */
+	private final ApplicationWindow appWindow;
 	
 	/**
 	 * Create the panel.
 	 */
-	public DrawingCanvas() {
-        setBackground(Color.white);
+	public DrawingCanvas(ApplicationWindow appWindow) {
+        this.appWindow = appWindow;
+		setBackground(Color.white);
         mouseListener = new MouseListener();
         addMouseMotionListener(mouseListener);
         addMouseListener(mouseListener);
@@ -179,7 +183,7 @@ public class DrawingCanvas extends JPanel {
 
     /** performs an action on the canvas */ 
 	public void startCanvasAction(ICanvasAction action) {
-		stopCanvasAction();
+		stopCanvasAction(false);
 		
 		this.canvasAction = action;
 		Log.d(this, "Started canvas action: %s", this.canvasAction); //$NON-NLS-1$
@@ -191,6 +195,12 @@ public class DrawingCanvas extends JPanel {
 	/** stops the current canvas action */
 	public void stopCanvasAction()
 	{
+		stopCanvasAction(true);
+	}
+	
+	/** stops the current canvas action */
+	private void stopCanvasAction(boolean startDefault)
+	{
 		if (stopCanvasActionMyChange || this.canvasAction == null)
 			return;
 		
@@ -198,9 +208,10 @@ public class DrawingCanvas extends JPanel {
 		
 		stopCanvasActionMyChange = true;
 		this.canvasAction.stopAction();
+		if (startDefault)
+			this.appWindow.startDefaultToolbarAction();
 		stopCanvasActionMyChange = false;
 		
-		this.canvasAction = null;
 		repaint();
 	}
 	
