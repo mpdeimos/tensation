@@ -209,11 +209,15 @@ public class SelectEditPartAction extends CanvasActionBase
 			Stroke s = gfx.getStroke();
 			gfx.setStroke(EDITPART_SELECTION_STROKE);
 			Rectangle r = this.selectedEditPart.getBoundingRectangle();
-			Rectangle2D rect = new Rectangle2D.Double(r.getX()
-					- EDITPART_SELECTION_STROKE_OFFSET + 0.5, r.getY()
-					- EDITPART_SELECTION_STROKE_OFFSET + 0.5, r.getWidth() + 2
-					* EDITPART_SELECTION_STROKE_OFFSET, r.getHeight() + 2
-					* EDITPART_SELECTION_STROKE_OFFSET);
+			Rectangle2D rect = new Rectangle2D.Double(
+					r.getX()
+							- EDITPART_SELECTION_STROKE_OFFSET + 0.5,
+					r.getY()
+							- EDITPART_SELECTION_STROKE_OFFSET + 0.5,
+					r.getWidth() + 2
+							* EDITPART_SELECTION_STROKE_OFFSET,
+					r.getHeight() + 2
+							* EDITPART_SELECTION_STROKE_OFFSET);
 			gfx.draw(rect);
 
 			gfx.setStroke(s);

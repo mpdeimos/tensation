@@ -77,23 +77,34 @@ public class EpsilonTensorFigure extends FigureBase
 			ang %= 2 * Math.PI;
 			double sin = Math.sin(ang);
 			double cos = Math.cos(ang);
-			Point2D bottom = new Point2D.Double(x
-					+ (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET) * cos, y
-					+ (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET) * sin);
-			Point2D top = new Point2D.Double(
-					x
-							+ (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH)
+
+			Point2D bottom = new Point2D.Double(
+					x + (CENTER_CIRCLE_RADIUS
+							+ CONNECTOR_STROKE_OFFSET)
 							* cos,
-					y
-							+ (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH)
+					y + (CENTER_CIRCLE_RADIUS
+							+ CONNECTOR_STROKE_OFFSET)
 							* sin);
-			Point2D triangleL = new Point2D.Double(CONNECTOR_STROKE_OFFSET
-					+ CONNECTOR_STROKE_LENGTH, -CENTER_CIRCLE_RADIUS);
+
+			Point2D top = new Point2D.Double(
+					x + (CENTER_CIRCLE_RADIUS
+							+ CONNECTOR_STROKE_OFFSET
+							+ CONNECTOR_STROKE_LENGTH)
+							* cos,
+					y + (CENTER_CIRCLE_RADIUS
+							+ CONNECTOR_STROKE_OFFSET
+							+ CONNECTOR_STROKE_LENGTH)
+							* sin);
+
+			Point2D triangleL = new Point2D.Double(
+					CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH,
+					-CENTER_CIRCLE_RADIUS);
 			PointUtil.rotate(triangleL, ang);
 			PointUtil.move(triangleL, x, y);
 
-			Point2D triangleR = new Point2D.Double(CONNECTOR_STROKE_OFFSET
-					+ CONNECTOR_STROKE_LENGTH, CENTER_CIRCLE_RADIUS);
+			Point2D triangleR = new Point2D.Double(
+					CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH,
+					CENTER_CIRCLE_RADIUS);
 			PointUtil.rotate(triangleR, ang);
 			PointUtil.move(triangleR, x, y);
 

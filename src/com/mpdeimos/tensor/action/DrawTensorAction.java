@@ -35,7 +35,9 @@ public class DrawTensorAction extends CanvasActionBase
 	 */
 	public DrawTensorAction(DrawingCanvas drawingPanel)
 	{
-		super(drawingPanel, R.strings.getString("window_action_draw"), //$NON-NLS-1$
+		super(
+				drawingPanel,
+				R.strings.getString("window_action_draw"), //$NON-NLS-1$
 				new ImageIcon(R.drawable.getURL("draw"))); //$NON-NLS-1$
 
 		this.position = new Point(0, 0);

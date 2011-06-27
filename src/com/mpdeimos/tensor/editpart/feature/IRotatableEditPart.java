@@ -45,10 +45,10 @@ public interface IRotatableEditPart extends IFeatureEditPart
 		private Dimension rotationStartPointDelta;
 
 		/** the rotation indicator offset. */
-		private Dimension indicatorOffset;
+		private final Dimension indicatorOffset;
 
 		/** the initial rotation of the indicator. */
-		private double indicatorRoatation;
+		private final double indicatorRoatation;
 
 		/** Constructor. */
 		public Feature(IRotatableEditPart editPart)
@@ -154,9 +154,12 @@ public interface IRotatableEditPart extends IFeatureEditPart
 			{
 				Rectangle r = this.editPart.getBoundingRectangle();
 				Image img = ImageIO.read(R.drawable.getURL("overlay-rotate")); //$NON-NLS-1$
-				gfx.drawImage(img, (int) r.getCenterX()
-						+ this.rotationIndicator.x - 8, (int) r.getCenterY()
-						+ this.rotationIndicator.y - 8, null);
+				gfx.drawImage(img,
+						(int) r.getCenterX()
+								+ this.rotationIndicator.x - 8,
+						(int) r.getCenterY()
+								+ this.rotationIndicator.y - 8,
+						null);
 
 				return true;
 			}

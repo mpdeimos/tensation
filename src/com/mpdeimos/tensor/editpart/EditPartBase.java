@@ -32,7 +32,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 	private IModelData model;
 
 	/** the figure for drawing this object */
-	private IFigure figure;
+	private final IFigure figure;
 
 	/** The list of Features linked to this EditPart. Default is null. */
 	protected List<IFeature> features = new ArrayList<IFeature>();
