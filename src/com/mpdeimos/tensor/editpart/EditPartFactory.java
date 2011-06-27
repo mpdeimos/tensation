@@ -25,7 +25,8 @@ public class EditPartFactory
 		boolean error = false;
 		try
 		{
-			Class<? extends IEditPart> clazz = (Class<? extends IEditPart>) Class.forName(this.getClass().getPackage().getName() + "." + modelData.getClass().getSimpleName() //$NON-NLS-1$
+			Class<? extends IEditPart> clazz = (Class<? extends IEditPart>) Class.forName(this.getClass().getPackage().getName()
+					+ "." + modelData.getClass().getSimpleName() //$NON-NLS-1$
 					+ "EditPart"); //$NON-NLS-1$
 			Constructor<? extends IEditPart> constructor = clazz.getConstructor(IModelData.class);
 			return constructor.newInstance(modelData);
@@ -41,7 +42,9 @@ public class EditPartFactory
 			error = true;
 		}
 		if (error)
-			Log.e(this, "An error occured instantiating the EditPart for %s", modelData.getClass().getSimpleName()); //$NON-NLS-1$
+			Log.e(
+					this,
+					"An error occured instantiating the EditPart for %s", modelData.getClass().getSimpleName()); //$NON-NLS-1$
 
 		return null;
 	}

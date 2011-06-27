@@ -22,7 +22,9 @@ public class PointUtil
 		double sin = Math.sin(ang);
 		double cos = Math.cos(ang);
 
-		p.setLocation(p.getX() * cos - p.getY() * sin, p.getX() * sin + p.getY() * cos);
+		p.setLocation(
+				p.getX() * cos - p.getY() * sin,
+				p.getX() * sin + p.getY() * cos);
 		return p;
 	}
 

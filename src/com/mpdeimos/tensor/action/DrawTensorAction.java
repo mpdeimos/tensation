@@ -35,10 +35,13 @@ public class DrawTensorAction extends CanvasActionBase
 	 */
 	public DrawTensorAction(DrawingCanvas drawingPanel)
 	{
-		super(drawingPanel, R.strings.getString("window_action_draw"), new ImageIcon(R.drawable.getURL("draw"))); //$NON-NLS-1$ //$NON-NLS-2$
+		super(drawingPanel, R.strings.getString("window_action_draw"), //$NON-NLS-1$
+				new ImageIcon(R.drawable.getURL("draw"))); //$NON-NLS-1$
 
 		this.position = new Point(0, 0);
-		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(null, this.position));
+		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(
+				null,
+				this.position));
 	}
 
 	@Override

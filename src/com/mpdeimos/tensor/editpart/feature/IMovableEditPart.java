@@ -57,7 +57,9 @@ public interface IMovableEditPart extends IFeatureEditPart
 				if (this.editPart.getBoundingRectangle().contains(e.getPoint()))
 				{
 					Point curPos = this.editPart.getPosition();
-					this.moveStartPointDelta = PointUtil.getDelta(curPos, e.getPoint());
+					this.moveStartPointDelta = PointUtil.getDelta(
+							curPos,
+							e.getPoint());
 					return true;
 				}
 			}
@@ -71,7 +73,9 @@ public interface IMovableEditPart extends IFeatureEditPart
 			if (this.moveStartPointDelta != null)
 			{
 				Point curPos = e.getPoint();
-				curPos.translate(this.moveStartPointDelta.width, this.moveStartPointDelta.height);
+				curPos.translate(
+						this.moveStartPointDelta.width,
+						this.moveStartPointDelta.height);
 				this.editPart.setPosition(curPos);
 				return true;
 			}

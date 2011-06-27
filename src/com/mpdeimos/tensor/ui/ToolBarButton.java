@@ -29,7 +29,8 @@ public class ToolBarButton extends JButton
 	}
 
 	/** Listener class for action property changes. */
-	private class PropertyChangeListener implements java.beans.PropertyChangeListener
+	private class PropertyChangeListener implements
+			java.beans.PropertyChangeListener
 	{
 
 		@Override

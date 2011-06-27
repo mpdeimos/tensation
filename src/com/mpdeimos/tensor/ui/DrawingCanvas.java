@@ -70,10 +70,18 @@ public class DrawingCanvas extends JPanel
 	{
 		super.paintComponent(g);
 		Graphics2D gfx = (Graphics2D) g;
-		gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		gfx.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		gfx.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-		gfx.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+		gfx.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		gfx.setRenderingHint(
+				RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		gfx.setRenderingHint(
+				RenderingHints.KEY_FRACTIONALMETRICS,
+				RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		gfx.setRenderingHint(
+				RenderingHints.KEY_STROKE_CONTROL,
+				RenderingHints.VALUE_STROKE_PURE);
 
 		for (IEditPart part : this.editParts)
 		{

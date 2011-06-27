@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Immutable List implementation. raises illegal state exception on each write access.
+ * Immutable List implementation. raises illegal state exception on each write
+ * access.
  * 
  * @author mpdeimos
  * 

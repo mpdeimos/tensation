@@ -10,7 +10,8 @@ import com.mpdeimos.tensor.ui.DrawingCanvas;
  * 
  * @author mpdeimos
  */
-public abstract class FeatureBase<T extends IFeatureEditPart> implements IFeature
+public abstract class FeatureBase<T extends IFeatureEditPart> implements
+		IFeature
 {
 	/** The EditPart for this feature. */
 	protected final T editPart;

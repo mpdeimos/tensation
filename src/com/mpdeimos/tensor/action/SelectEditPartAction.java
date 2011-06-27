@@ -33,7 +33,13 @@ public class SelectEditPartAction extends CanvasActionBase
 	private IEditPart highlightedEditPart;
 
 	/** The stroke of selection rectangle. */
-	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] { 3f, 3f }, 0);
+	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(
+			1.0f,
+			BasicStroke.CAP_SQUARE,
+			BasicStroke.JOIN_MITER,
+			1,
+			new float[] { 3f, 3f },
+			0);
 
 	/** the offset of the selection rectangle. */
 	public static int EDITPART_SELECTION_STROKE_OFFSET = 3;
@@ -43,7 +49,9 @@ public class SelectEditPartAction extends CanvasActionBase
 	 */
 	public SelectEditPartAction(DrawingCanvas canvas)
 	{
-		super(canvas, R.strings.getString("window_action_select"), new ImageIcon(R.drawable.getURL("select"))); //$NON-NLS-1$ //$NON-NLS-2$
+		super(
+				canvas,
+				R.strings.getString("window_action_select"), new ImageIcon(R.drawable.getURL("select"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override
@@ -156,7 +164,8 @@ public class SelectEditPartAction extends CanvasActionBase
 	/** Handles the feature actions for a specific mouse event. */
 	private boolean handleFeaturesForMouseEvent(MouseEvent e, int which)
 	{
-		if (this.selectedEditPart != null && this.selectedEditPart instanceof IFeatureEditPart)
+		if (this.selectedEditPart != null
+				&& this.selectedEditPart instanceof IFeatureEditPart)
 		{
 			IFeatureEditPart featureEditPart = (IFeatureEditPart) this.selectedEditPart;
 			for (IFeature feature : featureEditPart.getFeatures())
@@ -200,12 +209,17 @@ public class SelectEditPartAction extends CanvasActionBase
 			Stroke s = gfx.getStroke();
 			gfx.setStroke(EDITPART_SELECTION_STROKE);
 			Rectangle r = this.selectedEditPart.getBoundingRectangle();
-			Rectangle2D rect = new Rectangle2D.Double(r.getX() - EDITPART_SELECTION_STROKE_OFFSET + 0.5, r.getY() - EDITPART_SELECTION_STROKE_OFFSET + 0.5, r.getWidth() + 2 * EDITPART_SELECTION_STROKE_OFFSET, r.getHeight() + 2 * EDITPART_SELECTION_STROKE_OFFSET);
+			Rectangle2D rect = new Rectangle2D.Double(r.getX()
+					- EDITPART_SELECTION_STROKE_OFFSET + 0.5, r.getY()
+					- EDITPART_SELECTION_STROKE_OFFSET + 0.5, r.getWidth() + 2
+					* EDITPART_SELECTION_STROKE_OFFSET, r.getHeight() + 2
+					* EDITPART_SELECTION_STROKE_OFFSET);
 			gfx.draw(rect);
 
 			gfx.setStroke(s);
 
-			if (this.selectedEditPart != null && this.selectedEditPart instanceof IFeatureEditPart)
+			if (this.selectedEditPart != null
+					&& this.selectedEditPart instanceof IFeatureEditPart)
 			{
 				IFeatureEditPart featureEditPart = (IFeatureEditPart) this.selectedEditPart;
 				for (IFeature feature : featureEditPart.getFeatures())

@@ -24,7 +24,10 @@ public interface IModelData
 	/** Adds a listener that fires upon model change events */
 	public void addModelChangedListener(IModelChangedListener listener);
 
-	/** removes each instance of this listener from listening to model changes of this object */
+	/**
+	 * removes each instance of this listener from listening to model changes of
+	 * this object
+	 */
 	public boolean removeModelDataChangedListener(IModelChangedListener listener);
 
 }

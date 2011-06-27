@@ -97,7 +97,8 @@ public class ApplicationWindow extends JFrame
 		// GraphicsEnvironment env =
 		// GraphicsEnvironment.getLocalGraphicsEnvironment();
 		// this.setMaximizedBounds(env.getMaximumWindowBounds());
-		// this.setExtendedState(this.getExtendedState() | Frame.MAXIMIZED_BOTH);
+		// this.setExtendedState(this.getExtendedState() |
+		// Frame.MAXIMIZED_BOTH);
 
 		initializeCanvas();
 		initializeMenu();
@@ -113,9 +114,13 @@ public class ApplicationWindow extends JFrame
 		sideToolBar.setOrientation(SwingConstants.VERTICAL);
 		getContentPane().add(sideToolBar, BorderLayout.WEST);
 
-		this.selectEditPartButton = new ToolBarButton(sideToolBar, new SelectEditPartAction(this.drawingPanel));
+		this.selectEditPartButton = new ToolBarButton(
+				sideToolBar,
+				new SelectEditPartAction(this.drawingPanel));
 		sideToolBar.add(this.selectEditPartButton);
-		JButton drawTensorButton = new ToolBarButton(sideToolBar, new DrawTensorAction(this.drawingPanel));
+		JButton drawTensorButton = new ToolBarButton(
+				sideToolBar,
+				new DrawTensorAction(this.drawingPanel));
 		drawTensorButton.setHideActionText(true);
 		sideToolBar.add(drawTensorButton);
 		JButton exitButton = new ToolBarButton(sideToolBar, new ExitAction());
@@ -134,7 +139,10 @@ public class ApplicationWindow extends JFrame
 	private void initializeCanvas()
 	{
 		JPanel drawingPanelOuter = new JPanel();
-		drawingPanelOuter.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		drawingPanelOuter.setBorder(new EtchedBorder(
+				EtchedBorder.LOWERED,
+				null,
+				null));
 		getContentPane().add(drawingPanelOuter, BorderLayout.CENTER);
 		drawingPanelOuter.setLayout(new BorderLayout(0, 0));
 

@@ -17,7 +17,8 @@ import com.mpdeimos.tensor.model.IModelData;
  * @author mpdeimos
  * 
  */
-public class EpsilonTensorEditPart extends EditPartBase implements IRotatableEditPart, IMovableEditPart
+public class EpsilonTensorEditPart extends EditPartBase implements
+		IRotatableEditPart, IMovableEditPart
 {
 
 	/** Constructor. */
@@ -60,6 +61,7 @@ public class EpsilonTensorEditPart extends EditPartBase implements IRotatableEdi
 	public Dimension getRotationIndicatorOffset()
 	{
 		Rectangle r = this.getBoundingRectangle();
-		return new Dimension((int) Math.sqrt(r.getWidth() * r.getWidth() / 4 + r.getHeight() * r.getHeight() / 4), 0);
+		return new Dimension((int) Math.sqrt(r.getWidth() * r.getWidth() / 4
+				+ r.getHeight() * r.getHeight() / 4), 0);
 	}
 }

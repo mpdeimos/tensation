@@ -55,21 +55,28 @@ public interface IRotatableEditPart extends IFeatureEditPart
 		{
 			super(editPart);
 			this.indicatorOffset = editPart.getRotationIndicatorOffset();
-			this.indicatorRoatation = Math.atan(this.indicatorOffset.height / this.indicatorOffset.width);
+			this.indicatorRoatation = Math.atan(this.indicatorOffset.height
+					/ this.indicatorOffset.width);
 		}
 
 		@Override
 		public boolean doOnMousePressed(DrawingCanvas canvas, MouseEvent e)
 		{
-			if (this.rotationIndicator != null && e.getButton() == MouseEvent.BUTTON1)
+			if (this.rotationIndicator != null
+					&& e.getButton() == MouseEvent.BUTTON1)
 			{
 				Rectangle r = this.editPart.getBoundingRectangle();
 
 				if (hasHitRotationIndicator(r, e))
 				{
 					Point curPos = new Point(e.getPoint());
-					PointUtil.move(curPos, -(int) r.getCenterX(), -(int) r.getCenterY());
-					this.rotationStartPointDelta = PointUtil.getDelta(curPos, this.rotationIndicator);
+					PointUtil.move(
+							curPos,
+							-(int) r.getCenterX(),
+							-(int) r.getCenterY());
+					this.rotationStartPointDelta = PointUtil.getDelta(
+							curPos,
+							this.rotationIndicator);
 					return true;
 				}
 			}
@@ -85,8 +92,13 @@ public interface IRotatableEditPart extends IFeatureEditPart
 				Rectangle r = this.editPart.getBoundingRectangle();
 
 				Point curPos = e.getPoint();
-				curPos.translate(-(int) r.getCenterX() + this.rotationStartPointDelta.width, -(int) r.getCenterY() + this.rotationStartPointDelta.height);
-				double ang = (Math.atan(curPos.getY() / curPos.getX()) - this.indicatorRoatation) / Math.PI * 180;
+				curPos.translate(
+						-(int) r.getCenterX()
+								+ this.rotationStartPointDelta.width,
+						-(int) r.getCenterY()
+								+ this.rotationStartPointDelta.height);
+				double ang = (Math.atan(curPos.getY() / curPos.getX()) - this.indicatorRoatation)
+						/ Math.PI * 180;
 				if (curPos.getX() < 0)
 					ang += 180;
 
@@ -142,7 +154,9 @@ public interface IRotatableEditPart extends IFeatureEditPart
 			{
 				Rectangle r = this.editPart.getBoundingRectangle();
 				Image img = ImageIO.read(R.drawable.getURL("overlay-rotate")); //$NON-NLS-1$
-				gfx.drawImage(img, (int) r.getCenterX() + this.rotationIndicator.x - 8, (int) r.getCenterY() + this.rotationIndicator.y - 8, null);
+				gfx.drawImage(img, (int) r.getCenterX()
+						+ this.rotationIndicator.x - 8, (int) r.getCenterY()
+						+ this.rotationIndicator.y - 8, null);
 
 				return true;
 			}
@@ -154,16 +168,27 @@ public interface IRotatableEditPart extends IFeatureEditPart
 			return true;
 		}
 
-		/** determines whether the rotation indicator has been hit by this mouse event. */
+		/**
+		 * determines whether the rotation indicator has been hit by this mouse
+		 * event.
+		 */
 		private boolean hasHitRotationIndicator(Rectangle r, MouseEvent e)
 		{
-			return this.rotationIndicator.distance(e.getPoint().x - r.getCenterX(), e.getPoint().y - r.getCenterY()) < 10;
+			return this.rotationIndicator.distance(
+					e.getPoint().x - r.getCenterX(),
+					e.getPoint().y - r.getCenterY()) < 10;
 		}
 
 		/** updates the rotation indicator */
 		private void updateRoatationIndicator(double degrees)
 		{
-			this.rotationIndicator = new Point(this.indicatorOffset.width + (int) Math.signum(this.indicatorOffset.width) * SelectEditPartAction.EDITPART_SELECTION_STROKE_OFFSET, this.indicatorOffset.height + (int) Math.signum(this.indicatorOffset.height) * SelectEditPartAction.EDITPART_SELECTION_STROKE_OFFSET);
+			this.rotationIndicator = new Point(
+					this.indicatorOffset.width
+							+ (int) Math.signum(this.indicatorOffset.width)
+							* SelectEditPartAction.EDITPART_SELECTION_STROKE_OFFSET,
+					this.indicatorOffset.height
+							+ (int) Math.signum(this.indicatorOffset.height)
+							* SelectEditPartAction.EDITPART_SELECTION_STROKE_OFFSET);
 
 			PointUtil.rotate(this.rotationIndicator, degrees / 180 * Math.PI);
 		}

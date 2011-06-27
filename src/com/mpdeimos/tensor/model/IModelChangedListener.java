@@ -8,7 +8,10 @@ package com.mpdeimos.tensor.model;
  */
 public interface IModelChangedListener
 {
-	/** fires upon changes within the data of this model, but not when children are added or removed. */
+	/**
+	 * fires upon changes within the data of this model, but not when children
+	 * are added or removed.
+	 */
 	public void onModelChanged(IModelData model);
 
 	/** fires upon a child being added to this model */

@@ -15,7 +15,8 @@ import com.mpdeimos.tensor.ui.DrawingCanvas;
  * @author mpdeimos
  * 
  */
-public abstract class CanvasActionBase extends AbstractAction implements ICanvasAction
+public abstract class CanvasActionBase extends AbstractAction implements
+		ICanvasAction
 {
 
 	/** back reference to the drawing panel. */

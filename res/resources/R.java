@@ -26,15 +26,18 @@ public class R
 	public static class DrawableResourceProvider
 	{
 		/**
-		 * @return the URL for the given image. prepends "/drawable/", appends ".png".
+		 * @return the URL for the given image. prepends "/drawable/", appends
+		 *         ".png".
 		 */
 		public URL getURL(String name)
 		{
-			URL url = R.class.getResource(String.format("/drawable/%s.png", name)); //$NON-NLS-1$
+			URL url = R.class.getResource(String.format(
+					"/drawable/%s.png", name)); //$NON-NLS-1$
 			if (url == null)
 			{
 				Log.w(R.class, "Drawable not found: " + name); //$NON-NLS-1$
-				url = R.class.getResource(String.format("/drawable/default.png", name)); //$NON-NLS-1$
+				url = R.class.getResource(String.format(
+						"/drawable/default.png", name)); //$NON-NLS-1$
 			}
 
 			return url;

@@ -3,7 +3,8 @@ package com.mpdeimos.tensor.model;
 import java.awt.Point;
 
 /**
- * Represents an Epsilon Tensor (ok, will do so in the future, now we're just testing stuff)
+ * Represents an Epsilon Tensor (ok, will do so in the future, now we're just
+ * testing stuff)
  * 
  * @author mpdeimos
  * 
@@ -57,7 +58,10 @@ public class EpsilonTensor extends ModelDataBase
 		fireOnModelDataChanged(this);
 	}
 
-	/** Sets the rotation of the current point in degrees. TODO refactor to base interface */
+	/**
+	 * Sets the rotation of the current point in degrees. TODO refactor to base
+	 * interface
+	 */
 	public void setRotation(double rotation)
 	{
 		this.rotation = rotation;

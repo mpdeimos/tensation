@@ -4,7 +4,8 @@
 package com.mpdeimos.tensor.util;
 
 /**
- * Simple class with static logging functions. At the moment this is just logging to the console.
+ * Simple class with static logging functions. At the moment this is just
+ * logging to the console.
  * 
  * @author mpdeimos
  * 
@@ -173,7 +174,11 @@ public class Log
 	/**
 	 * Internal logging.
 	 */
-	private static void log(LogLevel level, Object tag, String message, Object... args)
+	private static void log(
+			LogLevel level,
+			Object tag,
+			String message,
+			Object... args)
 	{
 		if (level.ordinal() < Log.level.ordinal())
 			return;
@@ -188,7 +193,8 @@ public class Log
 		}
 
 		String fmt = String.format(message, args);
-		String out = String.format(" %7s | %16.16s | %18.18s |  %s", level.getPrefix(), Thread.currentThread().getName(), tag, fmt); //$NON-NLS-1$
+		String out = String.format(
+				" %7s | %16.16s | %18.18s |  %s", level.getPrefix(), Thread.currentThread().getName(), tag, fmt); //$NON-NLS-1$
 		if (level.equals(LogLevel.ERROR))
 			System.err.println(out);
 		else

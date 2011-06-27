@@ -63,22 +63,37 @@ public class EpsilonTensorFigure extends FigureBase
 		int x = (int) position.getX();
 		int y = (int) position.getY();
 
-		Ellipse2D circle = new Ellipse2D.Double(x - CENTER_CIRCLE_RADIUS + 0.5, y - CENTER_CIRCLE_RADIUS + 0.5, 2 * CENTER_CIRCLE_RADIUS - 1, 2 * CENTER_CIRCLE_RADIUS - 1);
+		Ellipse2D circle = new Ellipse2D.Double(
+				x - CENTER_CIRCLE_RADIUS + 0.5,
+				y - CENTER_CIRCLE_RADIUS + 0.5,
+				2 * CENTER_CIRCLE_RADIUS - 1,
+				2 * CENTER_CIRCLE_RADIUS - 1);
 		fills.add(circle);
 
 		for (int i = 0; i < max; i++)
 		{
-			double ang = (((double) i) / max + tensor.getRotation() / 360) * 2 * Math.PI;
+			double ang = (((double) i) / max + tensor.getRotation() / 360) * 2
+					* Math.PI;
 			ang %= 2 * Math.PI;
 			double sin = Math.sin(ang);
 			double cos = Math.cos(ang);
-			Point2D bottom = new Point2D.Double(x + (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET) * cos, y + (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET) * sin);
-			Point2D top = new Point2D.Double(x + (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH) * cos, y + (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH) * sin);
-			Point2D triangleL = new Point2D.Double(CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH, -CENTER_CIRCLE_RADIUS);
+			Point2D bottom = new Point2D.Double(x
+					+ (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET) * cos, y
+					+ (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET) * sin);
+			Point2D top = new Point2D.Double(
+					x
+							+ (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH)
+							* cos,
+					y
+							+ (CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH)
+							* sin);
+			Point2D triangleL = new Point2D.Double(CONNECTOR_STROKE_OFFSET
+					+ CONNECTOR_STROKE_LENGTH, -CENTER_CIRCLE_RADIUS);
 			PointUtil.rotate(triangleL, ang);
 			PointUtil.move(triangleL, x, y);
 
-			Point2D triangleR = new Point2D.Double(CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH, CENTER_CIRCLE_RADIUS);
+			Point2D triangleR = new Point2D.Double(CONNECTOR_STROKE_OFFSET
+					+ CONNECTOR_STROKE_LENGTH, CENTER_CIRCLE_RADIUS);
 			PointUtil.rotate(triangleR, ang);
 			PointUtil.move(triangleR, x, y);
 
@@ -126,9 +141,14 @@ public class EpsilonTensorFigure extends FigureBase
 		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModelData();
 		Point position = tensor.getPosition();
 
-		int offset = CONNECTOR_STROKE_LENGTH + CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET;
+		int offset = CONNECTOR_STROKE_LENGTH + CENTER_CIRCLE_RADIUS
+				+ CONNECTOR_STROKE_OFFSET;
 
-		return new Rectangle((int) position.getX() - offset, (int) position.getY() - offset, 2 * offset, 2 * offset);
+		return new Rectangle(
+				(int) position.getX() - offset,
+				(int) position.getY() - offset,
+				2 * offset,
+				2 * offset);
 	}
 
 }
