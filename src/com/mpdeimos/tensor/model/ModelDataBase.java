@@ -11,9 +11,10 @@ import com.mpdeimos.tensor.util.ImmutableList;
  * Abstract base class for model data
  * 
  * @author mpdeimos
- *
+ * 
  */
-public abstract class ModelDataBase implements IModelData {
+public abstract class ModelDataBase implements IModelData
+{
 	/** initial list size for children */
 	private static int INITIAL_CHILDLIST_SIZE = 3;
 
@@ -25,91 +26,97 @@ public abstract class ModelDataBase implements IModelData {
 
 	/** Parent model */
 	private final IModelData parent;
-	
+
 	/** Constructor. */
-	public ModelDataBase(IModelData parent) {
+	public ModelDataBase(IModelData parent)
+	{
 		this.parent = parent;
 	}
 
 	@Override
-	public ImmutableList<IModelData> getChildren() {
+	public ImmutableList<IModelData> getChildren()
+	{
 		if (children == null)
 			return null;
-		
+
 		return new ImmutableList<IModelData>(children);
 	}
-	
+
 	@Override
-	public void addChild(IModelData child) {
+	public void addChild(IModelData child)
+	{
 		ensureChildListExists();
-		
+
 		children.add(child);
-		
+
 		fireOnChildAdded(child);
 	}
-	
+
 	@Override
-	public boolean removeChild(IModelData child) {
+	public boolean removeChild(IModelData child)
+	{
 		ensureChildListExists();
-		
+
 		boolean response = children.remove(child);
 		if (response == true)
 			fireOnChildRemoved(child);
-		
+
 		return response;
 	}
-	
+
 	/** ensures the list of children actually exists */
 	private void ensureChildListExists()
 	{
 		if (children == null)
 			children = new ArrayList<IModelData>(INITIAL_CHILDLIST_SIZE);
 	}
-	
+
 	@Override
-	public void addModelChangedListener(IModelChangedListener listener) {
+	public void addModelChangedListener(IModelChangedListener listener)
+	{
 		listeners.add(listener);
 	}
-	
+
 	@Override
-	public boolean removeModelDataChangedListener(IModelChangedListener listener) {
+	public boolean removeModelDataChangedListener(IModelChangedListener listener)
+	{
 		return listeners.remove(listener);
 	}
-	
+
 	/** fires the onModelDataChanged callback for all listeners */
 	protected void fireOnModelDataChanged(IModelData model)
 	{
-		for(IModelChangedListener listener : listeners)
+		for (IModelChangedListener listener : listeners)
 		{
 			listener.onModelChanged(model);
 		}
-		
+
 		if (parent != null && parent instanceof ModelDataBase)
-			((ModelDataBase)parent).fireOnModelDataChanged(model);
+			((ModelDataBase) parent).fireOnModelDataChanged(model);
 	}
-	
+
 	/** fires the onChildAdded callback for all listeners */
 	protected void fireOnChildAdded(IModelData child)
 	{
-		for(IModelChangedListener listener : listeners)
+		for (IModelChangedListener listener : listeners)
 		{
 			listener.onChildAdded(child);
 		}
-		
+
 		if (parent != null && parent instanceof ModelDataBase)
-			((ModelDataBase)parent).fireOnModelDataChanged(child);
+			((ModelDataBase) parent).fireOnModelDataChanged(child);
 	}
-	
+
 	/** fires the onChildRemoved callback for all listeners */
 	protected void fireOnChildRemoved(IModelData child)
 	{
-		for(IModelChangedListener listener : listeners)
+		for (IModelChangedListener listener : listeners)
 		{
 			listener.onChildRemoved(child);
 		}
-		
+
 		if (parent != null && parent instanceof ModelDataBase)
-			((ModelDataBase)parent).fireOnModelDataChanged(child);
+			((ModelDataBase) parent).fireOnModelDataChanged(child);
 	}
-	
+
 }

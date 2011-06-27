@@ -9,16 +9,17 @@ import com.mpdeimos.tensor.util.Log;
  * Class for global resource access.
  * 
  * @author mpdeimos
- *
+ * 
  */
-public class R {
-	
+public class R
+{
+
 	/** string resource provider */
 	public static final StringResourceProvider strings = new StringResourceProvider();
-	
+
 	/** image resource provider */
 	public static final DrawableResourceProvider drawable = new DrawableResourceProvider();
-	
+
 	/**
 	 * Provides images
 	 */
@@ -35,19 +36,19 @@ public class R {
 				Log.w(R.class, "Drawable not found: " + name); //$NON-NLS-1$
 				url = R.class.getResource(String.format("/drawable/default.png", name)); //$NON-NLS-1$
 			}
-			
+
 			return url;
 		}
 	}
-	
+
 	/**
 	 * provides string resources
 	 */
 	public static class StringResourceProvider
 	{
 		/** default string if resource not found */
-		private static final String NOT_FOUND = "## ERROR ##" ; //$NON-NLS-1$
-		
+		private static final String NOT_FOUND = "## ERROR ##"; //$NON-NLS-1$
+
 		/** resource bundle for strings */
 		public static final ResourceBundle resourceBundle = ResourceBundle.getBundle("strings.strings"); //$NON-NLS-1$
 
@@ -71,7 +72,7 @@ public class R {
 					str = NOT_FOUND;
 				}
 			}
-			
+
 			return str;
 		}
 	}

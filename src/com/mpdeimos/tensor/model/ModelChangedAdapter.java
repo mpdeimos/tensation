@@ -1,26 +1,29 @@
 package com.mpdeimos.tensor.model;
 
-
 /**
  * Adapter class for model change events.
  * 
  * @author mpdeimos
- *
+ * 
  */
-public class ModelChangedAdapter implements IModelChangedListener {
+public class ModelChangedAdapter implements IModelChangedListener
+{
 
 	@Override
-	public void onModelChanged(IModelData model) {
+	public void onModelChanged(IModelData model)
+	{
 		// nothing
 	}
 
 	@Override
-	public void onChildAdded(IModelData child) {
+	public void onChildAdded(IModelData child)
+	{
 		// nothing
 	}
 
 	@Override
-	public void onChildRemoved(IModelData child) {
+	public void onChildRemoved(IModelData child)
+	{
 		// nothing
 	}
 

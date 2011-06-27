@@ -13,13 +13,14 @@ import com.mpdeimos.tensor.ui.DrawingCanvas;
  * Base class for canvas actions.
  * 
  * @author mpdeimos
- *
+ * 
  */
-public abstract class CanvasActionBase extends AbstractAction implements ICanvasAction {
+public abstract class CanvasActionBase extends AbstractAction implements ICanvasAction
+{
 
 	/** back reference to the drawing panel. */
 	protected final DrawingCanvas canvas;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -31,39 +32,46 @@ public abstract class CanvasActionBase extends AbstractAction implements ICanvas
 	}
 
 	@Override
-	public void stopAction() {
+	public void stopAction()
+	{
 		putValue(Action.SELECTED_KEY, false);
 		canvas.stopCanvasAction();
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 		putValue(Action.SELECTED_KEY, true);
 		canvas.startCanvasAction(this);
 	}
-	
+
 	@Override
-	public boolean doOnMouseReleased(MouseEvent e) {
+	public boolean doOnMouseReleased(MouseEvent e)
+	{
 		return false;
 	}
-	
+
 	@Override
-	public boolean doOnMousePressed(MouseEvent e) {
+	public boolean doOnMousePressed(MouseEvent e)
+	{
 		return false;
 	}
-	
+
 	@Override
-	public boolean doOnMouseDragged(MouseEvent e) {
+	public boolean doOnMouseDragged(MouseEvent e)
+	{
 		return false;
 	}
-	
+
 	@Override
-	public boolean doOnMouseClicked(MouseEvent e) {
+	public boolean doOnMouseClicked(MouseEvent e)
+	{
 		return false;
 	}
-	
+
 	@Override
-	public boolean doOnMouseMoved(MouseEvent e) {
+	public boolean doOnMouseMoved(MouseEvent e)
+	{
 		return false;
 	}
 }

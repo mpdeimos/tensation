@@ -15,43 +15,51 @@ import com.mpdeimos.tensor.model.IModelData;
  * EditPart class for an epsilon tensor.
  * 
  * @author mpdeimos
- *
+ * 
  */
-public class EpsilonTensorEditPart extends EditPartBase implements IRotatableEditPart, IMovableEditPart {
-	
+public class EpsilonTensorEditPart extends EditPartBase implements IRotatableEditPart, IMovableEditPart
+{
+
 	/** Constructor. */
-	public EpsilonTensorEditPart(IModelData modelData) {
+	public EpsilonTensorEditPart(IModelData modelData)
+	{
 		super(modelData);
 	}
-	
+
 	@Override
-	protected IFigure createFigure() {
+	protected IFigure createFigure()
+	{
 		return new EpsilonTensorFigure(this);
 	}
 
 	@Override
-	public Point getPosition() {
-		return ((EpsilonTensor)(this.getModelData())).getPosition();
+	public Point getPosition()
+	{
+		return ((EpsilonTensor) (this.getModelData())).getPosition();
 	}
 
 	@Override
-	public void setPosition(Point p) {
-		((EpsilonTensor)(this.getModelData())).setPosition(p);
+	public void setPosition(Point p)
+	{
+		((EpsilonTensor) (this.getModelData())).setPosition(p);
 	}
 
 	@Override
-	public double getRotation() {
-		return ((EpsilonTensor)(this.getModelData())).getRotation();
+	public double getRotation()
+	{
+		return ((EpsilonTensor) (this.getModelData())).getRotation();
 	}
 
 	@Override
-	public void setRotation(double degrees) {
-		((EpsilonTensor)(this.getModelData())).setRotation(degrees);
+	public void setRotation(double degrees)
+	{
+		((EpsilonTensor) (this.getModelData())).setRotation(degrees);
 	}
-	
+
 	@Override
-	public Dimension getRotationIndicatorOffset() {
+	public Dimension getRotationIndicatorOffset()
+	{
 		Rectangle r = this.getBoundingRectangle();
-		return new Dimension((int)Math.sqrt(r.getWidth()*r.getWidth()/4 + r.getHeight()*r.getHeight()/4), 0);
+		return new Dimension((int) Math.sqrt(r.getWidth() * r.getWidth() / 4 + r.getHeight() * r.getHeight() / 4), 0);
 	}
 }

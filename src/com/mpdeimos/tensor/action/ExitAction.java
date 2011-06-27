@@ -9,24 +9,26 @@ import resources.R;
 
 import com.mpdeimos.tensor.ui.ApplicationWindow;
 
-
 /**
  * Action for exiting the program.
  * 
  * @author mpdeimos
- *
+ * 
  */
-public class ExitAction extends AbstractAction {
+public class ExitAction extends AbstractAction
+{
 
 	/**
 	 * Constructor.
 	 */
-	public ExitAction() {
+	public ExitAction()
+	{
 		super(R.strings.getString("window_menu_file_exit"), new ImageIcon(R.drawable.getURL("window_exit"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 		ApplicationWindow.getApplicationWindow().exit();
 	}
 }

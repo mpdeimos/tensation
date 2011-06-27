@@ -8,10 +8,11 @@ import java.awt.Rectangle;
  * Interface definition for canvas elements, called figures
  * 
  * @author mpdeimos
- *
+ * 
  */
-public interface IFigure {
-	
+public interface IFigure
+{
+
 	/** draws the object to the provided canvas */
 	public void draw(Graphics2D gfx);
 
@@ -20,11 +21,11 @@ public interface IFigure {
 
 	/** performs a check whether a rectangle intersects this figure */
 	public boolean intersects(Rectangle rect);
-	
+
 	/** @return the bounding rectangle */
 	public Rectangle getBoundingRectangle();
-	
+
 	/** Schedules a figure redraw. */
 	public void redraw();
-	
+
 }

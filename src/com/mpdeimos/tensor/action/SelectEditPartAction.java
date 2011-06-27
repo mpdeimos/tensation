@@ -22,18 +22,19 @@ import com.mpdeimos.tensor.ui.DrawingCanvas;
  * Action for drawing tensors
  * 
  * @author mpdeimos
- *
+ * 
  */
-public class SelectEditPartAction extends CanvasActionBase {
+public class SelectEditPartAction extends CanvasActionBase
+{
 	/** The currently selected EditPart. */
 	private IEditPart selectedEditPart;
-	
+
 	/** The currently highlighted EditPart. */
 	private IEditPart highlightedEditPart;
-	
+
 	/** The stroke of selection rectangle. */
-	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] {3f , 3f}, 0);
-	
+	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] { 3f, 3f }, 0);
+
 	/** the offset of the selection rectangle. */
 	public static int EDITPART_SELECTION_STROKE_OFFSET = 3;
 
@@ -44,9 +45,10 @@ public class SelectEditPartAction extends CanvasActionBase {
 	{
 		super(canvas, R.strings.getString("window_action_select"), new ImageIcon(R.drawable.getURL("select"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	@Override
-	public void stopAction() {
+	public void stopAction()
+	{
 		super.stopAction();
 
 		// reset some stuff
@@ -55,29 +57,30 @@ public class SelectEditPartAction extends CanvasActionBase {
 	}
 
 	@Override
-	public boolean doOnMouseMoved(MouseEvent e) {
+	public boolean doOnMouseMoved(MouseEvent e)
+	{
 		super.doOnMouseMoved(e);
-		
+
 		if (highlightedEditPart != null)
 			highlightedEditPart.setHighlighted(false);
-		
+
 		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_MOVED))
 			return true;
-		
+
 		highlightedEditPart = null;
 		for (IEditPart editPart : canvas.getEditParts())
 		{
 			if (editPart == selectedEditPart)
 				continue;
-			
+
 			boolean tmpOver = isMouseOver(editPart, e.getPoint());
-			
+
 			if (tmpOver && highlightedEditPart == null)
 				highlightedEditPart = editPart;
-			
+
 			editPart.setHighlighted(false);
 		}
-		
+
 		if (highlightedEditPart != null)
 		{
 			highlightedEditPart.setHighlighted(true);
@@ -85,45 +88,46 @@ public class SelectEditPartAction extends CanvasActionBase {
 		}
 		else
 			canvas.setCursor(Cursor.getDefaultCursor());
-		
+
 		canvas.repaint();
 		return true;
 	}
 
 	@Override
-	public boolean doOnMousePressed(MouseEvent e) {
+	public boolean doOnMousePressed(MouseEvent e)
+	{
 		super.doOnMousePressed(e);
-		
+
 		if (selectedEditPart != null)
 			selectedEditPart.setHighlighted(false);
 
 		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_PRESSED))
 			return true;
-		
+
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
 			if (selectedEditPart != null)
 				selectedEditPart.setSelected(false);
-			
+
 			selectedEditPart = null;
 			for (IEditPart editPart : canvas.getEditParts())
 			{
-				if(isMouseOver(editPart, e.getPoint()))
+				if (isMouseOver(editPart, e.getPoint()))
 				{
 					selectedEditPart = editPart;
 					selectedEditPart.setSelected(true);
-					
+
 					canvas.repaint();
-					
+
 					handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_PRESSED);
-					
+
 					return true;
 				}
 			}
-			
+
 			return false;
 		}
-		
+
 		return false;
 	}
 
@@ -131,25 +135,27 @@ public class SelectEditPartAction extends CanvasActionBase {
 	public boolean doOnMouseDragged(MouseEvent e)
 	{
 		super.doOnMouseDragged(e);
-		
+
 		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_DRAGGED))
 			return true;
-		
+
 		return false;
 	}
 
 	@Override
-	public boolean doOnMouseReleased(MouseEvent e) {
+	public boolean doOnMouseReleased(MouseEvent e)
+	{
 		super.doOnMousePressed(e);
-		
+
 		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_RELEASED))
 			return true;
-		
+
 		return false;
 	}
-	
+
 	/** Handles the feature actions for a specific mouse event. */
-	private boolean handleFeaturesForMouseEvent(MouseEvent e, int which) {
+	private boolean handleFeaturesForMouseEvent(MouseEvent e, int which)
+	{
 		if (selectedEditPart != null && selectedEditPart instanceof IFeatureEditPart)
 		{
 			IFeatureEditPart featureEditPart = (IFeatureEditPart) selectedEditPart;
@@ -177,12 +183,12 @@ public class SelectEditPartAction extends CanvasActionBase {
 					handled = false;
 					break;
 				}
-				
+
 				if (handled)
 					return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -194,15 +200,11 @@ public class SelectEditPartAction extends CanvasActionBase {
 			Stroke s = gfx.getStroke();
 			gfx.setStroke(EDITPART_SELECTION_STROKE);
 			Rectangle r = selectedEditPart.getBoundingRectangle();
-			Rectangle2D rect = new Rectangle2D.Double(
-					r.getX()-EDITPART_SELECTION_STROKE_OFFSET+0.5,
-					r.getY()-EDITPART_SELECTION_STROKE_OFFSET+0.5,
-					r.getWidth()+2*EDITPART_SELECTION_STROKE_OFFSET,
-					r.getHeight()+2*EDITPART_SELECTION_STROKE_OFFSET);
+			Rectangle2D rect = new Rectangle2D.Double(r.getX() - EDITPART_SELECTION_STROKE_OFFSET + 0.5, r.getY() - EDITPART_SELECTION_STROKE_OFFSET + 0.5, r.getWidth() + 2 * EDITPART_SELECTION_STROKE_OFFSET, r.getHeight() + 2 * EDITPART_SELECTION_STROKE_OFFSET);
 			gfx.draw(rect);
-			
+
 			gfx.setStroke(s);
-			
+
 			if (selectedEditPart != null && selectedEditPart instanceof IFeatureEditPart)
 			{
 				IFeatureEditPart featureEditPart = (IFeatureEditPart) selectedEditPart;
@@ -211,18 +213,18 @@ public class SelectEditPartAction extends CanvasActionBase {
 					feature.drawOverlay(canvas, gfx);
 				}
 			}
-			
+
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/** Tests whether the mouse is over a given EditPart. */
 	private boolean isMouseOver(IEditPart editPart, Point point)
 	{
 		int offset = 2;
-		Rectangle rect = new Rectangle(point.x - offset, point.y - offset, 4 , 4);
+		Rectangle rect = new Rectangle(point.x - offset, point.y - offset, 4, 4);
 		return editPart.intersects(rect);
 	}
 }

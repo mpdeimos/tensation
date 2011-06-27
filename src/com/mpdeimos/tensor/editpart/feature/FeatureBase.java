@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 
-
 /**
  * Base class for EditPart Features.
  * 
@@ -21,39 +20,46 @@ public abstract class FeatureBase<T extends IFeatureEditPart> implements IFeatur
 	{
 		this.editPart = editPart;
 	}
-	
+
 	@Override
-	public boolean doOnMouseReleased(DrawingCanvas canvas, MouseEvent e) {
-		return false;
-	}
-	
-	@Override
-	public boolean doOnMousePressed(DrawingCanvas canvas, MouseEvent e) {
-		return false;
-	}
-	
-	@Override
-	public boolean doOnMouseDragged(DrawingCanvas canvas, MouseEvent e) {
-		return false;
-	}
-	
-	@Override
-	public boolean doOnMouseClicked(DrawingCanvas canvas, MouseEvent e) {
-		return false;
-	}
-	
-	@Override
-	public boolean doOnMouseMoved(DrawingCanvas canvas, MouseEvent e) {
-		return false;
-	}
-	
-	@Override
-	public boolean drawOverlay(DrawingCanvas canvas, Graphics2D gfx) {
+	public boolean doOnMouseReleased(DrawingCanvas canvas, MouseEvent e)
+	{
 		return false;
 	}
 
 	@Override
-	public void doOnEditPartSelected(boolean selected) {
+	public boolean doOnMousePressed(DrawingCanvas canvas, MouseEvent e)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean doOnMouseDragged(DrawingCanvas canvas, MouseEvent e)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean doOnMouseClicked(DrawingCanvas canvas, MouseEvent e)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean doOnMouseMoved(DrawingCanvas canvas, MouseEvent e)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean drawOverlay(DrawingCanvas canvas, Graphics2D gfx)
+	{
+		return false;
+	}
+
+	@Override
+	public void doOnEditPartSelected(boolean selected)
+	{
 		// nothing
 	}
 }

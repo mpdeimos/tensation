@@ -20,34 +20,36 @@ import com.mpdeimos.tensor.util.Log;
  * abstract base class for EditParts.
  * 
  * @author mpdeimos
- *
+ * 
  */
-public abstract class EditPartBase implements IFeatureEditPart {
+public abstract class EditPartBase implements IFeatureEditPart
+{
 
 	/** Flag whether the mouse is hovered over this EditPart. */
 	private boolean highlighted;
-	
+
 	/** the data model object linked to this EditPart */
 	private IModelData model;
-	
+
 	/** the figure for drawing this object */
 	private IFigure figure;
-	
+
 	/** The list of Features linked to this EditPart. Default is null. */
 	protected List<IFeature> features = new ArrayList<IFeature>();
-	
-	/** @return the newly created figure for this EditPart. */ 
+
+	/** @return the newly created figure for this EditPart. */
 	abstract protected IFigure createFigure();
 
 	/**
 	 * Constructor.
 	 */
-	public EditPartBase(IModelData modelData) {
+	public EditPartBase(IModelData modelData)
+	{
 		this.model = modelData;
 		this.figure = createFigure();
-		
+
 		model.addModelChangedListener(new ModelChangedListener());
-		
+
 		for (Class<?> editPartIfc : this.getClass().getInterfaces())
 		{
 			if (IFeatureEditPart.class.isAssignableFrom(editPartIfc))
@@ -56,15 +58,21 @@ public abstract class EditPartBase implements IFeatureEditPart {
 				{
 					if (FeatureBase.class.isAssignableFrom(feature))
 					{
-						try {
-							@SuppressWarnings("unchecked") // is checked
+						try
+						{
+							@SuppressWarnings("unchecked")
+							// is checked
 							Constructor<? extends IFeature> constructor = (Constructor<? extends IFeature>) feature.getConstructor(editPartIfc);
 							features.add(constructor.newInstance(this));
-						} catch (InvocationTargetException e) {
+						}
+						catch (InvocationTargetException e)
+						{
 							if (e.getCause() instanceof RuntimeException)
 								throw (RuntimeException) e.getCause();
 							Log.e(this, e);
-						} catch (Exception e) {
+						}
+						catch (Exception e)
+						{
 							Log.e(this, e);
 						}
 					}
@@ -72,29 +80,32 @@ public abstract class EditPartBase implements IFeatureEditPart {
 			}
 		}
 	}
-	
+
 	@Override
-	public IModelData getModelData() {
+	public IModelData getModelData()
+	{
 		return model;
 	}
-	
+
 	@Override
-	public void setModelData(IModelData model) {
+	public void setModelData(IModelData model)
+	{
 		this.model = model;
 	}
-	
+
 	@Override
-	public void draw(Graphics2D gfx) {
+	public void draw(Graphics2D gfx)
+	{
 		Color oldPaint = gfx.getColor();
 		if (highlighted)
 			gfx.setColor(Color.BLUE);
 
 		getFigure().draw(gfx);
-		
+
 		if (highlighted)
 			gfx.setColor(oldPaint);
 	}
-	
+
 	/** @return the figure responsible for drawing this object */
 	protected IFigure getFigure()
 	{
@@ -102,51 +113,59 @@ public abstract class EditPartBase implements IFeatureEditPart {
 	}
 
 	@Override
-	public boolean intersects(Rectangle rect) {
+	public boolean intersects(Rectangle rect)
+	{
 		return this.getFigure().intersects(rect);
 	}
-	
+
 	@Override
-	public Rectangle getBoundingRectangle() {
+	public Rectangle getBoundingRectangle()
+	{
 		return this.getFigure().getBoundingRectangle();
 	}
-	
+
 	/** private model data change listener */
 	private class ModelChangedListener implements IModelChangedListener
 	{
 
 		@Override
-		public void onModelChanged(IModelData model) {
+		public void onModelChanged(IModelData model)
+		{
 			figure.redraw();
 		}
 
 		@Override
-		public void onChildAdded(IModelData child) {
+		public void onChildAdded(IModelData child)
+		{
 			figure.redraw();
 		}
 
 		@Override
-		public void onChildRemoved(IModelData child) {
+		public void onChildRemoved(IModelData child)
+		{
 			figure.redraw();
 		}
-		
+
 	}
-	
+
 	@Override
-	public List<IFeature> getFeatures() {
+	public List<IFeature> getFeatures()
+	{
 		return features;
 	}
-	
+
 	@Override
-	public void setSelected(boolean selected) {
+	public void setSelected(boolean selected)
+	{
 		for (IFeature feature : getFeatures())
 		{
 			feature.doOnEditPartSelected(selected);
 		}
 	}
-	
+
 	@Override
-	public void setHighlighted(boolean highlighted) {
+	public void setHighlighted(boolean highlighted)
+	{
 		this.highlighted = highlighted;
 	}
 }

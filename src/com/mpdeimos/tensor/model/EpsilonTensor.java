@@ -6,13 +6,14 @@ import java.awt.Point;
  * Represents an Epsilon Tensor (ok, will do so in the future, now we're just testing stuff)
  * 
  * @author mpdeimos
- *
+ * 
  */
-public class EpsilonTensor extends ModelDataBase {
-	
+public class EpsilonTensor extends ModelDataBase
+{
+
 	/** Position of the object in screen coordinates. */
 	private final Point position;
-	
+
 	/** Rotation of the current figure */
 	private double rotation = 0;
 
@@ -21,9 +22,9 @@ public class EpsilonTensor extends ModelDataBase {
 	 */
 	public EpsilonTensor(ModelDataBase parent)
 	{
-		this(parent, new Point(0,0));
+		this(parent, new Point(0, 0));
 	}
-	
+
 	/**
 	 * Constructor w/ initial coordinates.
 	 */
@@ -36,25 +37,29 @@ public class EpsilonTensor extends ModelDataBase {
 	/**
 	 * @return the position of this object.
 	 */
-	public Point getPosition() {
+	public Point getPosition()
+	{
 		return position;
 	}
 
 	/**
 	 * @return the rotation of this figure in degrees
 	 */
-	public double getRotation() {
+	public double getRotation()
+	{
 		return rotation;
 	}
 
 	/** Sets the position of the current point. TODO refactor to base interface */
-	public void setPosition(Point p) {
+	public void setPosition(Point p)
+	{
 		this.position.setLocation(p);
 		fireOnModelDataChanged(this);
 	}
-	
+
 	/** Sets the rotation of the current point in degrees. TODO refactor to base interface */
-	public void setRotation(double rotation) {
+	public void setRotation(double rotation)
+	{
 		this.rotation = rotation;
 		fireOnModelDataChanged(this);
 	}

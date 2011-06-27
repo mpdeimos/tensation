@@ -12,7 +12,7 @@ import javax.swing.JToolBar;
  * Class representing Toolbar Buttons.
  * 
  * @author mpdeimos
- *
+ * 
  */
 public class ToolBarButton extends JButton
 {
@@ -20,23 +20,26 @@ public class ToolBarButton extends JButton
 	private final JToolBar toolBar;
 
 	/** Constructor. */
-	public ToolBarButton(JToolBar toolBar, AbstractAction action) {
+	public ToolBarButton(JToolBar toolBar, AbstractAction action)
+	{
 		super(action);
 		this.toolBar = toolBar;
 		this.setHideActionText(true);
 		action.addPropertyChangeListener(new ToolBarButton.PropertyChangeListener());
 	}
-	
+
 	/** Listener class for action property changes. */
-	private class PropertyChangeListener implements java.beans.PropertyChangeListener {
-		
+	private class PropertyChangeListener implements java.beans.PropertyChangeListener
+	{
+
 		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(PropertyChangeEvent evt)
+		{
 			if (Action.SELECTED_KEY.equals(evt.getPropertyName()))
 			{
 				if (!(evt.getNewValue() instanceof Boolean))
-						return;
-				
+					return;
+
 				Boolean newValue = (Boolean) evt.getNewValue();
 				if (newValue)
 				{
@@ -48,7 +51,7 @@ public class ToolBarButton extends JButton
 						}
 					}
 				}
-				
+
 				ToolBarButton.this.setSelected(newValue);
 			}
 		}

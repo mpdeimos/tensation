@@ -11,19 +11,19 @@ import com.mpdeimos.tensor.util.ImmutableList;
  * Class that knows how to paint a parts of a figure.
  * 
  * @author mpdeimos
- *
+ * 
  */
 public class ShapePack
 {
 	/** List of Shapes this Feature constists of. */
 	private final List<Shape> shapes;
-	
+
 	/** The drawing mode for the Shapes. */
 	private final EDrawingMode mode;
-	
+
 	/** The stroke used for painting. Just useful if in Stroke mode. */
 	private Stroke stroke;
-	
+
 	/** Drawing mode enumeration. */
 	public static enum EDrawingMode
 	{
@@ -39,7 +39,7 @@ public class ShapePack
 		this.mode = mode;
 		this.shapes = shapes;
 	}
-	
+
 	/** Draws this feature on a Graphics2D Canvas. */
 	public void draw(Graphics2D gfx)
 	{
@@ -49,7 +49,7 @@ public class ShapePack
 			oldStroke = gfx.getStroke();
 			gfx.setStroke(stroke);
 		}
-		
+
 		for (Shape shape : shapes)
 		{
 			if (EDrawingMode.FILL.equals(mode))
@@ -57,11 +57,11 @@ public class ShapePack
 			else if (EDrawingMode.STROKE.equals(mode))
 				gfx.draw(shape);
 		}
-		
+
 		if (oldStroke != null)
 			gfx.setStroke(oldStroke);
 	}
-	
+
 	/** @return the Shapes of this Feature. */
 	public ImmutableList<Shape> getShapes()
 	{
@@ -73,7 +73,7 @@ public class ShapePack
 	{
 		this.stroke = stroke;
 	}
-	
+
 	/** The stroke of this feature. May be null. */
 	public Stroke getStroke()
 	{

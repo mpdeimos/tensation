@@ -4,12 +4,13 @@
 package com.mpdeimos.tensor.util;
 
 /**
- * Simple class with static logging functions. At the moment this is just logging to the console. 
+ * Simple class with static logging functions. At the moment this is just logging to the console.
  * 
  * @author mpdeimos
- *
+ * 
  */
-public class Log {
+public class Log
+{
 	/**
 	 * Enumeration of different logging levels, sorted by severity.
 	 */
@@ -17,19 +18,19 @@ public class Log {
 	{
 		/** verbose logging level */
 		VERBOSE("VERBOSE"), //$NON-NLS-1$
-		
+
 		/** debug logging level */
 		DEBUG("DEBUG"), //$NON-NLS-1$
-		
+
 		/** info logging level */
 		INFO("INFO"), //$NON-NLS-1$
-		
+
 		/** warning logging level */
 		WARN("WARN"), //$NON-NLS-1$
-		
+
 		/** error logging level */
 		ERROR("ERROR"); //$NON-NLS-1$
-		
+
 		/** string representation of logging level */
 		private String prefix;
 
@@ -40,9 +41,9 @@ public class Log {
 		{
 			this.prefix = prefix;
 		}
-		
+
 		/**
-		 * @return the human readable string representation of a logging level 
+		 * @return the human readable string representation of a logging level
 		 */
 		protected String getPrefix()
 		{
@@ -52,84 +53,98 @@ public class Log {
 
 	/** internal logging level */
 	private static LogLevel level = LogLevel.WARN;
-	
+
 	/** sets the global logging level */
 	public static void setLevel(LogLevel level)
 	{
 		Log.level = level;
 	}
-	
+
 	/**
 	 * Logs a message with level VERBOSE.
 	 * 
-	 * @param tag		The message tag.
-	 * @param message	The message to log.
+	 * @param tag
+	 *            The message tag.
+	 * @param message
+	 *            The message to log.
 	 */
 	public static void v(Object tag, String message, Object... args)
 	{
 		log(LogLevel.VERBOSE, tag, message, args);
 	}
-	
+
 	/**
 	 * Logs a message with level DEBUG.
 	 * 
-	 * @param tag		The message tag.
-	 * @param message	The message to log.
+	 * @param tag
+	 *            The message tag.
+	 * @param message
+	 *            The message to log.
 	 */
 	public static void d(Object tag, String message, Object... args)
 	{
 		log(LogLevel.DEBUG, tag, message, args);
 	}
-	
+
 	/**
 	 * Logs a message with level INFO.
 	 * 
-	 * @param tag		The message tag.
-	 * @param message	The message to log.
+	 * @param tag
+	 *            The message tag.
+	 * @param message
+	 *            The message to log.
 	 */
 	public static void i(Object tag, String message, Object... args)
 	{
 		log(LogLevel.INFO, tag, message, args);
 	}
-	
+
 	/**
 	 * Logs a message with level INFO.
 	 * 
-	 * @param tag		The message tag.
-	 * @param message	The message to log.
+	 * @param tag
+	 *            The message tag.
+	 * @param message
+	 *            The message to log.
 	 */
 	public static void w(Object tag, String message, Object... args)
 	{
 		log(LogLevel.WARN, tag, message, args);
 	}
-	
+
 	/**
 	 * Logs a message with level ERROR.
 	 * 
-	 * @param tag		The message tag.
-	 * @param message	The message to log.
+	 * @param tag
+	 *            The message tag.
+	 * @param message
+	 *            The message to log.
 	 */
 	public static void e(Object tag, String message, Object... args)
 	{
 		log(LogLevel.ERROR, tag, message, args);
 	}
-	
+
 	/**
 	 * Logs an exception with level ERROR.
 	 * 
-	 * @param tag		The message tag.
-	 * @param message	The message to log.
+	 * @param tag
+	 *            The message tag.
+	 * @param message
+	 *            The message to log.
 	 */
 	public static void e(Object tag, Throwable t)
 	{
 		e(tag, null, t);
 	}
-	
+
 	/**
 	 * Logs an exception with level ERROR.
 	 * 
-	 * @param tag		The message tag.
-	 * @param message	The message to log.
+	 * @param tag
+	 *            The message tag.
+	 * @param message
+	 *            The message to log.
 	 */
 	public static void e(Object tag, String message, Throwable t)
 	{
@@ -151,10 +166,10 @@ public class Log {
 			messageBuilder.append(StringUtil.TABULATOR + e.toString());
 			messageBuilder.append(StringUtil.NEWLINE);
 		}
-		
+
 		log(LogLevel.ERROR, tag, messageBuilder.toString());
 	}
-	
+
 	/**
 	 * Internal logging.
 	 */
@@ -162,7 +177,7 @@ public class Log {
 	{
 		if (level.ordinal() < Log.level.ordinal())
 			return;
-		
+
 		if (tag instanceof Class<?>)
 		{
 			tag = ((Class<?>) tag).getSimpleName();
@@ -171,7 +186,7 @@ public class Log {
 		{
 			tag = tag.getClass().getSimpleName();
 		}
-		
+
 		String fmt = String.format(message, args);
 		String out = String.format(" %7s | %16.16s | %18.18s |  %s", level.getPrefix(), Thread.currentThread().getName(), tag, fmt); //$NON-NLS-1$
 		if (level.equals(LogLevel.ERROR))

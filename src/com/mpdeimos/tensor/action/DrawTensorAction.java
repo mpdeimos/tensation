@@ -17,9 +17,10 @@ import com.mpdeimos.tensor.ui.DrawingCanvas;
  * Action for drawing tensors
  * 
  * @author mpdeimos
- *
+ * 
  */
-public class DrawTensorAction extends CanvasActionBase {
+public class DrawTensorAction extends CanvasActionBase
+{
 
 	/** position of the current drawing figure */
 	private final Point position;
@@ -29,39 +30,43 @@ public class DrawTensorAction extends CanvasActionBase {
 
 	/**
 	 * Constructor.
-	 * @param drawingPanel 
+	 * 
+	 * @param drawingPanel
 	 */
 	public DrawTensorAction(DrawingCanvas drawingPanel)
 	{
 		super(drawingPanel, R.strings.getString("window_action_draw"), new ImageIcon(R.drawable.getURL("draw"))); //$NON-NLS-1$ //$NON-NLS-2$
-		
-		this.position = new Point(0,0);
+
+		this.position = new Point(0, 0);
 		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(null, position));
 	}
-	
+
 	@Override
-	public boolean doOnMouseMoved(MouseEvent e) {
+	public boolean doOnMouseMoved(MouseEvent e)
+	{
 		editPart.setPosition(e.getPoint());
 		canvas.repaint();
 		return true;
 	}
 
 	@Override
-	public boolean doOnMouseClicked(MouseEvent e) {
-		
+	public boolean doOnMouseClicked(MouseEvent e)
+	{
+
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
 			ModelRoot root = canvas.getModel();
 			root.addChild(new EpsilonTensor(root, e.getPoint()));
-			
+
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	@Override
-	public boolean drawOverlay(Graphics2D gfx) {
+	public boolean drawOverlay(Graphics2D gfx)
+	{
 		editPart.draw(gfx);
 		return true;
 	}
