@@ -26,7 +26,7 @@ public class DrawTensorAction extends CanvasActionBase
 	private final Point position;
 
 	/** the editpart being drawn ontop of the canvas */
-	private EpsilonTensorEditPart editPart;
+	private final EpsilonTensorEditPart editPart;
 
 	/**
 	 * Constructor.
@@ -38,14 +38,14 @@ public class DrawTensorAction extends CanvasActionBase
 		super(drawingPanel, R.strings.getString("window_action_draw"), new ImageIcon(R.drawable.getURL("draw"))); //$NON-NLS-1$ //$NON-NLS-2$
 
 		this.position = new Point(0, 0);
-		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(null, position));
+		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(null, this.position));
 	}
 
 	@Override
 	public boolean doOnMouseMoved(MouseEvent e)
 	{
-		editPart.setPosition(e.getPoint());
-		canvas.repaint();
+		this.editPart.setPosition(e.getPoint());
+		this.canvas.repaint();
 		return true;
 	}
 
@@ -55,7 +55,7 @@ public class DrawTensorAction extends CanvasActionBase
 
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
-			ModelRoot root = canvas.getModel();
+			ModelRoot root = this.canvas.getModel();
 			root.addChild(new EpsilonTensor(root, e.getPoint()));
 
 			return true;
@@ -67,7 +67,7 @@ public class DrawTensorAction extends CanvasActionBase
 	@Override
 	public boolean drawOverlay(Graphics2D gfx)
 	{
-		editPart.draw(gfx);
+		this.editPart.draw(gfx);
 		return true;
 	}
 

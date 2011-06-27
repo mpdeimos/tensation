@@ -28,7 +28,7 @@ public abstract class FigureBase implements IFigure
 	FigureBase(IEditPart editPart)
 	{
 		this.editPart = editPart;
-		shapePacks = new ArrayList<ShapePack>(0);
+		this.shapePacks = new ArrayList<ShapePack>(0);
 		updateShapes();
 	}
 
@@ -41,13 +41,13 @@ public abstract class FigureBase implements IFigure
 	/** Updates the shape Objects. */
 	public void updateShapes()
 	{
-		shapePacks.clear();
+		this.shapePacks.clear();
 	}
 
 	@Override
 	public void draw(Graphics2D gfx)
 	{
-		for (ShapePack pack : shapePacks)
+		for (ShapePack pack : this.shapePacks)
 		{
 			pack.draw(gfx);
 		}
@@ -57,7 +57,7 @@ public abstract class FigureBase implements IFigure
 	public boolean containsPoints(Point point)
 	{
 
-		for (ShapePack feature : shapePacks)
+		for (ShapePack feature : this.shapePacks)
 		{
 			for (Shape shape : feature.getShapes())
 			{
@@ -73,7 +73,7 @@ public abstract class FigureBase implements IFigure
 	public boolean intersects(Rectangle rect)
 	{
 
-		for (ShapePack pack : shapePacks)
+		for (ShapePack pack : this.shapePacks)
 		{
 			for (Shape shape : pack.getShapes())
 			{

@@ -54,15 +54,15 @@ public class DrawingCanvas extends JPanel
 	{
 		this.appWindow = appWindow;
 		setBackground(Color.white);
-		mouseListener = new MouseListener();
-		addMouseMotionListener(mouseListener);
-		addMouseListener(mouseListener);
+		this.mouseListener = new MouseListener();
+		addMouseMotionListener(this.mouseListener);
+		addMouseListener(this.mouseListener);
 
-		root = new ModelRoot();
-		root.addModelChangedListener(new ModelChangedListener());
+		this.root = new ModelRoot();
+		this.root.addModelChangedListener(new ModelChangedListener());
 
-		root.addChild(new EpsilonTensor(root, new Point(30, 30)));
-		root.addChild(new EpsilonTensor(root, new Point(80, 50)));
+		this.root.addChild(new EpsilonTensor(this.root, new Point(30, 30)));
+		this.root.addChild(new EpsilonTensor(this.root, new Point(80, 50)));
 	}
 
 	@Override
@@ -75,14 +75,14 @@ public class DrawingCanvas extends JPanel
 		gfx.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		gfx.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
-		for (IEditPart part : editParts)
+		for (IEditPart part : this.editParts)
 		{
 			part.draw(gfx);
 		}
 
-		if (canvasAction != null)
+		if (this.canvasAction != null)
 		{
-			canvasAction.drawOverlay(gfx);
+			this.canvasAction.drawOverlay(gfx);
 		}
 	}
 
@@ -96,9 +96,9 @@ public class DrawingCanvas extends JPanel
 		{
 			super.mouseMoved(e);
 
-			if (canvasAction != null)
+			if (DrawingCanvas.this.canvasAction != null)
 			{
-				canvasAction.doOnMouseMoved(e);
+				DrawingCanvas.this.canvasAction.doOnMouseMoved(e);
 			}
 		}
 
@@ -107,9 +107,9 @@ public class DrawingCanvas extends JPanel
 		{
 			super.mouseClicked(e);
 
-			if (canvasAction != null)
+			if (DrawingCanvas.this.canvasAction != null)
 			{
-				if (canvasAction.doOnMouseClicked(e))
+				if (DrawingCanvas.this.canvasAction.doOnMouseClicked(e))
 					return;
 			}
 
@@ -124,9 +124,9 @@ public class DrawingCanvas extends JPanel
 		{
 			super.mousePressed(e);
 
-			if (canvasAction != null)
+			if (DrawingCanvas.this.canvasAction != null)
 			{
-				canvasAction.doOnMousePressed(e);
+				DrawingCanvas.this.canvasAction.doOnMousePressed(e);
 			}
 		}
 
@@ -135,9 +135,9 @@ public class DrawingCanvas extends JPanel
 		{
 			super.mouseReleased(e);
 
-			if (canvasAction != null)
+			if (DrawingCanvas.this.canvasAction != null)
 			{
-				canvasAction.doOnMouseReleased(e);
+				DrawingCanvas.this.canvasAction.doOnMouseReleased(e);
 			}
 		}
 
@@ -146,9 +146,9 @@ public class DrawingCanvas extends JPanel
 		{
 			super.mouseDragged(e);
 
-			if (canvasAction != null)
+			if (DrawingCanvas.this.canvasAction != null)
 			{
-				canvasAction.doOnMouseDragged(e);
+				DrawingCanvas.this.canvasAction.doOnMouseDragged(e);
 			}
 		}
 	}
@@ -170,9 +170,9 @@ public class DrawingCanvas extends JPanel
 		{
 			Log.v(DrawingCanvas.this, "added new child to model"); //$NON-NLS-1$
 
-			IEditPart part = editPartFactory.createEditPart(child);
+			IEditPart part = DrawingCanvas.this.editPartFactory.createEditPart(child);
 			if (part != null)
-				editParts.add(part);
+				DrawingCanvas.this.editParts.add(part);
 
 			repaint();
 		}
@@ -205,16 +205,16 @@ public class DrawingCanvas extends JPanel
 	/** stops the current canvas action */
 	private void stopCanvasAction(boolean startDefault)
 	{
-		if (stopCanvasActionMyChange || this.canvasAction == null)
+		if (this.stopCanvasActionMyChange || this.canvasAction == null)
 			return;
 
 		Log.d(this, "Stopped canvas action: %s", this.canvasAction); //$NON-NLS-1$
 
-		stopCanvasActionMyChange = true;
+		this.stopCanvasActionMyChange = true;
 		this.canvasAction.stopAction();
 		if (startDefault)
 			this.appWindow.startDefaultToolbarAction();
-		stopCanvasActionMyChange = false;
+		this.stopCanvasActionMyChange = false;
 
 		repaint();
 	}
@@ -223,7 +223,7 @@ public class DrawingCanvas extends JPanel
 	public ModelRoot getModel()
 	{
 		// FIXME this is really bad practice!
-		return root;
+		return this.root;
 	}
 
 	/** @return the edit parts */

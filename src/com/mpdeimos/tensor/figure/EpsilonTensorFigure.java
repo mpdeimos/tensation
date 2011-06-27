@@ -58,7 +58,7 @@ public class EpsilonTensorFigure extends FigureBase
 		List<Shape> lines = new ArrayList<Shape>(max);
 		List<Shape> fills = new ArrayList<Shape>(max + 1);
 
-		EpsilonTensor tensor = (EpsilonTensor) editPart.getModelData();
+		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModelData();
 		Point position = tensor.getPosition();
 		int x = (int) position.getX();
 		int y = (int) position.getY();
@@ -96,8 +96,8 @@ public class EpsilonTensorFigure extends FigureBase
 
 		ShapePack linePack = new ShapePack(EDrawingMode.STROKE, lines);
 		linePack.setStroke(CONNECTOR_STROKE);
-		shapePacks.add(linePack);
-		shapePacks.add(new ShapePack(EDrawingMode.FILL, fills));
+		this.shapePacks.add(linePack);
+		this.shapePacks.add(new ShapePack(EDrawingMode.FILL, fills));
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class EpsilonTensorFigure extends FigureBase
 	public Rectangle getBoundingRectangle()
 	{
 
-		EpsilonTensor tensor = (EpsilonTensor) editPart.getModelData();
+		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModelData();
 		Point position = tensor.getPosition();
 
 		int offset = CONNECTOR_STROKE_LENGTH + CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET;

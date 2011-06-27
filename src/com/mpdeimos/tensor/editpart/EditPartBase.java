@@ -48,7 +48,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 		this.model = modelData;
 		this.figure = createFigure();
 
-		model.addModelChangedListener(new ModelChangedListener());
+		this.model.addModelChangedListener(new ModelChangedListener());
 
 		for (Class<?> editPartIfc : this.getClass().getInterfaces())
 		{
@@ -63,7 +63,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 							@SuppressWarnings("unchecked")
 							// is checked
 							Constructor<? extends IFeature> constructor = (Constructor<? extends IFeature>) feature.getConstructor(editPartIfc);
-							features.add(constructor.newInstance(this));
+							this.features.add(constructor.newInstance(this));
 						}
 						catch (InvocationTargetException e)
 						{
@@ -84,7 +84,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 	@Override
 	public IModelData getModelData()
 	{
-		return model;
+		return this.model;
 	}
 
 	@Override
@@ -97,12 +97,12 @@ public abstract class EditPartBase implements IFeatureEditPart
 	public void draw(Graphics2D gfx)
 	{
 		Color oldPaint = gfx.getColor();
-		if (highlighted)
+		if (this.highlighted)
 			gfx.setColor(Color.BLUE);
 
 		getFigure().draw(gfx);
 
-		if (highlighted)
+		if (this.highlighted)
 			gfx.setColor(oldPaint);
 	}
 
@@ -131,19 +131,19 @@ public abstract class EditPartBase implements IFeatureEditPart
 		@Override
 		public void onModelChanged(IModelData model)
 		{
-			figure.redraw();
+			EditPartBase.this.figure.redraw();
 		}
 
 		@Override
 		public void onChildAdded(IModelData child)
 		{
-			figure.redraw();
+			EditPartBase.this.figure.redraw();
 		}
 
 		@Override
 		public void onChildRemoved(IModelData child)
 		{
-			figure.redraw();
+			EditPartBase.this.figure.redraw();
 		}
 
 	}
@@ -151,7 +151,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 	@Override
 	public List<IFeature> getFeatures()
 	{
-		return features;
+		return this.features;
 	}
 
 	@Override

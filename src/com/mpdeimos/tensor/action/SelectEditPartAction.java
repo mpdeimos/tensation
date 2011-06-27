@@ -53,7 +53,7 @@ public class SelectEditPartAction extends CanvasActionBase
 
 		// reset some stuff
 		this.selectedEditPart = null;
-		canvas.setCursor(Cursor.getDefaultCursor());
+		this.canvas.setCursor(Cursor.getDefaultCursor());
 	}
 
 	@Override
@@ -61,35 +61,35 @@ public class SelectEditPartAction extends CanvasActionBase
 	{
 		super.doOnMouseMoved(e);
 
-		if (highlightedEditPart != null)
-			highlightedEditPart.setHighlighted(false);
+		if (this.highlightedEditPart != null)
+			this.highlightedEditPart.setHighlighted(false);
 
 		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_MOVED))
 			return true;
 
-		highlightedEditPart = null;
-		for (IEditPart editPart : canvas.getEditParts())
+		this.highlightedEditPart = null;
+		for (IEditPart editPart : this.canvas.getEditParts())
 		{
-			if (editPart == selectedEditPart)
+			if (editPart == this.selectedEditPart)
 				continue;
 
 			boolean tmpOver = isMouseOver(editPart, e.getPoint());
 
-			if (tmpOver && highlightedEditPart == null)
-				highlightedEditPart = editPart;
+			if (tmpOver && this.highlightedEditPart == null)
+				this.highlightedEditPart = editPart;
 
 			editPart.setHighlighted(false);
 		}
 
-		if (highlightedEditPart != null)
+		if (this.highlightedEditPart != null)
 		{
-			highlightedEditPart.setHighlighted(true);
-			canvas.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			this.highlightedEditPart.setHighlighted(true);
+			this.canvas.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		}
 		else
-			canvas.setCursor(Cursor.getDefaultCursor());
+			this.canvas.setCursor(Cursor.getDefaultCursor());
 
-		canvas.repaint();
+		this.canvas.repaint();
 		return true;
 	}
 
@@ -98,26 +98,26 @@ public class SelectEditPartAction extends CanvasActionBase
 	{
 		super.doOnMousePressed(e);
 
-		if (selectedEditPart != null)
-			selectedEditPart.setHighlighted(false);
+		if (this.selectedEditPart != null)
+			this.selectedEditPart.setHighlighted(false);
 
 		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_PRESSED))
 			return true;
 
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
-			if (selectedEditPart != null)
-				selectedEditPart.setSelected(false);
+			if (this.selectedEditPart != null)
+				this.selectedEditPart.setSelected(false);
 
-			selectedEditPart = null;
-			for (IEditPart editPart : canvas.getEditParts())
+			this.selectedEditPart = null;
+			for (IEditPart editPart : this.canvas.getEditParts())
 			{
 				if (isMouseOver(editPart, e.getPoint()))
 				{
-					selectedEditPart = editPart;
-					selectedEditPart.setSelected(true);
+					this.selectedEditPart = editPart;
+					this.selectedEditPart.setSelected(true);
 
-					canvas.repaint();
+					this.canvas.repaint();
 
 					handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_PRESSED);
 
@@ -156,28 +156,28 @@ public class SelectEditPartAction extends CanvasActionBase
 	/** Handles the feature actions for a specific mouse event. */
 	private boolean handleFeaturesForMouseEvent(MouseEvent e, int which)
 	{
-		if (selectedEditPart != null && selectedEditPart instanceof IFeatureEditPart)
+		if (this.selectedEditPart != null && this.selectedEditPart instanceof IFeatureEditPart)
 		{
-			IFeatureEditPart featureEditPart = (IFeatureEditPart) selectedEditPart;
+			IFeatureEditPart featureEditPart = (IFeatureEditPart) this.selectedEditPart;
 			for (IFeature feature : featureEditPart.getFeatures())
 			{
 				boolean handled = false;
 				switch (which)
 				{
 				case MouseEvent.MOUSE_CLICKED:
-					handled = feature.doOnMouseClicked(canvas, e);
+					handled = feature.doOnMouseClicked(this.canvas, e);
 					break;
 				case MouseEvent.MOUSE_DRAGGED:
-					handled = feature.doOnMouseDragged(canvas, e);
+					handled = feature.doOnMouseDragged(this.canvas, e);
 					break;
 				case MouseEvent.MOUSE_MOVED:
-					handled = feature.doOnMouseMoved(canvas, e);
+					handled = feature.doOnMouseMoved(this.canvas, e);
 					break;
 				case MouseEvent.MOUSE_PRESSED:
-					handled = feature.doOnMousePressed(canvas, e);
+					handled = feature.doOnMousePressed(this.canvas, e);
 					break;
 				case MouseEvent.MOUSE_RELEASED:
-					handled = feature.doOnMouseReleased(canvas, e);
+					handled = feature.doOnMouseReleased(this.canvas, e);
 					break;
 				default:
 					handled = false;
@@ -195,22 +195,22 @@ public class SelectEditPartAction extends CanvasActionBase
 	@Override
 	public boolean drawOverlay(Graphics2D gfx)
 	{
-		if (selectedEditPart != null)
+		if (this.selectedEditPart != null)
 		{
 			Stroke s = gfx.getStroke();
 			gfx.setStroke(EDITPART_SELECTION_STROKE);
-			Rectangle r = selectedEditPart.getBoundingRectangle();
+			Rectangle r = this.selectedEditPart.getBoundingRectangle();
 			Rectangle2D rect = new Rectangle2D.Double(r.getX() - EDITPART_SELECTION_STROKE_OFFSET + 0.5, r.getY() - EDITPART_SELECTION_STROKE_OFFSET + 0.5, r.getWidth() + 2 * EDITPART_SELECTION_STROKE_OFFSET, r.getHeight() + 2 * EDITPART_SELECTION_STROKE_OFFSET);
 			gfx.draw(rect);
 
 			gfx.setStroke(s);
 
-			if (selectedEditPart != null && selectedEditPart instanceof IFeatureEditPart)
+			if (this.selectedEditPart != null && this.selectedEditPart instanceof IFeatureEditPart)
 			{
-				IFeatureEditPart featureEditPart = (IFeatureEditPart) selectedEditPart;
+				IFeatureEditPart featureEditPart = (IFeatureEditPart) this.selectedEditPart;
 				for (IFeature feature : featureEditPart.getFeatures())
 				{
-					feature.drawOverlay(canvas, gfx);
+					feature.drawOverlay(this.canvas, gfx);
 				}
 			}
 

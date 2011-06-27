@@ -40,7 +40,7 @@ public interface IMovableEditPart extends IFeatureEditPart
 		@Override
 		public boolean doOnMouseMoved(DrawingCanvas canvas, MouseEvent e)
 		{
-			if (editPart.getBoundingRectangle().contains(e.getPoint()))
+			if (this.editPart.getBoundingRectangle().contains(e.getPoint()))
 			{
 				canvas.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 				canvas.repaint();
@@ -54,10 +54,10 @@ public interface IMovableEditPart extends IFeatureEditPart
 		{
 			if (e.getButton() == MouseEvent.BUTTON1)
 			{
-				if (editPart.getBoundingRectangle().contains(e.getPoint()))
+				if (this.editPart.getBoundingRectangle().contains(e.getPoint()))
 				{
-					Point curPos = editPart.getPosition();
-					moveStartPointDelta = PointUtil.getDelta(curPos, e.getPoint());
+					Point curPos = this.editPart.getPosition();
+					this.moveStartPointDelta = PointUtil.getDelta(curPos, e.getPoint());
 					return true;
 				}
 			}
@@ -68,11 +68,11 @@ public interface IMovableEditPart extends IFeatureEditPart
 		@Override
 		public boolean doOnMouseDragged(DrawingCanvas canvas, MouseEvent e)
 		{
-			if (moveStartPointDelta != null)
+			if (this.moveStartPointDelta != null)
 			{
 				Point curPos = e.getPoint();
-				curPos.translate(moveStartPointDelta.width, moveStartPointDelta.height);
-				editPart.setPosition(curPos);
+				curPos.translate(this.moveStartPointDelta.width, this.moveStartPointDelta.height);
+				this.editPart.setPosition(curPos);
 				return true;
 			}
 

@@ -39,7 +39,7 @@ public class EpsilonTensor extends ModelDataBase
 	 */
 	public Point getPosition()
 	{
-		return position;
+		return this.position;
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class EpsilonTensor extends ModelDataBase
 	 */
 	public double getRotation()
 	{
-		return rotation;
+		return this.rotation;
 	}
 
 	/** Sets the position of the current point. TODO refactor to base interface */

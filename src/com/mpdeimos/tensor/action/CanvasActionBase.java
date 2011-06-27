@@ -35,14 +35,14 @@ public abstract class CanvasActionBase extends AbstractAction implements ICanvas
 	public void stopAction()
 	{
 		putValue(Action.SELECTED_KEY, false);
-		canvas.stopCanvasAction();
+		this.canvas.stopCanvasAction();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		putValue(Action.SELECTED_KEY, true);
-		canvas.startCanvasAction(this);
+		this.canvas.startCanvasAction(this);
 	}
 
 	@Override

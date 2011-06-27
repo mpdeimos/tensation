@@ -44,17 +44,17 @@ public class ShapePack
 	public void draw(Graphics2D gfx)
 	{
 		Stroke oldStroke = null;
-		if (stroke != null)
+		if (this.stroke != null)
 		{
 			oldStroke = gfx.getStroke();
-			gfx.setStroke(stroke);
+			gfx.setStroke(this.stroke);
 		}
 
-		for (Shape shape : shapes)
+		for (Shape shape : this.shapes)
 		{
-			if (EDrawingMode.FILL.equals(mode))
+			if (EDrawingMode.FILL.equals(this.mode))
 				gfx.fill(shape);
-			else if (EDrawingMode.STROKE.equals(mode))
+			else if (EDrawingMode.STROKE.equals(this.mode))
 				gfx.draw(shape);
 		}
 
@@ -65,7 +65,7 @@ public class ShapePack
 	/** @return the Shapes of this Feature. */
 	public ImmutableList<Shape> getShapes()
 	{
-		return new ImmutableList<Shape>(shapes);
+		return new ImmutableList<Shape>(this.shapes);
 	}
 
 	/** Sets the stroke being used for this Feature. */

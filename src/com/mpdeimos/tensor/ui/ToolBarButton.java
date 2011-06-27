@@ -43,7 +43,7 @@ public class ToolBarButton extends JButton
 				Boolean newValue = (Boolean) evt.getNewValue();
 				if (newValue)
 				{
-					for (Component comp : toolBar.getComponents())
+					for (Component comp : ToolBarButton.this.toolBar.getComponents())
 					{
 						if (comp instanceof ToolBarButton)
 						{

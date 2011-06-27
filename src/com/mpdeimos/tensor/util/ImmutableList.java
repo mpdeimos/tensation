@@ -55,55 +55,55 @@ public class ImmutableList<T> implements List<T>
 	@Override
 	public boolean contains(Object o)
 	{
-		return backend.contains(o);
+		return this.backend.contains(o);
 	}
 
 	@Override
 	public boolean containsAll(Collection<?> c)
 	{
-		return backend.containsAll(c);
+		return this.backend.containsAll(c);
 	}
 
 	@Override
 	public T get(int pos)
 	{
-		return backend.get(pos);
+		return this.backend.get(pos);
 	}
 
 	@Override
 	public int indexOf(Object o)
 	{
-		return backend.indexOf(o);
+		return this.backend.indexOf(o);
 	}
 
 	@Override
 	public boolean isEmpty()
 	{
-		return backend.isEmpty();
+		return this.backend.isEmpty();
 	}
 
 	@Override
 	public Iterator<T> iterator()
 	{
-		return backend.iterator();
+		return this.backend.iterator();
 	}
 
 	@Override
 	public int lastIndexOf(Object o)
 	{
-		return backend.lastIndexOf(o);
+		return this.backend.lastIndexOf(o);
 	}
 
 	@Override
 	public ListIterator<T> listIterator()
 	{
-		return backend.listIterator();
+		return this.backend.listIterator();
 	}
 
 	@Override
 	public ListIterator<T> listIterator(int index)
 	{
-		return backend.listIterator(index);
+		return this.backend.listIterator(index);
 	}
 
 	@Override
@@ -139,26 +139,26 @@ public class ImmutableList<T> implements List<T>
 	@Override
 	public int size()
 	{
-		return backend.size();
+		return this.backend.size();
 	}
 
 	@Override
 	public List<T> subList(int fromIndex, int toIndex)
 	{
-		return new ImmutableList<T>(backend.subList(fromIndex, toIndex));
+		return new ImmutableList<T>(this.backend.subList(fromIndex, toIndex));
 	}
 
 	@Override
 	public Object[] toArray()
 	{
-		return backend.toArray();
+		return this.backend.toArray();
 	}
 
 	@SuppressWarnings("hiding")
 	@Override
 	public <T> T[] toArray(T[] a)
 	{
-		return backend.toArray(a);
+		return this.backend.toArray(a);
 	}
 
 }
