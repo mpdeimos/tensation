@@ -14,6 +14,8 @@ import com.mpdeimos.tensor.figure.EpsilonTensorFigure;
 import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.model.IModelData;
+import com.mpdeimos.tensor.model.TensorConnectionAnchor;
+import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 
 /**
  * EditPart class for an epsilon tensor.
@@ -69,27 +71,37 @@ public class EpsilonTensorEditPart extends EditPartBase implements
 	}
 
 	@Override
-	public List<Connection> getConnectionSources()
+	public List<ConnectionPoint> getConnectionSources()
 	{
-		List<Connection> connections = new ArrayList<Connection>();
-		Point2D[] connectionPoints = ((EpsilonTensorFigure) getFigure()).getConnectionPoints();
-		for (int i = 0; i < connectionPoints.length; i++)
+		EpsilonTensorFigure figure = (EpsilonTensorFigure) getFigure();
+		Point2D[] connectionPoints = figure.getConnectionPoints();
+		EpsilonTensor tensor = (EpsilonTensor) getModelData();
+
+		List<ConnectionPoint> connections = new ArrayList<ConnectionPoint>();
+		for (TensorConnectionAnchor anchor : tensor.getAnchors())
 		{
-			if (i % 2 == 0)
-				connections.add(new Connection(i, connectionPoints[i]));
+			if (anchor.getDirection() == EDirection.SOURCE)
+				connections.add(new ConnectionPoint(
+						anchor,
+						connectionPoints[anchor.getId()]));
 		}
 		return connections;
 	}
 
 	@Override
-	public List<Connection> getConnectionSinks()
+	public List<ConnectionPoint> getConnectionSinks()
 	{
-		List<Connection> connections = new ArrayList<Connection>();
-		Point2D[] connectionPoints = ((EpsilonTensorFigure) getFigure()).getConnectionPoints();
-		for (int i = 0; i < connectionPoints.length; i++)
+		EpsilonTensorFigure figure = (EpsilonTensorFigure) getFigure();
+		Point2D[] connectionPoints = figure.getConnectionPoints();
+		EpsilonTensor tensor = (EpsilonTensor) getModelData();
+
+		List<ConnectionPoint> connections = new ArrayList<ConnectionPoint>();
+		for (TensorConnectionAnchor anchor : tensor.getAnchors())
 		{
-			if (i % 2 == 1)
-				connections.add(new Connection(i, connectionPoints[i]));
+			if (anchor.getDirection() == EDirection.SINK)
+				connections.add(new ConnectionPoint(
+						anchor,
+						connectionPoints[anchor.getId()]));
 		}
 		return connections;
 	}

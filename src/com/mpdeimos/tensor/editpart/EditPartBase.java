@@ -40,6 +40,9 @@ public abstract class EditPartBase implements IFeatureEditPart
 	/** The list of Features linked to this EditPart. Default is null. */
 	protected HashMap<Class<? extends ICanvasAction>, List<IFeature>> featureMap = new HashMap<Class<? extends ICanvasAction>, List<IFeature>>();
 
+	/** The model change listener for this class. */
+	private final ModelChangedListener listener;
+
 	/** @return the newly created figure for this EditPart. */
 	abstract protected IFigure createFigure();
 
@@ -51,7 +54,8 @@ public abstract class EditPartBase implements IFeatureEditPart
 		this.model = modelData;
 		this.figure = createFigure();
 
-		this.model.addModelChangedListener(new ModelChangedListener());
+		this.listener = new ModelChangedListener();
+		this.model.addModelChangedListener(this.listener);
 
 		for (Class<?> editPartIfc : this.getClass().getInterfaces())
 		{
@@ -95,6 +99,12 @@ public abstract class EditPartBase implements IFeatureEditPart
 	}
 
 	@Override
+	protected void finalize() throws Throwable
+	{
+		this.model.removeModelDataChangedListener(this.listener);
+	}
+
+	@Override
 	public IModelData getModelData()
 	{
 		return this.model;
@@ -120,7 +130,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 	}
 
 	/** @return the figure responsible for drawing this object */
-	protected IFigure getFigure()
+	public IFigure getFigure()
 	{
 		return this.figure;
 	}
@@ -171,7 +181,11 @@ public abstract class EditPartBase implements IFeatureEditPart
 	@Override
 	public void setSelected(boolean selected)
 	{
-		for (IFeature feature : getFeatures(SelectEditPartAction.class))
+		List<IFeature> features = getFeatures(SelectEditPartAction.class);
+		if (features == null)
+			return;
+
+		for (IFeature feature : features)
 		{
 			feature.doOnEditPartSelected(selected);
 		}

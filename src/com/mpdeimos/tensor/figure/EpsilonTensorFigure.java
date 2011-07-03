@@ -1,7 +1,6 @@
 package com.mpdeimos.tensor.figure;
 
 import java.awt.BasicStroke;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -39,9 +38,6 @@ public class EpsilonTensorFigure extends FigureBase
 	/** the style of the connector stroke */
 	private static final Stroke CONNECTOR_STROKE = new BasicStroke(1.1f);
 
-	/** amount of connections. TODO move to model. */
-	private static final int NUM_CONNECTIONS = 3;
-
 	/** buffer for connection points. */
 	private Point2D[] connectionPoints;
 
@@ -57,7 +53,8 @@ public class EpsilonTensorFigure extends FigureBase
 	protected void initBeforeFirstUpdateShapes()
 	{
 		super.initBeforeFirstUpdateShapes();
-		this.connectionPoints = new Point2D[NUM_CONNECTIONS];
+		int numConnections = ((EpsilonTensor) this.editPart.getModelData()).getAnchors().size();
+		this.connectionPoints = new Point2D[numConnections];
 	}
 
 	@Override
@@ -65,8 +62,10 @@ public class EpsilonTensorFigure extends FigureBase
 	{
 		super.updateShapes();
 
-		List<Shape> lines = new ArrayList<Shape>(NUM_CONNECTIONS);
-		List<Shape> fills = new ArrayList<Shape>(NUM_CONNECTIONS + 1);
+		int numConnections = this.connectionPoints.length;
+
+		List<Shape> lines = new ArrayList<Shape>(numConnections);
+		List<Shape> fills = new ArrayList<Shape>(numConnections + 1);
 
 		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModelData();
 		Point position = tensor.getPosition();
@@ -80,32 +79,11 @@ public class EpsilonTensorFigure extends FigureBase
 				2 * CENTER_CIRCLE_RADIUS - 1);
 		fills.add(circle);
 
-		for (int i = 0; i < NUM_CONNECTIONS; i++)
+		for (int i = 0; i < numConnections; i++)
 		{
-			double ang = (((double) i) / NUM_CONNECTIONS + tensor.getRotation() / 360)
-					* 2
-					* Math.PI;
-			ang %= 2 * Math.PI;
-			double sin = Math.sin(ang);
-			double cos = Math.cos(ang);
-
-			Point2D bottom = new Point2D.Double(
-					x + (CENTER_CIRCLE_RADIUS
-							+ CONNECTOR_STROKE_OFFSET)
-							* cos,
-					y + (CENTER_CIRCLE_RADIUS
-							+ CONNECTOR_STROKE_OFFSET)
-							* sin);
-
-			Point2D top = new Point2D.Double(
-					x + (CENTER_CIRCLE_RADIUS
-							+ CONNECTOR_STROKE_OFFSET
-							+ CONNECTOR_STROKE_LENGTH)
-							* cos,
-					y + (CENTER_CIRCLE_RADIUS
-							+ CONNECTOR_STROKE_OFFSET
-							+ CONNECTOR_STROKE_LENGTH)
-							* sin);
+			Point2D top = new Point2D.Double();
+			Point2D bottom = new Point2D.Double();
+			double ang = initAnchorPoints(tensor, i, top, bottom);
 
 			this.connectionPoints[i] = top;
 
@@ -139,10 +117,45 @@ public class EpsilonTensorFigure extends FigureBase
 		this.shapePacks.add(new ShapePack(EDrawingMode.FILL, fills));
 	}
 
-	@Override
-	public void draw(Graphics2D gfx)
+	/** inits the anchor points for a tensor. */
+	public static double initAnchorPoints(
+			EpsilonTensor tensor,
+			int i,
+			Point2D top,
+			Point2D bottom)
 	{
-		super.draw(gfx);
+		double ang = (((double) i) / tensor.getAnchors().size() + tensor.getRotation() / 360)
+				* 2
+				* Math.PI;
+		ang %= 2 * Math.PI;
+		double sin = Math.sin(ang);
+		double cos = Math.cos(ang);
+
+		if (bottom != null)
+		{
+			bottom.setLocation(
+					tensor.getPosition().x + (CENTER_CIRCLE_RADIUS
+							+ CONNECTOR_STROKE_OFFSET)
+							* cos,
+					tensor.getPosition().y + (CENTER_CIRCLE_RADIUS
+							+ CONNECTOR_STROKE_OFFSET)
+							* sin);
+		}
+
+		if (top != null)
+		{
+			top.setLocation(
+					tensor.getPosition().x + (CENTER_CIRCLE_RADIUS
+							+ CONNECTOR_STROKE_OFFSET
+							+ CONNECTOR_STROKE_LENGTH)
+							* cos,
+					tensor.getPosition().y + (CENTER_CIRCLE_RADIUS
+							+ CONNECTOR_STROKE_OFFSET
+							+ CONNECTOR_STROKE_LENGTH)
+							* sin);
+		}
+
+		return ang;
 	}
 
 	//

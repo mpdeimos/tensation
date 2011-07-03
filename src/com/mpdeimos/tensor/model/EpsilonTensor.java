@@ -1,6 +1,11 @@
 package com.mpdeimos.tensor.model;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
+import com.mpdeimos.tensor.util.ImmutableList;
 
 /**
  * Represents an Epsilon Tensor (ok, will do so in the future, now we're just
@@ -18,6 +23,9 @@ public class EpsilonTensor extends ModelDataBase
 	/** Rotation of the current figure */
 	private double rotation = 0;
 
+	/** Anchors for this tensor. */
+	private final List<TensorConnectionAnchor> anchors;
+
 	/**
 	 * Constructor.
 	 */
@@ -33,6 +41,12 @@ public class EpsilonTensor extends ModelDataBase
 	{
 		super(parent);
 		this.position = position;
+
+		this.anchors = new ArrayList<TensorConnectionAnchor>();
+		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SOURCE));
+		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SINK));
+		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SOURCE));
+		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SINK));
 	}
 
 	/**
@@ -68,4 +82,9 @@ public class EpsilonTensor extends ModelDataBase
 		fireOnModelDataChanged(this);
 	}
 
+	/** @return the anchors of this tensor. */
+	public ImmutableList<TensorConnectionAnchor> getAnchors()
+	{
+		return new ImmutableList<TensorConnectionAnchor>(this.anchors);
+	}
 }

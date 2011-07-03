@@ -19,7 +19,7 @@ public abstract class ModelDataBase implements IModelData
 	private static int INITIAL_CHILDLIST_SIZE = 3;
 
 	/** listeners for modeldata changes */
-	private HashSet<IModelChangedListener> listeners = new LinkedHashSet<IModelChangedListener>();
+	private final HashSet<IModelChangedListener> listeners = new LinkedHashSet<IModelChangedListener>();
 
 	/** the children of this model */
 	private List<IModelData> children = null;
@@ -88,7 +88,10 @@ public abstract class ModelDataBase implements IModelData
 	{
 		for (IModelChangedListener listener : this.listeners)
 		{
-			listener.onModelChanged(model);
+			if (listener == null)
+				removeModelDataChangedListener(listener);
+			else
+				listener.onModelChanged(model);
 		}
 
 		if (this.parent != null && this.parent instanceof ModelDataBase)
@@ -100,7 +103,10 @@ public abstract class ModelDataBase implements IModelData
 	{
 		for (IModelChangedListener listener : this.listeners)
 		{
-			listener.onChildAdded(child);
+			if (listener == null)
+				removeModelDataChangedListener(listener);
+			else
+				listener.onChildAdded(child);
 		}
 
 		if (this.parent != null && this.parent instanceof ModelDataBase)
@@ -112,7 +118,10 @@ public abstract class ModelDataBase implements IModelData
 	{
 		for (IModelChangedListener listener : this.listeners)
 		{
-			listener.onChildRemoved(child);
+			if (listener == null)
+				removeModelDataChangedListener(listener);
+			else
+				listener.onChildRemoved(child);
 		}
 
 		if (this.parent != null && this.parent instanceof ModelDataBase)

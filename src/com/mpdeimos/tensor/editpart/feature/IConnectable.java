@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.action.TensorConnectAction;
+import com.mpdeimos.tensor.model.TensorConnectionAnchor;
 
 /**
  * Interface for EditParts with Connection abilities.
@@ -19,10 +20,10 @@ import com.mpdeimos.tensor.action.TensorConnectAction;
 public interface IConnectable extends IFeatureEditPart
 {
 	/** @return List of connection sources. */
-	public List<Connection> getConnectionSources();
+	public List<ConnectionPoint> getConnectionSources();
 
 	/** @return List of connection sinks. */
-	public List<Connection> getConnectionSinks();
+	public List<ConnectionPoint> getConnectionSinks();
 
 	/** feature class for EditParts with connection sources. */
 	public class Feature extends
@@ -39,13 +40,13 @@ public interface IConnectable extends IFeatureEditPart
 		{
 			TensorConnectAction connectAction = (TensorConnectAction) action;
 
-			List<Connection> connections;
+			List<ConnectionPoint> connections;
 			if (connectAction.hasStartPoint())
 				connections = this.editPart.getConnectionSinks();
 			else
 				connections = this.editPart.getConnectionSources();
 
-			for (Connection connection : connections)
+			for (ConnectionPoint connection : connections)
 			{
 				if (e.getPoint().distance(connection.getPoint()) > 5)
 					continue;
@@ -62,18 +63,18 @@ public interface IConnectable extends IFeatureEditPart
 		{
 			TensorConnectAction connectAction = (TensorConnectAction) action;
 
-			List<Connection> connections;
+			List<ConnectionPoint> connections;
 			if (connectAction.hasStartPoint())
 				connections = this.editPart.getConnectionSinks();
 			else
 				connections = this.editPart.getConnectionSources();
 
-			for (Connection connection : connections)
+			for (ConnectionPoint connection : connections)
 			{
 				if (e.getPoint().distance(connection.getPoint()) > 5)
 					continue;
 
-				connectAction.setStartPoint(this.editPart, connection.getId());
+				connectAction.setStartPoint(connection);
 
 				return true;
 			}
@@ -89,14 +90,14 @@ public interface IConnectable extends IFeatureEditPart
 			if (!connectAction.hasStartPoint())
 				return false;
 
-			List<Connection> connections = this.editPart.getConnectionSinks();
+			List<ConnectionPoint> connections = this.editPart.getConnectionSinks();
 
-			for (Connection connection : connections)
+			for (ConnectionPoint connection : connections)
 			{
 				if (e.getPoint().distance(connection.getPoint()) > 5)
 					continue;
 
-				connectAction.setEndPoint(this.editPart, connection.getId());
+				connectAction.setEndPoint(connection);
 
 				return true;
 			}
@@ -105,11 +106,17 @@ public interface IConnectable extends IFeatureEditPart
 		}
 
 		@Override
+		public boolean doOnMouseReleased(ICanvasAction action, MouseEvent e)
+		{
+			return doOnMouseDragged(action, e);
+		}
+
+		@Override
 		public boolean drawOverlay(ICanvasAction action, Graphics2D gfx)
 		{
 			TensorConnectAction connectAction = (TensorConnectAction) action;
 
-			List<Connection> connections;
+			List<ConnectionPoint> connections;
 			if (connectAction.hasStartPoint())
 				connections = this.editPart.getConnectionSinks();
 			else
@@ -119,7 +126,7 @@ public interface IConnectable extends IFeatureEditPart
 				return false;
 
 			Ellipse2D anchor = null;
-			for (Connection connection : connections)
+			for (ConnectionPoint connection : connections)
 			{
 				anchor = new Ellipse2D.Double(
 						connection.getPoint().getX() - 4,
@@ -135,25 +142,25 @@ public interface IConnectable extends IFeatureEditPart
 	}
 
 	/** Connection source helper class */
-	public class Connection
+	public class ConnectionPoint
 	{
-		/** The unique connection source ID within this edit part. */
-		private final int id;
+		/** The connection anchor. */
+		private final TensorConnectionAnchor anchor;
 
 		/** The 2D point coordinates for the connection source. */
 		private final Point2D point;
 
 		/** Constructor. */
-		public Connection(int id, Point2D pt)
+		public ConnectionPoint(TensorConnectionAnchor anchor, Point2D pt)
 		{
-			this.id = id;
+			this.anchor = anchor;
 			this.point = pt;
 		}
 
-		/** @return the unique id for this connection source. */
-		public int getId()
+		/** @return the anchor of this connection. */
+		public TensorConnectionAnchor getAnchor()
 		{
-			return this.id;
+			return this.anchor;
 		}
 
 		/** @return the point for this connection source. */

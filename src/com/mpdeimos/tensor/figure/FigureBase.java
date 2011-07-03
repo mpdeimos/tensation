@@ -77,6 +77,23 @@ public abstract class FigureBase implements IFigure
 	}
 
 	@Override
+	public Rectangle getBoundingRectangle()
+	{
+		Rectangle r = null;
+		for (ShapePack feature : this.shapePacks)
+		{
+			for (Shape shape : feature.getShapes())
+			{
+				if (r == null)
+					r = shape.getBounds();
+				else
+					r.createUnion(shape.getBounds());
+			}
+		}
+		return r;
+	}
+
+	@Override
 	public boolean intersects(Rectangle rect)
 	{
 
