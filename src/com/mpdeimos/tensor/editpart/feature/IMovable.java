@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 
 import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.action.SelectEditPartAction;
-import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.util.PointUtil;
 
 /**
@@ -19,7 +18,7 @@ import com.mpdeimos.tensor.util.PointUtil;
  * @author mpdeimos
  * 
  */
-public interface IMovableEditPart extends IFeatureEditPart
+public interface IMovable extends IFeatureEditPart
 {
 	/** Returns the current position of the EditPart. */
 	public Point getPosition();
@@ -28,37 +27,31 @@ public interface IMovableEditPart extends IFeatureEditPart
 	public void setPosition(Point p);
 
 	/** feature class for movable EditParts */
-	public class Feature extends FeatureBase<IMovableEditPart>
+	public class Feature extends FeatureBase<IMovable, SelectEditPartAction>
 	{
 		/** The offset to the EditPart position when in moving mode. */
 		private Dimension moveStartPointDelta;
 
 		/** Constructor. */
-		public Feature(IMovableEditPart editPart)
+		public Feature(IMovable editPart)
 		{
 			super(editPart);
 		}
 
 		@Override
-		public Class<? extends ICanvasAction> getActionGroup()
-		{
-			return SelectEditPartAction.class;
-		}
-
-		@Override
-		public boolean doOnMouseMoved(DrawingCanvas canvas, MouseEvent e)
+		public boolean doOnMouseMoved(ICanvasAction action, MouseEvent e)
 		{
 			if (this.editPart.getBoundingRectangle().contains(e.getPoint()))
 			{
-				canvas.setCursor(new Cursor(Cursor.MOVE_CURSOR));
-				canvas.repaint();
+				action.getCanvas().setCursor(new Cursor(Cursor.MOVE_CURSOR));
+				action.getCanvas().repaint();
 				return true;
 			}
 			return false;
 		}
 
 		@Override
-		public boolean doOnMousePressed(DrawingCanvas canvas, MouseEvent e)
+		public boolean doOnMousePressed(ICanvasAction action, MouseEvent e)
 		{
 			if (e.getButton() == MouseEvent.BUTTON1)
 			{
@@ -76,7 +69,7 @@ public interface IMovableEditPart extends IFeatureEditPart
 		}
 
 		@Override
-		public boolean doOnMouseDragged(DrawingCanvas canvas, MouseEvent e)
+		public boolean doOnMouseDragged(ICanvasAction action, MouseEvent e)
 		{
 			if (this.moveStartPointDelta != null)
 			{
@@ -92,7 +85,7 @@ public interface IMovableEditPart extends IFeatureEditPart
 		}
 
 		@Override
-		public boolean doOnMouseReleased(DrawingCanvas canvas, MouseEvent e)
+		public boolean doOnMouseReleased(ICanvasAction action, MouseEvent e)
 		{
 			this.moveStartPointDelta = null;
 			return false;

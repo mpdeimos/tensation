@@ -86,12 +86,13 @@ public abstract class CanvasActionBase extends AbstractAction implements
 			List<IEditPart> editParts,
 			Graphics2D gfx)
 	{
-		boolean handled = false;
 		for (IEditPart editPart : editParts)
 		{
-			handled |= drawOverlayForFeatures(editPart, gfx);
+			if (drawOverlayForFeatures(editPart, gfx))
+				return true;
 		}
-		return handled;
+
+		return false;
 	}
 
 	/** Draws an overlay for all features of the given EditPart. */
@@ -99,8 +100,6 @@ public abstract class CanvasActionBase extends AbstractAction implements
 			IEditPart editPart,
 			Graphics2D gfx)
 	{
-		boolean handled = false;
-
 		if (!(editPart instanceof IFeatureEditPart))
 			return false;
 
@@ -110,10 +109,11 @@ public abstract class CanvasActionBase extends AbstractAction implements
 
 		for (IFeature feature : features)
 		{
-			handled |= feature.drawOverlay(this.canvas, gfx);
+			if (feature.drawOverlay(this, gfx))
+				return true;
 		}
 
-		return handled;
+		return false;
 	}
 
 	/** Handles the feature actions for a specific mouse event. */
@@ -151,19 +151,19 @@ public abstract class CanvasActionBase extends AbstractAction implements
 			switch (which)
 			{
 			case MouseEvent.MOUSE_CLICKED:
-				handled = feature.doOnMouseClicked(this.canvas, e);
+				handled = feature.doOnMouseClicked(this, e);
 				break;
 			case MouseEvent.MOUSE_DRAGGED:
-				handled = feature.doOnMouseDragged(this.canvas, e);
+				handled = feature.doOnMouseDragged(this, e);
 				break;
 			case MouseEvent.MOUSE_MOVED:
-				handled = feature.doOnMouseMoved(this.canvas, e);
+				handled = feature.doOnMouseMoved(this, e);
 				break;
 			case MouseEvent.MOUSE_PRESSED:
-				handled = feature.doOnMousePressed(this.canvas, e);
+				handled = feature.doOnMousePressed(this, e);
 				break;
 			case MouseEvent.MOUSE_RELEASED:
-				handled = feature.doOnMouseReleased(this.canvas, e);
+				handled = feature.doOnMouseReleased(this, e);
 				break;
 			default:
 				handled = false;
@@ -175,5 +175,11 @@ public abstract class CanvasActionBase extends AbstractAction implements
 		}
 
 		return false;
+	}
+
+	@Override
+	public DrawingCanvas getCanvas()
+	{
+		return this.canvas;
 	}
 }

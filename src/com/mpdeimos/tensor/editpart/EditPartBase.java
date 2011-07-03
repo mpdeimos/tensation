@@ -55,40 +55,40 @@ public abstract class EditPartBase implements IFeatureEditPart
 
 		for (Class<?> editPartIfc : this.getClass().getInterfaces())
 		{
-			if (IFeatureEditPart.class.isAssignableFrom(editPartIfc))
-			{
-				for (Class<?> feature : editPartIfc.getClasses())
-				{
-					if (FeatureBase.class.isAssignableFrom(feature))
-					{
-						try
-						{
-							@SuppressWarnings("unchecked")
-							// is checked
-							Constructor<? extends IFeature> constructor = (Constructor<? extends IFeature>) feature.getConstructor(editPartIfc);
-							IFeature featureInstance = constructor.newInstance(this);
+			if (!IFeatureEditPart.class.isAssignableFrom(editPartIfc))
+				continue;
 
-							List<IFeature> features = this.featureMap.get(featureInstance.getActionGroup());
-							if (features == null)
-							{
-								features = new ArrayList<IFeature>();
-								this.featureMap.put(
+			for (Class<?> feature : editPartIfc.getClasses())
+			{
+				if (!FeatureBase.class.isAssignableFrom(feature))
+					continue;
+
+				try
+				{
+					@SuppressWarnings("unchecked")
+					// is checked
+					Constructor<? extends IFeature> constructor = (Constructor<? extends IFeature>) feature.getConstructor(editPartIfc);
+					IFeature featureInstance = constructor.newInstance(this);
+
+					List<IFeature> features = this.featureMap.get(featureInstance.getActionGroup());
+					if (features == null)
+					{
+						features = new ArrayList<IFeature>();
+						this.featureMap.put(
 										featureInstance.getActionGroup(),
 										features);
-							}
-							features.add(featureInstance);
-						}
-						catch (InvocationTargetException e)
-						{
-							if (e.getCause() instanceof RuntimeException)
-								throw (RuntimeException) e.getCause();
-							Log.e(this, e);
-						}
-						catch (Exception e)
-						{
-							Log.e(this, e);
-						}
 					}
+					features.add(featureInstance);
+				}
+				catch (InvocationTargetException e)
+				{
+					if (e.getCause() instanceof RuntimeException)
+						throw (RuntimeException) e.getCause();
+					Log.e(this, e);
+				}
+				catch (Exception e)
+				{
+					Log.e(this, e);
 				}
 			}
 		}
@@ -162,7 +162,8 @@ public abstract class EditPartBase implements IFeatureEditPart
 	}
 
 	@Override
-	public List<IFeature> getFeatures(Class<? extends ICanvasAction> group)
+	public List<IFeature> getFeatures(
+			Class<? extends ICanvasAction> group)
 	{
 		return this.featureMap.get(group);
 	}

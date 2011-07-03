@@ -3,9 +3,13 @@ package com.mpdeimos.tensor.editpart;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.mpdeimos.tensor.editpart.feature.IMovableEditPart;
-import com.mpdeimos.tensor.editpart.feature.IRotatableEditPart;
+import com.mpdeimos.tensor.editpart.feature.IConnectable;
+import com.mpdeimos.tensor.editpart.feature.IMovable;
+import com.mpdeimos.tensor.editpart.feature.IRotatable;
 import com.mpdeimos.tensor.figure.EpsilonTensorFigure;
 import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.EpsilonTensor;
@@ -18,9 +22,8 @@ import com.mpdeimos.tensor.model.IModelData;
  * 
  */
 public class EpsilonTensorEditPart extends EditPartBase implements
-		IRotatableEditPart, IMovableEditPart
+		IRotatable, IConnectable, IMovable
 {
-
 	/** Constructor. */
 	public EpsilonTensorEditPart(IModelData modelData)
 	{
@@ -63,5 +66,31 @@ public class EpsilonTensorEditPart extends EditPartBase implements
 		Rectangle r = this.getBoundingRectangle();
 		return new Dimension((int) Math.sqrt(r.getWidth() * r.getWidth() / 4
 				+ r.getHeight() * r.getHeight() / 4), 0);
+	}
+
+	@Override
+	public List<Connection> getConnectionSources()
+	{
+		List<Connection> connections = new ArrayList<Connection>();
+		Point2D[] connectionPoints = ((EpsilonTensorFigure) getFigure()).getConnectionPoints();
+		for (int i = 0; i < connectionPoints.length; i++)
+		{
+			if (i % 2 == 0)
+				connections.add(new Connection(i, connectionPoints[i]));
+		}
+		return connections;
+	}
+
+	@Override
+	public List<Connection> getConnectionSinks()
+	{
+		List<Connection> connections = new ArrayList<Connection>();
+		Point2D[] connectionPoints = ((EpsilonTensorFigure) getFigure()).getConnectionPoints();
+		for (int i = 0; i < connectionPoints.length; i++)
+		{
+			if (i % 2 == 1)
+				connections.add(new Connection(i, connectionPoints[i]));
+		}
+		return connections;
 	}
 }

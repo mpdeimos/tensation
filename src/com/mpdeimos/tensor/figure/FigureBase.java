@@ -29,7 +29,14 @@ public abstract class FigureBase implements IFigure
 	{
 		this.editPart = editPart;
 		this.shapePacks = new ArrayList<ShapePack>(0);
+		initBeforeFirstUpdateShapes();
 		updateShapes();
+	}
+
+	/** Called before the first shape update cycle. */
+	protected void initBeforeFirstUpdateShapes()
+	{
+		// nothing
 	}
 
 	@Override

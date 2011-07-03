@@ -39,6 +39,12 @@ public class EpsilonTensorFigure extends FigureBase
 	/** the style of the connector stroke */
 	private static final Stroke CONNECTOR_STROKE = new BasicStroke(1.1f);
 
+	/** amount of connections. TODO move to model. */
+	private static final int NUM_CONNECTIONS = 3;
+
+	/** buffer for connection points. */
+	private Point2D[] connectionPoints;
+
 	/**
 	 * Constructor.
 	 */
@@ -48,15 +54,19 @@ public class EpsilonTensorFigure extends FigureBase
 	}
 
 	@Override
+	protected void initBeforeFirstUpdateShapes()
+	{
+		super.initBeforeFirstUpdateShapes();
+		this.connectionPoints = new Point2D[NUM_CONNECTIONS];
+	}
+
+	@Override
 	public void updateShapes()
 	{
 		super.updateShapes();
 
-		// TODO global var in model data
-		int max = 3;
-
-		List<Shape> lines = new ArrayList<Shape>(max);
-		List<Shape> fills = new ArrayList<Shape>(max + 1);
+		List<Shape> lines = new ArrayList<Shape>(NUM_CONNECTIONS);
+		List<Shape> fills = new ArrayList<Shape>(NUM_CONNECTIONS + 1);
 
 		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModelData();
 		Point position = tensor.getPosition();
@@ -70,9 +80,10 @@ public class EpsilonTensorFigure extends FigureBase
 				2 * CENTER_CIRCLE_RADIUS - 1);
 		fills.add(circle);
 
-		for (int i = 0; i < max; i++)
+		for (int i = 0; i < NUM_CONNECTIONS; i++)
 		{
-			double ang = (((double) i) / max + tensor.getRotation() / 360) * 2
+			double ang = (((double) i) / NUM_CONNECTIONS + tensor.getRotation() / 360)
+					* 2
 					* Math.PI;
 			ang %= 2 * Math.PI;
 			double sin = Math.sin(ang);
@@ -95,6 +106,8 @@ public class EpsilonTensorFigure extends FigureBase
 							+ CONNECTOR_STROKE_OFFSET
 							+ CONNECTOR_STROKE_LENGTH)
 							* sin);
+
+			this.connectionPoints[i] = top;
 
 			Point2D triangleL = new Point2D.Double(
 					CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH,
@@ -160,6 +173,12 @@ public class EpsilonTensorFigure extends FigureBase
 				(int) position.getY() - offset,
 				2 * offset,
 				2 * offset);
+	}
+
+	/** @return the connections points of this figure. */
+	public Point2D[] getConnectionPoints()
+	{
+		return this.connectionPoints;
 	}
 
 }

@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.Action;
 
+import com.mpdeimos.tensor.ui.DrawingCanvas;
+
 /**
  * Base interface for drawing canvas actions.
  * 
@@ -33,5 +35,8 @@ public interface ICanvasAction extends Action
 
 	/** stops the current canvas action */
 	public void stopAction();
+
+	/** @return the current drawing canvas. */
+	public DrawingCanvas getCanvas();
 
 }

@@ -15,7 +15,6 @@ import resources.R;
 
 import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.action.SelectEditPartAction;
-import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.PointUtil;
 
@@ -25,7 +24,7 @@ import com.mpdeimos.tensor.util.PointUtil;
  * @author mpdeimos
  * 
  */
-public interface IRotatableEditPart extends IFeatureEditPart
+public interface IRotatable extends IFeatureEditPart
 {
 	/** Returns the current rotation of the EditPart in degrees. */
 	public double getRotation();
@@ -37,7 +36,7 @@ public interface IRotatableEditPart extends IFeatureEditPart
 	public Dimension getRotationIndicatorOffset();
 
 	/** The feature for interacting with this EditPart. */
-	class Feature extends FeatureBase<IRotatableEditPart>
+	class Feature extends FeatureBase<IRotatable, SelectEditPartAction>
 	{
 		/** The Point where the rotation indicator is shown */
 		private Point rotationIndicator;
@@ -52,7 +51,7 @@ public interface IRotatableEditPart extends IFeatureEditPart
 		private final double indicatorRoatation;
 
 		/** Constructor. */
-		public Feature(IRotatableEditPart editPart)
+		public Feature(IRotatable editPart)
 		{
 			super(editPart);
 			this.indicatorOffset = editPart.getRotationIndicatorOffset();
@@ -61,13 +60,7 @@ public interface IRotatableEditPart extends IFeatureEditPart
 		}
 
 		@Override
-		public Class<? extends ICanvasAction> getActionGroup()
-		{
-			return SelectEditPartAction.class;
-		}
-
-		@Override
-		public boolean doOnMousePressed(DrawingCanvas canvas, MouseEvent e)
+		public boolean doOnMousePressed(ICanvasAction action, MouseEvent e)
 		{
 			if (this.rotationIndicator != null
 					&& e.getButton() == MouseEvent.BUTTON1)
@@ -92,7 +85,7 @@ public interface IRotatableEditPart extends IFeatureEditPart
 		}
 
 		@Override
-		public boolean doOnMouseDragged(DrawingCanvas canvas, MouseEvent e)
+		public boolean doOnMouseDragged(ICanvasAction action, MouseEvent e)
 		{
 			if (this.rotationStartPointDelta != null)
 			{
@@ -119,23 +112,23 @@ public interface IRotatableEditPart extends IFeatureEditPart
 		}
 
 		@Override
-		public boolean doOnMouseMoved(DrawingCanvas canvas, MouseEvent e)
+		public boolean doOnMouseMoved(ICanvasAction action, MouseEvent e)
 		{
-			if (this.rotationIndicator != null)
-			{
-				Rectangle r = this.editPart.getBoundingRectangle();
-				if (hasHitRotationIndicator(r, e))
-				{
-					canvas.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
-					canvas.repaint();
-					return true;
-				}
-			}
-			return false;
+			if (this.rotationIndicator == null)
+				return false;
+
+			Rectangle r = this.editPart.getBoundingRectangle();
+			if (!hasHitRotationIndicator(r, e))
+				return false;
+
+			action.getCanvas().setCursor(
+					new Cursor(Cursor.CROSSHAIR_CURSOR));
+			action.getCanvas().repaint();
+			return true;
 		}
 
 		@Override
-		public boolean doOnMouseReleased(DrawingCanvas canvas, MouseEvent e)
+		public boolean doOnMouseReleased(ICanvasAction action, MouseEvent e)
 		{
 			this.rotationStartPointDelta = null;
 			return false;
@@ -155,7 +148,7 @@ public interface IRotatableEditPart extends IFeatureEditPart
 		}
 
 		@Override
-		public boolean drawOverlay(DrawingCanvas canvas, Graphics2D gfx)
+		public boolean drawOverlay(ICanvasAction action, Graphics2D gfx)
 		{
 			try
 			{
@@ -168,14 +161,13 @@ public interface IRotatableEditPart extends IFeatureEditPart
 								+ this.rotationIndicator.y - 8,
 						null);
 
-				return true;
 			}
 			catch (IOException e)
 			{
 				Log.e(this, "Could not load image"); //$NON-NLS-1$
 			}
 
-			return true;
+			return false;
 		}
 
 		/**
