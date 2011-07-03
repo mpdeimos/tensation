@@ -164,7 +164,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 	@Override
 	public List<IFeature> getFeatures(Class<? extends ICanvasAction> group)
 	{
-		return this.featureMap.get(SelectEditPartAction.class);
+		return this.featureMap.get(group);
 	}
 
 	@Override

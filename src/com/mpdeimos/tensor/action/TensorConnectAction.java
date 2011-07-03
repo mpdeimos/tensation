@@ -30,8 +30,8 @@ public class TensorConnectAction extends CanvasActionBase
 	@Override
 	public boolean drawOverlay(Graphics2D gfx)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		super.drawOverlayForFeatures(this.canvas.getEditParts(), gfx);
+		return true;
 	}
 
 }

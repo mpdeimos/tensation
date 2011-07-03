@@ -1,12 +1,17 @@
 package com.mpdeimos.tensor.action;
 
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
+import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.editpart.feature.IFeature;
+import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
@@ -73,6 +78,102 @@ public abstract class CanvasActionBase extends AbstractAction implements
 	@Override
 	public boolean doOnMouseMoved(MouseEvent e)
 	{
+		return false;
+	}
+
+	/** Draws an overlay for all features of the given EditPart. */
+	protected final boolean drawOverlayForFeatures(
+			List<IEditPart> editParts,
+			Graphics2D gfx)
+	{
+		boolean handled = false;
+		for (IEditPart editPart : editParts)
+		{
+			handled |= drawOverlayForFeatures(editPart, gfx);
+		}
+		return handled;
+	}
+
+	/** Draws an overlay for all features of the given EditPart. */
+	protected final boolean drawOverlayForFeatures(
+			IEditPart editPart,
+			Graphics2D gfx)
+	{
+		boolean handled = false;
+
+		if (!(editPart instanceof IFeatureEditPart))
+			return false;
+
+		List<IFeature> features = ((IFeatureEditPart) editPart).getFeatures(this.getClass());
+		if (features == null)
+			return false;
+
+		for (IFeature feature : features)
+		{
+			handled |= feature.drawOverlay(this.canvas, gfx);
+		}
+
+		return handled;
+	}
+
+	/** Handles the feature actions for a specific mouse event. */
+	protected final boolean handleMouseEventForFeatures(
+			List<IEditPart> editParts,
+			MouseEvent e,
+			int which)
+	{
+		for (IEditPart editPart : editParts)
+		{
+			if (handleMouseEventForFeatures(editPart, e, which))
+				return true;
+		}
+
+		return false;
+	}
+
+	/** Handles the feature actions for a specific mouse event. */
+	protected final boolean handleMouseEventForFeatures(
+			IEditPart editPart,
+			MouseEvent e,
+			int which)
+	{
+		if (!(editPart instanceof IFeatureEditPart))
+			return false;
+
+		List<IFeature> features = ((IFeatureEditPart) editPart).getFeatures(this.getClass());
+		if (features == null)
+			return false;
+
+		for (IFeature feature : features)
+		{
+			boolean handled = false;
+
+			switch (which)
+			{
+			case MouseEvent.MOUSE_CLICKED:
+				handled = feature.doOnMouseClicked(this.canvas, e);
+				break;
+			case MouseEvent.MOUSE_DRAGGED:
+				handled = feature.doOnMouseDragged(this.canvas, e);
+				break;
+			case MouseEvent.MOUSE_MOVED:
+				handled = feature.doOnMouseMoved(this.canvas, e);
+				break;
+			case MouseEvent.MOUSE_PRESSED:
+				handled = feature.doOnMousePressed(this.canvas, e);
+				break;
+			case MouseEvent.MOUSE_RELEASED:
+				handled = feature.doOnMouseReleased(this.canvas, e);
+				break;
+			default:
+				handled = false;
+				break;
+			}
+
+			if (handled)
+				return true;
+		}
+
 		return false;
 	}
 }

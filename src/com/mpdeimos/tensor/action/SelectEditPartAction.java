@@ -14,8 +14,6 @@ import javax.swing.ImageIcon;
 import resources.R;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.editpart.feature.IFeature;
-import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
@@ -73,7 +71,10 @@ public class SelectEditPartAction extends CanvasActionBase
 		if (this.highlightedEditPart != null)
 			this.highlightedEditPart.setHighlighted(false);
 
-		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_MOVED))
+		if (handleMouseEventForFeatures(
+				this.selectedEditPart,
+				e,
+				MouseEvent.MOUSE_MOVED))
 			return true;
 
 		this.highlightedEditPart = null;
@@ -110,7 +111,10 @@ public class SelectEditPartAction extends CanvasActionBase
 		if (this.selectedEditPart != null)
 			this.selectedEditPart.setHighlighted(false);
 
-		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_PRESSED))
+		if (handleMouseEventForFeatures(
+				this.selectedEditPart,
+				e,
+				MouseEvent.MOUSE_PRESSED))
 			return true;
 
 		if (e.getButton() == MouseEvent.BUTTON1)
@@ -128,7 +132,10 @@ public class SelectEditPartAction extends CanvasActionBase
 
 					this.canvas.repaint();
 
-					handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_PRESSED);
+					handleMouseEventForFeatures(
+							this.selectedEditPart,
+							e,
+							MouseEvent.MOUSE_PRESSED);
 
 					return true;
 				}
@@ -145,7 +152,10 @@ public class SelectEditPartAction extends CanvasActionBase
 	{
 		super.doOnMouseDragged(e);
 
-		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_DRAGGED))
+		if (handleMouseEventForFeatures(
+				this.selectedEditPart,
+				e,
+				MouseEvent.MOUSE_DRAGGED))
 			return true;
 
 		return false;
@@ -156,48 +166,11 @@ public class SelectEditPartAction extends CanvasActionBase
 	{
 		super.doOnMousePressed(e);
 
-		if (handleFeaturesForMouseEvent(e, MouseEvent.MOUSE_RELEASED))
+		if (handleMouseEventForFeatures(
+				this.selectedEditPart,
+				e,
+				MouseEvent.MOUSE_RELEASED))
 			return true;
-
-		return false;
-	}
-
-	/** Handles the feature actions for a specific mouse event. */
-	private boolean handleFeaturesForMouseEvent(MouseEvent e, int which)
-	{
-		if (this.selectedEditPart != null
-				&& this.selectedEditPart instanceof IFeatureEditPart)
-		{
-			IFeatureEditPart featureEditPart = (IFeatureEditPart) this.selectedEditPart;
-			for (IFeature feature : featureEditPart.getFeatures(this.getClass()))
-			{
-				boolean handled = false;
-				switch (which)
-				{
-				case MouseEvent.MOUSE_CLICKED:
-					handled = feature.doOnMouseClicked(this.canvas, e);
-					break;
-				case MouseEvent.MOUSE_DRAGGED:
-					handled = feature.doOnMouseDragged(this.canvas, e);
-					break;
-				case MouseEvent.MOUSE_MOVED:
-					handled = feature.doOnMouseMoved(this.canvas, e);
-					break;
-				case MouseEvent.MOUSE_PRESSED:
-					handled = feature.doOnMousePressed(this.canvas, e);
-					break;
-				case MouseEvent.MOUSE_RELEASED:
-					handled = feature.doOnMouseReleased(this.canvas, e);
-					break;
-				default:
-					handled = false;
-					break;
-				}
-
-				if (handled)
-					return true;
-			}
-		}
 
 		return false;
 	}
@@ -223,15 +196,7 @@ public class SelectEditPartAction extends CanvasActionBase
 
 			gfx.setStroke(s);
 
-			if (this.selectedEditPart != null
-					&& this.selectedEditPart instanceof IFeatureEditPart)
-			{
-				IFeatureEditPart featureEditPart = (IFeatureEditPart) this.selectedEditPart;
-				for (IFeature feature : featureEditPart.getFeatures(this.getClass()))
-				{
-					feature.drawOverlay(this.canvas, gfx);
-				}
-			}
+			drawOverlayForFeatures(this.selectedEditPart, gfx);
 
 			return true;
 		}
