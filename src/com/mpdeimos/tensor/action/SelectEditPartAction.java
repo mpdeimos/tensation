@@ -168,7 +168,7 @@ public class SelectEditPartAction extends CanvasActionBase
 				&& this.selectedEditPart instanceof IFeatureEditPart)
 		{
 			IFeatureEditPart featureEditPart = (IFeatureEditPart) this.selectedEditPart;
-			for (IFeature feature : featureEditPart.getFeatures())
+			for (IFeature feature : featureEditPart.getFeatures(this.getClass()))
 			{
 				boolean handled = false;
 				switch (which)
@@ -226,7 +226,7 @@ public class SelectEditPartAction extends CanvasActionBase
 					&& this.selectedEditPart instanceof IFeatureEditPart)
 			{
 				IFeatureEditPart featureEditPart = (IFeatureEditPart) this.selectedEditPart;
-				for (IFeature feature : featureEditPart.getFeatures())
+				for (IFeature feature : featureEditPart.getFeatures(this.getClass()))
 				{
 					feature.drawOverlay(this.canvas, gfx);
 				}

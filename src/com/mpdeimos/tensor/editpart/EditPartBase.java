@@ -6,8 +6,11 @@ import java.awt.Rectangle;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import com.mpdeimos.tensor.action.ICanvasAction;
+import com.mpdeimos.tensor.action.SelectEditPartAction;
 import com.mpdeimos.tensor.editpart.feature.FeatureBase;
 import com.mpdeimos.tensor.editpart.feature.IFeature;
 import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
@@ -35,7 +38,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 	private final IFigure figure;
 
 	/** The list of Features linked to this EditPart. Default is null. */
-	protected List<IFeature> features = new ArrayList<IFeature>();
+	protected HashMap<Class<? extends ICanvasAction>, List<IFeature>> featureMap = new HashMap<Class<? extends ICanvasAction>, List<IFeature>>();
 
 	/** @return the newly created figure for this EditPart. */
 	abstract protected IFigure createFigure();
@@ -63,7 +66,17 @@ public abstract class EditPartBase implements IFeatureEditPart
 							@SuppressWarnings("unchecked")
 							// is checked
 							Constructor<? extends IFeature> constructor = (Constructor<? extends IFeature>) feature.getConstructor(editPartIfc);
-							this.features.add(constructor.newInstance(this));
+							IFeature featureInstance = constructor.newInstance(this);
+
+							List<IFeature> features = this.featureMap.get(featureInstance.getActionGroup());
+							if (features == null)
+							{
+								features = new ArrayList<IFeature>();
+								this.featureMap.put(
+										featureInstance.getActionGroup(),
+										features);
+							}
+							features.add(featureInstance);
 						}
 						catch (InvocationTargetException e)
 						{
@@ -149,15 +162,15 @@ public abstract class EditPartBase implements IFeatureEditPart
 	}
 
 	@Override
-	public List<IFeature> getFeatures()
+	public List<IFeature> getFeatures(Class<? extends ICanvasAction> group)
 	{
-		return this.features;
+		return this.featureMap.get(SelectEditPartAction.class);
 	}
 
 	@Override
 	public void setSelected(boolean selected)
 	{
-		for (IFeature feature : getFeatures())
+		for (IFeature feature : getFeatures(SelectEditPartAction.class))
 		{
 			feature.doOnEditPartSelected(selected);
 		}

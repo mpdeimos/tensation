@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import com.mpdeimos.tensor.action.ICanvasAction;
+import com.mpdeimos.tensor.action.SelectEditPartAction;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.util.PointUtil;
 
@@ -35,6 +37,12 @@ public interface IMovableEditPart extends IFeatureEditPart
 		public Feature(IMovableEditPart editPart)
 		{
 			super(editPart);
+		}
+
+		@Override
+		public Class<? extends ICanvasAction> getActionGroup()
+		{
+			return SelectEditPartAction.class;
 		}
 
 		@Override

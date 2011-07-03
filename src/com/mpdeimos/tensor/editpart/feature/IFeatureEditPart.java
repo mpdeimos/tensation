@@ -2,6 +2,7 @@ package com.mpdeimos.tensor.editpart.feature;
 
 import java.util.List;
 
+import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.editpart.IEditPart;
 
 /**
@@ -13,5 +14,5 @@ import com.mpdeimos.tensor.editpart.IEditPart;
 public interface IFeatureEditPart extends IEditPart
 {
 	/** @return List of all interaction features. May be null. */
-	public List<IFeature> getFeatures();
+	public List<IFeature> getFeatures(Class<? extends ICanvasAction> group);
 }

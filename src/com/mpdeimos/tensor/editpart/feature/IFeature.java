@@ -3,6 +3,7 @@ package com.mpdeimos.tensor.editpart.feature;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
+import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
@@ -33,4 +34,7 @@ public interface IFeature
 
 	/** being called once a EditPart has been selected or deselected. */
 	public void doOnEditPartSelected(boolean selected);
+
+	/** returns the canvas action class this feature responds to. */
+	public Class<? extends ICanvasAction> getActionGroup();
 }

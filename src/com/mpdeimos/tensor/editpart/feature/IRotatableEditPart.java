@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 
 import resources.R;
 
+import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.action.SelectEditPartAction;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.util.Log;
@@ -57,6 +58,12 @@ public interface IRotatableEditPart extends IFeatureEditPart
 			this.indicatorOffset = editPart.getRotationIndicatorOffset();
 			this.indicatorRoatation = Math.atan(this.indicatorOffset.height
 					/ this.indicatorOffset.width);
+		}
+
+		@Override
+		public Class<? extends ICanvasAction> getActionGroup()
+		{
+			return SelectEditPartAction.class;
 		}
 
 		@Override
