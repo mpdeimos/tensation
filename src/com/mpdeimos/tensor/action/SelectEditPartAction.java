@@ -51,7 +51,8 @@ public class SelectEditPartAction extends CanvasActionBase
 	{
 		super(
 				canvas,
-				R.strings.getString("window_action_select"), new ImageIcon(R.drawable.getURL("select"))); //$NON-NLS-1$ //$NON-NLS-2$
+				R.strings.getString("window_action_select"), //$NON-NLS-1$
+				new ImageIcon(R.drawable.getURL("select"))); //$NON-NLS-1$
 	}
 
 	@Override

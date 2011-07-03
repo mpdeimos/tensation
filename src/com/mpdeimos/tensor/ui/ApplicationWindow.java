@@ -22,6 +22,7 @@ import resources.R;
 import com.mpdeimos.tensor.action.DrawTensorAction;
 import com.mpdeimos.tensor.action.ExitAction;
 import com.mpdeimos.tensor.action.SelectEditPartAction;
+import com.mpdeimos.tensor.action.TensorConnectAction;
 import com.mpdeimos.tensor.util.Log;
 
 /**
@@ -123,6 +124,13 @@ public class ApplicationWindow extends JFrame
 				new DrawTensorAction(this.drawingPanel));
 		drawTensorButton.setHideActionText(true);
 		sideToolBar.add(drawTensorButton);
+
+		JButton connectButton = new ToolBarButton(
+				sideToolBar,
+				new TensorConnectAction(this.drawingPanel));
+		connectButton.setHideActionText(true);
+		sideToolBar.add(connectButton);
+
 		JButton exitButton = new ToolBarButton(sideToolBar, new ExitAction());
 		exitButton.setHideActionText(true);
 		sideToolBar.add(exitButton);
