@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
@@ -171,6 +172,22 @@ public class SelectEditPartAction extends CanvasActionBase
 				e,
 				MouseEvent.MOUSE_RELEASED))
 			return true;
+
+		return false;
+	}
+
+	@Override
+	public boolean doOnKeyPressed(KeyEvent e)
+	{
+		if (this.selectedEditPart != null)
+		{
+			if (e.getKeyCode() == KeyEvent.VK_DELETE)
+			{
+				this.selectedEditPart.getModelData().remove();
+				this.selectedEditPart = null;
+				return true;
+			}
+		}
 
 		return false;
 	}

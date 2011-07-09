@@ -15,6 +15,9 @@ import java.util.List;
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.figure.ShapePack.EDrawingMode;
 import com.mpdeimos.tensor.model.EpsilonTensor;
+import com.mpdeimos.tensor.model.TensorConnectionAnchor;
+import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
+import com.mpdeimos.tensor.util.ImmutableList;
 import com.mpdeimos.tensor.util.PointUtil;
 
 /**
@@ -79,6 +82,7 @@ public class EpsilonTensorFigure extends FigureBase
 				2 * CENTER_CIRCLE_RADIUS - 1);
 		fills.add(circle);
 
+		ImmutableList<TensorConnectionAnchor> anchors = tensor.getAnchors();
 		for (int i = 0; i < numConnections; i++)
 		{
 			Point2D top = new Point2D.Double();
@@ -87,15 +91,29 @@ public class EpsilonTensorFigure extends FigureBase
 
 			this.connectionPoints[i] = top;
 
-			Point2D triangleL = new Point2D.Double(
-					CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH,
-					-CENTER_CIRCLE_RADIUS);
+			Point2D triangleL = null;
+			if (anchors.get(i).getDirection() == EDirection.SOURCE)
+				triangleL = new Point2D.Double(
+						CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH,
+						-CENTER_CIRCLE_RADIUS);
+			else
+				triangleL = new Point2D.Double(
+						2 * CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET,
+						-CENTER_CIRCLE_RADIUS);
+
 			PointUtil.rotate(triangleL, ang);
 			PointUtil.move(triangleL, x, y);
 
-			Point2D triangleR = new Point2D.Double(
-					CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH,
-					CENTER_CIRCLE_RADIUS);
+			Point2D triangleR = null;
+			if (anchors.get(i).getDirection() == EDirection.SOURCE)
+				triangleR = new Point2D.Double(
+							CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH,
+							CENTER_CIRCLE_RADIUS);
+			else
+				triangleR = new Point2D.Double(
+						2 * CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET,
+						CENTER_CIRCLE_RADIUS);
+
 			PointUtil.rotate(triangleR, ang);
 			PointUtil.move(triangleR, x, y);
 
@@ -104,7 +122,10 @@ public class EpsilonTensorFigure extends FigureBase
 			lines.add(line);
 
 			GeneralPath triangle = new GeneralPath();
-			triangle.moveTo(top.getX(), top.getY());
+			if (anchors.get(i).getDirection() == EDirection.SOURCE)
+				triangle.moveTo(top.getX(), top.getY());
+			else
+				triangle.moveTo(bottom.getX(), bottom.getY());
 			triangle.lineTo(triangleL.getX(), triangleL.getY());
 			triangle.lineTo(triangleR.getX(), triangleR.getY());
 			triangle.closePath();

@@ -5,8 +5,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -30,19 +33,22 @@ public class DrawingCanvas extends JPanel
 {
 
 	/** the EditPart factory */
-	private EditPartFactory editPartFactory = new EditPartFactory();
+	private final EditPartFactory editPartFactory = new EditPartFactory();
 
 	/** list of all known EditParts. */
-	private List<IEditPart> editParts = new ArrayList<IEditPart>();
+	private final List<IEditPart> editParts = new ArrayList<IEditPart>();
 
 	/** the current drawing action */
 	private ICanvasAction canvasAction = null;
 
 	/** root model */
-	private ModelRoot root;
+	private final ModelRoot root;
 
 	/** mouse event listener */
-	private MouseListener mouseListener;
+	private final MouseListener mouseListener;
+
+	/** key event listener. */
+	private final KeyListener keyListener;
 
 	/** the linked application window. */
 	private final ApplicationWindow appWindow;
@@ -55,14 +61,22 @@ public class DrawingCanvas extends JPanel
 		this.appWindow = appWindow;
 		setBackground(Color.white);
 		this.mouseListener = new MouseListener();
+		this.keyListener = new KeyListener();
 		addMouseMotionListener(this.mouseListener);
 		addMouseListener(this.mouseListener);
+		addKeyListener(this.keyListener);
 
 		this.root = new ModelRoot();
 		this.root.addModelChangedListener(new ModelChangedListener());
 
 		this.root.addChild(new EpsilonTensor(this.root, new Point(30, 30)));
 		this.root.addChild(new EpsilonTensor(this.root, new Point(80, 50)));
+	}
+
+	@Override
+	public boolean isFocusable()
+	{
+		return true;
 	}
 
 	@Override
@@ -132,6 +146,8 @@ public class DrawingCanvas extends JPanel
 		{
 			super.mousePressed(e);
 
+			DrawingCanvas.this.requestFocusInWindow();
+
 			if (DrawingCanvas.this.canvasAction != null)
 			{
 				DrawingCanvas.this.canvasAction.doOnMousePressed(e);
@@ -176,8 +192,6 @@ public class DrawingCanvas extends JPanel
 		@Override
 		public void onChildAdded(IModelData child)
 		{
-			Log.v(DrawingCanvas.this, "added new child to model"); //$NON-NLS-1$
-
 			IEditPart part = DrawingCanvas.this.editPartFactory.createEditPart(child);
 			if (part != null)
 				DrawingCanvas.this.editParts.add(part);
@@ -188,7 +202,31 @@ public class DrawingCanvas extends JPanel
 		@Override
 		public void onChildRemoved(IModelData child)
 		{
-			// TODO !!
+			List<IEditPart> toBeRemoved = new LinkedList<IEditPart>();
+			for (IEditPart part : DrawingCanvas.this.editParts)
+			{
+				if (part.getModelData() == child) // ref comp ok here
+				{
+					toBeRemoved.add(part);
+				}
+			}
+
+			DrawingCanvas.this.editParts.removeAll(toBeRemoved);
+
+			repaint();
+		}
+	}
+
+	/** Listener class for key events. */
+	private class KeyListener extends KeyAdapter
+	{
+		@Override
+		public void keyPressed(KeyEvent e)
+		{
+			if (DrawingCanvas.this.canvasAction != null)
+			{
+				DrawingCanvas.this.canvasAction.doOnKeyPressed(e);
+			}
 		}
 	}
 

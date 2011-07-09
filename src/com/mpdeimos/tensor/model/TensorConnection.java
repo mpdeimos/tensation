@@ -25,7 +25,19 @@ public class TensorConnection extends ModelDataBase
 		super(parent);
 
 		this.source = source;
+		source.occupyAnchor(this);
+
 		this.sink = sink;
+		sink.occupyAnchor(this);
+	}
+
+	@Override
+	public boolean remove()
+	{
+		this.sink.releaseAnchor(this);
+		this.source.releaseAnchor(this);
+
+		return super.remove();
 	}
 
 	/**

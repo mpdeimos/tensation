@@ -2,6 +2,7 @@ package com.mpdeimos.tensor.action;
 
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
@@ -77,6 +78,12 @@ public abstract class CanvasActionBase extends AbstractAction implements
 
 	@Override
 	public boolean doOnMouseMoved(MouseEvent e)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean doOnKeyPressed(KeyEvent e)
 	{
 		return false;
 	}

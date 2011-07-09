@@ -1,6 +1,7 @@
 package com.mpdeimos.tensor.action;
 
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Action;
@@ -29,6 +30,9 @@ public interface ICanvasAction extends Action
 
 	/** being called if the mouse is moved on the canvas with a button clicked */
 	public boolean doOnMouseDragged(MouseEvent e);
+
+	/** being called when a key is pressed. */
+	public boolean doOnKeyPressed(KeyEvent e);
 
 	/** being called during the paint cycle of the canvas */
 	public boolean drawOverlay(Graphics2D gfx);

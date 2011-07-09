@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.mpdeimos.tensor.action.ICanvasAction;
@@ -46,6 +47,11 @@ public interface IConnectable extends IFeatureEditPart
 			else
 				connections = this.editPart.getConnectionSources();
 
+			if (connections == null)
+				return false;
+
+			removeOccupiedConnections(connections);
+
 			for (ConnectionPoint connection : connections)
 			{
 				if (e.getPoint().distance(connection.getPoint()) > 5)
@@ -69,6 +75,11 @@ public interface IConnectable extends IFeatureEditPart
 			else
 				connections = this.editPart.getConnectionSources();
 
+			if (connections == null)
+				return false;
+
+			removeOccupiedConnections(connections);
+
 			for (ConnectionPoint connection : connections)
 			{
 				if (e.getPoint().distance(connection.getPoint()) > 5)
@@ -91,6 +102,11 @@ public interface IConnectable extends IFeatureEditPart
 				return false;
 
 			List<ConnectionPoint> connections = this.editPart.getConnectionSinks();
+
+			if (connections == null)
+				return false;
+
+			removeOccupiedConnections(connections);
 
 			for (ConnectionPoint connection : connections)
 			{
@@ -125,6 +141,8 @@ public interface IConnectable extends IFeatureEditPart
 			if (connections == null)
 				return false;
 
+			removeOccupiedConnections(connections);
+
 			Ellipse2D anchor = null;
 			for (ConnectionPoint connection : connections)
 			{
@@ -138,6 +156,20 @@ public interface IConnectable extends IFeatureEditPart
 			}
 
 			return false;
+		}
+
+		/** removes occupied connections from a given set of connections. */
+		public void removeOccupiedConnections(List<ConnectionPoint> connections)
+		{
+			List<ConnectionPoint> toBeRemoved = new LinkedList<ConnectionPoint>();
+
+			for (ConnectionPoint conn : connections)
+			{
+				if (conn.getAnchor().isOccopied())
+					toBeRemoved.add(conn);
+			}
+
+			connections.removeAll(toBeRemoved);
 		}
 	}
 

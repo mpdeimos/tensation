@@ -15,6 +15,9 @@ public interface IModelData
 	 */
 	public ImmutableList<IModelData> getChildren();
 
+	/** Removes this node from its parent. */
+	boolean remove();
+
 	/** adds a child to this object */
 	public void addChild(IModelData child);
 
@@ -29,5 +32,4 @@ public interface IModelData
 	 * this object
 	 */
 	public boolean removeModelDataChangedListener(IModelChangedListener listener);
-
 }

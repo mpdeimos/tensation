@@ -49,6 +49,16 @@ public class EpsilonTensor extends ModelDataBase
 		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SINK));
 	}
 
+	@Override
+	public boolean remove()
+	{
+		for (TensorConnectionAnchor anchor : this.anchors)
+		{
+			anchor.doOnTensorRemoved();
+		}
+		return super.remove();
+	}
+
 	/**
 	 * @return the position of this object.
 	 */

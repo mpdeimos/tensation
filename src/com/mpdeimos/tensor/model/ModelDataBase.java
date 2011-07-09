@@ -43,6 +43,15 @@ public abstract class ModelDataBase implements IModelData
 	}
 
 	@Override
+	public boolean remove()
+	{
+		if (this.parent != null)
+			return this.parent.removeChild(this);
+
+		return false;
+	}
+
+	@Override
 	public void addChild(IModelData child)
 	{
 		ensureChildListExists();
@@ -127,5 +136,4 @@ public abstract class ModelDataBase implements IModelData
 		if (this.parent != null && this.parent instanceof ModelDataBase)
 			((ModelDataBase) this.parent).fireOnModelDataChanged(child);
 	}
-
 }
