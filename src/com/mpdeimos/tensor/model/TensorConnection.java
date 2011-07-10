@@ -14,6 +14,12 @@ public class TensorConnection extends ModelDataBase
 	/** End tensor anchor of the connection. */
 	private final TensorConnectionAnchor sink;
 
+	/** The relative distance of the source anchor. */
+	private double sourceDistance = 2;
+
+	/** The relative distance of the sink anchor. */
+	private double sinkDistance = 2;
+
 	/**
 	 * Constructor.
 	 */
@@ -54,5 +60,31 @@ public class TensorConnection extends ModelDataBase
 	public TensorConnectionAnchor getSource()
 	{
 		return this.source;
+	}
+
+	/** sets the control point distance for the source anchor. */
+	public void setSourceControlPointDistance(double d)
+	{
+		this.sourceDistance = d;
+		fireOnModelDataChanged(this);
+	}
+
+	/** sets the control point distance for the sink anchor. */
+	public void setSinkControlPointDistance(double d)
+	{
+		this.sinkDistance = d;
+		fireOnModelDataChanged(this);
+	}
+
+	/** @return the relative distance of the source anchor. */
+	public double getSourceDistance()
+	{
+		return this.sourceDistance;
+	}
+
+	/** @return the relative distance of the sink anchor. */
+	public double getSinkDistance()
+	{
+		return this.sinkDistance;
 	}
 }
