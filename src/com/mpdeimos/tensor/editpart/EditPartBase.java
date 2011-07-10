@@ -31,6 +31,9 @@ public abstract class EditPartBase implements IFeatureEditPart
 	/** Flag whether the mouse is hovered over this EditPart. */
 	private boolean highlighted;
 
+	/** Flag whether the EditPart is selected. */
+	private boolean selected;
+
 	/** the data model object linked to this EditPart */
 	private IModelData model;
 
@@ -121,11 +124,13 @@ public abstract class EditPartBase implements IFeatureEditPart
 	{
 		Color oldPaint = gfx.getColor();
 		if (this.highlighted)
+			gfx.setColor(Color.MAGENTA);
+		if (this.selected)
 			gfx.setColor(Color.BLUE);
 
 		getFigure().draw(gfx);
 
-		if (this.highlighted)
+		if (this.highlighted || this.selected)
 			gfx.setColor(oldPaint);
 	}
 
@@ -181,6 +186,8 @@ public abstract class EditPartBase implements IFeatureEditPart
 	@Override
 	public void setSelected(boolean selected)
 	{
+		this.selected = selected;
+
 		List<IFeature> features = getFeatures(SelectEditPartAction.class);
 		if (features == null)
 			return;

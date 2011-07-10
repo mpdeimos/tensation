@@ -33,5 +33,5 @@ public interface IEditPart
 	public void setSelected(boolean selected);
 
 	/** sets the highlight status of the EditPart. */
-	void setHighlighted(boolean highlighted);
+	public void setHighlighted(boolean highlighted);
 }

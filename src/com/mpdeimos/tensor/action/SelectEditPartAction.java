@@ -60,6 +60,9 @@ public class SelectEditPartAction extends CanvasActionBase
 		super.stopAction();
 
 		// reset some stuff
+		if (this.selectedEditPart != null)
+			this.selectedEditPart.setSelected(false);
+
 		this.selectedEditPart = null;
 		this.canvas.setCursor(Cursor.getDefaultCursor());
 	}
