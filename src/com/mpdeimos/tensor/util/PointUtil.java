@@ -33,7 +33,7 @@ public class PointUtil
 	 * 
 	 * @return the rotated point
 	 */
-	public static Point2D move(Point2D p, int x, int y)
+	public static Point2D move(Point2D p, double x, double y)
 	{
 		p.setLocation(p.getX() + x, p.getY() + y);
 		return p;
@@ -45,5 +45,12 @@ public class PointUtil
 	public static Dimension getDelta(Point p1, Point p2)
 	{
 		return new Dimension(p1.x - p2.x, p1.y - p2.y);
+	}
+
+	/** @return the distance vector between two points. */
+	public static void sub(Point2D p1, Point2D p2, Point2D result)
+	{
+		result.setLocation(p1);
+		move(result, -p2.getX(), -p2.getY());
 	}
 }
