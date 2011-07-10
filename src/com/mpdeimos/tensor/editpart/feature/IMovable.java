@@ -77,6 +77,12 @@ public interface IMovable extends IFeatureEditPart
 				curPos.translate(
 						this.moveStartPointDelta.width,
 						this.moveStartPointDelta.height);
+
+				if (e.isControlDown())
+					curPos.setLocation(
+							(curPos.x / 10) * 10,
+							(curPos.y / 10) * 10);
+
 				this.editPart.setPosition(curPos);
 				return true;
 			}

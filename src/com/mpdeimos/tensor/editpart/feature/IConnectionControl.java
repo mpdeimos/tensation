@@ -122,13 +122,17 @@ public interface IConnectionControl extends IFeatureEditPart
 					-this.movementDelta.height);
 
 			double d = tensor.getPosition().distance(curPos);
+
+			if (e.isControlDown())
+				d = (int) (d / 10) * 10;
+
 			double dNorm = tensor.getPosition().distance(orgControlPoint);
 
 			d = Math.max(1, 2 * d / dNorm) - 1;
 
-			if (this.movementIndex < 0)
+			if (this.movementIndex < 0 || e.isShiftDown())
 				this.editPart.setSinkControlPointDistance(d);
-			else
+			if (this.movementIndex > 0 || e.isShiftDown())
 				this.editPart.setSourceControlPointDistance(d);
 
 			return true;
