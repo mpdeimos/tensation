@@ -11,6 +11,7 @@ import java.util.List;
 import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.action.TensorConnectAction;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor;
+import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 
 /**
  * Interface for EditParts with Connection abilities.
@@ -42,10 +43,19 @@ public interface IConnectable extends IFeatureEditPart
 			TensorConnectAction connectAction = (TensorConnectAction) action;
 
 			List<ConnectionPoint> connections;
-			if (connectAction.hasStartPoint())
-				connections = this.editPart.getConnectionSinks();
+			ConnectionPoint startPoint = connectAction.getStartPoint();
+			if (startPoint != null)
+			{
+				if (startPoint.getAnchor().getDirection() == EDirection.SOURCE)
+					connections = this.editPart.getConnectionSinks();
+				else
+					connections = this.editPart.getConnectionSources();
+			}
 			else
+			{
 				connections = this.editPart.getConnectionSources();
+				connections.addAll(this.editPart.getConnectionSinks());
+			}
 
 			if (connections == null)
 				return false;
@@ -70,10 +80,19 @@ public interface IConnectable extends IFeatureEditPart
 			TensorConnectAction connectAction = (TensorConnectAction) action;
 
 			List<ConnectionPoint> connections;
-			if (connectAction.hasStartPoint())
-				connections = this.editPart.getConnectionSinks();
+			ConnectionPoint startPoint = connectAction.getStartPoint();
+			if (startPoint != null)
+			{
+				if (startPoint.getAnchor().getDirection() == EDirection.SOURCE)
+					connections = this.editPart.getConnectionSinks();
+				else
+					connections = this.editPart.getConnectionSources();
+			}
 			else
+			{
 				connections = this.editPart.getConnectionSources();
+				connections.addAll(this.editPart.getConnectionSinks());
+			}
 
 			if (connections == null)
 				return false;
@@ -98,10 +117,15 @@ public interface IConnectable extends IFeatureEditPart
 		{
 			TensorConnectAction connectAction = (TensorConnectAction) action;
 
-			if (!connectAction.hasStartPoint())
+			ConnectionPoint startPoint = connectAction.getStartPoint();
+			if (startPoint == null)
 				return false;
 
-			List<ConnectionPoint> connections = this.editPart.getConnectionSinks();
+			List<ConnectionPoint> connections;
+			if (startPoint.getAnchor().getDirection() == EDirection.SOURCE)
+				connections = this.editPart.getConnectionSinks();
+			else
+				connections = this.editPart.getConnectionSources();
 
 			if (connections == null)
 				return false;
@@ -133,10 +157,19 @@ public interface IConnectable extends IFeatureEditPart
 			TensorConnectAction connectAction = (TensorConnectAction) action;
 
 			List<ConnectionPoint> connections;
-			if (connectAction.hasStartPoint())
-				connections = this.editPart.getConnectionSinks();
+			ConnectionPoint startPoint = connectAction.getStartPoint();
+			if (startPoint != null)
+			{
+				if (startPoint.getAnchor().getDirection() == EDirection.SOURCE)
+					connections = this.editPart.getConnectionSinks();
+				else
+					connections = this.editPart.getConnectionSources();
+			}
 			else
+			{
 				connections = this.editPart.getConnectionSources();
+				connections.addAll(this.editPart.getConnectionSinks());
+			}
 
 			if (connections == null)
 				return false;

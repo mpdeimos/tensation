@@ -1,5 +1,9 @@
 package com.mpdeimos.tensor.model;
 
+import resources.R;
+
+import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
+
 /**
  * Represents a connection between two Tensors
  * 
@@ -9,10 +13,10 @@ package com.mpdeimos.tensor.model;
 public class TensorConnection extends ModelDataBase
 {
 	/** Start tensor anchor of the connection. */
-	private final TensorConnectionAnchor source;
+	private TensorConnectionAnchor source;
 
 	/** End tensor anchor of the connection. */
-	private final TensorConnectionAnchor sink;
+	private TensorConnectionAnchor sink;
 
 	/** The relative distance of the source anchor. */
 	private double sourceDistance = 2;
@@ -30,11 +34,21 @@ public class TensorConnection extends ModelDataBase
 	{
 		super(parent);
 
-		this.source = source;
+		if (source.getDirection() == EDirection.SOURCE)
+			this.source = source;
+		else
+			this.sink = source;
 		source.occupyAnchor(this);
 
-		this.sink = sink;
+		if (sink.getDirection() == EDirection.SINK)
+			this.sink = sink;
+		else
+			this.source = sink;
 		sink.occupyAnchor(this);
+
+		if (this.source == null || this.sink == null)
+			throw new IllegalArgumentException(
+					R.strings.getString("exception_model_connection_missmatch")); //$NON-NLS-1$
 	}
 
 	@Override

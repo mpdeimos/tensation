@@ -53,7 +53,6 @@ public class TensorConnectionFigure extends FigureBase
 
 		TensorConnection connection = (TensorConnection) this.editPart.getModelData();
 		List<Shape> shapes = new ArrayList<Shape>(1);
-		// List<Shape> cpts = new ArrayList<Shape>(1);
 
 		this.sinkAnchor = new Point2D.Double();
 		this.sourceAnchor = new Point2D.Double();
@@ -103,8 +102,6 @@ public class TensorConnectionFigure extends FigureBase
 				this.sinkControlPointUnstretched.getX() + sinkCenter.getX(),
 				this.sinkControlPointUnstretched.getY() + sinkCenter.getY());
 
-		// Shape line = new Line2D.Double(source, sink);
-
 		CubicCurve2D bezier = new CubicCurve2D.Double();
 		bezier.setCurve(
 				this.sourceAnchor,
@@ -112,41 +109,25 @@ public class TensorConnectionFigure extends FigureBase
 				this.sinkControlPoint,
 				this.sinkAnchor);
 
-		// Shape cpt1 = new Ellipse2D.Double(
-		// this.sinkControlPoint.getX() - 1,
-		// this.sinkControlPoint.getY() - 1,
-		// 2,
-		// 2);
-		// Shape cpt2 = new Ellipse2D.Double(
-		// this.sourceControlPoint.getX() - 1,
-		// this.sourceControlPoint.getY() - 1,
+		// Shape circle1 = new Ellipse2D.Double(
+		// this.sourceAnchor.getX() - 1,
+		// this.sourceAnchor.getY() - 1,
 		// 2,
 		// 2);
 
-		Shape circle1 = new Ellipse2D.Double(
-				this.sourceAnchor.getX() - 1,
-				this.sourceAnchor.getY() - 1,
-				2,
-				2);
 		Shape circle2 = new Ellipse2D.Double(
 				this.sinkAnchor.getX() - 1,
 				this.sinkAnchor.getY() - 1,
 				2,
 				2);
 
-		// shapes.add(line);
 		shapes.add(bezier);
-		shapes.add(circle1);
-		shapes.add(circle2);
 
-		// cpts.add(cpt1);
-		// cpts.add(cpt2);
+		// shapes.add(circle1);
+		shapes.add(circle2);
 
 		ShapePack pack = new ShapePack(EDrawingMode.STROKE, shapes);
 		this.shapePacks.add(pack);
-
-		// ShapePack pack2 = new ShapePack(EDrawingMode.STROKE, cpts);
-		// this.shapePacks.add(pack2);
 	}
 
 	/** @return the control point for the sink anchor. */

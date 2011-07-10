@@ -56,7 +56,7 @@ public class TensorConnectAction extends CanvasActionBase
 	public boolean drawOverlay(Graphics2D gfx)
 	{
 		Color oldPaint = gfx.getColor();
-		if (hasStartPoint())
+		if (getStartPoint() != null)
 		{
 			if (this.curDraggingPos != null)
 			{
@@ -92,7 +92,7 @@ public class TensorConnectAction extends CanvasActionBase
 		}
 		else
 		{
-			gfx.setColor(Color.RED);
+			gfx.setColor(Color.BLUE);
 		}
 
 		super.drawOverlayForFeatures(this.canvas.getEditParts(), gfx);
@@ -145,7 +145,7 @@ public class TensorConnectAction extends CanvasActionBase
 	@Override
 	public boolean doOnMouseDragged(MouseEvent e)
 	{
-		if (!hasStartPoint())
+		if (getStartPoint() == null)
 			return false;
 
 		this.endConnectionPoint = null;
@@ -205,8 +205,8 @@ public class TensorConnectAction extends CanvasActionBase
 	}
 
 	/** @return whether a start point is already defined. */
-	public boolean hasStartPoint()
+	public ConnectionPoint getStartPoint()
 	{
-		return this.startConnectionPoint != null;
+		return this.startConnectionPoint;
 	}
 }
