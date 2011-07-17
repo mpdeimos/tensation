@@ -1,5 +1,11 @@
 package com.mpdeimos.tensor.ui;
 
+import com.mpdeimos.tensor.action.DrawTensorAction;
+import com.mpdeimos.tensor.action.ExitAction;
+import com.mpdeimos.tensor.action.SelectEditPartAction;
+import com.mpdeimos.tensor.action.TensorConnectAction;
+import com.mpdeimos.tensor.util.Log;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.WindowAdapter;
@@ -18,12 +24,6 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 
 import resources.R;
-
-import com.mpdeimos.tensor.action.DrawTensorAction;
-import com.mpdeimos.tensor.action.ExitAction;
-import com.mpdeimos.tensor.action.SelectEditPartAction;
-import com.mpdeimos.tensor.action.TensorConnectAction;
-import com.mpdeimos.tensor.util.Log;
 
 /**
  * Represents the main application window
@@ -176,16 +176,8 @@ public class ApplicationWindow extends JFrame
 	/** Initializes the application's context panel. */
 	private void initializeContextPanel()
 	{
-		JPanel panelOuter = new JPanel();
-		panelOuter.setBorder(new EtchedBorder(
-				EtchedBorder.LOWERED,
-				null,
-				null));
-		getContentPane().add(panelOuter, BorderLayout.EAST);
-		panelOuter.setLayout(new BorderLayout(0, 0));
-
 		this.contextPanel = new ContextPanel(this);
-		panelOuter.add(this.contextPanel);
+		getContentPane().add(this.contextPanel, BorderLayout.EAST);
 	}
 
 	/** @return the drawing canvas of this application. */

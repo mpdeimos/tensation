@@ -1,9 +1,16 @@
 package com.mpdeimos.tensor.ui;
 
+import com.mpdeimos.tensor.action.ICanvasAction;
+import com.mpdeimos.tensor.editpart.EditPartFactory;
+import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.model.IModelChangedListener;
+import com.mpdeimos.tensor.model.IModelData;
+import com.mpdeimos.tensor.model.ModelRoot;
+import com.mpdeimos.tensor.util.Log;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -14,15 +21,6 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
-
-import com.mpdeimos.tensor.action.ICanvasAction;
-import com.mpdeimos.tensor.editpart.EditPartFactory;
-import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.model.EpsilonTensor;
-import com.mpdeimos.tensor.model.IModelChangedListener;
-import com.mpdeimos.tensor.model.IModelData;
-import com.mpdeimos.tensor.model.ModelRoot;
-import com.mpdeimos.tensor.util.Log;
 
 /**
  * Holds the drawing canvas for our diagram.
@@ -68,9 +66,6 @@ public class DrawingCanvas extends JPanel
 
 		this.root = new ModelRoot();
 		this.root.addModelChangedListener(new ModelChangedListener());
-
-		this.root.addChild(new EpsilonTensor(this.root, new Point(30, 30)));
-		this.root.addChild(new EpsilonTensor(this.root, new Point(80, 50)));
 	}
 
 	@Override

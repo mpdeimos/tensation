@@ -1,5 +1,12 @@
 package com.mpdeimos.tensor.action;
 
+import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.editpart.feature.IFeature;
+import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
+import com.mpdeimos.tensor.ui.ApplicationWindow;
+import com.mpdeimos.tensor.ui.ContextPanelContentBase;
+import com.mpdeimos.tensor.ui.DrawingCanvas;
+
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -9,12 +16,6 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
-
-import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.editpart.feature.IFeature;
-import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
-import com.mpdeimos.tensor.ui.ApplicationWindow;
-import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
  * Base class for canvas actions.
@@ -49,6 +50,8 @@ public abstract class CanvasActionBase extends AbstractAction implements
 	@Override
 	public void stopAction()
 	{
+		this.applicationWindow.getContextPanel().setContent(null);
+
 		putValue(Action.SELECTED_KEY, false);
 		this.canvas.stopCanvasAction();
 	}
@@ -58,6 +61,8 @@ public abstract class CanvasActionBase extends AbstractAction implements
 	{
 		putValue(Action.SELECTED_KEY, true);
 		this.canvas.startCanvasAction(this);
+
+		this.applicationWindow.getContextPanel().setContent(getContextPanel());
 	}
 
 	@Override
@@ -196,5 +201,11 @@ public abstract class CanvasActionBase extends AbstractAction implements
 	public DrawingCanvas getCanvas()
 	{
 		return this.canvas;
+	}
+
+	/** @return the context panel used by this action. may be null. */
+	protected ContextPanelContentBase getContextPanel()
+	{
+		return null;
 	}
 }

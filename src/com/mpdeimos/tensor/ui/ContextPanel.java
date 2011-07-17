@@ -23,7 +23,7 @@ public class ContextPanel extends JPanel
 	private static final int PANEL_WIDTH = 150;
 
 	/** the content to display on this JPanel. */
-	private JPanel content = null;
+	private ContextPanelContentBase content = null;
 
 	// /** The linked application window. */
 	// private final ApplicationWindow applicationWindow;
@@ -48,7 +48,7 @@ public class ContextPanel extends JPanel
 	}
 
 	/** Sets the content for the panel. */
-	public void setContent(JPanel content)
+	public void setContent(ContextPanelContentBase content)
 	{
 		this.content = content;
 		update();
@@ -67,5 +67,8 @@ public class ContextPanel extends JPanel
 					R.strings.getString("window_contextpanel_disabled")); //$NON-NLS-1$
 			this.add(label);
 		}
+
+		validate();
+		repaint();
 	}
 }

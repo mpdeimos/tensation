@@ -1,11 +1,11 @@
 package com.mpdeimos.tensor.model;
 
+import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
+import com.mpdeimos.tensor.util.ImmutableList;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
-import com.mpdeimos.tensor.util.ImmutableList;
 
 /**
  * Represents an Epsilon Tensor (ok, will do so in the future, now we're just
@@ -29,24 +29,26 @@ public class EpsilonTensor extends ModelDataBase
 	/**
 	 * Constructor.
 	 */
-	public EpsilonTensor(ModelDataBase parent)
+	public EpsilonTensor(ModelDataBase parent, EDirection direction)
 	{
-		this(parent, new Point(0, 0));
+		this(parent, new Point(0, 0), direction);
 	}
 
 	/**
 	 * Constructor w/ initial coordinates.
 	 */
-	public EpsilonTensor(ModelDataBase parent, Point position)
+	public EpsilonTensor(
+			ModelDataBase parent,
+			Point position,
+			EDirection direction)
 	{
 		super(parent);
 		this.position = position;
 
 		this.anchors = new ArrayList<TensorConnectionAnchor>();
-		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SOURCE));
-		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SINK));
-		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SOURCE));
-		// this.anchors.add(new TensorConnectionAnchor(this, EDirection.SINK));
+		this.anchors.add(new TensorConnectionAnchor(this, direction));
+		this.anchors.add(new TensorConnectionAnchor(this, direction));
+		this.anchors.add(new TensorConnectionAnchor(this, direction));
 	}
 
 	@Override
