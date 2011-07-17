@@ -46,7 +46,7 @@ public class EpsilonTensor extends ModelDataBase
 		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SOURCE));
 		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SINK));
 		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SOURCE));
-		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SINK));
+		// this.anchors.add(new TensorConnectionAnchor(this, EDirection.SINK));
 	}
 
 	@Override

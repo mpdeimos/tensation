@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import resources.R;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.ui.ApplicationWindow;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
@@ -46,9 +47,12 @@ public class SelectEditPartAction extends CanvasActionBase
 	/**
 	 * Constructor.
 	 */
-	public SelectEditPartAction(DrawingCanvas canvas)
+	public SelectEditPartAction(
+			ApplicationWindow applicationWindow,
+			DrawingCanvas canvas)
 	{
 		super(
+				applicationWindow,
 				canvas,
 				R.strings.getString("window_action_select"), //$NON-NLS-1$
 				new ImageIcon(R.drawable.getURL("select"))); //$NON-NLS-1$

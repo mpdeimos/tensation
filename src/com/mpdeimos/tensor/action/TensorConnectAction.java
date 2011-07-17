@@ -14,6 +14,7 @@ import resources.R;
 
 import com.mpdeimos.tensor.editpart.feature.IConnectable.ConnectionPoint;
 import com.mpdeimos.tensor.model.TensorConnection;
+import com.mpdeimos.tensor.ui.ApplicationWindow;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
@@ -36,9 +37,12 @@ public class TensorConnectAction extends CanvasActionBase
 	/**
 	 * Constructor.
 	 */
-	public TensorConnectAction(DrawingCanvas canvas)
+	public TensorConnectAction(
+			ApplicationWindow applicationWindow,
+			DrawingCanvas canvas)
 	{
 		super(
+				applicationWindow,
 				canvas,
 				R.strings.getString("window_action_connect"), //$NON-NLS-1$
 				new ImageIcon(R.drawable.getURL("action_connect"))); //$NON-NLS-1$

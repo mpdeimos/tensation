@@ -11,6 +11,7 @@ import resources.R;
 import com.mpdeimos.tensor.editpart.EpsilonTensorEditPart;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.model.ModelRoot;
+import com.mpdeimos.tensor.ui.ApplicationWindow;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
@@ -33,9 +34,12 @@ public class DrawTensorAction extends CanvasActionBase
 	 * 
 	 * @param drawingPanel
 	 */
-	public DrawTensorAction(DrawingCanvas drawingPanel)
+	public DrawTensorAction(
+			ApplicationWindow applicationWindow,
+			DrawingCanvas drawingPanel)
 	{
 		super(
+				applicationWindow,
 				drawingPanel,
 				R.strings.getString("window_action_draw"), //$NON-NLS-1$
 				new ImageIcon(R.drawable.getURL("draw"))); //$NON-NLS-1$

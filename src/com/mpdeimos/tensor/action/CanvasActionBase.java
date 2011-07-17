@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.editpart.feature.IFeature;
 import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
+import com.mpdeimos.tensor.ui.ApplicationWindow;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
@@ -24,6 +25,8 @@ import com.mpdeimos.tensor.ui.DrawingCanvas;
 public abstract class CanvasActionBase extends AbstractAction implements
 		ICanvasAction
 {
+	/** back reference to the application. */
+	protected final ApplicationWindow applicationWindow;
 
 	/** back reference to the drawing panel. */
 	protected final DrawingCanvas canvas;
@@ -31,9 +34,14 @@ public abstract class CanvasActionBase extends AbstractAction implements
 	/**
 	 * Constructor.
 	 */
-	public CanvasActionBase(DrawingCanvas canvas, String name, ImageIcon icon)
+	public CanvasActionBase(
+			ApplicationWindow applicationWindow,
+			DrawingCanvas canvas,
+			String name,
+			ImageIcon icon)
 	{
 		super(name, icon);
+		this.applicationWindow = applicationWindow;
 		this.canvas = canvas;
 		this.putValue(Action.SHORT_DESCRIPTION, name);
 	}

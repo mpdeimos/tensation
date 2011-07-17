@@ -33,15 +33,17 @@ import com.mpdeimos.tensor.util.Log;
  */
 public class ApplicationWindow extends JFrame
 {
-
 	/** singleton window instance */
 	private static ApplicationWindow applicationWindow;
 
 	/** the drawing canvas of our app */
-	private DrawingCanvas drawingPanel;
+	private DrawingCanvas drawingCanvas;
 
 	/** the default button for canvas actions. */
 	private ToolBarButton selectEditPartButton;
+
+	/** the context panel of our app. */
+	private ContextPanel contextPanel;
 
 	/**
 	 * Launch the application.
@@ -94,13 +96,9 @@ public class ApplicationWindow extends JFrame
 		this.setTitle(R.strings.getString("window_main_title")); //$NON-NLS-1$
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.addWindowListener(new WindowListener());
-		this.setBounds(50, 50, 400, 400);
-		// GraphicsEnvironment env =
-		// GraphicsEnvironment.getLocalGraphicsEnvironment();
-		// this.setMaximizedBounds(env.getMaximumWindowBounds());
-		// this.setExtendedState(this.getExtendedState() |
-		// Frame.MAXIMIZED_BOTH);
+		this.setBounds(50, 50, 600, 400);
 
+		initializeContextPanel();
 		initializeCanvas();
 		initializeMenu();
 		initializeToolbars();
@@ -117,17 +115,17 @@ public class ApplicationWindow extends JFrame
 
 		this.selectEditPartButton = new ToolBarButton(
 				sideToolBar,
-				new SelectEditPartAction(this.drawingPanel));
+				new SelectEditPartAction(this, this.drawingCanvas));
 		sideToolBar.add(this.selectEditPartButton);
 		JButton drawTensorButton = new ToolBarButton(
 				sideToolBar,
-				new DrawTensorAction(this.drawingPanel));
+				new DrawTensorAction(this, this.drawingCanvas));
 		drawTensorButton.setHideActionText(true);
 		sideToolBar.add(drawTensorButton);
 
 		JButton connectButton = new ToolBarButton(
 				sideToolBar,
-				new TensorConnectAction(this.drawingPanel));
+				new TensorConnectAction(this, this.drawingCanvas));
 		connectButton.setHideActionText(true);
 		sideToolBar.add(connectButton);
 
@@ -154,8 +152,8 @@ public class ApplicationWindow extends JFrame
 		getContentPane().add(drawingPanelOuter, BorderLayout.CENTER);
 		drawingPanelOuter.setLayout(new BorderLayout(0, 0));
 
-		this.drawingPanel = new DrawingCanvas(this);
-		drawingPanelOuter.add(this.drawingPanel);
+		this.drawingCanvas = new DrawingCanvas(this);
+		drawingPanelOuter.add(this.drawingCanvas);
 	}
 
 	/**
@@ -173,6 +171,33 @@ public class ApplicationWindow extends JFrame
 		menuBar.add(menuFile);
 
 		this.setJMenuBar(menuBar);
+	}
+
+	/** Initializes the application's context panel. */
+	private void initializeContextPanel()
+	{
+		JPanel panelOuter = new JPanel();
+		panelOuter.setBorder(new EtchedBorder(
+				EtchedBorder.LOWERED,
+				null,
+				null));
+		getContentPane().add(panelOuter, BorderLayout.EAST);
+		panelOuter.setLayout(new BorderLayout(0, 0));
+
+		this.contextPanel = new ContextPanel(this);
+		panelOuter.add(this.contextPanel);
+	}
+
+	/** @return the drawing canvas of this application. */
+	public DrawingCanvas getDrawingCanvas()
+	{
+		return this.drawingCanvas;
+	}
+
+	/** @return the context panel of this application. */
+	public ContextPanel getContextPanel()
+	{
+		return this.contextPanel;
 	}
 
 	/** Starts the default toolbar action. */
