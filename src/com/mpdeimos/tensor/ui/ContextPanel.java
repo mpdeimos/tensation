@@ -4,6 +4,7 @@
 package com.mpdeimos.tensor.ui;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,7 +21,7 @@ import resources.R;
 public class ContextPanel extends JPanel
 {
 	/** The fixed width of this panel. */
-	private static final int PANEL_WIDTH = 150;
+	/* package */static final int PANEL_WIDTH = 150;
 
 	/** the content to display on this JPanel. */
 	private ContextPanelContentBase content = null;
@@ -36,8 +37,9 @@ public class ContextPanel extends JPanel
 	public ContextPanel(ApplicationWindow applicationWindow)
 	{
 		// this.applicationWindow = applicationWindow;
+		this.setLayout(new GridLayout());
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, 0));
-		this.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.setBorder(new EmptyBorder(0, 1, 0, 1));
 		update();
 	}
 

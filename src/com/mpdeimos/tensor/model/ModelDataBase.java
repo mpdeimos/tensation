@@ -1,11 +1,11 @@
 package com.mpdeimos.tensor.model;
 
+import com.mpdeimos.tensor.util.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-
-import com.mpdeimos.tensor.util.ImmutableList;
 
 /**
  * Abstract base class for model data
@@ -25,7 +25,7 @@ public abstract class ModelDataBase implements IModelData
 	private List<IModelData> children = null;
 
 	/** Parent model */
-	private final IModelData parent;
+	/* package */IModelData parent;
 
 	/** Constructor. */
 	public ModelDataBase(IModelData parent)

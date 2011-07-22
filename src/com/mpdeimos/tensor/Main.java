@@ -11,7 +11,6 @@ import com.mpdeimos.tensor.util.Log.LogLevel;
  * The main class for the Tensor Program.
  * 
  * @author mpdeimos
- * 
  */
 public class Main
 {

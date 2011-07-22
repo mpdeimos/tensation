@@ -29,7 +29,7 @@ public class EpsilonTensor extends ModelDataBase
 	/**
 	 * Constructor.
 	 */
-	public EpsilonTensor(ModelDataBase parent, EDirection direction)
+	public EpsilonTensor(IModelData parent, EDirection direction)
 	{
 		this(parent, new Point(0, 0), direction);
 	}
@@ -38,7 +38,7 @@ public class EpsilonTensor extends ModelDataBase
 	 * Constructor w/ initial coordinates.
 	 */
 	public EpsilonTensor(
-			ModelDataBase parent,
+			IModelData parent,
 			Point position,
 			EDirection direction)
 	{
@@ -98,5 +98,17 @@ public class EpsilonTensor extends ModelDataBase
 	public ImmutableList<TensorConnectionAnchor> getAnchors()
 	{
 		return new ImmutableList<TensorConnectionAnchor>(this.anchors);
+	}
+
+	/** Duplicates this node to a given model as root. */
+	public EpsilonTensor duplicate(IModelData root)
+	{
+		EDirection direction = this.anchors.get(0).getDirection();
+		EpsilonTensor tensor = new EpsilonTensor(
+				root,
+				new Point(this.position),
+				direction);
+
+		return tensor;
 	}
 }
