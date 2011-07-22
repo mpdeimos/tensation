@@ -1,14 +1,5 @@
 package com.mpdeimos.tensor.editpart;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.action.SelectEditPartAction;
 import com.mpdeimos.tensor.editpart.feature.FeatureBase;
@@ -18,6 +9,15 @@ import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.IModelChangedListener;
 import com.mpdeimos.tensor.model.IModelData;
 import com.mpdeimos.tensor.util.Log;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * abstract base class for EditParts.
@@ -35,7 +35,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 	private boolean selected;
 
 	/** the data model object linked to this EditPart */
-	private IModelData model;
+	private final IModelData model;
 
 	/** the figure for drawing this object */
 	private final IFigure figure;
@@ -108,15 +108,9 @@ public abstract class EditPartBase implements IFeatureEditPart
 	}
 
 	@Override
-	public IModelData getModelData()
+	public IModelData getModel()
 	{
 		return this.model;
-	}
-
-	@Override
-	public void setModelData(IModelData model)
-	{
-		this.model = model;
 	}
 
 	@Override

@@ -56,7 +56,7 @@ public class EpsilonTensorFigure extends FigureBase
 	protected void initBeforeFirstUpdateShapes()
 	{
 		super.initBeforeFirstUpdateShapes();
-		int numConnections = ((EpsilonTensor) this.editPart.getModelData()).getAnchors().size();
+		int numConnections = ((EpsilonTensor) this.editPart.getModel()).getAnchors().size();
 		this.connectionPoints = new Point2D[numConnections];
 	}
 
@@ -70,7 +70,7 @@ public class EpsilonTensorFigure extends FigureBase
 		List<Shape> lines = new ArrayList<Shape>(numConnections);
 		List<Shape> fills = new ArrayList<Shape>(numConnections + 1);
 
-		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModelData();
+		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModel();
 		Point position = tensor.getPosition();
 		int x = (int) position.getX();
 		int y = (int) position.getY();
@@ -196,7 +196,7 @@ public class EpsilonTensorFigure extends FigureBase
 	public Rectangle getBoundingRectangle()
 	{
 
-		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModelData();
+		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModel();
 		Point position = tensor.getPosition();
 
 		int offset = CONNECTOR_STROKE_LENGTH + CENTER_CIRCLE_RADIUS

@@ -51,7 +51,7 @@ public class TensorConnectionFigure extends FigureBase
 	{
 		super.updateShapes();
 
-		TensorConnection connection = (TensorConnection) this.editPart.getModelData();
+		TensorConnection connection = (TensorConnection) this.editPart.getModel();
 		List<Shape> shapes = new ArrayList<Shape>(1);
 
 		this.sinkAnchor = new Point2D.Double();

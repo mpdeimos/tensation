@@ -105,13 +105,13 @@ public interface IConnectionControl extends IFeatureEditPart
 			if (this.movementIndex < 0)
 			{
 				orgControlPoint = this.editPart.getSinkControlPoint(true);
-				tensor = ((TensorConnection) this.editPart.getModelData())
+				tensor = ((TensorConnection) this.editPart.getModel())
 						.getSink().getTensor();
 			}
 			else
 			{
 				orgControlPoint = this.editPart.getSourceControlPoint(true);
-				tensor = ((TensorConnection) this.editPart.getModelData())
+				tensor = ((TensorConnection) this.editPart.getModel())
 						.getSource().getTensor();
 			}
 

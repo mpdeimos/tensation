@@ -77,12 +77,12 @@ public class TensorConnectionEditPart extends EditPartBase implements
 	@Override
 	public void setSourceControlPointDistance(double d)
 	{
-		((TensorConnection) this.getModelData()).setSourceControlPointDistance(d);
+		((TensorConnection) this.getModel()).setSourceControlPointDistance(d);
 	}
 
 	@Override
 	public void setSinkControlPointDistance(double d)
 	{
-		((TensorConnection) this.getModelData()).setSinkControlPointDistance(d);
+		((TensorConnection) this.getModel()).setSinkControlPointDistance(d);
 	}
 }

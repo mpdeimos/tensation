@@ -190,7 +190,7 @@ public class SelectEditPartAction extends CanvasActionBase
 		{
 			if (e.getKeyCode() == KeyEvent.VK_DELETE)
 			{
-				this.selectedEditPart.getModelData().remove();
+				this.selectedEditPart.getModel().remove();
 				this.selectedEditPart = null;
 				return true;
 			}

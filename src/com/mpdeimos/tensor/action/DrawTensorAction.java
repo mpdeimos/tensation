@@ -40,8 +40,6 @@ public class DrawTensorAction extends CanvasActionBase
 	/** the context panel. */
 	private final ContextPanelContent contextPanelcontent;
 
-	public EDirection direction = EDirection.SOURCE;
-
 	/** The list of different tensors. */
 	public TensorListModel tensorList = new TensorListModel();
 
@@ -82,7 +80,7 @@ public class DrawTensorAction extends CanvasActionBase
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
 			ModelRoot root = this.canvas.getModel();
-			root.addChild(((EpsilonTensor) this.editPart.getModelData()).duplicate(root));
+			root.addChild(((EpsilonTensor) this.editPart.getModel()).duplicate(root));
 
 			return true;
 		}
@@ -144,7 +142,7 @@ public class DrawTensorAction extends CanvasActionBase
 				EpsilonTensorEditPart editPart = DrawTensorAction.this.tensorList.getElementAt(index);
 
 				DrawTensorAction.this.editPart = new EpsilonTensorEditPart(
-						((EpsilonTensor) editPart.getModelData()).duplicate(null));
+						((EpsilonTensor) editPart.getModel()).duplicate(null));
 			}
 		}
 	}

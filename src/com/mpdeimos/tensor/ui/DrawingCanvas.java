@@ -200,7 +200,7 @@ public class DrawingCanvas extends JPanel
 			List<IEditPart> toBeRemoved = new LinkedList<IEditPart>();
 			for (IEditPart part : DrawingCanvas.this.editParts)
 			{
-				if (part.getModelData() == child) // ref comp ok here
+				if (part.getModel() == child) // ref comp ok here
 				{
 					toBeRemoved.add(part);
 				}

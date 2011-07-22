@@ -41,25 +41,25 @@ public class EpsilonTensorEditPart extends EditPartBase implements
 	@Override
 	public Point getPosition()
 	{
-		return ((EpsilonTensor) (this.getModelData())).getPosition();
+		return ((EpsilonTensor) (this.getModel())).getPosition();
 	}
 
 	@Override
 	public void setPosition(Point p)
 	{
-		((EpsilonTensor) (this.getModelData())).setPosition(p);
+		((EpsilonTensor) (this.getModel())).setPosition(p);
 	}
 
 	@Override
 	public double getRotation()
 	{
-		return ((EpsilonTensor) (this.getModelData())).getRotation();
+		return ((EpsilonTensor) (this.getModel())).getRotation();
 	}
 
 	@Override
 	public void setRotation(double degrees)
 	{
-		((EpsilonTensor) (this.getModelData())).setRotation(degrees);
+		((EpsilonTensor) (this.getModel())).setRotation(degrees);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class EpsilonTensorEditPart extends EditPartBase implements
 	{
 		EpsilonTensorFigure figure = (EpsilonTensorFigure) getFigure();
 		Point2D[] connectionPoints = figure.getConnectionPoints();
-		EpsilonTensor tensor = (EpsilonTensor) getModelData();
+		EpsilonTensor tensor = (EpsilonTensor) getModel();
 
 		List<ConnectionPoint> connections = new ArrayList<ConnectionPoint>();
 		for (TensorConnectionAnchor anchor : tensor.getAnchors())
@@ -93,7 +93,7 @@ public class EpsilonTensorEditPart extends EditPartBase implements
 	{
 		EpsilonTensorFigure figure = (EpsilonTensorFigure) getFigure();
 		Point2D[] connectionPoints = figure.getConnectionPoints();
-		EpsilonTensor tensor = (EpsilonTensor) getModelData();
+		EpsilonTensor tensor = (EpsilonTensor) getModel();
 
 		List<ConnectionPoint> connections = new ArrayList<ConnectionPoint>();
 		for (TensorConnectionAnchor anchor : tensor.getAnchors())
