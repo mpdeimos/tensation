@@ -12,8 +12,8 @@ import com.mpdeimos.tensor.editpart.feature.IMovable;
 import com.mpdeimos.tensor.editpart.feature.IRotatable;
 import com.mpdeimos.tensor.figure.EpsilonTensorFigure;
 import com.mpdeimos.tensor.figure.IFigure;
-import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.model.IModelData;
+import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 
@@ -41,25 +41,25 @@ public class EpsilonTensorEditPart extends EditPartBase implements
 	@Override
 	public Point getPosition()
 	{
-		return ((EpsilonTensor) (this.getModel())).getPosition();
+		return ((TensorBase) (this.getModel())).getPosition();
 	}
 
 	@Override
 	public void setPosition(Point p)
 	{
-		((EpsilonTensor) (this.getModel())).setPosition(p);
+		((TensorBase) (this.getModel())).setPosition(p);
 	}
 
 	@Override
 	public double getRotation()
 	{
-		return ((EpsilonTensor) (this.getModel())).getRotation();
+		return ((TensorBase) (this.getModel())).getRotation();
 	}
 
 	@Override
 	public void setRotation(double degrees)
 	{
-		((EpsilonTensor) (this.getModel())).setRotation(degrees);
+		((TensorBase) (this.getModel())).setRotation(degrees);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class EpsilonTensorEditPart extends EditPartBase implements
 	{
 		EpsilonTensorFigure figure = (EpsilonTensorFigure) getFigure();
 		Point2D[] connectionPoints = figure.getConnectionPoints();
-		EpsilonTensor tensor = (EpsilonTensor) getModel();
+		TensorBase tensor = (TensorBase) getModel();
 
 		List<ConnectionPoint> connections = new ArrayList<ConnectionPoint>();
 		for (TensorConnectionAnchor anchor : tensor.getAnchors())
@@ -93,7 +93,7 @@ public class EpsilonTensorEditPart extends EditPartBase implements
 	{
 		EpsilonTensorFigure figure = (EpsilonTensorFigure) getFigure();
 		Point2D[] connectionPoints = figure.getConnectionPoints();
-		EpsilonTensor tensor = (EpsilonTensor) getModel();
+		TensorBase tensor = (TensorBase) getModel();
 
 		List<ConnectionPoint> connections = new ArrayList<ConnectionPoint>();
 		for (TensorConnectionAnchor anchor : tensor.getAnchors())

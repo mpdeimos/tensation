@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.figure.ShapePack.EDrawingMode;
-import com.mpdeimos.tensor.model.EpsilonTensor;
+import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensor.util.ImmutableList;
@@ -56,7 +56,7 @@ public class EpsilonTensorFigure extends FigureBase
 	protected void initBeforeFirstUpdateShapes()
 	{
 		super.initBeforeFirstUpdateShapes();
-		int numConnections = ((EpsilonTensor) this.editPart.getModel()).getAnchors().size();
+		int numConnections = ((TensorBase) this.editPart.getModel()).getAnchors().size();
 		this.connectionPoints = new Point2D[numConnections];
 	}
 
@@ -70,7 +70,7 @@ public class EpsilonTensorFigure extends FigureBase
 		List<Shape> lines = new ArrayList<Shape>(numConnections);
 		List<Shape> fills = new ArrayList<Shape>(numConnections + 1);
 
-		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModel();
+		TensorBase tensor = (TensorBase) this.editPart.getModel();
 		Point position = tensor.getPosition();
 		int x = (int) position.getX();
 		int y = (int) position.getY();
@@ -140,7 +140,7 @@ public class EpsilonTensorFigure extends FigureBase
 
 	/** inits the anchor points for a tensor. */
 	public static double initAnchorPoints(
-			EpsilonTensor tensor,
+			TensorBase tensor,
 			int i,
 			Point2D top,
 			Point2D bottom)
@@ -196,7 +196,7 @@ public class EpsilonTensorFigure extends FigureBase
 	public Rectangle getBoundingRectangle()
 	{
 
-		EpsilonTensor tensor = (EpsilonTensor) this.editPart.getModel();
+		TensorBase tensor = (TensorBase) this.editPart.getModel();
 		Point position = tensor.getPosition();
 
 		int offset = CONNECTOR_STROKE_LENGTH + CENTER_CIRCLE_RADIUS

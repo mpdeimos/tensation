@@ -18,7 +18,7 @@ public class TensorConnectionAnchor
 	private final int id;
 
 	/** the tensor of this anchor. */
-	private final EpsilonTensor tensor;
+	private final TensorBase tensor;
 
 	/** The connection of this anchor. */
 	TensorConnection connection = null;
@@ -33,7 +33,7 @@ public class TensorConnectionAnchor
 	}
 
 	/** Constructor. */
-	public TensorConnectionAnchor(EpsilonTensor tensor, EDirection direction)
+	public TensorConnectionAnchor(TensorBase tensor, EDirection direction)
 	{
 		this.tensor = tensor;
 		this.direction = direction;
@@ -53,7 +53,7 @@ public class TensorConnectionAnchor
 	}
 
 	/** @return the tensor of this anchor. */
-	public EpsilonTensor getTensor()
+	public TensorBase getTensor()
 	{
 		return this.tensor;
 	}

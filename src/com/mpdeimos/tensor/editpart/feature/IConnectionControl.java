@@ -18,7 +18,7 @@ import resources.R;
 
 import com.mpdeimos.tensor.action.ICanvasAction;
 import com.mpdeimos.tensor.action.SelectEditPartAction;
-import com.mpdeimos.tensor.model.EpsilonTensor;
+import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnection;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.PointUtil;
@@ -100,7 +100,7 @@ public interface IConnectionControl extends IFeatureEditPart
 				return false;
 
 			Point2D orgControlPoint = null;
-			EpsilonTensor tensor = null;
+			TensorBase tensor = null;
 
 			if (this.movementIndex < 0)
 			{
