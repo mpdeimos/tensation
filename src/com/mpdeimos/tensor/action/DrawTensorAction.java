@@ -11,6 +11,7 @@ import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensor.ui.ApplicationWindow;
 import com.mpdeimos.tensor.ui.ContextPanelContentBase;
+import com.mpdeimos.tensor.ui.DividerLabel;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.ui.EditPartListCellRenderer;
 
@@ -19,6 +20,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractListModel;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -135,6 +137,10 @@ public class DrawTensorAction extends CanvasActionBase
 		/** Constructor. */
 		public ContextPanelContent()
 		{
+			DividerLabel label = new DividerLabel(
+						R.strings.getString("window_contextpanel_drawtensor_select")); //$NON-NLS-1$
+			this.add(label);
+
 			JList list = new JList(DrawTensorAction.this.tensorList);
 			list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -145,10 +151,11 @@ public class DrawTensorAction extends CanvasActionBase
 
 			JScrollPane listScroller = new JScrollPane(list);
 			stretchToFullWidth(listScroller, CELL_SIZE * 2);
-
 			this.add(listScroller);
 
 			list.setSelectedIndex(0);
+
+			this.add(Box.createVerticalGlue());
 		}
 
 		@Override
