@@ -60,44 +60,50 @@ public abstract class EditPartBase implements IFeatureEditPart
 		this.listener = new ModelChangedListener();
 		this.model.addModelChangedListener(this.listener);
 
-		for (Class<?> editPartIfc : this.getClass().getInterfaces())
+		Class<?> currentClass = this.getClass();
+		while (!currentClass.equals(EditPartBase.class))
 		{
-			if (!IFeatureEditPart.class.isAssignableFrom(editPartIfc))
-				continue;
-
-			for (Class<?> feature : editPartIfc.getClasses())
+			for (Class<?> editPartIfc : currentClass.getInterfaces())
 			{
-				if (!FeatureBase.class.isAssignableFrom(feature))
+				if (!IFeatureEditPart.class.isAssignableFrom(editPartIfc))
 					continue;
 
-				try
+				for (Class<?> feature : editPartIfc.getClasses())
 				{
-					@SuppressWarnings("unchecked")
-					// is checked
-					Constructor<? extends IFeature> constructor = (Constructor<? extends IFeature>) feature.getConstructor(editPartIfc);
-					IFeature featureInstance = constructor.newInstance(this);
+					if (!FeatureBase.class.isAssignableFrom(feature))
+						continue;
 
-					List<IFeature> features = this.featureMap.get(featureInstance.getActionGroup());
-					if (features == null)
+					try
 					{
-						features = new ArrayList<IFeature>();
-						this.featureMap.put(
+						@SuppressWarnings("unchecked")
+						// is checked
+						Constructor<? extends IFeature> constructor = (Constructor<? extends IFeature>) feature.getConstructor(editPartIfc);
+						IFeature featureInstance = constructor.newInstance(this);
+
+						List<IFeature> features = this.featureMap.get(featureInstance.getActionGroup());
+						if (features == null)
+						{
+							features = new ArrayList<IFeature>();
+							this.featureMap.put(
 										featureInstance.getActionGroup(),
 										features);
+						}
+						features.add(featureInstance);
 					}
-					features.add(featureInstance);
-				}
-				catch (InvocationTargetException e)
-				{
-					if (e.getCause() instanceof RuntimeException)
-						throw (RuntimeException) e.getCause();
-					Log.e(this, e);
-				}
-				catch (Exception e)
-				{
-					Log.e(this, e);
+					catch (InvocationTargetException e)
+					{
+						if (e.getCause() instanceof RuntimeException)
+							throw (RuntimeException) e.getCause();
+						Log.e(this, e);
+					}
+					catch (Exception e)
+					{
+						Log.e(this, e);
+					}
 				}
 			}
+
+			currentClass = currentClass.getSuperclass();
 		}
 	}
 

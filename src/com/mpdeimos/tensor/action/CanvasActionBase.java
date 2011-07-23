@@ -96,6 +96,18 @@ public abstract class CanvasActionBase extends AbstractAction implements
 	}
 
 	@Override
+	public boolean doOnMouseEntered(MouseEvent e)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean doOnMouseExited(MouseEvent e)
+	{
+		return false;
+	}
+
+	@Override
 	public boolean doOnKeyPressed(KeyEvent e)
 	{
 		return false;

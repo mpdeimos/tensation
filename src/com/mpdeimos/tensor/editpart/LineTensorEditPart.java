@@ -5,15 +5,16 @@ import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.IModelData;
 
 /**
- * EditPart class for an epsilon tensor.
+ * EditPart representing an line tensor.
  * 
  * @author mpdeimos
  * 
  */
-public class EpsilonTensorEditPart extends TensorEditPartBase
+public class LineTensorEditPart extends TensorEditPartBase
 {
+
 	/** Constructor. */
-	public EpsilonTensorEditPart(IModelData modelData)
+	public LineTensorEditPart(IModelData modelData)
 	{
 		super(modelData);
 	}
@@ -23,4 +24,5 @@ public class EpsilonTensorEditPart extends TensorEditPartBase
 	{
 		return new TensorFigure(this);
 	}
+
 }

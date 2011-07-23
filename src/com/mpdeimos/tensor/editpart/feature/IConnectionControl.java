@@ -1,5 +1,12 @@
 package com.mpdeimos.tensor.editpart.feature;
 
+import com.mpdeimos.tensor.action.ICanvasAction;
+import com.mpdeimos.tensor.action.SelectEditPartAction;
+import com.mpdeimos.tensor.model.TensorBase;
+import com.mpdeimos.tensor.model.TensorConnection;
+import com.mpdeimos.tensor.util.Log;
+import com.mpdeimos.tensor.util.PointUtil;
+
 import java.awt.BasicStroke;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -15,13 +22,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import resources.R;
-
-import com.mpdeimos.tensor.action.ICanvasAction;
-import com.mpdeimos.tensor.action.SelectEditPartAction;
-import com.mpdeimos.tensor.model.TensorBase;
-import com.mpdeimos.tensor.model.TensorConnection;
-import com.mpdeimos.tensor.util.Log;
-import com.mpdeimos.tensor.util.PointUtil;
 
 /**
  * Feature for controlling bezier points for connections.
@@ -181,7 +181,7 @@ public interface IConnectionControl extends IFeatureEditPart
 
 			try
 			{
-				Image img = ImageIO.read(R.drawable.getURL("circle-green")); //$NON-NLS-1$
+				Image img = ImageIO.read(R.drawable.getURL("circle_green")); //$NON-NLS-1$
 				gfx.drawImage(img,
 						(int) sourceControlPoint.getX() - 8,
 						(int) sourceControlPoint.getY() - 8,

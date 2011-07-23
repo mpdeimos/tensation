@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
@@ -12,11 +13,13 @@
    height="16"
    id="svg8472"
    sodipodi:version="0.32"
-   inkscape:version="0.45"
-   sodipodi:docbase="/home/lapo/Desktop/arts-libre/16x16"
-   sodipodi:docname="segment-curve.svg"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="segment-line.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   version="1.0">
+   version="1.0"
+   inkscape:export-filename="/home/mpdeimos/workspaces/java/Tensor/trunk/res/drawable/action_connect.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs8474" />
   <sodipodi:namedview
@@ -27,10 +30,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="15.353745"
-     inkscape:cy="11.319936"
+     inkscape:cx="7.6351307"
+     inkscape:cy="3.4908193"
      inkscape:current-layer="layer1"
-     showgrid="false"
+     showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
      borderlayer="false"
@@ -38,10 +41,11 @@
      showborder="false"
      inkscape:window-width="872"
      inkscape:window-height="763"
-     inkscape:window-x="102"
-     inkscape:window-y="195"
+     inkscape:window-x="183"
+     inkscape:window-y="73"
      width="16px"
-     height="16px" />
+     height="16px"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata8477">
     <rdf:RDF>
@@ -50,7 +54,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Segment Curve</dc:title>
+        <dc:title></dc:title>
         <dc:date>2006-05-01</dc:date>
         <dc:creator>
           <cc:Agent>
@@ -63,7 +67,7 @@
           <rdf:Bag>
             <rdf:li>segment</rdf:li>
             <rdf:li>line</rdf:li>
-            <rdf:li>curve</rdf:li>
+            <rdf:li>straight</rdf:li>
           </rdf:Bag>
         </dc:subject>
       </cc:Work>
@@ -89,38 +93,38 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#204a87;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 2.5000001,15.50005 L 2.5000001,12.00005 C 2.5000001,6.5000499 6.5000001,2.5000499 12,2.5000499 L 15.5,2.5000499"
-       id="path7877"
-       sodipodi:nodetypes="cccc" />
+       style="fill:#729fcf;fill-rule:evenodd;stroke:#204a87;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 2.5,13.5 L 13.5,2.5"
+       id="path7843"
+       sodipodi:nodetypes="cc" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#90b4dd;stroke-width:1.20000005;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 2.5000001,15.50005 L 2.5000001,12.00005 C 2.5000001,6.5000499 6.5000001,2.5000499 12,2.5000499 L 15.5,2.5000499"
-       id="path7859"
-       sodipodi:nodetypes="cccc" />
+       style="fill:none;fill-rule:evenodd;stroke:#93b6db;stroke-width:1.20000005;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 2.5,13.5 L 13.5,2.5"
+       id="path7841"
+       sodipodi:nodetypes="cc" />
     <g
-       id="g7861"
-       transform="translate(-338,-420.99995)">
+       id="g7849"
+       transform="translate(-338,-421)">
       <path
          style="opacity:1;fill:#babdb6;fill-opacity:1;stroke:#888a85;stroke-width:1.00000024;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
          d="M 349.5,421.50001 L 353.5,421.50001 L 353.5,425.49995 L 349.5,425.49995 L 349.5,421.50001 z "
-         id="path7863" />
+         id="path7837" />
       <path
          style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.00000048;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1"
          d="M 350.5,422.50002 L 352.5,422.50002 L 352.5,424.5001 L 350.5,424.5001 L 350.5,422.50002 z "
-         id="path7865" />
+         id="path7839" />
     </g>
     <g
-       id="g7867"
-       transform="translate(-336,-422.99995)">
+       id="g7845"
+       transform="translate(-336,-423)">
       <path
          style="opacity:1;fill:#babdb6;fill-opacity:1;stroke:#888a85;stroke-width:1.00000024;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
          d="M 336.5,434.50001 L 340.5,434.50001 L 340.5,438.49995 L 336.5,438.49995 L 336.5,434.50001 z "
-         id="path7869" />
+         id="path7831" />
       <path
          style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.00000048;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1"
          d="M 337.5,435.50002 L 339.5,435.50002 L 339.5,437.5001 L 337.5,437.5001 L 337.5,435.50002 z "
-         id="path7871" />
+         id="path7833" />
     </g>
   </g>
 </svg>

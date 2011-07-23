@@ -1,8 +1,13 @@
 package com.mpdeimos.tensor.action;
 
+import com.mpdeimos.tensor.editpart.EditPartFactory;
 import com.mpdeimos.tensor.editpart.EpsilonTensorEditPart;
+import com.mpdeimos.tensor.editpart.LineTensorEditPart;
+import com.mpdeimos.tensor.editpart.TensorEditPartBase;
 import com.mpdeimos.tensor.model.EpsilonTensor;
+import com.mpdeimos.tensor.model.LineTensor;
 import com.mpdeimos.tensor.model.ModelRoot;
+import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensor.ui.ApplicationWindow;
 import com.mpdeimos.tensor.ui.ContextPanelContentBase;
@@ -35,13 +40,16 @@ public class DrawTensorAction extends CanvasActionBase
 	private final Point position;
 
 	/** the editpart being drawn ontop of the canvas */
-	private EpsilonTensorEditPart editPart;
+	private TensorEditPartBase editPart;
 
 	/** the context panel. */
 	private final ContextPanelContent contextPanelcontent;
 
 	/** The list of different tensors. */
 	public TensorListModel tensorList = new TensorListModel();
+
+	/** flag whether the mouse is hovered over the canvas or not. */
+	private boolean isMouseOverCanvas;
 
 	/**
 	 * Constructor.
@@ -54,7 +62,7 @@ public class DrawTensorAction extends CanvasActionBase
 				applicationWindow,
 				drawingPanel,
 				R.strings.getString("window_action_draw"), //$NON-NLS-1$
-				new ImageIcon(R.drawable.getURL("draw"))); //$NON-NLS-1$
+				new ImageIcon(R.drawable.getURL("draw_tensor"))); //$NON-NLS-1$
 
 		this.position = new Point(0, 0);
 		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(
@@ -74,13 +82,28 @@ public class DrawTensorAction extends CanvasActionBase
 	}
 
 	@Override
+	public boolean doOnMouseEntered(MouseEvent e)
+	{
+		this.isMouseOverCanvas = true;
+		return false;
+	}
+
+	@Override
+	public boolean doOnMouseExited(MouseEvent e)
+	{
+		this.isMouseOverCanvas = false;
+		this.canvas.repaint();
+		return false;
+	}
+
+	@Override
 	public boolean doOnMouseClicked(MouseEvent e)
 	{
 
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
 			ModelRoot root = this.canvas.getModel();
-			root.addChild(((EpsilonTensor) this.editPart.getModel()).duplicate(root));
+			root.addChild(((TensorBase) this.editPart.getModel()).duplicate(root));
 
 			return true;
 		}
@@ -91,7 +114,8 @@ public class DrawTensorAction extends CanvasActionBase
 	@Override
 	public boolean drawOverlay(Graphics2D gfx)
 	{
-		this.editPart.draw(gfx);
+		if (this.isMouseOverCanvas)
+			this.editPart.draw(gfx);
 		return true;
 	}
 
@@ -139,10 +163,10 @@ public class DrawTensorAction extends CanvasActionBase
 				if (index == -1)
 					return;
 
-				EpsilonTensorEditPart editPart = DrawTensorAction.this.tensorList.getElementAt(index);
-
-				DrawTensorAction.this.editPart = new EpsilonTensorEditPart(
-						((EpsilonTensor) editPart.getModel()).duplicate(null));
+				TensorEditPartBase editPart = DrawTensorAction.this.tensorList.getElementAt(index);
+				TensorBase tensor = ((TensorBase) editPart.getModel()).duplicate(null);
+				EditPartFactory editPartFactory = DrawTensorAction.this.canvas.getEditPartFactory();
+				DrawTensorAction.this.editPart = (TensorEditPartBase) editPartFactory.createEditPart(tensor);
 			}
 		}
 	}
@@ -151,7 +175,7 @@ public class DrawTensorAction extends CanvasActionBase
 	private class TensorListModel extends AbstractListModel
 	{
 		/** The arraylist of editparts. */
-		private final EpsilonTensorEditPart[] editParts;
+		private final TensorEditPartBase[] editParts;
 
 		/** Constructor. */
 		public TensorListModel()
@@ -160,7 +184,7 @@ public class DrawTensorAction extends CanvasActionBase
 					ContextPanelContent.CELL_SIZE / 2,
 					ContextPanelContent.CELL_SIZE / 2);
 
-			this.editParts = new EpsilonTensorEditPart[] {
+			this.editParts = new TensorEditPartBase[] {
 					new EpsilonTensorEditPart(new EpsilonTensor(
 							null,
 							p,
@@ -169,12 +193,16 @@ public class DrawTensorAction extends CanvasActionBase
 					new EpsilonTensorEditPart(new EpsilonTensor(
 							null,
 							p,
-							EDirection.SOURCE))
+							EDirection.SOURCE)),
+
+					new LineTensorEditPart(new LineTensor(
+							null,
+							p)),
 			};
 		}
 
 		@Override
-		public EpsilonTensorEditPart getElementAt(int index)
+		public TensorEditPartBase getElementAt(int index)
 		{
 			return this.editParts[index];
 		}

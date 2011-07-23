@@ -26,7 +26,7 @@ import com.mpdeimos.tensor.util.PointUtil;
  * @author mpdeimos
  * 
  */
-public class EpsilonTensorFigure extends FigureBase
+public class TensorFigure extends FigureBase
 {
 
 	/** size of the center circle in pixels */
@@ -47,7 +47,7 @@ public class EpsilonTensorFigure extends FigureBase
 	/**
 	 * Constructor.
 	 */
-	public EpsilonTensorFigure(IEditPart editPart)
+	public TensorFigure(IEditPart editPart)
 	{
 		super(editPart);
 	}

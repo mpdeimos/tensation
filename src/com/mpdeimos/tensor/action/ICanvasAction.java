@@ -1,12 +1,12 @@
 package com.mpdeimos.tensor.action;
 
+import com.mpdeimos.tensor.ui.DrawingCanvas;
+
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Action;
-
-import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
  * Base interface for drawing canvas actions.
@@ -30,6 +30,12 @@ public interface ICanvasAction extends Action
 
 	/** being called if the mouse is moved on the canvas with a button clicked */
 	public boolean doOnMouseDragged(MouseEvent e);
+
+	/** being called as soon as the mouse entered the canvas */
+	public boolean doOnMouseEntered(MouseEvent e);
+
+	/** being called when the mouse leaves the canvas */
+	public boolean doOnMouseExited(MouseEvent e);
 
 	/** being called when a key is pressed. */
 	public boolean doOnKeyPressed(KeyEvent e);

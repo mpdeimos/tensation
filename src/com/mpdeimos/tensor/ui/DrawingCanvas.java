@@ -170,6 +170,28 @@ public class DrawingCanvas extends JPanel
 				DrawingCanvas.this.canvasAction.doOnMouseDragged(e);
 			}
 		}
+
+		@Override
+		public void mouseEntered(MouseEvent e)
+		{
+			super.mouseDragged(e);
+
+			if (DrawingCanvas.this.canvasAction != null)
+			{
+				DrawingCanvas.this.canvasAction.doOnMouseEntered(e);
+			}
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e)
+		{
+			super.mouseDragged(e);
+
+			if (DrawingCanvas.this.canvasAction != null)
+			{
+				DrawingCanvas.this.canvasAction.doOnMouseExited(e);
+			}
+		}
 	}
 
 	/**
@@ -271,5 +293,11 @@ public class DrawingCanvas extends JPanel
 	public List<IEditPart> getEditParts()
 	{
 		return this.editParts;
+	}
+
+	/** @return the EditPartFactory of the canvas. */
+	public EditPartFactory getEditPartFactory()
+	{
+		return this.editPartFactory;
 	}
 }

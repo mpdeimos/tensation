@@ -57,12 +57,12 @@ public class TensorConnectionFigure extends FigureBase
 		this.sinkAnchor = new Point2D.Double();
 		this.sourceAnchor = new Point2D.Double();
 
-		EpsilonTensorFigure.initAnchorPoints(
+		TensorFigure.initAnchorPoints(
 				connection.getSource().getTensor(),
 				connection.getSource().getId(),
 				this.sourceAnchor,
 				null);
-		EpsilonTensorFigure.initAnchorPoints(
+		TensorFigure.initAnchorPoints(
 				connection.getSink().getTensor(),
 				connection.getSink().getId(),
 				this.sinkAnchor,

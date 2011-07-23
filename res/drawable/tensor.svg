@@ -14,7 +14,10 @@
    id="svg2985"
    version="1.1"
    inkscape:version="0.48.1 r9760"
-   sodipodi:docname="New document 2">
+   sodipodi:docname="tensor.svg"
+   inkscape:export-filename="/home/mpdeimos/workspaces/java/Tensor/trunk/res/drawable/draw_tensor.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs2987">
     <marker
@@ -84,6 +87,20 @@
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
          transform="scale(0.2,0.2)" />
     </marker>
+    <marker
+       inkscape:stockid="TriangleOutS"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutS-6"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3958-8"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="scale(0.2,0.2)" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -92,9 +109,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="36.6875"
-     inkscape:cx="7.7104799"
-     inkscape:cy="9.5734127"
+     inkscape:zoom="54.0625"
+     inkscape:cx="8"
+     inkscape:cy="6.2207722"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:grid-bbox="true"
@@ -129,7 +146,7 @@
        sodipodi:rx="2.5002475"
        sodipodi:ry="2.5002475"
        d="m 11.127227,8.6794558 a 2.5002475,2.5002475 0 1 1 -5.0004947,0 2.5002475,2.5002475 0 1 1 5.0004947,0 z"
-       transform="matrix(0.59994061,0,0,0.59994061,3.3243245,3.292842)" />
+       transform="matrix(0.56562943,0.56562943,-0.56562943,0.56562943,8.0177113,-1.7939877)" />
     <rect
        style="fill:#000000;fill-opacity:1;stroke:none"
        id="rect3016"
@@ -150,19 +167,14 @@
        ry="0"
        transform="matrix(0,1,-1,0,0,0)" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.241;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-end:url(#TriangleOutS)"
-       d="m 8.5,6.2075956 0,-4.452231"
+       style="fill:none;stroke:#000000;stroke-width:1.29499999999999993;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-end:url(#TriangleOutS-6);"
+       d="M 10.70515,5.2935503 13.822155,2.1765452"
        id="path7762"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.241;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-end:url(#TriangleOutS)"
-       d="M 6.2715848,9.5753767 2.4158392,11.801493"
-       id="path7762-9"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1.241;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-end:url(#TriangleOutS)"
-       d="m 10.655161,9.5753774 3.855745,2.2261156"
-       id="path7762-7"
+       style="fill:none;stroke:#000000;stroke-width:1.24100006;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-end:url(#TriangleOutS)"
+       d="M 5.2969264,10.709401 2.148723,13.857604"
+       id="path7762-0"
        inkscape:connector-curvature="0" />
   </g>
 </svg>

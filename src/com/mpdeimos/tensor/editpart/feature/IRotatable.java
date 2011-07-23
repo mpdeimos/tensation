@@ -1,5 +1,10 @@
 package com.mpdeimos.tensor.editpart.feature;
 
+import com.mpdeimos.tensor.action.ICanvasAction;
+import com.mpdeimos.tensor.action.SelectEditPartAction;
+import com.mpdeimos.tensor.util.Log;
+import com.mpdeimos.tensor.util.PointUtil;
+
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -12,11 +17,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import resources.R;
-
-import com.mpdeimos.tensor.action.ICanvasAction;
-import com.mpdeimos.tensor.action.SelectEditPartAction;
-import com.mpdeimos.tensor.util.Log;
-import com.mpdeimos.tensor.util.PointUtil;
 
 /**
  * Base interface for rotatable EditParts.
@@ -156,7 +156,7 @@ public interface IRotatable extends IFeatureEditPart
 			try
 			{
 				Rectangle r = this.editPart.getBoundingRectangle();
-				Image img = ImageIO.read(R.drawable.getURL("overlay-rotate")); //$NON-NLS-1$
+				Image img = ImageIO.read(R.drawable.getURL("overlay_rotate")); //$NON-NLS-1$
 				gfx.drawImage(img,
 						(int) r.getCenterX()
 								+ this.rotationIndicator.x - 8,
