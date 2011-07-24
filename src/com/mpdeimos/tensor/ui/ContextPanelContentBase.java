@@ -3,8 +3,9 @@
  */
 package com.mpdeimos.tensor.ui;
 
+import com.mpdeimos.tensor.util.LayoutUtil;
+
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -28,22 +29,10 @@ public abstract class ContextPanelContentBase extends JPanel
 		this.setLayout(gridLayout);
 	}
 
-	/** Stretches the component ro full width by specifying its height. */
-	protected static void stretchToFullWidth(Component comp, int height)
+	@Override
+	public Component add(Component comp)
 	{
-		comp.setMaximumSize(new Dimension(Short.MAX_VALUE, height));
-		comp.setPreferredSize(new Dimension(Short.MAX_VALUE, height));
-	}
-
-	/** Stretches the component to full width. */
-	protected static void stretchToFullWidth(Component comp)
-	{
-		Dimension maximumSize = comp.getMaximumSize();
-		maximumSize.width = Short.MAX_VALUE;
-		comp.setMaximumSize(maximumSize);
-
-		Dimension preferredSize = comp.getPreferredSize();
-		preferredSize.width = Short.MAX_VALUE;
-		comp.setPreferredSize(preferredSize);
+		LayoutUtil.setWidth(comp, Short.MAX_VALUE);
+		return super.add(comp);
 	}
 }

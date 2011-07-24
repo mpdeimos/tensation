@@ -14,6 +14,7 @@ import com.mpdeimos.tensor.ui.ContextPanelContentBase;
 import com.mpdeimos.tensor.ui.DividerLabel;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.ui.EditPartListCellRenderer;
+import com.mpdeimos.tensor.util.LayoutUtil;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -150,7 +151,7 @@ public class DrawTensorAction extends CanvasActionBase
 			list.addListSelectionListener(this);
 
 			JScrollPane listScroller = new JScrollPane(list);
-			stretchToFullWidth(listScroller, CELL_SIZE * 2);
+			LayoutUtil.setHeight(listScroller, CELL_SIZE * 2);
 			this.add(listScroller);
 
 			list.setSelectedIndex(0);

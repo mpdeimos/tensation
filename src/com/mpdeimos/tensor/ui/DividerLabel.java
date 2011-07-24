@@ -31,12 +31,12 @@ public class DividerLabel extends JPanel
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridy = 0;
 		c.weightx = 0;
+		c.insets = new Insets(2, 0, 2, 0);
 
 		this.label = new JLabel(text);
 		c.fill = GridBagConstraints.NONE;
 		c.gridx = 0;
 		c.ipadx = 5;
-		c.insets = new Insets(2, 0, 2, 0);
 
 		this.add(this.label, c);
 
@@ -55,8 +55,8 @@ public class DividerLabel extends JPanel
 	@Override
 	public Dimension getMaximumSize()
 	{
-		Dimension d = super.getMaximumSize();
-		d.height = this.label.getHeight();
+		Dimension d = super.getPreferredSize();
+		d.width = Short.MAX_VALUE;
 
 		return d;
 	}

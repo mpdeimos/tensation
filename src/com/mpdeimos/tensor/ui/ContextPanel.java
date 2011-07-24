@@ -6,7 +6,6 @@ package com.mpdeimos.tensor.ui;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -25,6 +24,9 @@ public class ContextPanel extends JPanel
 
 	/** the content to display on this JPanel. */
 	private ContextPanelContentBase content = null;
+
+	/** The default content panel. */
+	private final ContextPanelContentBase defaultContent = new DefaultContent();
 
 	// /** The linked application window. */
 	// private final ApplicationWindow applicationWindow;
@@ -65,12 +67,21 @@ public class ContextPanel extends JPanel
 			this.add(this.content);
 		else
 		{
-			JLabel label = new JLabel(
-					R.strings.getString("window_contextpanel_disabled")); //$NON-NLS-1$
-			this.add(label);
+			this.add(this.defaultContent);
 		}
 
 		validate();
 		repaint();
+	}
+
+	/** default context panel class. */
+	private class DefaultContent extends ContextPanelContentBase
+	{
+		/** Constructor. */
+		public DefaultContent()
+		{
+			this.add(new DividerLabel(
+					R.strings.getString("window_contextpanel_disabled"))); //$NON-NLS-1$
+		}
 	}
 }
