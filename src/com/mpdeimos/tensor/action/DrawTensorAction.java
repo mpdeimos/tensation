@@ -7,6 +7,7 @@ import com.mpdeimos.tensor.editpart.TensorEditPartBase;
 import com.mpdeimos.tensor.model.EpsilonTensor;
 import com.mpdeimos.tensor.model.LineTensor;
 import com.mpdeimos.tensor.model.ModelRoot;
+import com.mpdeimos.tensor.model.PointTensor;
 import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensor.ui.ApplicationWindow;
@@ -202,6 +203,10 @@ public class DrawTensorAction extends CanvasActionBase
 							null,
 							p,
 							EDirection.SOURCE)),
+
+					new LineTensorEditPart(new PointTensor(
+							null,
+							p)),
 
 					new LineTensorEditPart(new LineTensor(
 							null,

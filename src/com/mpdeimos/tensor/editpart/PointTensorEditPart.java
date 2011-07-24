@@ -5,16 +5,16 @@ import com.mpdeimos.tensor.figure.TensorFigure;
 import com.mpdeimos.tensor.model.IModelData;
 
 /**
- * EditPart representing a line tensor.
+ * EditPart representing a point tensor.
  * 
  * @author mpdeimos
  * 
  */
-public class LineTensorEditPart extends TensorEditPartBase
+public class PointTensorEditPart extends TensorEditPartBase
 {
 
 	/** Constructor. */
-	public LineTensorEditPart(IModelData modelData)
+	public PointTensorEditPart(IModelData modelData)
 	{
 		super(modelData);
 	}

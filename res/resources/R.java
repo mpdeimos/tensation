@@ -21,8 +21,6 @@ public class R extends RBase
 	{
 		/** Value: Tensor */
 		WINDOW_MAIN_TITLE,
-		/** Value: foo */
-		YET_ANOTHER_ONEE,
 		/** Value: No adjustments */
 		WINDOW_CONTEXTPANEL_DISABLED,
 		/** Value: A connection consists of exactly one sink and one source */
