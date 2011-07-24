@@ -1,13 +1,20 @@
 package resources;
 
+import com.mpdeimos.ant.resourcecompiler.DrawableResourceEnum;
+import com.mpdeimos.ant.resourcecompiler.ILogger;
+import com.mpdeimos.ant.resourcecompiler.RBase;
+import com.mpdeimos.ant.resourcecompiler.StringResourceEnum;
+
 /**
  * Class for global resource access.
- * 
- * @author mpdeimos
- * 
+ *
+ * THIS CLASS IS CREATED DYNAMICALLY, DO NOT EDIT BY HAND!
+ *
+ * @author AntResourceCompiler <http://github.com/mpdeimos/AntResourceCompiler>
+ *
  */
  @SuppressWarnings("all")
-public class R
+public class R extends RBase
 {
 	/** string resource provider */
 	public static enum string implements StringResourceEnum
@@ -67,5 +74,10 @@ public class R
 		{
 			return DrawableResourceEnum.DrawableResourceEnumResolver.url(this);
 		}
+	}
+
+	public static void setLogger(ILogger logger)
+	{
+		RBase.setLogger(logger);
 	}
 }
