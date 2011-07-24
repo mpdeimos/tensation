@@ -1,5 +1,10 @@
 package com.mpdeimos.tensor.action;
 
+import com.mpdeimos.tensor.editpart.feature.IConnectable.ConnectionPoint;
+import com.mpdeimos.tensor.model.TensorConnection;
+import com.mpdeimos.tensor.ui.ApplicationWindow;
+import com.mpdeimos.tensor.ui.DrawingCanvas;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
@@ -11,11 +16,6 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.ImageIcon;
 
 import resources.R;
-
-import com.mpdeimos.tensor.editpart.feature.IConnectable.ConnectionPoint;
-import com.mpdeimos.tensor.model.TensorConnection;
-import com.mpdeimos.tensor.ui.ApplicationWindow;
-import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
  * Action for connecting two tensors.
@@ -44,8 +44,8 @@ public class TensorConnectAction extends CanvasActionBase
 		super(
 				applicationWindow,
 				canvas,
-				R.strings.getString("window_action_connect"), //$NON-NLS-1$
-				new ImageIcon(R.drawable.getURL("action_connect"))); //$NON-NLS-1$
+				R.string.WINDOW_ACTION_CONNECT.string(),
+				new ImageIcon(R.drawable.ACTION_CONNECT.url()));
 	}
 
 	@Override

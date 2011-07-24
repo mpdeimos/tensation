@@ -64,8 +64,8 @@ public class DrawTensorAction extends CanvasActionBase
 		super(
 				applicationWindow,
 				drawingPanel,
-				R.strings.getString("window_action_draw"), //$NON-NLS-1$
-				new ImageIcon(R.drawable.getURL("draw_tensor"))); //$NON-NLS-1$
+				R.string.WINDOW_ACTION_DRAWTENSOR.string(),
+				new ImageIcon(R.drawable.DRAW_TENSOR.url()));
 
 		this.position = new Point(0, 0);
 		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(
@@ -139,7 +139,7 @@ public class DrawTensorAction extends CanvasActionBase
 		public ContextPanelContent()
 		{
 			DividerLabel label = new DividerLabel(
-						R.strings.getString("window_contextpanel_drawtensor_select")); //$NON-NLS-1$
+						R.string.WINDOW_CONTEXTPANEL_DRAWTENSOR_SELECT.string());
 			this.add(label);
 
 			JList list = new JList(DrawTensorAction.this.tensorList);

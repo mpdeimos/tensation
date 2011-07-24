@@ -1,5 +1,9 @@
 package com.mpdeimos.tensor.action;
 
+import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.ui.ApplicationWindow;
+import com.mpdeimos.tensor.ui.DrawingCanvas;
+
 import java.awt.BasicStroke;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
@@ -13,10 +17,6 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.ImageIcon;
 
 import resources.R;
-
-import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.ui.ApplicationWindow;
-import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 /**
  * Action for drawing tensors
@@ -54,8 +54,8 @@ public class SelectEditPartAction extends CanvasActionBase
 		super(
 				applicationWindow,
 				canvas,
-				R.strings.getString("window_action_select"), //$NON-NLS-1$
-				new ImageIcon(R.drawable.getURL("select"))); //$NON-NLS-1$
+				R.string.WINDOW_ACTION_SELECT.string(),
+				new ImageIcon(R.drawable.SELECT.url()));
 	}
 
 	@Override

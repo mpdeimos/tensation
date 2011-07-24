@@ -81,7 +81,7 @@ public class ContextPanel extends JPanel
 		public DefaultContent()
 		{
 			this.add(new DividerLabel(
-					R.strings.getString("window_contextpanel_disabled"))); //$NON-NLS-1$
+					R.string.WINDOW_CONTEXTPANEL_DISABLED.string()));
 		}
 	}
 }

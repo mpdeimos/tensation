@@ -1,8 +1,8 @@
 package com.mpdeimos.tensor.model;
 
-import resources.R;
-
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
+
+import resources.R;
 
 /**
  * Represents a connection between two Tensors
@@ -48,7 +48,7 @@ public class TensorConnection extends ModelDataBase
 
 		if (this.source == null || this.sink == null)
 			throw new IllegalArgumentException(
-					R.strings.getString("exception_model_connection_missmatch")); //$NON-NLS-1$
+					R.string.EXCEPTION_MODEL_CONNECTION_MISSMATCH.string());
 	}
 
 	@Override

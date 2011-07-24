@@ -1,82 +1,69 @@
 package resources;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import com.mpdeimos.tensor.util.Log;
-
 /**
  * Class for global resource access.
  * 
  * @author mpdeimos
  * 
  */
+ @SuppressWarnings("all")
 public class R
 {
-
 	/** string resource provider */
-	public static final StringResourceProvider strings = new StringResourceProvider();
-
-	/** image resource provider */
-	public static final DrawableResourceProvider drawable = new DrawableResourceProvider();
-
-	/**
-	 * Provides images
-	 */
-	public static class DrawableResourceProvider
+	public static enum string implements StringResourceEnum
 	{
-		/**
-		 * @return the URL for the given image. prepends "/drawable/", appends
-		 *         ".png".
-		 */
-		public URL getURL(String name)
-		{
-			URL url = R.class.getResource(String.format(
-					"/drawable/%s.png", name)); //$NON-NLS-1$
-			if (url == null)
-			{
-				Log.w(R.class, "Drawable not found: " + name); //$NON-NLS-1$
-				url = R.class.getResource(String.format(
-						"/drawable/default.png", name)); //$NON-NLS-1$
-			}
+		/** Value: Tensor */
+		WINDOW_MAIN_TITLE,
+		/** Value: No adjustments */
+		WINDOW_CONTEXTPANEL_DISABLED,
+		/** Value: A connection consists of exactly one sink and one source */
+		EXCEPTION_MODEL_CONNECTION_MISSMATCH,
+		/** Value: Catched uncought exception */
+		EXCEPTION_UNCOUGHT,
+		/** Value: Select Item */
+		WINDOW_ACTION_SELECT,
+		/** Value: Select tensor */
+		WINDOW_CONTEXTPANEL_DRAWTENSOR_SELECT,
+		/** Value: Draw Tensor */
+		WINDOW_ACTION_DRAWTENSOR,
+		/** Value: Exit */
+		WINDOW_MENU_FILE_EXIT,
+		/** Value: Connect Tensors */
+		WINDOW_ACTION_CONNECT,
+		/** Value: File */
+		WINDOW_MENU_FILE,
+		;
 
-			return url;
+		@Override
+		public String string()
+		{
+			return StringResourceEnum.StringResourceEnumResolver.string(this);
 		}
 	}
 
-	/**
-	 * provides string resources
-	 */
-	public static class StringResourceProvider
+	/** image resource provider */
+	public static enum drawable implements DrawableResourceEnum
 	{
-		/** default string if resource not found */
-		private static final String NOT_FOUND = "## ERROR ##"; //$NON-NLS-1$
+		/** circle_green.png */
+		CIRCLE_GREEN,
+		/** draw_tensor.png */
+		DRAW_TENSOR,
+		/** window_exit.png */
+		WINDOW_EXIT,
+		/** default.png */
+		DEFAULT,
+		/** select.png */
+		SELECT,
+		/** action_connect.png */
+		ACTION_CONNECT,
+		/** overlay_rotate.png */
+		OVERLAY_ROTATE,
+		;
 
-		/** resource bundle for strings */
-		public static final ResourceBundle resourceBundle = ResourceBundle.getBundle("strings.strings"); //$NON-NLS-1$
-
-		/** @return the string for a given key */
-		public String getString(String key)
+		@Override
+		public java.net.URL url()
 		{
-			String str = null;
-			try
-			{
-				str = resourceBundle.getString(key);
-			}
-			catch (Exception e)
-			{
-				// Swallow, will be handled in finally
-			}
-			finally
-			{
-				if (str == null)
-				{
-					Log.w(R.class, "String not found: " + key); //$NON-NLS-1$
-					str = NOT_FOUND;
-				}
-			}
-
-			return str;
+			return DrawableResourceEnum.DrawableResourceEnumResolver.url(this);
 		}
 	}
 }

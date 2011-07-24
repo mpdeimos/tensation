@@ -156,7 +156,7 @@ public interface IRotatable extends IFeatureEditPart
 			try
 			{
 				Rectangle r = this.editPart.getBoundingRectangle();
-				Image img = ImageIO.read(R.drawable.getURL("overlay_rotate")); //$NON-NLS-1$
+				Image img = ImageIO.read(R.drawable.OVERLAY_ROTATE.url());
 				gfx.drawImage(img,
 						(int) r.getCenterX()
 								+ this.rotationIndicator.x - 8,

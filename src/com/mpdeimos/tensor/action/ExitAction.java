@@ -1,13 +1,13 @@
 package com.mpdeimos.tensor.action;
 
+import com.mpdeimos.tensor.ui.ApplicationWindow;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import resources.R;
-
-import com.mpdeimos.tensor.ui.ApplicationWindow;
 
 /**
  * Action for exiting the program.
@@ -24,8 +24,8 @@ public class ExitAction extends AbstractAction
 	public ExitAction()
 	{
 		super(
-				R.strings.getString("window_menu_file_exit"), //$NON-NLS-1$
-				new ImageIcon(R.drawable.getURL("window_exit"))); //$NON-NLS-1$
+				R.string.WINDOW_MENU_FILE_EXIT.string(),
+				new ImageIcon(R.drawable.WINDOW_EXIT.url()));
 	}
 
 	@Override

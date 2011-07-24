@@ -1,5 +1,9 @@
 <project name="Tensor" basedir="." default="help">
 
+	<path id="build.antlib">
+		<fileset dir="./ant-lib" includes="*.jar" />
+	</path>
+
 	<target name="help">
 		<java classname="org.apache.tools.ant.Main">
 			<arg value="-projecthelp" />
@@ -13,8 +17,17 @@
 	<target name="clean" description="Clean build output">
 		<delete dir="./build" />
 	</target>
+	
+	<target name="rc" description="Compile resources">
+		<taskdef name="resourceCompile" classname="com.mpdeimos.ant.resourcecompiler.ResourceCompilerTask" classpathref="build.antlib"/>
+		<resourceCompile path="./res"/>
+	</target>
+	
+	<target name="copy-arc" description="Copies Ant Resource Compiler jar from its dev env">
+		<copy file="../../AntResourceCompiler/build/jars/ant-resource-compiler.jar" todir="./ant-lib"/>
+	</target>
 
-	<target name="build" description="Comiple classes">
+	<target name="build" description="Comiple classes" depends="rc">
 		<mkdir dir="./build" />
 		<mkdir dir="./build/classes" />
 
@@ -46,7 +59,7 @@
 	        		<attribute name="Implementation-Version" value="${bzr.revision}" />
 			</manifest>
 			<fileset dir="./build/classes" includes="**/*" />
-			<fileset dir="./res" includes="strings/*.properties" />
+			<fileset dir="./res" includes="string/*.properties" />
 			<fileset dir="./res" includes="drawable/*.png" />
 		</jar>
 

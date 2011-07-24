@@ -181,7 +181,7 @@ public interface IConnectionControl extends IFeatureEditPart
 
 			try
 			{
-				Image img = ImageIO.read(R.drawable.getURL("circle_green")); //$NON-NLS-1$
+				Image img = ImageIO.read(R.drawable.CIRCLE_GREEN.url());
 				gfx.drawImage(img,
 						(int) sourceControlPoint.getX() - 8,
 						(int) sourceControlPoint.getY() - 8,
