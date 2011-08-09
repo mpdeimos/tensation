@@ -1,4 +1,4 @@
-package com.mpdeimos.tensor.action;
+package com.mpdeimos.tensor.action.canvas;
 
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 

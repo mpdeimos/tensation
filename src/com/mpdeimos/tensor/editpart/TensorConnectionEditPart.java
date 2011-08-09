@@ -3,14 +3,14 @@
  */
 package com.mpdeimos.tensor.editpart;
 
-import java.awt.geom.Point2D;
-
 import com.mpdeimos.tensor.editpart.feature.IConnectionControl;
 import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.figure.TensorConnectionFigure;
 import com.mpdeimos.tensor.model.IModelData;
 import com.mpdeimos.tensor.model.ModelChangedAdapter;
 import com.mpdeimos.tensor.model.TensorConnection;
+
+import java.awt.geom.Point2D;
 
 /**
  * EditPart for Tensor Connections
@@ -84,5 +84,17 @@ public class TensorConnectionEditPart extends EditPartBase implements
 	public void setSinkControlPointDistance(double d)
 	{
 		((TensorConnection) this.getModel()).setSinkControlPointDistance(d);
+	}
+
+	@Override
+	public double getSourceControlPointDistance()
+	{
+		return ((TensorConnection) this.getModel()).getSourceDistance();
+	}
+
+	@Override
+	public double getSinkControlPointDistance()
+	{
+		return ((TensorConnection) this.getModel()).getSinkDistance();
 	}
 }

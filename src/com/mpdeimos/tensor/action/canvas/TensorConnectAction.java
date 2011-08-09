@@ -1,9 +1,10 @@
-package com.mpdeimos.tensor.action;
+package com.mpdeimos.tensor.action.canvas;
 
 import com.mpdeimos.tensor.editpart.feature.IConnectable.ConnectionPoint;
 import com.mpdeimos.tensor.model.TensorConnection;
-import com.mpdeimos.tensor.ui.ApplicationWindow;
+import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
+import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -14,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
+import javax.swing.undo.CannotRedoException;
 
 import resources.R;
 
@@ -38,7 +40,7 @@ public class TensorConnectAction extends CanvasActionBase
 	 * Constructor.
 	 */
 	public TensorConnectAction(
-			ApplicationWindow applicationWindow,
+			Application applicationWindow,
 			DrawingCanvas canvas)
 	{
 		super(
@@ -177,12 +179,26 @@ public class TensorConnectAction extends CanvasActionBase
 
 		if (this.endConnectionPoint != null)
 		{
-			TensorConnection connection = new TensorConnection(
+			final TensorConnection connection = new TensorConnection(
 					getCanvas().getModel(),
 					this.startConnectionPoint.getAnchor(),
 					this.endConnectionPoint.getAnchor());
 
-			getCanvas().getModel().addChild(connection);
+			this.applicationWindow.getUndoManager().addEdit(
+					new InfiniteUndoableEdit()
+			{
+				@Override
+				public void redo() throws CannotRedoException
+					{
+						getCanvas().getModel().addChild(connection);
+					}
+
+				@Override
+				public void undo() throws CannotRedoException
+					{
+						getCanvas().getModel().removeChild(connection);
+					}
+			}.act());
 		}
 
 		this.endConnectionPoint = null;

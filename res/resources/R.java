@@ -29,14 +29,20 @@ public class R extends RBase
 		EXCEPTION_UNCOUGHT,
 		/** Value: Select Item */
 		WINDOW_ACTION_SELECT,
+		/** Value: Edit */
+		WINDOW_MENU_EDIT,
 		/** Value: Select tensor */
 		WINDOW_CONTEXTPANEL_DRAWTENSOR_SELECT,
 		/** Value: Draw Tensor */
 		WINDOW_ACTION_DRAWTENSOR,
+		/** Value: Redo */
+		WINDOW_MENU_EDIT_REDO,
 		/** Value: Exit */
 		WINDOW_MENU_FILE_EXIT,
 		/** Value: Connect Tensors */
 		WINDOW_ACTION_CONNECT,
+		/** Value: Undo */
+		WINDOW_MENU_EDIT_UNDO,
 		/** Value: File */
 		WINDOW_MENU_FILE,
 		;
@@ -57,14 +63,22 @@ public class R extends RBase
 		DRAW_TENSOR,
 		/** window_exit.png */
 		WINDOW_EXIT,
+		/** edit_redo_24.png */
+		EDIT_REDO_24,
 		/** default.png */
 		DEFAULT,
+		/** edit_undo_16.png */
+		EDIT_UNDO_16,
+		/** edit_undo_24.png */
+		EDIT_UNDO_24,
 		/** select.png */
 		SELECT,
 		/** action_connect.png */
 		ACTION_CONNECT,
 		/** overlay_rotate.png */
 		OVERLAY_ROTATE,
+		/** edit_redo_16.png */
+		EDIT_REDO_16,
 		;
 
 		@Override

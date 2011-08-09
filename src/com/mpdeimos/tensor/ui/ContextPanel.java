@@ -36,7 +36,7 @@ public class ContextPanel extends JPanel
 	 * 
 	 * @param applicationWindow
 	 */
-	public ContextPanel(ApplicationWindow applicationWindow)
+	public ContextPanel(Application applicationWindow)
 	{
 		// this.applicationWindow = applicationWindow;
 		this.setLayout(new GridLayout());

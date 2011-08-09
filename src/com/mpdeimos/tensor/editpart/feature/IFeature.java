@@ -3,7 +3,7 @@ package com.mpdeimos.tensor.editpart.feature;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
-import com.mpdeimos.tensor.action.ICanvasAction;
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
 
 /**
  * Interface for canvas features.

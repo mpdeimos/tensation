@@ -1,7 +1,9 @@
 package com.mpdeimos.tensor.editpart.feature;
 
-import com.mpdeimos.tensor.action.ICanvasAction;
-import com.mpdeimos.tensor.action.SelectEditPartAction;
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
+import com.mpdeimos.tensor.ui.Application;
+import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.PointUtil;
 
@@ -15,6 +17,8 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 
 import resources.R;
 
@@ -50,6 +54,9 @@ public interface IRotatable extends IFeatureEditPart
 		/** the initial rotation of the indicator. */
 		private final double indicatorRoatation;
 
+		/** the initial editPart rotation. */
+		private double initialRotation;
+
 		/** Constructor. */
 		public Feature(IRotatable editPart)
 		{
@@ -69,6 +76,8 @@ public interface IRotatable extends IFeatureEditPart
 
 				if (hasHitRotationIndicator(r, e))
 				{
+					this.initialRotation = this.editPart.getRotation();
+
 					Point curPos = new Point(e.getPoint());
 					PointUtil.move(
 							curPos,
@@ -133,6 +142,40 @@ public interface IRotatable extends IFeatureEditPart
 		@Override
 		public boolean doOnMouseReleased(ICanvasAction action, MouseEvent e)
 		{
+			if (this.rotationStartPointDelta != null)
+			{
+				if (Feature.this.indicatorRoatation == Feature.this.editPart.getRotation())
+					return false;
+
+				Application.getApp().getUndoManager().addEdit(
+						new InfiniteUndoableEdit()
+				{
+					private double before;
+					private double after;
+
+					@Override
+					protected void init()
+					{
+						this.before = Feature.this.initialRotation;
+						this.after = Feature.this.editPart.getRotation();
+					}
+
+					@Override
+					public void undo() throws CannotUndoException
+					{
+						Feature.this.editPart.setRotation(this.before);
+						updateRoatationIndicator(this.before);
+					}
+
+					@Override
+					public void redo() throws CannotRedoException
+					{
+						Feature.this.editPart.setRotation(this.after);
+						updateRoatationIndicator(this.after);
+					}
+				});
+			}
+
 			this.rotationStartPointDelta = null;
 			return false;
 		}

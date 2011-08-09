@@ -1,7 +1,7 @@
 package com.mpdeimos.tensor.editpart;
 
-import com.mpdeimos.tensor.action.ICanvasAction;
-import com.mpdeimos.tensor.action.SelectEditPartAction;
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensor.editpart.feature.FeatureBase;
 import com.mpdeimos.tensor.editpart.feature.IFeature;
 import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;

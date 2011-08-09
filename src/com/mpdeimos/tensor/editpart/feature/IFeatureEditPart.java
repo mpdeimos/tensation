@@ -2,7 +2,7 @@ package com.mpdeimos.tensor.editpart.feature;
 
 import java.util.List;
 
-import com.mpdeimos.tensor.action.ICanvasAction;
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
 import com.mpdeimos.tensor.editpart.IEditPart;
 
 /**

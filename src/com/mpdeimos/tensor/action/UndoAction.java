@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.undo.UndoManager;
 
 import resources.R;
 
@@ -15,22 +16,27 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public class ExitAction extends AbstractAction
+public class UndoAction extends AbstractAction
 {
 
 	/**
 	 * Constructor.
 	 */
-	public ExitAction()
+	public UndoAction()
 	{
 		super(
-				R.string.WINDOW_MENU_FILE_EXIT.string(),
-				new ImageIcon(R.drawable.WINDOW_EXIT.url()));
+				R.string.WINDOW_MENU_EDIT_UNDO.string(),
+				new ImageIcon(R.drawable.EDIT_UNDO_16.url()));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		Application.getApp().exit();
+		UndoManager undoManager = Application.getApp().getUndoManager();
+
+		if (!undoManager.canUndo())
+			return;
+
+		undoManager.undo();
 	}
 }

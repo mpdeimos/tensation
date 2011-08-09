@@ -3,14 +3,19 @@
  */
 package com.mpdeimos.tensor.editpart.feature;
 
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
+import com.mpdeimos.tensor.ui.Application;
+import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
+import com.mpdeimos.tensor.util.PointUtil;
+
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import com.mpdeimos.tensor.action.ICanvasAction;
-import com.mpdeimos.tensor.action.SelectEditPartAction;
-import com.mpdeimos.tensor.util.PointUtil;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 
 /**
  * Base interface for movable EditParts.
@@ -31,6 +36,9 @@ public interface IMovable extends IFeatureEditPart
 	{
 		/** The offset to the EditPart position when in moving mode. */
 		private Dimension moveStartPointDelta;
+
+		/** The EditPart position when starting movement. */
+		private Point initialPosition;
 
 		/** Constructor. */
 		public Feature(IMovable editPart)
@@ -61,6 +69,7 @@ public interface IMovable extends IFeatureEditPart
 					this.moveStartPointDelta = PointUtil.getDelta(
 							curPos,
 							e.getPoint());
+					this.initialPosition = new Point(curPos);
 					return true;
 				}
 			}
@@ -93,6 +102,38 @@ public interface IMovable extends IFeatureEditPart
 		@Override
 		public boolean doOnMouseReleased(ICanvasAction action, MouseEvent e)
 		{
+			if (this.moveStartPointDelta != null)
+			{
+				if (Feature.this.initialPosition.equals(Feature.this.editPart.getPosition()))
+					return false;
+
+				Application.getApp().getUndoManager().addEdit(
+						new InfiniteUndoableEdit()
+				{
+					private Point before;
+					private Point after;
+
+					@Override
+					protected void init()
+					{
+						this.before = Feature.this.initialPosition;
+						this.after = new Point(
+								Feature.this.editPart.getPosition());
+					}
+
+					@Override
+					public void undo() throws CannotUndoException
+					{
+						Feature.this.editPart.setPosition(this.before);
+					}
+
+					@Override
+					public void redo() throws CannotRedoException
+					{
+						Feature.this.editPart.setPosition(this.after);
+					}
+				});
+			}
 			this.moveStartPointDelta = null;
 			return false;
 		}

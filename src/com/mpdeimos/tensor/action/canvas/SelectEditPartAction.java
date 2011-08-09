@@ -1,7 +1,9 @@
-package com.mpdeimos.tensor.action;
+package com.mpdeimos.tensor.action.canvas;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.ui.ApplicationWindow;
+import com.mpdeimos.tensor.model.IModelData;
+import com.mpdeimos.tensor.model.ModelChangedAdapter;
+import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 import java.awt.BasicStroke;
@@ -48,7 +50,7 @@ public class SelectEditPartAction extends CanvasActionBase
 	 * Constructor.
 	 */
 	public SelectEditPartAction(
-			ApplicationWindow applicationWindow,
+			Application applicationWindow,
 			DrawingCanvas canvas)
 	{
 		super(
@@ -56,6 +58,22 @@ public class SelectEditPartAction extends CanvasActionBase
 				canvas,
 				R.string.WINDOW_ACTION_SELECT.string(),
 				new ImageIcon(R.drawable.SELECT.url()));
+
+		canvas.getModel().addModelChangedListener(new ModelChangedAdapter()
+		{
+			@Override
+			public void onChildRemoved(IModelData child)
+			{
+				if (SelectEditPartAction.this.selectedEditPart == null)
+					return;
+
+				// ref comp ok
+				if (SelectEditPartAction.this.selectedEditPart.getModel() == child)
+				{
+					SelectEditPartAction.this.selectedEditPart = null;
+				}
+			}
+		});
 	}
 
 	@Override

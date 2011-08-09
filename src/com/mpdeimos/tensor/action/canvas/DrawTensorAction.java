@@ -1,4 +1,4 @@
-package com.mpdeimos.tensor.action;
+package com.mpdeimos.tensor.action.canvas;
 
 import com.mpdeimos.tensor.editpart.EditPartFactory;
 import com.mpdeimos.tensor.editpart.EpsilonTensorEditPart;
@@ -10,11 +10,12 @@ import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.model.PointTensor;
 import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
-import com.mpdeimos.tensor.ui.ApplicationWindow;
+import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.ContextPanelContentBase;
 import com.mpdeimos.tensor.ui.DividerLabel;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.ui.EditPartListCellRenderer;
+import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
 import com.mpdeimos.tensor.util.LayoutUtil;
 
 import java.awt.Graphics2D;
@@ -29,6 +30,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 
 import resources.R;
 
@@ -59,7 +62,7 @@ public class DrawTensorAction extends CanvasActionBase
 	 * Constructor.
 	 */
 	public DrawTensorAction(
-			ApplicationWindow applicationWindow,
+			Application applicationWindow,
 			DrawingCanvas drawingPanel)
 	{
 		super(
@@ -106,8 +109,24 @@ public class DrawTensorAction extends CanvasActionBase
 
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
-			ModelRoot root = this.canvas.getModel();
-			root.addChild(((TensorBase) this.editPart.getModel()).duplicate(root));
+			final ModelRoot root = this.canvas.getModel();
+			final TensorBase duplicate = ((TensorBase) this.editPart.getModel()).duplicate(root);
+
+			this.applicationWindow.getUndoManager().addEdit(
+					new InfiniteUndoableEdit()
+			{
+				@Override
+				public void undo() throws CannotUndoException
+				{
+					root.removeChild(duplicate);
+				}
+
+				@Override
+				public void redo() throws CannotRedoException
+				{
+					root.addChild(duplicate);
+				}
+			}.act());
 
 			return true;
 		}

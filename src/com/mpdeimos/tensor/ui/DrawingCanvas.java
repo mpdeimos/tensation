@@ -1,6 +1,6 @@
 package com.mpdeimos.tensor.ui;
 
-import com.mpdeimos.tensor.action.ICanvasAction;
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
 import com.mpdeimos.tensor.editpart.EditPartFactory;
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.model.IModelChangedListener;
@@ -49,12 +49,12 @@ public class DrawingCanvas extends JPanel
 	private final KeyListener keyListener;
 
 	/** the linked application window. */
-	private final ApplicationWindow appWindow;
+	private final Application appWindow;
 
 	/**
 	 * Create the panel.
 	 */
-	public DrawingCanvas(ApplicationWindow appWindow)
+	public DrawingCanvas(Application appWindow)
 	{
 		this.appWindow = appWindow;
 		setBackground(Color.white);

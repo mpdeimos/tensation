@@ -1,27 +1,39 @@
 package com.mpdeimos.tensor.ui;
 
-import com.mpdeimos.tensor.action.DrawTensorAction;
 import com.mpdeimos.tensor.action.ExitAction;
-import com.mpdeimos.tensor.action.SelectEditPartAction;
-import com.mpdeimos.tensor.action.TensorConnectAction;
+import com.mpdeimos.tensor.action.RedoAction;
+import com.mpdeimos.tensor.action.UndoAction;
+import com.mpdeimos.tensor.action.canvas.DrawTensorAction;
+import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
+import com.mpdeimos.tensor.action.canvas.TensorConnectAction;
 import com.mpdeimos.tensor.util.Log;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
+import javax.swing.undo.UndoableEdit;
 
 import resources.R;
 
@@ -31,10 +43,10 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public class ApplicationWindow extends JFrame
+public class Application extends JFrame
 {
 	/** singleton window instance */
-	private static ApplicationWindow applicationWindow;
+	private static Application app;
 
 	/** the drawing canvas of our app */
 	private DrawingCanvas drawingCanvas;
@@ -44,6 +56,15 @@ public class ApplicationWindow extends JFrame
 
 	/** the context panel of our app. */
 	private ContextPanel contextPanel;
+
+	/** the undo manager of our app. */
+	private final CanvasUndoManager undoManager;
+
+	/** the global undo action. */
+	private final AbstractAction undoAction;
+
+	/** the global redo action. */
+	private final AbstractAction redoAction;
 
 	/**
 	 * Launch the application.
@@ -56,8 +77,8 @@ public class ApplicationWindow extends JFrame
 			@Override
 			public void run()
 			{
-				applicationWindow = new ApplicationWindow();
-				applicationWindow.setVisible(true);
+				app = new Application();
+				app.setVisible(true);
 			}
 		});
 	}
@@ -65,16 +86,27 @@ public class ApplicationWindow extends JFrame
 	/**
 	 * @return the current application window. may be null if not created.
 	 */
-	public static ApplicationWindow getApplicationWindow()
+	public static Application getApp()
 	{
-		return applicationWindow;
+		return app;
 	}
 
 	/**
 	 * Create the application.
 	 */
-	public ApplicationWindow()
+	public Application()
 	{
+		this.undoAction = new UndoAction();
+		this.redoAction = new RedoAction();
+		this.undoManager = new CanvasUndoManager();
+
+		((JComponent) getContentPane()).registerKeyboardAction(this.undoAction,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+		((JComponent) getContentPane()).registerKeyboardAction(this.redoAction,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_MASK),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+
 		initialize();
 	}
 
@@ -111,6 +143,7 @@ public class ApplicationWindow extends JFrame
 	{
 		JToolBar sideToolBar = new JToolBar();
 		sideToolBar.setOrientation(SwingConstants.VERTICAL);
+		sideToolBar.setFloatable(false);
 		getContentPane().add(sideToolBar, BorderLayout.WEST);
 
 		this.selectEditPartButton = new ToolBarButton(
@@ -137,6 +170,22 @@ public class ApplicationWindow extends JFrame
 
 		JToolBar topToolBar = new JToolBar();
 		getContentPane().add(topToolBar, BorderLayout.NORTH);
+		topToolBar.setFloatable(false);
+		topToolBar.setRollover(false);
+		topToolBar.setBorderPainted(false);
+
+		final JButton undoButton = new ToolBarButton(
+				topToolBar,
+				this.undoAction);
+		undoButton.setHideActionText(true);
+		undoButton.setIcon(new ImageIcon(R.drawable.EDIT_UNDO_24.url()));
+		topToolBar.add(undoButton);
+		final JButton redoButton = new ToolBarButton(
+				topToolBar,
+				this.redoAction);
+		redoButton.setIcon(new ImageIcon(R.drawable.EDIT_REDO_24.url()));
+		redoButton.setHideActionText(true);
+		topToolBar.add(redoButton);
 	}
 
 	/**
@@ -165,10 +214,19 @@ public class ApplicationWindow extends JFrame
 
 		// file menu
 		JMenu menuFile = new JMenu(R.string.WINDOW_MENU_FILE.string());
+		menuBar.add(menuFile);
 
 		JMenuItem item = new JMenuItem(new ExitAction());
 		menuFile.add(item);
-		menuBar.add(menuFile);
+
+		// edit menu
+		JMenu menuEdit = new JMenu(R.string.WINDOW_MENU_EDIT.string());
+		menuBar.add(menuEdit);
+
+		item = new JMenuItem(this.undoAction);
+		menuEdit.add(item);
+		item = new JMenuItem(this.redoAction);
+		menuEdit.add(item);
 
 		this.setJMenuBar(menuBar);
 	}
@@ -190,6 +248,12 @@ public class ApplicationWindow extends JFrame
 	public ContextPanel getContextPanel()
 	{
 		return this.contextPanel;
+	}
+
+	/** @return the global undo manager. */
+	public UndoManager getUndoManager()
+	{
+		return this.undoManager;
 	}
 
 	/** Starts the default toolbar action. */
@@ -214,7 +278,50 @@ public class ApplicationWindow extends JFrame
 		@Override
 		public void windowClosed(WindowEvent arg0)
 		{
-			Log.v(ApplicationWindow.this, "Main window closed"); //$NON-NLS-1$
+			Log.v(Application.this, "Main window closed"); //$NON-NLS-1$
+		}
+	}
+
+	/** Extended UndoManager */
+	private class CanvasUndoManager extends UndoManager
+	{
+		/** Constructor. */
+		public CanvasUndoManager()
+		{
+			updateActions();
+		}
+
+		@Override
+		public synchronized void undo() throws CannotUndoException
+		{
+			super.undo();
+
+			updateActions();
+		}
+
+		@Override
+		public synchronized void redo() throws CannotRedoException
+		{
+			super.redo();
+
+			updateActions();
+		}
+
+		@Override
+		public synchronized boolean addEdit(UndoableEdit anEdit)
+		{
+			boolean addEdit = super.addEdit(anEdit);
+
+			updateActions();
+
+			return addEdit;
+		}
+
+		/** updates the action states. */
+		private void updateActions()
+		{
+			Application.this.undoAction.setEnabled(canUndo());
+			Application.this.redoAction.setEnabled(canRedo());
 		}
 	}
 }

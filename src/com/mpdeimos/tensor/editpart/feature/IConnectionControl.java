@@ -1,11 +1,14 @@
 package com.mpdeimos.tensor.editpart.feature;
 
-import com.mpdeimos.tensor.action.ICanvasAction;
-import com.mpdeimos.tensor.action.SelectEditPartAction;
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnection;
+import com.mpdeimos.tensor.ui.Application;
+import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.PointUtil;
+import com.mpdeimos.tensor.util.Tupel;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -20,6 +23,8 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 
 import resources.R;
 
@@ -49,6 +54,12 @@ public interface IConnectionControl extends IFeatureEditPart
 	/** sets the control point distance for the sink anchor. */
 	public void setSinkControlPointDistance(double d);
 
+	/** @return the source control point distance. */
+	public double getSourceControlPointDistance();
+
+	/** @return the sink control point distance. */
+	public double getSinkControlPointDistance();
+
 	/** the control feature. */
 	public class Feature extends
 			FeatureBase<IConnectionControl, SelectEditPartAction>
@@ -68,10 +79,15 @@ public interface IConnectionControl extends IFeatureEditPart
 		/** the flag of what anchor we're actually moving. */
 		private short movementIndex;
 
+		/** Initial Control Point distances. */
+		private final Tupel<Double, Double> initialControlDistances;
+
 		/** Constructor. */
 		public Feature(IConnectionControl editPart)
 		{
 			super(editPart);
+
+			this.initialControlDistances = new Tupel<Double, Double>();
 		}
 
 		@Override
@@ -89,6 +105,9 @@ public interface IConnectionControl extends IFeatureEditPart
 				controlPoint = this.editPart.getSourceControlPoint(false);
 
 			this.movementDelta = PointUtil.getDelta(e.getPoint(), controlPoint);
+
+			this.initialControlDistances.$1 = this.editPart.getSinkControlPointDistance();
+			this.initialControlDistances.$2 = this.editPart.getSourceControlPointDistance();
 
 			return true;
 		}
@@ -141,6 +160,44 @@ public interface IConnectionControl extends IFeatureEditPart
 		@Override
 		public boolean doOnMouseReleased(ICanvasAction action, MouseEvent e)
 		{
+			if (this.movementDelta != null)
+			{
+				if (this.initialControlDistances.$1 == Feature.this.editPart.getSinkControlPointDistance()
+						&& this.initialControlDistances.$2 == Feature.this.editPart.getSourceControlPointDistance())
+					return false;
+
+				Application.getApp().getUndoManager().addEdit(
+						new InfiniteUndoableEdit()
+				{
+					private Tupel<Double, Double> before;
+					private Tupel<Double, Double> after;
+
+					@Override
+					protected void init()
+					{
+						this.before = new Tupel<Double, Double>(
+								Feature.this.initialControlDistances);
+						this.after = new Tupel<Double, Double>();
+						this.after.$1 = Feature.this.editPart.getSinkControlPointDistance();
+						this.after.$2 = Feature.this.editPart.getSourceControlPointDistance();
+					}
+
+					@Override
+					public void undo() throws CannotUndoException
+					{
+						Feature.this.editPart.setSinkControlPointDistance(this.before.$1);
+						Feature.this.editPart.setSourceControlPointDistance(this.before.$2);
+					}
+
+					@Override
+					public void redo() throws CannotRedoException
+					{
+						Feature.this.editPart.setSinkControlPointDistance(this.after.$1);
+						Feature.this.editPart.setSourceControlPointDistance(this.after.$2);
+					}
+				});
+			}
+
 			this.movementDelta = null;
 			return false;
 		}

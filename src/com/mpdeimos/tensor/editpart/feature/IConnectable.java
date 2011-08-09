@@ -8,8 +8,8 @@ import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.mpdeimos.tensor.action.ICanvasAction;
-import com.mpdeimos.tensor.action.TensorConnectAction;
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+import com.mpdeimos.tensor.action.canvas.TensorConnectAction;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 

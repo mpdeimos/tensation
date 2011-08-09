@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.ParameterizedType;
 
-import com.mpdeimos.tensor.action.ICanvasAction;
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
 
 /**
  * Base class for EditPart Features.

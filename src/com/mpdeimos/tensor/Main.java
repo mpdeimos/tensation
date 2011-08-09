@@ -4,7 +4,7 @@
 package com.mpdeimos.tensor;
 
 import com.mpdeimos.ant.resourcecompiler.ILogger;
-import com.mpdeimos.tensor.ui.ApplicationWindow;
+import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.Log.LogLevel;
 
@@ -34,6 +34,6 @@ public class Main
 			}
 		});
 
-		ApplicationWindow.createAndDisplay();
+		Application.createAndDisplay();
 	}
 }
