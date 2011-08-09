@@ -187,16 +187,22 @@ public class TensorConnectAction extends CanvasActionBase
 					new InfiniteUndoableEdit()
 			{
 				@Override
+				public String getPresentationName()
+				{
+					return R.string.WINDOW_ACTION_CONNECT.string();
+				}
+
+				@Override
 				public void redo()
-					{
-						getCanvas().getModel().addChild(connection);
-					}
+				{
+					getCanvas().getModel().addChild(connection);
+				}
 
 				@Override
 				public void undo()
-					{
-						getCanvas().getModel().removeChild(connection);
-					}
+				{
+					getCanvas().getModel().removeChild(connection);
+				}
 			}.act());
 		}
 

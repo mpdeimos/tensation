@@ -114,6 +114,12 @@ public class DrawTensorAction extends CanvasActionBase
 					new InfiniteUndoableEdit()
 			{
 				@Override
+				public String getPresentationName()
+				{
+					return R.string.WINDOW_ACTION_DRAWTENSOR.string();
+				}
+
+				@Override
 				public void undo()
 				{
 					root.removeChild(duplicate);

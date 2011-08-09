@@ -159,6 +159,12 @@ public interface IRotatable extends IFeatureEditPart
 					}
 
 					@Override
+					public String getPresentationName()
+					{
+						return R.string.WINDOW_ACTION_ROTATE.string();
+					}
+
+					@Override
 					public void undo()
 					{
 						Feature.this.editPart.setRotation(this.before);

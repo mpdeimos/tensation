@@ -14,6 +14,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import resources.R;
+
 /**
  * Base interface for movable EditParts.
  * 
@@ -116,6 +118,12 @@ public interface IMovable extends IFeatureEditPart
 						this.before = Feature.this.initialPosition;
 						this.after = new Point(
 								Feature.this.editPart.getPosition());
+					}
+
+					@Override
+					public String getPresentationName()
+					{
+						return R.string.WINDOW_ACTION_MOVE.string();
 					}
 
 					@Override

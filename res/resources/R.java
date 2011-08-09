@@ -21,6 +21,10 @@ public class R extends RBase
 	{
 		/** Value: Tensor */
 		WINDOW_MAIN_TITLE,
+		/** Value: Rotate */
+		WINDOW_ACTION_ROTATE,
+		/** Value: Adjust Connection */
+		WINDOW_ACTION_CONNECT_ADJUST,
 		/** Value: No adjustments */
 		WINDOW_CONTEXTPANEL_DISABLED,
 		/** Value: A connection consists of exactly one sink and one source */
@@ -29,6 +33,8 @@ public class R extends RBase
 		EXCEPTION_UNCOUGHT,
 		/** Value: Select Item */
 		WINDOW_ACTION_SELECT,
+		/** Value: Move */
+		WINDOW_ACTION_MOVE,
 		/** Value: Edit */
 		WINDOW_MENU_EDIT,
 		/** Value: Select tensor */

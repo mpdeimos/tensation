@@ -16,6 +16,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -326,7 +327,19 @@ public class Application extends JFrame
 		private void updateActions()
 		{
 			Application.this.undoAction.setEnabled(canUndo());
+			Application.this.undoAction.putValue(
+					Action.NAME,
+					getUndoPresentationName());
+			Application.this.undoAction.putValue(
+					Action.SHORT_DESCRIPTION,
+					getUndoPresentationName());
 			Application.this.redoAction.setEnabled(canRedo());
+			Application.this.redoAction.putValue(
+					Action.NAME,
+					getRedoPresentationName());
+			Application.this.redoAction.putValue(
+					Action.SHORT_DESCRIPTION,
+					getRedoPresentationName());
 		}
 	}
 }

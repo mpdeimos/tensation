@@ -181,6 +181,12 @@ public interface IConnectionControl extends IFeatureEditPart
 					}
 
 					@Override
+					public String getPresentationName()
+					{
+						return R.string.WINDOW_ACTION_CONNECT_ADJUST.string();
+					}
+
+					@Override
 					public void undo()
 					{
 						Feature.this.editPart.setSinkControlPointDistance(this.before.$1);
