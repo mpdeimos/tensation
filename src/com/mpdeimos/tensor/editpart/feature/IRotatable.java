@@ -17,8 +17,6 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 
 import resources.R;
 
@@ -161,14 +159,14 @@ public interface IRotatable extends IFeatureEditPart
 					}
 
 					@Override
-					public void undo() throws CannotUndoException
+					public void undo()
 					{
 						Feature.this.editPart.setRotation(this.before);
 						updateRoatationIndicator(this.before);
 					}
 
 					@Override
-					public void redo() throws CannotRedoException
+					public void redo()
 					{
 						Feature.this.editPart.setRotation(this.after);
 						updateRoatationIndicator(this.after);

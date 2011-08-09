@@ -14,9 +14,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-
 /**
  * Base interface for movable EditParts.
  * 
@@ -122,13 +119,13 @@ public interface IMovable extends IFeatureEditPart
 					}
 
 					@Override
-					public void undo() throws CannotUndoException
+					public void undo()
 					{
 						Feature.this.editPart.setPosition(this.before);
 					}
 
 					@Override
-					public void redo() throws CannotRedoException
+					public void redo()
 					{
 						Feature.this.editPart.setPosition(this.after);
 					}

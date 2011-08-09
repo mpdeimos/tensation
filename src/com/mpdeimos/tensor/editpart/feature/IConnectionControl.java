@@ -23,8 +23,6 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 
 import resources.R;
 
@@ -183,14 +181,14 @@ public interface IConnectionControl extends IFeatureEditPart
 					}
 
 					@Override
-					public void undo() throws CannotUndoException
+					public void undo()
 					{
 						Feature.this.editPart.setSinkControlPointDistance(this.before.$1);
 						Feature.this.editPart.setSourceControlPointDistance(this.before.$2);
 					}
 
 					@Override
-					public void redo() throws CannotRedoException
+					public void redo()
 					{
 						Feature.this.editPart.setSinkControlPointDistance(this.after.$1);
 						Feature.this.editPart.setSourceControlPointDistance(this.after.$2);

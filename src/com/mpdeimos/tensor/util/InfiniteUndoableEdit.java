@@ -1,8 +1,6 @@
 package com.mpdeimos.tensor.util;
 
 import javax.swing.undo.AbstractUndoableEdit;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
 /**
@@ -25,13 +23,13 @@ abstract public class InfiniteUndoableEdit extends AbstractUndoableEdit
 	}
 
 	@Override
-	public void redo() throws CannotRedoException
+	public void redo()
 	{
 		// nothing
 	}
 
 	@Override
-	public void undo() throws CannotUndoException
+	public void undo()
 	{
 		// nothing
 	}

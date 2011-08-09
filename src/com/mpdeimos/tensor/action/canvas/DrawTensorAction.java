@@ -30,8 +30,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 
 import resources.R;
 
@@ -116,13 +114,13 @@ public class DrawTensorAction extends CanvasActionBase
 					new InfiniteUndoableEdit()
 			{
 				@Override
-				public void undo() throws CannotUndoException
+				public void undo()
 				{
 					root.removeChild(duplicate);
 				}
 
 				@Override
-				public void redo() throws CannotRedoException
+				public void redo()
 				{
 					root.addChild(duplicate);
 				}

@@ -100,13 +100,6 @@ public class Application extends JFrame
 		this.redoAction = new RedoAction();
 		this.undoManager = new CanvasUndoManager();
 
-		((JComponent) getContentPane()).registerKeyboardAction(this.undoAction,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
-		((JComponent) getContentPane()).registerKeyboardAction(this.redoAction,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_MASK),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
-
 		initialize();
 	}
 
@@ -134,6 +127,18 @@ public class Application extends JFrame
 		initializeCanvas();
 		initializeMenu();
 		initializeToolbars();
+		initializeKeystrokes();
+	}
+
+	/** Initializes global keystrokes. */
+	private void initializeKeystrokes()
+	{
+		((JComponent) getContentPane()).registerKeyboardAction(this.undoAction,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+		((JComponent) getContentPane()).registerKeyboardAction(this.redoAction,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_MASK),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 
 	/**

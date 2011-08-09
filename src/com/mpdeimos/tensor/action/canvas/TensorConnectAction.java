@@ -15,7 +15,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
-import javax.swing.undo.CannotRedoException;
 
 import resources.R;
 
@@ -188,13 +187,13 @@ public class TensorConnectAction extends CanvasActionBase
 					new InfiniteUndoableEdit()
 			{
 				@Override
-				public void redo() throws CannotRedoException
+				public void redo()
 					{
 						getCanvas().getModel().addChild(connection);
 					}
 
 				@Override
-				public void undo() throws CannotRedoException
+				public void undo()
 					{
 						getCanvas().getModel().removeChild(connection);
 					}
