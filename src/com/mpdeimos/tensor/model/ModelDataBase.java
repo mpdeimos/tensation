@@ -37,7 +37,7 @@ public abstract class ModelDataBase implements IModelData
 	public ImmutableList<IModelData> getChildren()
 	{
 		if (this.children == null)
-			return null;
+			return new ImmutableList<IModelData>();
 
 		return new ImmutableList<IModelData>(this.children);
 	}

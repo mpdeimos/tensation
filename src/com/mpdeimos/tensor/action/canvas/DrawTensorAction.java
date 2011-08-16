@@ -107,7 +107,7 @@ public class DrawTensorAction extends CanvasActionBase
 
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
-			final ModelRoot root = this.canvas.getModel();
+			final ModelRoot root = Application.getApp().getModel();
 			final TensorBase duplicate = ((TensorBase) this.editPart.getModel()).duplicate(root);
 
 			this.applicationWindow.getUndoManager().addEdit(

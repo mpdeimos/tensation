@@ -1,5 +1,6 @@
 package com.mpdeimos.tensor.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -15,7 +16,13 @@ import java.util.ListIterator;
 public class ImmutableList<T> implements List<T>
 {
 	/** The list backing up this ImmutalList */
-	private List<T> backend;
+	private final List<T> backend;
+
+	/** Constructs an empty immutal list. */
+	public ImmutableList()
+	{
+		this.backend = new ArrayList<T>(0);
+	}
 
 	/** Constructs an Immutal list using a given list as backend */
 	public ImmutableList(List<T> backend)

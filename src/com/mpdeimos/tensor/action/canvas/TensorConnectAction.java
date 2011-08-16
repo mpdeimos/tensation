@@ -179,7 +179,7 @@ public class TensorConnectAction extends CanvasActionBase
 		if (this.endConnectionPoint != null)
 		{
 			final TensorConnection connection = new TensorConnection(
-					getCanvas().getModel(),
+					Application.getApp().getModel(),
 					this.startConnectionPoint.getAnchor(),
 					this.endConnectionPoint.getAnchor());
 
@@ -195,13 +195,13 @@ public class TensorConnectAction extends CanvasActionBase
 				@Override
 				public void redo()
 				{
-					getCanvas().getModel().addChild(connection);
+					Application.getApp().getModel().addChild(connection);
 				}
 
 				@Override
 				public void undo()
 				{
-					getCanvas().getModel().removeChild(connection);
+					Application.getApp().getModel().removeChild(connection);
 				}
 			}.act());
 		}

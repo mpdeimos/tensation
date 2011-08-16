@@ -17,6 +17,9 @@ public class StringUtil
 	/** string representation of the tabulator character */
 	public static final String TABULATOR = "\t"; //$NON-NLS-1$
 
+	/** an empty string. */
+	public static final String EMPTY = ""; //$NON-NLS-1$
+
 	/** checks whether a string is null or empty */
 	public static boolean isNullOrEmpty(String s)
 	{

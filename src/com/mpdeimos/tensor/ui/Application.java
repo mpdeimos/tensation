@@ -1,11 +1,14 @@
 package com.mpdeimos.tensor.ui;
 
 import com.mpdeimos.tensor.action.ExitAction;
+import com.mpdeimos.tensor.action.NewAction;
 import com.mpdeimos.tensor.action.RedoAction;
+import com.mpdeimos.tensor.action.SaveAction;
 import com.mpdeimos.tensor.action.UndoAction;
 import com.mpdeimos.tensor.action.canvas.DrawTensorAction;
 import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensor.action.canvas.TensorConnectAction;
+import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.util.Log;
 
 import java.awt.BorderLayout;
@@ -67,6 +70,8 @@ public class Application extends JFrame
 	/** the global redo action. */
 	private final AbstractAction redoAction;
 
+	private ModelRoot model;
+
 	/**
 	 * Launch the application.
 	 */
@@ -100,6 +105,8 @@ public class Application extends JFrame
 		this.undoAction = new UndoAction();
 		this.redoAction = new RedoAction();
 		this.undoManager = new CanvasUndoManager();
+
+		this.model = new ModelRoot();
 
 		initialize();
 	}
@@ -180,6 +187,20 @@ public class Application extends JFrame
 		topToolBar.setRollover(false);
 		topToolBar.setBorderPainted(false);
 
+		final JButton newButton = new ToolBarButton(
+				topToolBar,
+				new NewAction());
+		newButton.setHideActionText(true);
+		newButton.setIcon(new ImageIcon(R.drawable.DOCUMENT_NEW_24.url()));
+		topToolBar.add(newButton);
+
+		final JButton saveButton = new ToolBarButton(
+				topToolBar,
+				new SaveAction());
+		saveButton.setHideActionText(true);
+		saveButton.setIcon(new ImageIcon(R.drawable.DOCUMENT_SAVE_24.url()));
+		topToolBar.add(saveButton);
+
 		final JButton undoButton = new ToolBarButton(
 				topToolBar,
 				this.undoAction);
@@ -222,7 +243,14 @@ public class Application extends JFrame
 		JMenu menuFile = new JMenu(R.string.WINDOW_MENU_FILE.string());
 		menuBar.add(menuFile);
 
-		JMenuItem item = new JMenuItem(new ExitAction());
+		JMenuItem item = new JMenuItem(new NewAction());
+		menuFile.add(item);
+
+		item = new JMenuItem(new SaveAction());
+		menuFile.add(item);
+
+		menuFile.addSeparator();
+		item = new JMenuItem(new ExitAction());
 		menuFile.add(item);
 
 		// edit menu
@@ -260,6 +288,19 @@ public class Application extends JFrame
 	public UndoManager getUndoManager()
 	{
 		return this.undoManager;
+	}
+
+	/** @return the main root model. */
+	public ModelRoot getModel()
+	{
+		return this.model;
+	}
+
+	/** sets the current main root model. */
+	public void setModel(ModelRoot model)
+	{
+		this.model = model;
+		this.drawingCanvas.onModelExchanged();
 	}
 
 	/** Starts the default toolbar action. */

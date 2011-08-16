@@ -5,7 +5,6 @@ import com.mpdeimos.tensor.editpart.EditPartFactory;
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.model.IModelChangedListener;
 import com.mpdeimos.tensor.model.IModelData;
-import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.util.Log;
 
 import java.awt.Color;
@@ -39,9 +38,6 @@ public class DrawingCanvas extends JPanel
 	/** the current drawing action */
 	private ICanvasAction canvasAction = null;
 
-	/** root model */
-	private final ModelRoot root;
-
 	/** mouse event listener */
 	private final MouseListener mouseListener;
 
@@ -50,6 +46,9 @@ public class DrawingCanvas extends JPanel
 
 	/** the linked application window. */
 	private final Application appWindow;
+
+	/** the model change listener. */
+	private final IModelChangedListener modelChangedListener;
 
 	/**
 	 * Create the panel.
@@ -60,12 +59,13 @@ public class DrawingCanvas extends JPanel
 		setBackground(Color.white);
 		this.mouseListener = new MouseListener();
 		this.keyListener = new KeyListener();
+		this.modelChangedListener = new ModelChangedListener();
+
 		addMouseMotionListener(this.mouseListener);
 		addMouseListener(this.mouseListener);
 		addKeyListener(this.keyListener);
 
-		this.root = new ModelRoot();
-		this.root.addModelChangedListener(new ModelChangedListener());
+		onModelExchanged();
 	}
 
 	@Override
@@ -230,6 +230,8 @@ public class DrawingCanvas extends JPanel
 
 			DrawingCanvas.this.editParts.removeAll(toBeRemoved);
 
+			stopCanvasAction();
+
 			repaint();
 		}
 	}
@@ -282,13 +284,6 @@ public class DrawingCanvas extends JPanel
 		repaint();
 	}
 
-	/** @return the model */
-	public ModelRoot getModel()
-	{
-		// FIXME this is really bad practice!
-		return this.root;
-	}
-
 	/** @return the edit parts */
 	public List<IEditPart> getEditParts()
 	{
@@ -299,5 +294,17 @@ public class DrawingCanvas extends JPanel
 	public EditPartFactory getEditPartFactory()
 	{
 		return this.editPartFactory;
+	}
+
+	/** Called every time the model got exchanged. */
+	public void onModelExchanged()
+	{
+		this.editParts.clear();
+
+		this.appWindow.getModel().addModelChangedListener(
+				this.modelChangedListener);
+
+		stopCanvasAction();
+		repaint();
 	}
 }
