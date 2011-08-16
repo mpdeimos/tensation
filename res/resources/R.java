@@ -35,6 +35,8 @@ public class R extends RBase
 		EXCEPTION_UNCOUGHT,
 		/** Value: Select tensor */
 		WINDOW_CONTEXTPANEL_DRAWTENSOR_SELECT,
+		/** Value: Tensor Diagram XML */
+		APP_EXTENSION_TDX,
 		/** Value: Edit */
 		WINDOW_MENU_EDIT,
 		/** Value: No adjustments */
