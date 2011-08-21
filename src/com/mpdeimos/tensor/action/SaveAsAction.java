@@ -1,0 +1,71 @@
+package com.mpdeimos.tensor.action;
+
+import com.mpdeimos.tensor.impex.Exporter;
+import com.mpdeimos.tensor.model.ModelRoot;
+import com.mpdeimos.tensor.ui.Application;
+import com.mpdeimos.tensor.util.Log;
+import com.mpdeimos.tensor.util.XmlUtil;
+
+import java.awt.event.ActionEvent;
+import java.io.File;
+
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.w3c.dom.Document;
+
+import resources.R;
+
+/**
+ * Saves the current model to an xml file.
+ * 
+ * @author mpdeimos
+ * 
+ */
+public class SaveAsAction extends AbstractAction
+{
+	/** file extension of the exported xml. */
+	public static final String XML_FILE_EXTENSION = ".tdx"; //$NON-NLS-1$
+
+	/**
+	 * Constructor.
+	 */
+	public SaveAsAction()
+	{
+		super(
+				R.string.WINDOW_MENU_SAVEAS.string(),
+				new ImageIcon(R.drawable.DOCUMENT_SAVE_AS_16.url()));
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		ModelRoot model = Application.getApp().getModel();
+		Exporter ex = new Exporter();
+
+		Document doc = ex.toXml(model);
+
+		JFileChooser fc = new JFileChooser();
+		fc.setFileFilter(new FileNameExtensionFilter(
+				R.string.APP_EXTENSION_TDX.string(),
+				XML_FILE_EXTENSION));
+		int answer = fc.showSaveDialog(Application.getApp());
+
+		if (answer != JFileChooser.APPROVE_OPTION)
+			return;
+
+		File selectedFile = fc.getSelectedFile();
+		if (!selectedFile.getName().endsWith(XML_FILE_EXTENSION))
+			selectedFile = new File(selectedFile.getPath() + XML_FILE_EXTENSION);
+
+		if (!XmlUtil.writeDomDocumentToFile(doc, selectedFile))
+		{
+			Log.e(this, "saving file failed..."); //$NON-NLS-1$
+			// TODO show dialog
+		}
+
+		Application.getApp().setModelExportLocation(selectedFile);
+	}
+}

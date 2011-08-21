@@ -3,6 +3,7 @@ package com.mpdeimos.tensor.impex;
 import com.mpdeimos.tensor.model.IModelData;
 import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.model.TensorBase;
+import com.mpdeimos.tensor.model.TensorConnection;
 import com.mpdeimos.tensor.util.XmlUtil;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -42,9 +43,23 @@ public class Exporter
 			}
 		}
 
-		// TensorExporter tensorExporter = new TensorExporter();
+		ConnectionExporter connectionExporter = new ConnectionExporter();
 		Element eConnections = xmlDoc.createElement(EXmlGeneric.ELEMENT_CONNECTIONS.getName());
 		eRoot.appendChild(eConnections);
+
+		int connectionIDs = 0;
+		for (IModelData model : modelRoot.getChildren())
+		{
+			if (model instanceof TensorConnection)
+			{
+				Element e = connectionExporter.export(
+						xmlDoc,
+						connectionIDs,
+						model);
+				eConnections.appendChild(e);
+				connectionIDs++;
+			}
+		}
 
 		return xmlDoc;
 	}

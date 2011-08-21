@@ -11,8 +11,6 @@ import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.w3c.dom.Document;
 
@@ -26,9 +24,6 @@ import resources.R;
  */
 public class SaveAction extends AbstractAction
 {
-	/** file extension of the exported xml. */
-	public static final String XML_FILE_EXTENSION = ".tdx"; //$NON-NLS-1$
-
 	/**
 	 * Constructor.
 	 */
@@ -42,23 +37,20 @@ public class SaveAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		File exportLocation = Application.getApp().getModelExportLocation();
+
+		if (exportLocation == null)
+		{
+			new SaveAsAction().actionPerformed(e);
+			return;
+		}
+
 		ModelRoot model = Application.getApp().getModel();
 		Exporter ex = new Exporter();
 
 		Document doc = ex.toXml(model);
 
-		JFileChooser fc = new JFileChooser();
-		fc.setFileFilter(new FileNameExtensionFilter(
-				R.string.APP_EXTENSION_TDX.string(),
-				XML_FILE_EXTENSION));
-		int answer = fc.showSaveDialog(Application.getApp());
-
-		if (answer != JFileChooser.APPROVE_OPTION)
-			return;
-
-		File selectedFile = fc.getSelectedFile();
-
-		if (!XmlUtil.writeDomDocumentToFile(doc, selectedFile))
+		if (!XmlUtil.writeDomDocumentToFile(doc, exportLocation))
 		{
 			Log.e(this, "saving file failed..."); //$NON-NLS-1$
 			// TODO show dialog

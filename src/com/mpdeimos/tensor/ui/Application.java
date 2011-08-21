@@ -4,6 +4,7 @@ import com.mpdeimos.tensor.action.ExitAction;
 import com.mpdeimos.tensor.action.NewAction;
 import com.mpdeimos.tensor.action.RedoAction;
 import com.mpdeimos.tensor.action.SaveAction;
+import com.mpdeimos.tensor.action.SaveAsAction;
 import com.mpdeimos.tensor.action.UndoAction;
 import com.mpdeimos.tensor.action.canvas.DrawTensorAction;
 import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
@@ -17,6 +18,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -70,7 +72,11 @@ public class Application extends JFrame
 	/** the global redo action. */
 	private final AbstractAction redoAction;
 
+	/** the model loadd. */
 	private ModelRoot model;
+
+	/** the export location of the model. */
+	private File modelExportLocation;
 
 	/**
 	 * Launch the application.
@@ -248,6 +254,8 @@ public class Application extends JFrame
 
 		item = new JMenuItem(new SaveAction());
 		menuFile.add(item);
+		item = new JMenuItem(new SaveAsAction());
+		menuFile.add(item);
 
 		menuFile.addSeparator();
 		item = new JMenuItem(new ExitAction());
@@ -296,14 +304,31 @@ public class Application extends JFrame
 		return this.model;
 	}
 
-	/** sets the current main root model. */
+	/** sets the current main root model. the export location is reset to null */
 	public void setModel(ModelRoot model)
 	{
 		this.model = model;
 		this.drawingCanvas.onModelExchanged();
+		this.modelExportLocation = null;
 	}
 
-	/** Starts the default toolbar action. */
+	/** @return the export location of the model. may be null if not saved yet. */
+	public File getModelExportLocation()
+	{
+		return this.modelExportLocation;
+	}
+
+	/**
+	 * sets the filename of the current model export.
+	 */
+	public void setModelExportLocation(File location)
+	{
+		this.modelExportLocation = location;
+	}
+
+	/**
+	 * Starts the default toolbar action.
+	 */
 	protected void startDefaultToolbarAction()
 	{
 		this.selectEditPartButton.doClick();
