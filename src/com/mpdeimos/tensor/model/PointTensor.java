@@ -17,7 +17,7 @@ public class PointTensor extends TensorBase
 	{
 		super(parent);
 
-		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SOURCE));
+		this.anchors.add(new TensorConnectionAnchor(this, 0, EDirection.SOURCE));
 
 		setPosition(p);
 	}

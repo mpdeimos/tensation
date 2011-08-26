@@ -2,6 +2,7 @@ package com.mpdeimos.tensor.ui;
 
 import com.mpdeimos.tensor.action.ExitAction;
 import com.mpdeimos.tensor.action.NewAction;
+import com.mpdeimos.tensor.action.OpenAction;
 import com.mpdeimos.tensor.action.RedoAction;
 import com.mpdeimos.tensor.action.SaveAction;
 import com.mpdeimos.tensor.action.SaveAsAction;
@@ -147,11 +148,31 @@ public class Application extends JFrame
 	/** Initializes global keystrokes. */
 	private void initializeKeystrokes()
 	{
-		((JComponent) getContentPane()).registerKeyboardAction(this.undoAction,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK),
+		((JComponent) getContentPane()).registerKeyboardAction(
+				this.undoAction,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK),
 				JComponent.WHEN_IN_FOCUSED_WINDOW);
-		((JComponent) getContentPane()).registerKeyboardAction(this.redoAction,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_MASK),
+		((JComponent) getContentPane()).registerKeyboardAction(
+				this.redoAction,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+		((JComponent) getContentPane()).registerKeyboardAction(
+				new NewAction(),
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+		((JComponent) getContentPane()).registerKeyboardAction(
+				new OpenAction(),
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+		((JComponent) getContentPane()).registerKeyboardAction(
+				new SaveAction(),
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
+		((JComponent) getContentPane()).registerKeyboardAction(
+				new SaveAsAction(),
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK
+						+ InputEvent.SHIFT_DOWN_MASK),
 				JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 
@@ -251,6 +272,8 @@ public class Application extends JFrame
 
 		JMenuItem item = new JMenuItem(new NewAction());
 		menuFile.add(item);
+		item = new JMenuItem(new OpenAction());
+		menuFile.add(item);
 
 		item = new JMenuItem(new SaveAction());
 		menuFile.add(item);
@@ -310,6 +333,7 @@ public class Application extends JFrame
 		this.model = model;
 		this.drawingCanvas.onModelExchanged();
 		this.modelExportLocation = null;
+		this.undoManager.discardAllEdits();
 	}
 
 	/** @return the export location of the model. may be null if not saved yet. */
@@ -375,6 +399,14 @@ public class Application extends JFrame
 		public synchronized void redo() throws CannotRedoException
 		{
 			super.redo();
+
+			updateActions();
+		}
+
+		@Override
+		public synchronized void discardAllEdits()
+		{
+			super.discardAllEdits();
 
 			updateActions();
 		}

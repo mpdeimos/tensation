@@ -17,7 +17,7 @@ public class LineTensor extends TensorBase
 	{
 		super(parent);
 
-		this.anchors.add(new TensorConnectionAnchor(this, EDirection.SINK));
+		this.anchors.add(new TensorConnectionAnchor(this, 0, EDirection.SINK));
 
 		setPosition(p);
 	}

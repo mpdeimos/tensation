@@ -31,8 +31,12 @@ public class R extends RBase
 		WINDOW_MENU_SAVEAS,
 		/** Value: Adjust Connection */
 		WINDOW_ACTION_CONNECT_ADJUST,
+		/** Value: Overwrite file? */
+		DLG_QUESTION_SAVE_OVERWRITE_TITLE,
 		/** Value: Catched uncought exception */
 		EXCEPTION_UNCOUGHT,
+		/** Value: Open */
+		WINDOW_MENU_OPEN,
 		/** Value: Select tensor */
 		WINDOW_CONTEXTPANEL_DRAWTENSOR_SELECT,
 		/** Value: Tensor Diagram XML */
@@ -57,6 +61,8 @@ public class R extends RBase
 		WINDOW_MENU_FILE_EXIT,
 		/** Value: Tensor */
 		WINDOW_MAIN_TITLE,
+		/** Value: The file '%s' already exists. Do you want to overwrite it? */
+		DLG_QUESTION_SAVE_OVERWRITE,
 		/** Value: File */
 		WINDOW_MENU_FILE,
 		/** Value: Draw Tensor */

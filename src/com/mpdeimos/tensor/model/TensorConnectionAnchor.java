@@ -3,8 +3,12 @@
  */
 package com.mpdeimos.tensor.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
- * Represents a connection anchor for a EpsilonTensor.
+ * Represents a connection anchor for a EpsilonTensor. TODO IDs need to be
+ * assigned dynamically from the array of the parent tensor.
  * 
  * @author mpdeimos
  * 
@@ -33,11 +37,14 @@ public class TensorConnectionAnchor
 	}
 
 	/** Constructor. */
-	public TensorConnectionAnchor(TensorBase tensor, EDirection direction)
+	public TensorConnectionAnchor(
+			TensorBase tensor,
+			int id,
+			EDirection direction)
 	{
 		this.tensor = tensor;
 		this.direction = direction;
-		this.id = tensor.getAnchors().size();
+		this.id = id;
 	}
 
 	/** @return the direction of this anchor. */
@@ -91,5 +98,24 @@ public class TensorConnectionAnchor
 	{
 		if (this.connection != null)
 			this.connection.remove();
+	}
+
+	/**
+	 * @return the list of tensor connections corresponding to a list of
+	 *         directions.
+	 */
+	public static List<TensorConnectionAnchor> getAnchorListFromDirections(
+			TensorBase parent,
+			EDirection[] directions)
+	{
+		List<TensorConnectionAnchor> list = new LinkedList<TensorConnectionAnchor>();
+
+		int id = 0;
+		for (EDirection direction : directions)
+		{
+			list.add(new TensorConnectionAnchor(parent, id++, direction));
+		}
+
+		return list;
 	}
 }

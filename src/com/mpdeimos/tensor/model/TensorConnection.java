@@ -38,17 +38,17 @@ public class TensorConnection extends ModelDataBase
 			this.source = source;
 		else
 			this.sink = source;
-		source.occupyAnchor(this);
 
 		if (sink.getDirection() == EDirection.SINK)
 			this.sink = sink;
 		else
 			this.source = sink;
-		sink.occupyAnchor(this);
 
 		if (this.source == null || this.sink == null)
 			throw new IllegalArgumentException(
 					R.string.EXCEPTION_MODEL_CONNECTION_MISSMATCH.string());
+
+		this.renew();
 	}
 
 	@Override
@@ -58,6 +58,13 @@ public class TensorConnection extends ModelDataBase
 		this.source.releaseAnchor(this);
 
 		return super.remove();
+	}
+
+	/** Sets the anchors of the connected tensors occupied. */
+	public void renew()
+	{
+		this.source.occupyAnchor(this);
+		this.sink.occupyAnchor(this);
 	}
 
 	/**

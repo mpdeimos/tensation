@@ -31,9 +31,10 @@ public class EpsilonTensor extends TensorBase
 	{
 		super(parent);
 
-		this.anchors.add(new TensorConnectionAnchor(this, direction));
-		this.anchors.add(new TensorConnectionAnchor(this, direction));
-		this.anchors.add(new TensorConnectionAnchor(this, direction));
+		int id = 0;
+		this.anchors.add(new TensorConnectionAnchor(this, id++, direction));
+		this.anchors.add(new TensorConnectionAnchor(this, id++, direction));
+		this.anchors.add(new TensorConnectionAnchor(this, id++, direction));
 
 		setPosition(position);
 	}

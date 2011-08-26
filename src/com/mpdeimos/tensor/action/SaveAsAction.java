@@ -3,6 +3,7 @@ package com.mpdeimos.tensor.action;
 import com.mpdeimos.tensor.impex.Exporter;
 import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.ui.Application;
+import com.mpdeimos.tensor.util.FileUtil;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.XmlUtil;
 
@@ -12,6 +13,7 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.w3c.dom.Document;
@@ -27,7 +29,7 @@ import resources.R;
 public class SaveAsAction extends AbstractAction
 {
 	/** file extension of the exported xml. */
-	public static final String XML_FILE_EXTENSION = ".tdx"; //$NON-NLS-1$
+	public static final String XML_FILE_EXTENSION = "tdx"; //$NON-NLS-1$
 
 	/**
 	 * Constructor.
@@ -58,7 +60,23 @@ public class SaveAsAction extends AbstractAction
 
 		File selectedFile = fc.getSelectedFile();
 		if (!selectedFile.getName().endsWith(XML_FILE_EXTENSION))
-			selectedFile = new File(selectedFile.getPath() + XML_FILE_EXTENSION);
+			selectedFile = new File(selectedFile.getPath()
+					+ FileUtil.EXTENSION_SEPARATOR + XML_FILE_EXTENSION);
+
+		if (selectedFile.exists())
+		{
+			int answer2 = JOptionPane.showConfirmDialog(
+					Application.getApp(),
+					String.format(
+							R.string.DLG_QUESTION_SAVE_OVERWRITE.string(),
+							selectedFile.getName()),
+					R.string.DLG_QUESTION_SAVE_OVERWRITE_TITLE.string(),
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+
+			if (answer2 != JOptionPane.YES_OPTION)
+				return;
+		}
 
 		if (!XmlUtil.writeDomDocumentToFile(doc, selectedFile))
 		{

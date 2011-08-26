@@ -1,6 +1,7 @@
 package com.mpdeimos.tensor.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,6 +17,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * Utility functions for XML actions.
@@ -41,6 +43,7 @@ public class XmlUtil
 		catch (ParserConfigurationException e)
 		{
 			// shouldn't happen
+			Log.e(XmlUtil.class, e);
 		}
 
 		return null;
@@ -87,13 +90,37 @@ public class XmlUtil
 		}
 		catch (TransformerConfigurationException e)
 		{
-			// swallow
+			Log.e(XmlUtil.class, e);
 		}
 		catch (TransformerException e)
 		{
-			// swallow
+			Log.e(XmlUtil.class, e);
 		}
 
 		return false;
+	}
+
+	/**
+	 * Parses an XML Document from a given file.
+	 * 
+	 * @return the Document on success, null otherwise.
+	 */
+	public static Document parse(File file)
+	{
+		DocumentBuilder builder = XmlUtil.getBuilder();
+		try
+		{
+			return builder.parse(file);
+		}
+		catch (SAXException e)
+		{
+			Log.e(XmlUtil.class, e);
+		}
+		catch (IOException e)
+		{
+			Log.e(XmlUtil.class, e);
+		}
+
+		return null;
 	}
 }

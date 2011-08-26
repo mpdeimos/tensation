@@ -196,12 +196,13 @@ public class TensorConnectAction extends CanvasActionBase
 				public void redo()
 				{
 					Application.getApp().getModel().addChild(connection);
+					connection.renew();
 				}
 
 				@Override
 				public void undo()
 				{
-					Application.getApp().getModel().removeChild(connection);
+					connection.remove();
 				}
 			}.act());
 		}

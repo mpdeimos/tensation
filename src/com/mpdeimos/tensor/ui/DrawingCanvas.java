@@ -209,9 +209,7 @@ public class DrawingCanvas extends JPanel
 		@Override
 		public void onChildAdded(IModelData child)
 		{
-			IEditPart part = DrawingCanvas.this.editPartFactory.createEditPart(child);
-			if (part != null)
-				DrawingCanvas.this.editParts.add(part);
+			convertToEditPart(child);
 
 			repaint();
 		}
@@ -296,6 +294,14 @@ public class DrawingCanvas extends JPanel
 		return this.editPartFactory;
 	}
 
+	/** Converts a data item to an edit part and adds it to the editpart list. */
+	private void convertToEditPart(IModelData data)
+	{
+		IEditPart part = DrawingCanvas.this.editPartFactory.createEditPart(data);
+		if (part != null)
+			this.editParts.add(part);
+	}
+
 	/** Called every time the model got exchanged. */
 	public void onModelExchanged()
 	{
@@ -303,6 +309,11 @@ public class DrawingCanvas extends JPanel
 
 		this.appWindow.getModel().addModelChangedListener(
 				this.modelChangedListener);
+
+		for (IModelData data : this.appWindow.getModel().getChildren())
+		{
+			convertToEditPart(data);
+		}
 
 		stopCanvasAction();
 		repaint();
