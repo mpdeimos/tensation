@@ -35,7 +35,7 @@ public class R extends RBase
 		DLG_QUESTION_SAVE_OVERWRITE_TITLE,
 		/** Value: Catched uncought exception */
 		EXCEPTION_UNCOUGHT,
-		/** Value: Open */
+		/** Value: Open... */
 		WINDOW_MENU_OPEN,
 		/** Value: Select tensor */
 		WINDOW_CONTEXTPANEL_DRAWTENSOR_SELECT,
@@ -51,6 +51,8 @@ public class R extends RBase
 		EXCEPTION_MODEL_CONNECTION_MISSMATCH,
 		/** Value: Save current diagram? */
 		DLG_QUESTION_SAVE_BEFORE_NEW_TITLE,
+		/** Value: Export... */
+		WINDOW_MENU_EXPORT,
 		/** Value: Rotate */
 		WINDOW_ACTION_ROTATE,
 		/** Value: Redo */

@@ -1,6 +1,7 @@
 package com.mpdeimos.tensor.ui;
 
 import com.mpdeimos.tensor.action.ExitAction;
+import com.mpdeimos.tensor.action.ExportAction;
 import com.mpdeimos.tensor.action.NewAction;
 import com.mpdeimos.tensor.action.OpenAction;
 import com.mpdeimos.tensor.action.RedoAction;
@@ -278,6 +279,8 @@ public class Application extends JFrame
 		item = new JMenuItem(new SaveAction());
 		menuFile.add(item);
 		item = new JMenuItem(new SaveAsAction());
+		menuFile.add(item);
+		item = new JMenuItem(new ExportAction());
 		menuFile.add(item);
 
 		menuFile.addSeparator();

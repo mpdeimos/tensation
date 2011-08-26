@@ -78,7 +78,13 @@ public class DrawingCanvas extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		Graphics2D gfx = (Graphics2D) g;
+
+		render((Graphics2D) g, true);
+	}
+
+	/** Renders the canvas content to a given Graphics2D. */
+	public void render(Graphics2D gfx, boolean overlays)
+	{
 		gfx.setRenderingHint(
 				RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
@@ -97,7 +103,7 @@ public class DrawingCanvas extends JPanel
 			part.draw(gfx);
 		}
 
-		if (this.canvasAction != null)
+		if (overlays && this.canvasAction != null)
 		{
 			this.canvasAction.drawOverlay(gfx);
 		}
