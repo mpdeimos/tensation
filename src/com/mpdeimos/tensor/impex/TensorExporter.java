@@ -17,9 +17,11 @@ import org.w3c.dom.Element;
 public class TensorExporter implements IExporter
 {
 	@Override
-	public Element export(Document xmlDoc, int id, IModelData data)
+	public Element export(Document xmlDoc, IModelData data, Object... helpers)
 	{
 		TensorBase tensor = (TensorBase) data;
+
+		int id = (Integer) helpers[0];
 
 		Element eTensor = xmlDoc.createElement(EXmlTensor.ELEMENT_TENSOR.getName());
 

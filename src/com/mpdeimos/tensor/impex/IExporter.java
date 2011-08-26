@@ -16,5 +16,5 @@ public interface IExporter
 	/**
 	 * exports the specific model to an xml element.
 	 */
-	public Element export(Document xmlDoc, int id, IModelData data);
+	public Element export(Document xmlDoc, IModelData data, Object... helpers);
 }

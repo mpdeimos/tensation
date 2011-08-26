@@ -11,9 +11,6 @@ public enum EXmlConnection implements IXmlNameEnum
 	/** element representing a connection. */
 	ELEMENT_CONECTION("connection"), //$NON-NLS-1$
 
-	/** the id of a connection. */
-	ATTRIB_ID("connid"), //$NON-NLS-1$
-
 	/** the tensor this connection is drawn from. */
 	ATTRIB_SOURCE("source"), //$NON-NLS-1$
 

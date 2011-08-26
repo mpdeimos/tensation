@@ -6,6 +6,8 @@ import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnection;
 import com.mpdeimos.tensor.util.XmlUtil;
 
+import java.util.HashMap;
+
 import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
@@ -32,12 +34,14 @@ public class Exporter
 		Element eTensors = xmlDoc.createElement(EXmlGeneric.ELEMENT_TENSORS.getName());
 		eRoot.appendChild(eTensors);
 
+		HashMap<TensorBase, Integer> tensorsToIds = new HashMap<TensorBase, Integer>();
 		int tensorIDs = 0;
 		for (IModelData model : modelRoot.getChildren())
 		{
 			if (model instanceof TensorBase)
 			{
-				Element e = tensorExporter.export(xmlDoc, tensorIDs, model);
+				tensorsToIds.put((TensorBase) model, tensorIDs);
+				Element e = tensorExporter.export(xmlDoc, model, tensorIDs);
 				eTensors.appendChild(e);
 				tensorIDs++;
 			}
@@ -47,17 +51,13 @@ public class Exporter
 		Element eConnections = xmlDoc.createElement(EXmlGeneric.ELEMENT_CONNECTIONS.getName());
 		eRoot.appendChild(eConnections);
 
-		int connectionIDs = 0;
 		for (IModelData model : modelRoot.getChildren())
 		{
 			if (model instanceof TensorConnection)
 			{
 				Element e = connectionExporter.export(
-						xmlDoc,
-						connectionIDs,
-						model);
+						xmlDoc, model, tensorsToIds);
 				eConnections.appendChild(e);
-				connectionIDs++;
 			}
 		}
 
