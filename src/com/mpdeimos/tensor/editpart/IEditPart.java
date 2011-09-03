@@ -31,4 +31,10 @@ public interface IEditPart
 
 	/** sets the highlight status of the EditPart. */
 	public void setHighlighted(boolean highlighted);
+
+	/** @return the highlight status of this EditPart. */
+	public boolean isHighlighted();
+
+	/** @return the selected status of this EditPart. */
+	public boolean isSelected();
 }

@@ -203,4 +203,16 @@ public abstract class EditPartBase implements IFeatureEditPart
 	{
 		this.highlighted = highlighted;
 	}
+
+	@Override
+	public boolean isSelected()
+	{
+		return this.selected;
+	}
+
+	@Override
+	public boolean isHighlighted()
+	{
+		return this.highlighted;
+	}
 }

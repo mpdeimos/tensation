@@ -10,6 +10,8 @@ import com.mpdeimos.tensor.util.Log;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -100,7 +102,24 @@ public class DrawingCanvas extends JPanel
 
 		for (IEditPart part : this.editParts)
 		{
+			boolean highlighted = false;
+			boolean selected = false;
+
+			if (!overlays)
+			{
+				selected = part.isSelected();
+				part.setSelected(false);
+				highlighted = part.isHighlighted();
+				part.setHighlighted(false);
+			}
+
 			part.draw(gfx);
+
+			if (!overlays)
+			{
+				part.setHighlighted(highlighted);
+				part.setSelected(selected);
+			}
 		}
 
 		if (overlays && this.canvasAction != null)
@@ -324,4 +343,23 @@ public class DrawingCanvas extends JPanel
 		stopCanvasAction();
 		repaint();
 	}
+
+	/** @return the size and offset of the editparts. */
+	public Rectangle getImageRectangle()
+	{
+		Rectangle rect = null;
+		Point p = new Point();
+
+		for (IEditPart part : this.editParts)
+		{
+			Rectangle r = part.getBoundingRectangle();
+			if (rect == null)
+				rect = r;
+			else
+				rect.add(r);
+		}
+
+		return rect;
+	}
+
 }

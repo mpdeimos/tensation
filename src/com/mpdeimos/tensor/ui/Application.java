@@ -229,6 +229,15 @@ public class Application extends JFrame
 		saveButton.setIcon(new ImageIcon(R.drawable.DOCUMENT_SAVE_24.url()));
 		topToolBar.add(saveButton);
 
+		final JButton exportButton = new ToolBarButton(
+				topToolBar,
+				new ExportAction());
+		exportButton.setHideActionText(true);
+		exportButton.setIcon(new ImageIcon(R.drawable.DOCUMENT_EXPORT_24.url()));
+		topToolBar.add(exportButton);
+
+		topToolBar.add(new JToolBar.Separator());
+
 		final JButton undoButton = new ToolBarButton(
 				topToolBar,
 				this.undoAction);

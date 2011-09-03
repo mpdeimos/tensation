@@ -21,6 +21,8 @@ public class R extends RBase
 	{
 		/** Value: Connect Tensors */
 		WINDOW_ACTION_CONNECT,
+		/** Value: Portable Network Graphic */
+		APP_EXTENSION_PNG,
 		/** Value: Do you want to save the current diagram before creating a new one? */
 		DLG_QUESTION_SAVE_BEFORE_NEW,
 		/** Value: Undo */
@@ -31,8 +33,12 @@ public class R extends RBase
 		WINDOW_MENU_SAVEAS,
 		/** Value: Adjust Connection */
 		WINDOW_ACTION_CONNECT_ADJUST,
+		/** Value: GIF File */
+		APP_EXTENSION_GIF,
 		/** Value: Overwrite file? */
 		DLG_QUESTION_SAVE_OVERWRITE_TITLE,
+		/** Value: JPEG File */
+		APP_EXTENSION_JPG,
 		/** Value: Catched uncought exception */
 		EXCEPTION_UNCOUGHT,
 		/** Value: Open... */
@@ -63,6 +69,8 @@ public class R extends RBase
 		WINDOW_MENU_FILE_EXIT,
 		/** Value: Tensor */
 		WINDOW_MAIN_TITLE,
+		/** Value: Bitmap */
+		APP_EXTENSION_BMP,
 		/** Value: The file '%s' already exists. Do you want to overwrite it? */
 		DLG_QUESTION_SAVE_OVERWRITE,
 		/** Value: File */
@@ -91,6 +99,8 @@ public class R extends RBase
 		CIRCLE_GREEN,
 		/** draw_tensor.png */
 		DRAW_TENSOR,
+		/** document_export_16.png */
+		DOCUMENT_EXPORT_16,
 		/** document_save_16.png */
 		DOCUMENT_SAVE_16,
 		/** window_exit.png */
