@@ -9,6 +9,7 @@ import com.mpdeimos.tensor.model.IModelData;
 import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
+import com.mpdeimos.tensor.ui.Application;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -105,6 +106,6 @@ public abstract class TensorEditPartBase extends EditPartBase implements
 	public IModelData duplicateModel()
 	{
 		TensorBase model = (TensorBase) getModel();
-		return model.duplicate();
+		return model.duplicate(Application.getApp().getModel());
 	}
 }

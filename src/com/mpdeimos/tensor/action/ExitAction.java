@@ -4,7 +4,6 @@ import com.mpdeimos.tensor.ui.Application;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import resources.R;
@@ -15,7 +14,7 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public class ExitAction extends AbstractAction
+public class ExitAction extends ActionBase
 {
 
 	/**

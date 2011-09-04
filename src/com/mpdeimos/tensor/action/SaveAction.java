@@ -9,7 +9,6 @@ import com.mpdeimos.tensor.util.XmlUtil;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import org.w3c.dom.Document;
@@ -22,7 +21,7 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public class SaveAction extends AbstractAction
+public class SaveAction extends ActionBase
 {
 	/**
 	 * Constructor.

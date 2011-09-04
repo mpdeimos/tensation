@@ -10,7 +10,6 @@ import com.mpdeimos.tensor.util.XmlUtil;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -26,7 +25,7 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public class SaveAsAction extends AbstractAction
+public class SaveAsAction extends ActionBase
 {
 	/** file extension of the exported xml. */
 	public static final String XML_FILE_EXTENSION = "tdx"; //$NON-NLS-1$

@@ -8,7 +8,6 @@ import com.mpdeimos.tensor.util.Log;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -21,7 +20,7 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public class OpenAction extends AbstractAction
+public class OpenAction extends ActionBase
 {
 	/**
 	 * Constructor.

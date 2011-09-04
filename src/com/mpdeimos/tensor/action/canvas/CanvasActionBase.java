@@ -1,5 +1,6 @@
 package com.mpdeimos.tensor.action.canvas;
 
+import com.mpdeimos.tensor.action.ActionBase;
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.editpart.feature.IFeature;
 import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
@@ -13,7 +14,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
@@ -23,7 +23,7 @@ import javax.swing.ImageIcon;
  * @author mpdeimos
  * 
  */
-public abstract class CanvasActionBase extends AbstractAction implements
+public abstract class CanvasActionBase extends ActionBase implements
 		ICanvasAction
 {
 	/** back reference to the application. */
@@ -44,7 +44,6 @@ public abstract class CanvasActionBase extends AbstractAction implements
 		super(name, icon);
 		this.applicationWindow = applicationWindow;
 		this.canvas = canvas;
-		this.putValue(Action.SHORT_DESCRIPTION, name);
 	}
 
 	@Override

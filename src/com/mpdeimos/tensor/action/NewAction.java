@@ -5,7 +5,6 @@ import com.mpdeimos.tensor.ui.Application;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -17,7 +16,7 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public class NewAction extends AbstractAction
+public class NewAction extends ActionBase
 {
 	/**
 	 * Constructor.

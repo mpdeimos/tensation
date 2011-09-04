@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -27,7 +26,7 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public class ExportAction extends AbstractAction
+public class ExportAction extends ActionBase
 {
 	/**
 	 * Constructor.

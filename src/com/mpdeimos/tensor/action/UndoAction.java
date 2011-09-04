@@ -4,7 +4,6 @@ import com.mpdeimos.tensor.ui.Application;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.undo.UndoManager;
 
@@ -16,7 +15,7 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public class UndoAction extends AbstractAction
+public class UndoAction extends ActionBase
 {
 
 	/**
