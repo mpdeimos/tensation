@@ -1,13 +1,11 @@
 package com.mpdeimos.tensor.action.canvas;
 
 import com.mpdeimos.tensor.editpart.EditPartFactory;
-import com.mpdeimos.tensor.editpart.EpsilonTensorEditPart;
-import com.mpdeimos.tensor.editpart.LineTensorEditPart;
+import com.mpdeimos.tensor.editpart.GenericTensorEditPart;
 import com.mpdeimos.tensor.editpart.TensorEditPartBase;
-import com.mpdeimos.tensor.model.EpsilonTensor;
-import com.mpdeimos.tensor.model.LineTensor;
+import com.mpdeimos.tensor.model.GenericTensor;
+import com.mpdeimos.tensor.model.IModelData;
 import com.mpdeimos.tensor.model.ModelRoot;
-import com.mpdeimos.tensor.model.PointTensor;
 import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensor.ui.Application;
@@ -41,9 +39,6 @@ import resources.R;
  */
 public class DrawTensorAction extends CanvasActionBase
 {
-	/** position of the current drawing figure */
-	private final Point position;
-
 	/** the editpart being drawn ontop of the canvas */
 	private TensorEditPartBase editPart;
 
@@ -68,12 +63,6 @@ public class DrawTensorAction extends CanvasActionBase
 				drawingPanel,
 				R.string.WINDOW_ACTION_DRAWTENSOR.string(),
 				new ImageIcon(R.drawable.DRAW_TENSOR.url()));
-
-		this.position = new Point(0, 0);
-		this.editPart = new EpsilonTensorEditPart(new EpsilonTensor(
-				null,
-				this.position,
-				EDirection.SOURCE));
 
 		this.contextPanelcontent = this.new ContextPanelContent();
 	}
@@ -107,35 +96,43 @@ public class DrawTensorAction extends CanvasActionBase
 
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
-			final ModelRoot root = Application.getApp().getModel();
-			final TensorBase duplicate = ((TensorBase) this.editPart.getModel()).duplicate(root);
+			ModelRoot root = Application.getApp().getModel();
+			TensorBase duplicate = ((TensorBase) this.editPart.getModel()).duplicate(root);
 
-			this.applicationWindow.getUndoManager().addEdit(
-					new InfiniteUndoableEdit()
-			{
-				@Override
-				public String getPresentationName()
-				{
-					return R.string.WINDOW_ACTION_DRAWTENSOR.string();
-				}
-
-				@Override
-				public void undo()
-				{
-					root.removeChild(duplicate);
-				}
-
-				@Override
-				public void redo()
-				{
-					root.addChild(duplicate);
-				}
-			}.act());
+			drawTensor(duplicate);
 
 			return true;
 		}
 
 		return false;
+	}
+
+	// TODO Refactor to Util Class
+	/** Adds a tensor to the current model. */
+	public static void drawTensor(final IModelData tensor)
+	{
+		final ModelRoot root = Application.getApp().getModel();
+		Application.getApp().getUndoManager().addEdit(
+				new InfiniteUndoableEdit()
+		{
+			@Override
+			public String getPresentationName()
+			{
+				return R.string.WINDOW_ACTION_DRAWTENSOR.string();
+			}
+
+			@Override
+			public void undo()
+			{
+				root.removeChild(tensor);
+			}
+
+			@Override
+			public void redo()
+			{
+				root.addChild(tensor);
+			}
+		}.act());
 	}
 
 	@Override
@@ -217,23 +214,39 @@ public class DrawTensorAction extends CanvasActionBase
 					ContextPanelContent.CELL_SIZE / 2);
 
 			this.editParts = new TensorEditPartBase[] {
-					new EpsilonTensorEditPart(new EpsilonTensor(
+					new GenericTensorEditPart(new GenericTensor(
 							null,
 							p,
-							EDirection.SINK)),
+							new EDirection[] { EDirection.SINK,
+									EDirection.SINK, EDirection.SINK })),
 
-					new EpsilonTensorEditPart(new EpsilonTensor(
+					new GenericTensorEditPart(new GenericTensor(
 							null,
 							p,
-							EDirection.SOURCE)),
+							new EDirection[] { EDirection.SOURCE,
+									EDirection.SOURCE, EDirection.SOURCE })),
 
-					new LineTensorEditPart(new PointTensor(
+					new GenericTensorEditPart(new GenericTensor(
 							null,
-							p)),
+							p,
+							new EDirection[] { EDirection.SINK,
+									EDirection.SINK })),
 
-					new LineTensorEditPart(new LineTensor(
+					new GenericTensorEditPart(new GenericTensor(
 							null,
-							p)),
+							p,
+							new EDirection[] { EDirection.SOURCE,
+									EDirection.SOURCE, })),
+
+					new GenericTensorEditPart(new GenericTensor(
+							null,
+							p,
+							new EDirection[] { EDirection.SINK })),
+
+					new GenericTensorEditPart(new GenericTensor(
+							null,
+							p,
+							new EDirection[] { EDirection.SOURCE })),
 			};
 		}
 

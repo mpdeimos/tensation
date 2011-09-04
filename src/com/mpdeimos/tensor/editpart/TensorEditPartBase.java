@@ -1,6 +1,7 @@
 package com.mpdeimos.tensor.editpart;
 
 import com.mpdeimos.tensor.editpart.feature.IConnectable;
+import com.mpdeimos.tensor.editpart.feature.IDuplicatable;
 import com.mpdeimos.tensor.editpart.feature.IMovable;
 import com.mpdeimos.tensor.editpart.feature.IRotatable;
 import com.mpdeimos.tensor.figure.TensorFigure;
@@ -23,7 +24,7 @@ import java.util.List;
  * 
  */
 public abstract class TensorEditPartBase extends EditPartBase implements
-		IRotatable, IConnectable, IMovable
+		IRotatable, IConnectable, IMovable, IDuplicatable
 {
 
 	/** Constructor. */
@@ -100,4 +101,10 @@ public abstract class TensorEditPartBase extends EditPartBase implements
 		return connections;
 	}
 
+	@Override
+	public IModelData duplicateModel()
+	{
+		TensorBase model = (TensorBase) getModel();
+		return model.duplicate();
+	}
 }

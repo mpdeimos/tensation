@@ -10,7 +10,6 @@ import com.mpdeimos.tensor.util.Log;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
@@ -58,7 +57,7 @@ public class DrawingCanvas extends JPanel
 	public DrawingCanvas(Application appWindow)
 	{
 		this.appWindow = appWindow;
-		setBackground(Color.white);
+		setBackground(Color.WHITE);
 		this.mouseListener = new MouseListener();
 		this.keyListener = new KeyListener();
 		this.modelChangedListener = new ModelChangedListener();
@@ -81,7 +80,9 @@ public class DrawingCanvas extends JPanel
 	{
 		super.paintComponent(g);
 
-		render((Graphics2D) g, true);
+		Graphics2D g2 = (Graphics2D) g;
+
+		render(g2, true);
 	}
 
 	/** Renders the canvas content to a given Graphics2D. */
@@ -99,6 +100,8 @@ public class DrawingCanvas extends JPanel
 		gfx.setRenderingHint(
 				RenderingHints.KEY_STROKE_CONTROL,
 				RenderingHints.VALUE_STROKE_PURE);
+
+		gfx.setColor(Color.BLACK);
 
 		for (IEditPart part : this.editParts)
 		{
@@ -348,7 +351,6 @@ public class DrawingCanvas extends JPanel
 	public Rectangle getImageRectangle()
 	{
 		Rectangle rect = null;
-		Point p = new Point();
 
 		for (IEditPart part : this.editParts)
 		{

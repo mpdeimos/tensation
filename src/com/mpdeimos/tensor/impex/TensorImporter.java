@@ -36,9 +36,6 @@ public class TensorImporter implements IImporter
 				dir = EDirection.SINK;
 
 			directions[Integer.parseInt(anchor.getAttribute(EXmlTensor.ATTRIB_ANCHOR_ID.getName()))] = dir;
-
-			System.out.println(Integer.parseInt(anchor.getAttribute(EXmlTensor.ATTRIB_ANCHOR_ID.getName())));
-			System.out.println(dirName);
 		}
 
 		GenericTensor tensor = new GenericTensor(mr, directions);

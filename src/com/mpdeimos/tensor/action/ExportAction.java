@@ -124,8 +124,6 @@ public class ExportAction extends AbstractAction
 			gfx.fillRect(0, 0, width, height);
 		}
 
-		gfx.setColor(Color.BLACK);
-
 		gfx.translate(-rect.x, -rect.y);
 
 		Application.getApp().getDrawingCanvas().render(gfx, false);

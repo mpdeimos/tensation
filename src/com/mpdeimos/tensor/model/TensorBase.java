@@ -79,6 +79,12 @@ public abstract class TensorBase extends ModelDataBase
 		return super.remove();
 	}
 
+	/** Duplicates this tensor with the current model as parent. */
+	public TensorBase duplicate()
+	{
+		return duplicate(this.parent);
+	}
+
 	/** Duplicates this tensor with the given model as parent. */
 	abstract public TensorBase duplicate(IModelData root);
 }

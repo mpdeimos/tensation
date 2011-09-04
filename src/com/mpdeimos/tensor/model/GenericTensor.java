@@ -3,6 +3,7 @@ package com.mpdeimos.tensor.model;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,9 @@ public class GenericTensor extends TensorBase
 			IModelData parent,
 			List<EDirection> anchorDirections)
 	{
-		this(parent, (EDirection[]) anchorDirections.toArray());
+		this(
+				parent,
+				anchorDirections.toArray(new EDirection[anchorDirections.size()]));
 	}
 
 	/** Constructor. */
@@ -43,6 +46,16 @@ public class GenericTensor extends TensorBase
 	}
 
 	/** Constructor. */
+	public GenericTensor(
+			IModelData parent,
+			Point position,
+			EDirection[] anchorDirections)
+	{
+		this(parent, anchorDirections);
+		setPosition(position);
+	}
+
+	/** Constructor. */
 	public GenericTensor(IModelData parent)
 	{
 		super(parent);
@@ -51,12 +64,20 @@ public class GenericTensor extends TensorBase
 	@Override
 	public TensorBase duplicate(IModelData root)
 	{
+		List<EDirection> directions = new ArrayList<EDirection>(
+				this.anchors.size());
+
+		for (TensorConnectionAnchor anchor : this.anchors)
+		{
+			directions.add(anchor.getDirection());
+		}
+
 		GenericTensor tensor = new GenericTensor(
 				root,
-				getPosition(),
-				this.anchors);
+				directions);
 
 		tensor.setRotation(getRotation());
+		tensor.setPosition(getPosition());
 
 		return tensor;
 	}

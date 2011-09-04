@@ -1,6 +1,7 @@
 package com.mpdeimos.tensor.action.canvas;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.editpart.feature.IDuplicatable;
 import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.DrawingCanvas;
 
@@ -31,6 +32,9 @@ public class SelectEditPartAction extends CanvasActionBase
 
 	/** The currently highlighted EditPart. */
 	private IEditPart highlightedEditPart;
+
+	/** The currently copied EditPart. */
+	private IDuplicatable copiedEditPart;
 
 	/** The stroke of selection rectangle. */
 	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(
@@ -194,9 +198,17 @@ public class SelectEditPartAction extends CanvasActionBase
 				this.selectedEditPart = null;
 				return true;
 			}
+
+			if (e.getKeyCode() == KeyEvent.VK_C
+					&& this.selectedEditPart instanceof IDuplicatable)
+			{
+				this.copiedEditPart = (IDuplicatable) this.selectedEditPart;
+				return true;
+			}
+
 		}
 
-		return false;
+		return this.handleKeyEventForFeatures(this.canvas.getEditParts(), e);
 	}
 
 	@Override
@@ -234,5 +246,11 @@ public class SelectEditPartAction extends CanvasActionBase
 		int offset = 2;
 		Rectangle rect = new Rectangle(point.x - offset, point.y - offset, 4, 4);
 		return editPart.intersects(rect);
+	}
+
+	/** @return the currently copied edit part. */
+	public IDuplicatable getCopiedEditPart()
+	{
+		return this.copiedEditPart;
 	}
 }

@@ -148,6 +148,41 @@ public abstract class CanvasActionBase extends AbstractAction implements
 		return false;
 	}
 
+	/** handles the feature action for a specific key event. */
+	protected final boolean handleKeyEventForFeatures(
+			IEditPart editPart,
+			KeyEvent e)
+	{
+		if (!(editPart instanceof IFeatureEditPart))
+			return false;
+
+		List<IFeature> features = ((IFeatureEditPart) editPart).getFeatures(this.getClass());
+		if (features == null)
+			return false;
+
+		for (IFeature feature : features)
+		{
+			if (feature.doOnKeyPressed(this, e))
+				return true;
+		}
+
+		return false;
+	}
+
+	/** handles the feature action for a specific key event. */
+	protected final boolean handleKeyEventForFeatures(
+			List<IEditPart> editParts,
+			KeyEvent e)
+	{
+		for (IEditPart editPart : editParts)
+		{
+			if (handleKeyEventForFeatures(editPart, e))
+				return true;
+		}
+
+		return false;
+	}
+
 	/** Handles the feature actions for a specific mouse event. */
 	protected final boolean handleMouseEventForFeatures(
 			List<IEditPart> editParts,

@@ -1,10 +1,11 @@
 package com.mpdeimos.tensor.editpart.feature;
 
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.ParameterizedType;
-
-import com.mpdeimos.tensor.action.canvas.ICanvasAction;
 
 /**
  * Base class for EditPart Features.
@@ -71,6 +72,12 @@ public abstract class FeatureBase<T extends IFeatureEditPart, U extends ICanvasA
 
 	@Override
 	public boolean drawOverlay(ICanvasAction action, Graphics2D gfx)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean doOnKeyPressed(ICanvasAction action, KeyEvent e)
 	{
 		return false;
 	}

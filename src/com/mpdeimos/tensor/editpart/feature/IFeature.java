@@ -1,9 +1,10 @@
 package com.mpdeimos.tensor.editpart.feature;
 
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-
 import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * Interface for canvas features.
@@ -30,6 +31,9 @@ public interface IFeature
 
 	/** being called if the mouse is moved on the canvas with a button clicked */
 	public boolean doOnMouseDragged(ICanvasAction action, MouseEvent e);
+
+	/** being called once a key has been pressed */
+	public boolean doOnKeyPressed(ICanvasAction action, KeyEvent e);
 
 	/** being called once a EditPart has been selected or deselected. */
 	public void doOnEditPartSelected(boolean selected);
