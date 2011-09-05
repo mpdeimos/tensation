@@ -1,7 +1,10 @@
 package com.mpdeimos.tensor.action;
 
 import com.mpdeimos.tensor.ui.Application;
+import com.mpdeimos.tensor.ui.ContextPanelContentBase;
+import com.mpdeimos.tensor.ui.DividerLabel;
 import com.mpdeimos.tensor.util.FileUtil;
+import com.mpdeimos.tensor.util.LayoutUtil;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,9 +15,13 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -63,6 +70,10 @@ public class ExportAction extends ActionBase
 				FileUtil.FILE_EXTENSION_PNG);
 		fc.addChoosableFileFilter(ffPng);
 
+		ContextPanel contextPanel = new ContextPanel();
+		fc.setAccessory(contextPanel);
+		fc.setDialogTitle(R.string.DLG_EXPORT_TITLE.string());
+
 		int answer = fc.showSaveDialog(Application.getApp());
 
 		if (answer != JFileChooser.APPROVE_OPTION)
@@ -102,9 +113,10 @@ public class ExportAction extends ActionBase
 				return;
 		}
 
+		double scale = ((Integer) contextPanel.model.getValue() / 100.0);
 		Rectangle rect = Application.getApp().getDrawingCanvas().getImageRectangle();
-		int width = rect.width + Math.abs(rect.x);
-		int height = rect.height + Math.abs(rect.y);
+		int width = (int) ((rect.width + Math.abs(rect.x)) * scale);
+		int height = (int) ((rect.height + Math.abs(rect.y)) * scale);
 
 		boolean hasTransparency = ff == ffPng;
 		int imgType = hasTransparency ? BufferedImage.TYPE_INT_ARGB
@@ -123,6 +135,7 @@ public class ExportAction extends ActionBase
 			gfx.fillRect(0, 0, width, height);
 		}
 
+		gfx.scale(scale, scale);
 		gfx.translate(-rect.x, -rect.y);
 
 		Application.getApp().getDrawingCanvas().render(gfx, false);
@@ -132,8 +145,8 @@ public class ExportAction extends ActionBase
 		bufferedImage = bufferedImage.getSubimage(
 				0,
 				0,
-				rect.width,
-				rect.height);
+				(int) (rect.width * scale),
+				(int) (rect.height * scale));
 
 		try
 		{
@@ -144,4 +157,32 @@ public class ExportAction extends ActionBase
 			// TODO
 		}
 	}
+
+	/** The Context Panel for the file browser. */
+	private class ContextPanel extends ContextPanelContentBase
+	{
+		/** the number model. */
+		private final SpinnerNumberModel model;
+
+		/** Constructor. */
+		public ContextPanel()
+		{
+			LayoutUtil.setWidth(this, 100);
+			setBorder(new EmptyBorder(0, 10, 0, 0));
+			setToolTipText(R.string.DLG_EXPORT_OPTION_SCALE_TOOLTIP.string());
+
+			DividerLabel label = new DividerLabel(
+						R.string.DLG_EXPORT_OPTION_SCALE.string());
+			this.add(label);
+
+			this.model = new SpinnerNumberModel(100, 10, 2000, 10);
+			JSpinner spinner = new JSpinner(this.model);
+			LayoutUtil.setHeight(spinner, 25);
+			spinner.setToolTipText(R.string.DLG_EXPORT_OPTION_SCALE_TOOLTIP.string());
+			this.add(spinner);
+
+			this.add(Box.createVerticalGlue());
+		}
+	}
+
 }
