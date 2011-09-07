@@ -1,5 +1,10 @@
 package com.mpdeimos.tensor.figure;
 
+import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.figure.ShapePack.EDrawingMode;
+import com.mpdeimos.tensor.model.TensorConnection;
+import com.mpdeimos.tensor.util.PointUtil;
+
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.CubicCurve2D;
@@ -8,11 +13,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.figure.ShapePack.EDrawingMode;
-import com.mpdeimos.tensor.model.TensorConnection;
-import com.mpdeimos.tensor.util.PointUtil;
 
 /**
  * Figure class for Tensor connections.
@@ -61,12 +61,12 @@ public class TensorConnectionFigure extends FigureBase
 				connection.getSource().getTensor(),
 				connection.getSource().getId(),
 				this.sourceAnchor,
-				null);
+				null, null);
 		TensorFigure.initAnchorPoints(
 				connection.getSink().getTensor(),
 				connection.getSink().getId(),
 				this.sinkAnchor,
-				null);
+				null, null);
 
 		Point sourceCenter = connection.getSource().getTensor().getPosition();
 		this.sourceControlPoint = new Point2D.Double();

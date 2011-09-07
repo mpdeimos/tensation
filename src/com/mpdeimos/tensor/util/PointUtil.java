@@ -1,6 +1,7 @@
 package com.mpdeimos.tensor.util;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 
 /**
@@ -53,5 +54,12 @@ public class PointUtil
 	{
 		result.setLocation(p1);
 		move(result, -p2.getX(), -p2.getY());
+	}
+
+	/** the scaled point. */
+	public static Point scale(Point point, double scale)
+	{
+		point.setLocation(point.getX() * scale, point.getY() * scale);
+		return point;
 	}
 }

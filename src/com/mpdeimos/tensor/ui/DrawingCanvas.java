@@ -6,10 +6,13 @@ import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.model.IModelChangedListener;
 import com.mpdeimos.tensor.model.IModelData;
 import com.mpdeimos.tensor.util.Log;
+import com.mpdeimos.tensor.util.PointUtil;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
@@ -51,6 +54,9 @@ public class DrawingCanvas extends JPanel
 	/** the model change listener. */
 	private final IModelChangedListener modelChangedListener;
 
+	/** the scaling factor of the canvas. */
+	private double canvasScale = 1.0;
+
 	/**
 	 * Create the panel.
 	 */
@@ -81,6 +87,8 @@ public class DrawingCanvas extends JPanel
 		super.paintComponent(g);
 
 		Graphics2D g2 = (Graphics2D) g;
+
+		g2.scale(this.canvasScale, this.canvasScale);
 
 		render(g2, true);
 	}
@@ -136,9 +144,29 @@ public class DrawingCanvas extends JPanel
 	 */
 	private class MouseListener extends MouseInputAdapter
 	{
+		/** creates a new mouse event with scaled point dimensions. */
+		private MouseEvent createScaledMouseEvent(MouseEvent e)
+		{
+			Point p = PointUtil.scale(e.getPoint(),
+					1 / DrawingCanvas.this.canvasScale);
+			return new MouseEvent(
+					(Component) e.getSource(),
+					e.getID(),
+					e.getWhen(),
+					e.getModifiers(),
+					p.x,
+					p.y,
+					e.getLocationOnScreen().x,
+					e.getLocationOnScreen().y,
+					e.getClickCount(),
+					e.isPopupTrigger(),
+					e.getButton());
+		}
+
 		@Override
 		public void mouseMoved(MouseEvent e)
 		{
+			e = createScaledMouseEvent(e);
 			super.mouseMoved(e);
 
 			if (DrawingCanvas.this.canvasAction != null)
@@ -150,6 +178,8 @@ public class DrawingCanvas extends JPanel
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
+			e = createScaledMouseEvent(e);
+
 			super.mouseClicked(e);
 
 			if (DrawingCanvas.this.canvasAction != null)
@@ -167,6 +197,8 @@ public class DrawingCanvas extends JPanel
 		@Override
 		public void mousePressed(MouseEvent e)
 		{
+			e = createScaledMouseEvent(e);
+
 			super.mousePressed(e);
 
 			DrawingCanvas.this.requestFocusInWindow();
@@ -180,6 +212,8 @@ public class DrawingCanvas extends JPanel
 		@Override
 		public void mouseReleased(MouseEvent e)
 		{
+			e = createScaledMouseEvent(e);
+
 			super.mouseReleased(e);
 
 			if (DrawingCanvas.this.canvasAction != null)
@@ -191,6 +225,8 @@ public class DrawingCanvas extends JPanel
 		@Override
 		public void mouseDragged(MouseEvent e)
 		{
+			e = createScaledMouseEvent(e);
+
 			super.mouseDragged(e);
 
 			if (DrawingCanvas.this.canvasAction != null)
@@ -202,6 +238,8 @@ public class DrawingCanvas extends JPanel
 		@Override
 		public void mouseEntered(MouseEvent e)
 		{
+			e = createScaledMouseEvent(e);
+
 			super.mouseDragged(e);
 
 			if (DrawingCanvas.this.canvasAction != null)
@@ -213,6 +251,8 @@ public class DrawingCanvas extends JPanel
 		@Override
 		public void mouseExited(MouseEvent e)
 		{
+			e = createScaledMouseEvent(e);
+
 			super.mouseDragged(e);
 
 			if (DrawingCanvas.this.canvasAction != null)
@@ -362,6 +402,19 @@ public class DrawingCanvas extends JPanel
 		}
 
 		return rect;
+	}
+
+	/** sets the scaling factor of the canvas. */
+	public void setScale(double scale)
+	{
+		this.canvasScale = scale;
+		repaint();
+	}
+
+	/** @return the scaling of the canvas. */
+	public double getScale()
+	{
+		return this.canvasScale;
 	}
 
 }

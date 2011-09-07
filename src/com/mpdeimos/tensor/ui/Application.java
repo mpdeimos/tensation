@@ -7,6 +7,7 @@ import com.mpdeimos.tensor.action.OpenAction;
 import com.mpdeimos.tensor.action.RedoAction;
 import com.mpdeimos.tensor.action.SaveAction;
 import com.mpdeimos.tensor.action.SaveAsAction;
+import com.mpdeimos.tensor.action.ScaleCanvasAction;
 import com.mpdeimos.tensor.action.UndoAction;
 import com.mpdeimos.tensor.action.canvas.DrawTensorAction;
 import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
@@ -26,6 +27,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -304,6 +306,36 @@ public class Application extends JFrame
 		menuEdit.add(item);
 		item = new JMenuItem(this.redoAction);
 		menuEdit.add(item);
+
+		// options menu
+		JMenu menuOptions = new JMenu(R.string.WINDOW_MENU_VIEW.string());
+		menuBar.add(menuOptions);
+
+		// options menu >> scale
+		JMenu menuOptionsScale = new JMenu(
+				R.string.WINDOW_MENU_VIEW_CANVASSCALE.string());
+		menuOptions.add(menuOptionsScale);
+
+		JCheckBoxMenuItem cbitem = new JCheckBoxMenuItem();
+		cbitem.setAction(new ScaleCanvasAction(50, cbitem));
+		menuOptionsScale.add(cbitem);
+
+		cbitem = new JCheckBoxMenuItem();
+		cbitem.setAction(new ScaleCanvasAction(75, cbitem));
+		menuOptionsScale.add(cbitem);
+
+		cbitem = new JCheckBoxMenuItem();
+		cbitem.setAction(new ScaleCanvasAction(100, cbitem));
+		cbitem.setSelected(true);
+		menuOptionsScale.add(cbitem);
+
+		cbitem = new JCheckBoxMenuItem();
+		cbitem.setAction(new ScaleCanvasAction(200, cbitem));
+		menuOptionsScale.add(cbitem);
+
+		cbitem = new JCheckBoxMenuItem();
+		cbitem.setAction(new ScaleCanvasAction(400, cbitem));
+		menuOptionsScale.add(cbitem);
 
 		this.setJMenuBar(menuBar);
 	}

@@ -1,5 +1,13 @@
 package com.mpdeimos.tensor.figure;
 
+import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.figure.ShapePack.EDrawingMode;
+import com.mpdeimos.tensor.model.TensorBase;
+import com.mpdeimos.tensor.model.TensorConnectionAnchor;
+import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
+import com.mpdeimos.tensor.util.ImmutableList;
+import com.mpdeimos.tensor.util.PointUtil;
+
 import java.awt.BasicStroke;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -11,14 +19,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.figure.ShapePack.EDrawingMode;
-import com.mpdeimos.tensor.model.TensorBase;
-import com.mpdeimos.tensor.model.TensorConnectionAnchor;
-import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
-import com.mpdeimos.tensor.util.ImmutableList;
-import com.mpdeimos.tensor.util.PointUtil;
 
 /**
  * Drawing class for an EpsilonTensor
@@ -87,7 +87,13 @@ public class TensorFigure extends FigureBase
 		{
 			Point2D top = new Point2D.Double();
 			Point2D bottom = new Point2D.Double();
-			double ang = initAnchorPoints(tensor, i, top, bottom);
+			Point2D triangleHead = new Point2D.Double();
+			double ang = initAnchorPoints(
+					tensor,
+					i,
+					top,
+					bottom,
+					triangleHead);
 
 			this.connectionPoints[i] = top;
 
@@ -117,19 +123,15 @@ public class TensorFigure extends FigureBase
 			PointUtil.rotate(triangleR, ang);
 			PointUtil.move(triangleR, x, y);
 
-			Shape line = new Line2D.Double(bottom, top);
-
-			lines.add(line);
-
 			GeneralPath triangle = new GeneralPath();
-			if (anchors.get(i).getDirection() == EDirection.SOURCE)
-				triangle.moveTo(top.getX(), top.getY());
-			else
-				triangle.moveTo(bottom.getX(), bottom.getY());
+			triangle.moveTo(triangleHead.getX(), triangleHead.getY());
 			triangle.lineTo(triangleL.getX(), triangleL.getY());
 			triangle.lineTo(triangleR.getX(), triangleR.getY());
 			triangle.closePath();
 			fills.add(triangle);
+
+			Shape line = new Line2D.Double(bottom, top);
+			lines.add(line);
 		}
 
 		ShapePack linePack = new ShapePack(EDrawingMode.STROKE, lines);
@@ -143,7 +145,7 @@ public class TensorFigure extends FigureBase
 			TensorBase tensor,
 			int i,
 			Point2D top,
-			Point2D bottom)
+			Point2D bottom, Point2D triangleHead)
 	{
 		double ang = (((double) i) / tensor.getAnchors().size() + tensor.getRotation() / 360)
 				* 2
@@ -151,29 +153,45 @@ public class TensorFigure extends FigureBase
 		ang %= 2 * Math.PI;
 		double sin = Math.sin(ang);
 		double cos = Math.cos(ang);
+		EDirection direction = tensor.getAnchors().get(i).getDirection();
 
+		int offset = CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET;
 		if (bottom != null)
 		{
 			bottom.setLocation(
-					tensor.getPosition().x + (CENTER_CIRCLE_RADIUS
-							+ CONNECTOR_STROKE_OFFSET)
-							* cos,
-					tensor.getPosition().y + (CENTER_CIRCLE_RADIUS
-							+ CONNECTOR_STROKE_OFFSET)
-							* sin);
+					tensor.getPosition().x + offset * cos,
+					tensor.getPosition().y + offset * sin);
+
+			if (triangleHead != null && EDirection.SINK == direction)
+			{
+				triangleHead.setLocation(bottom);
+
+				bottom.setLocation(
+						tensor.getPosition().x
+								+ (offset + CONNECTOR_STROKE_OFFSET) * cos,
+						tensor.getPosition().y
+								+ (offset + CONNECTOR_STROKE_OFFSET) * sin);
+			}
 		}
 
 		if (top != null)
 		{
 			top.setLocation(
-					tensor.getPosition().x + (CENTER_CIRCLE_RADIUS
-							+ CONNECTOR_STROKE_OFFSET
-							+ CONNECTOR_STROKE_LENGTH)
+					tensor.getPosition().x + (offset + CONNECTOR_STROKE_LENGTH)
 							* cos,
-					tensor.getPosition().y + (CENTER_CIRCLE_RADIUS
-							+ CONNECTOR_STROKE_OFFSET
-							+ CONNECTOR_STROKE_LENGTH)
+					tensor.getPosition().y + (offset + CONNECTOR_STROKE_LENGTH)
 							* sin);
+			if (triangleHead != null && EDirection.SOURCE == direction)
+			{
+				triangleHead.setLocation(top);
+				top.setLocation(
+						tensor.getPosition().x
+								+ (offset - CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH)
+								* cos,
+						tensor.getPosition().y
+								+ (offset - CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH)
+								* sin);
+			}
 		}
 
 		return ang;
