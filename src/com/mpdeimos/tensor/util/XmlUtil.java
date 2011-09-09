@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -17,6 +18,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.xml.sax.SAXException;
 
 /**
@@ -36,6 +38,16 @@ public class XmlUtil
 		try
 		{
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+			// disable all kind of grammar resolving
+			factory.setValidating(false);
+			factory.setFeature("http://xml.org/sax/features/namespaces", false); //$NON-NLS-1$
+			factory.setFeature("http://xml.org/sax/features/validation", false); //$NON-NLS-1$
+			factory.setFeature(
+					"http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false); //$NON-NLS-1$
+			factory.setFeature(
+					"http://apache.org/xml/features/nonvalidating/load-external-dtd", false); //$NON-NLS-1$
+
 			DocumentBuilder builder = factory.newDocumentBuilder();
 
 			return builder;
@@ -83,7 +95,27 @@ public class XmlUtil
 		{
 			Source source = new DOMSource(doc);
 
-			Transformer xformer = TransformerFactory.newInstance().newTransformer();
+			int indentAmount = 2;
+
+			TransformerFactory factory = TransformerFactory.newInstance();
+			factory.setAttribute("indent-number", indentAmount); //$NON-NLS-1$
+			Transformer xformer = factory.newTransformer();
+			xformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
+			xformer.setOutputProperty(
+					"{http://xml.apache.org/xslt}indent-amount", //$NON-NLS-1$
+					Integer.toString(indentAmount));
+
+			DocumentType doctype = doc.getDoctype();
+			if (doctype != null)
+			{
+				xformer.setOutputProperty(
+						OutputKeys.DOCTYPE_PUBLIC,
+						doctype.getPublicId());
+				xformer.setOutputProperty(
+						OutputKeys.DOCTYPE_SYSTEM,
+						doctype.getSystemId());
+			}
+
 			xformer.transform(source, result);
 
 			return true;

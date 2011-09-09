@@ -1,5 +1,6 @@
 package com.mpdeimos.tensor.editpart;
 
+import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.IModelData;
 
 import java.awt.Graphics2D;
@@ -19,6 +20,9 @@ public interface IEditPart
 
 	/** @return the linked data model object */
 	public IModelData getModel();
+
+	/** @return the linked drawing object. */
+	public IFigure getFigure();
 
 	/** performs a check whether the Rectangle intersects the EditPart. */
 	public boolean intersects(Rectangle rect);

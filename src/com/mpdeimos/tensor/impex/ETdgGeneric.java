@@ -6,7 +6,7 @@ package com.mpdeimos.tensor.impex;
  * @author mpdeimos
  * 
  */
-public enum EXmlGeneric implements IXmlNameEnum
+public enum ETdgGeneric implements INameEnum
 {
 	/** The root element. */
 	ELEMENT_ROOT("tensordiagram"), //$NON-NLS-1$
@@ -28,14 +28,14 @@ public enum EXmlGeneric implements IXmlNameEnum
 	private final String name;
 
 	/** Constructor. */
-	EXmlGeneric(String name)
+	ETdgGeneric(String name)
 	{
 		this.name = name;
 	}
 
 	/** @return the name of the xml tag. */
 	@Override
-	public String getName()
+	public String $()
 	{
 		return this.name;
 	}

@@ -1,10 +1,13 @@
 package com.mpdeimos.tensor.action;
 
+import com.mpdeimos.tensor.impex.SvgExporter;
 import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.ContextPanelContentBase;
 import com.mpdeimos.tensor.ui.DividerLabel;
 import com.mpdeimos.tensor.util.FileUtil;
 import com.mpdeimos.tensor.util.LayoutUtil;
+import com.mpdeimos.tensor.util.Log;
+import com.mpdeimos.tensor.util.XmlUtil;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -24,6 +27,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.w3c.dom.Document;
 
 import resources.R;
 
@@ -65,6 +70,11 @@ public class ExportAction extends ActionBase
 				FileUtil.FILE_EXTENSION_JPG);
 		fc.addChoosableFileFilter(ffJpg);
 
+		FileFilter ffSvg = new FileNameExtensionFilter(
+				R.string.APP_EXTENSION_SVG.string(),
+				FileUtil.FILE_EXTENSION_SVG);
+		fc.addChoosableFileFilter(ffSvg);
+
 		FileFilter ffPng = new FileNameExtensionFilter(
 				R.string.APP_EXTENSION_PNG.string(),
 				FileUtil.FILE_EXTENSION_PNG);
@@ -91,6 +101,8 @@ public class ExportAction extends ActionBase
 			selectedExtension = FileUtil.FILE_EXTENSION_JPG;
 		else if (ff == ffPng)
 			selectedExtension = FileUtil.FILE_EXTENSION_PNG;
+		else if (ff == ffSvg)
+			selectedExtension = FileUtil.FILE_EXTENSION_SVG;
 
 		File selectedFile = fc.getSelectedFile();
 		if (!selectedFile.getName().endsWith(selectedExtension))
@@ -111,6 +123,12 @@ public class ExportAction extends ActionBase
 
 			if (answer2 != JOptionPane.YES_OPTION)
 				return;
+		}
+
+		if (ff == ffSvg)
+		{
+			handleSvg(selectedFile);
+			return;
 		}
 
 		double scale = ((Integer) contextPanel.model.getValue() / 100.0);
@@ -152,9 +170,22 @@ public class ExportAction extends ActionBase
 		{
 			ImageIO.write(bufferedImage, selectedExtension, selectedFile);
 		}
-		catch (IOException e1)
+		catch (IOException exc)
 		{
-			// TODO
+			Log.e(this, "could not write image file", exc); //$NON-NLS-1$
+		}
+	}
+
+	/** handles svg saving. */
+	private void handleSvg(File file)
+	{
+		Log.d(this, "producing svg output"); //$NON-NLS-1$
+		SvgExporter svgExporter = new SvgExporter();
+		Document svg = svgExporter.toSvg(Application.getApp().getDrawingCanvas().getEditParts());
+
+		if (!XmlUtil.writeDomDocumentToFile(svg, file))
+		{
+			Log.e(this, "could not write svg file"); //$NON-NLS-1$
 		}
 	}
 

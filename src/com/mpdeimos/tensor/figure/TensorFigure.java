@@ -2,6 +2,7 @@ package com.mpdeimos.tensor.figure;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.figure.ShapePack.EDrawingMode;
+import com.mpdeimos.tensor.impex.ESvg;
 import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
@@ -19,6 +20,9 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Drawing class for an EpsilonTensor
@@ -147,10 +151,27 @@ public class TensorFigure extends FigureBase
 			Point2D top,
 			Point2D bottom, Point2D triangleHead)
 	{
-		double ang = (((double) i) / tensor.getAnchors().size() + tensor.getRotation() / 360)
+		return initAnchorPoints(
+				tensor,
+				i,
+				top,
+				bottom,
+				triangleHead,
+				tensor.getRotation());
+	}
+
+	/** inits the anchor points for a tensor. */
+	public static double initAnchorPoints(
+			TensorBase tensor,
+			int i,
+			Point2D top,
+			Point2D bottom, Point2D triangleHead, double ang)
+	{
+		ang = (((double) i) / tensor.getAnchors().size() + ang / 360)
 				* 2
 				* Math.PI;
 		ang %= 2 * Math.PI;
+
 		double sin = Math.sin(ang);
 		double cos = Math.cos(ang);
 		EDirection direction = tensor.getAnchors().get(i).getDirection();
@@ -233,4 +254,62 @@ public class TensorFigure extends FigureBase
 		return this.connectionPoints;
 	}
 
+	@Override
+	public Element getSvgNode(Document doc)
+	{
+		TensorBase tensor = (TensorBase) this.editPart.getModel();
+		Point position = tensor.getPosition();
+
+		Element group = doc.createElement(ESvg.ELEMENT_GROUP.$());
+		group.setAttribute(
+				ESvg.ATTRIB_TRANSFORM.$(),
+				String.format(
+						ESvg.VALUE_TRANSFORM_FUNC_TRANSLATE.$() +
+								ESvg.VALUE_TRANSFORM_FUNC_ROTATE.$(),
+						position.getX(),
+						position.getY(),
+						tensor.getRotation()));
+		group.setAttribute(ESvg.ATTRIB_FILL.$(), ESvg.VALUE_COLOR_BLACK.$());
+		group.setAttribute(ESvg.ATTRIB_STROKE.$(), ESvg.VALUE_COLOR_BLACK.$());
+		group.setAttribute(ESvg.ATTRIB_STROKE_WIDTH.$(), Integer.toString(1));
+
+		ImmutableList<TensorConnectionAnchor> anchors = tensor.getAnchors();
+		for (int i = 0; i < anchors.size(); i++)
+		{
+			Point2D top = new Point2D.Double();
+			Point2D bottom = new Point2D.Double();
+			initAnchorPoints(
+					tensor,
+					i,
+					top,
+					bottom,
+					null,
+					0);
+
+			PointUtil.move(top, -position.x, -position.y);
+			PointUtil.move(bottom, -position.x, -position.y);
+
+			// TensorConnectionAnchor anchor = anchors.get(i);
+
+			Element line = doc.createElement(ESvg.ELEMENT_LINE.$());
+			group.appendChild(line);
+
+			line.setAttribute(
+					ESvg.ATTRIB_FROM_X.$(),
+					Double.toString(bottom.getX()));
+			line.setAttribute(
+					ESvg.ATTRIB_FROM_Y.$(),
+					Double.toString(bottom.getY()));
+			line.setAttribute(ESvg.ATTRIB_TO_X.$(), Double.toString(top.getX()));
+			line.setAttribute(ESvg.ATTRIB_TO_Y.$(), Double.toString(top.getY()));
+		}
+
+		Element circle = doc.createElement(ESvg.ELEMENT_CIRCLE.$());
+		group.appendChild(circle);
+		circle.setAttribute(
+				ESvg.ATTRIB_RADIUS.$(),
+				Double.toString(CENTER_CIRCLE_RADIUS - 0.5));
+
+		return group;
+	}
 }

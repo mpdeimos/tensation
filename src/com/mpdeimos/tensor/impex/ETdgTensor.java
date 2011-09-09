@@ -6,7 +6,7 @@ package com.mpdeimos.tensor.impex;
  * @author mpdeimos
  * 
  */
-public enum EXmlTensor implements IXmlNameEnum
+public enum ETdgTensor implements INameEnum
 {
 	/** element representing a tensor. */
 	ELEMENT_TENSOR("tensor"), //$NON-NLS-1$
@@ -43,13 +43,13 @@ public enum EXmlTensor implements IXmlNameEnum
 	private String name;
 
 	/** Constructor. */
-	private EXmlTensor(String name)
+	private ETdgTensor(String name)
 	{
 		this.name = name;
 	}
 
 	@Override
-	public String getName()
+	public String $()
 	{
 		return this.name;
 	}

@@ -23,38 +23,38 @@ public class TensorExporter implements IExporter
 
 		int id = (Integer) helpers[0];
 
-		Element eTensor = xmlDoc.createElement(EXmlTensor.ELEMENT_TENSOR.getName());
+		Element eTensor = xmlDoc.createElement(ETdgTensor.ELEMENT_TENSOR.$());
 
 		eTensor.setAttribute(
-				EXmlTensor.ATTRIB_ID.getName(), Integer.toString(id));
+				ETdgTensor.ATTRIB_ID.$(), Integer.toString(id));
 
 		eTensor.setAttribute(
-				EXmlTensor.ATTRIB_POS_X.getName(),
+				ETdgTensor.ATTRIB_POS_X.$(),
 				Integer.toString(tensor.getPosition().x));
 		eTensor.setAttribute(
-				EXmlTensor.ATTRIB_POS_Y.getName(),
+				ETdgTensor.ATTRIB_POS_Y.$(),
 				Integer.toString(tensor.getPosition().y));
 		eTensor.setAttribute(
-				EXmlTensor.ATTRIB_ROTATION.getName(),
+				ETdgTensor.ATTRIB_ROTATION.$(),
 				Integer.toString((int) (tensor.getRotation())));
 
 		for (int i = 0; i < tensor.getAnchors().size(); i++)
 		{
 			TensorConnectionAnchor anchor = tensor.getAnchors().get(i);
 
-			Element eAnchor = xmlDoc.createElement(EXmlTensor.ELEMENT_TENSOR_ANCHOR.getName());
+			Element eAnchor = xmlDoc.createElement(ETdgTensor.ELEMENT_TENSOR_ANCHOR.$());
 			eAnchor.setAttribute(
-					EXmlTensor.ATTRIB_ANCHOR_ID.getName(), Integer.toString(i));
+					ETdgTensor.ATTRIB_ANCHOR_ID.$(), Integer.toString(i));
 
-			EXmlTensor direction = null;
+			ETdgTensor direction = null;
 			if (EDirection.SINK == anchor.getDirection())
-				direction = EXmlTensor.VALUE_ANCHOR_SINK;
+				direction = ETdgTensor.VALUE_ANCHOR_SINK;
 			else
-				direction = EXmlTensor.VALUE_ANCHOR_SOURCE;
+				direction = ETdgTensor.VALUE_ANCHOR_SOURCE;
 
 			eAnchor.setAttribute(
-					EXmlTensor.ATTRIB_ANCHOR_DIRECTION.getName(),
-					direction.getName());
+					ETdgTensor.ATTRIB_ANCHOR_DIRECTION.$(),
+					direction.$());
 
 			eTensor.appendChild(eAnchor);
 		}

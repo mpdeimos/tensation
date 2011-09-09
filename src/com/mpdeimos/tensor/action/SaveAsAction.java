@@ -1,6 +1,6 @@
 package com.mpdeimos.tensor.action;
 
-import com.mpdeimos.tensor.impex.Exporter;
+import com.mpdeimos.tensor.impex.TdgExporter;
 import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.util.FileUtil;
@@ -44,7 +44,7 @@ public class SaveAsAction extends ActionBase
 	public void actionPerformed(ActionEvent e)
 	{
 		ModelRoot model = Application.getApp().getModel();
-		Exporter ex = new Exporter();
+		TdgExporter ex = new TdgExporter();
 
 		Document doc = ex.toXml(model);
 

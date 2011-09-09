@@ -19,19 +19,20 @@ import org.w3c.dom.Element;
  * @author mpdeimos
  * 
  */
-public class Exporter
+public class TdgExporter
 {
 	/** exports a root model to an XML document. */
 	public Document toXml(ModelRoot modelRoot)
 	{
 		DocumentBuilder builder = XmlUtil.getBuilder();
 		Document xmlDoc = builder.newDocument();
+		xmlDoc.setXmlStandalone(true);
 
-		Element eRoot = xmlDoc.createElement(EXmlGeneric.ELEMENT_ROOT.getName());
+		Element eRoot = xmlDoc.createElement(ETdgGeneric.ELEMENT_ROOT.$());
 		xmlDoc.appendChild(eRoot);
 
 		TensorExporter tensorExporter = new TensorExporter();
-		Element eTensors = xmlDoc.createElement(EXmlGeneric.ELEMENT_TENSORS.getName());
+		Element eTensors = xmlDoc.createElement(ETdgGeneric.ELEMENT_TENSORS.$());
 		eRoot.appendChild(eTensors);
 
 		HashMap<TensorBase, Integer> tensorsToIds = new HashMap<TensorBase, Integer>();
@@ -48,7 +49,7 @@ public class Exporter
 		}
 
 		ConnectionExporter connectionExporter = new ConnectionExporter();
-		Element eConnections = xmlDoc.createElement(EXmlGeneric.ELEMENT_CONNECTIONS.getName());
+		Element eConnections = xmlDoc.createElement(ETdgGeneric.ELEMENT_CONNECTIONS.$());
 		eRoot.appendChild(eConnections);
 
 		for (IModelData model : modelRoot.getChildren())

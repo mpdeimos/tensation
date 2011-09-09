@@ -16,6 +16,8 @@ public class FileUtil
 	public static final String FILE_EXTENSION_JPG = "jpg"; //$NON-NLS-1$
 	/** file extension for bmp files. */
 	public static final String FILE_EXTENSION_BMP = "bmp"; //$NON-NLS-1$
+	/** file extension for svg files. */
+	public static final String FILE_EXTENSION_SVG = "svg"; //$NON-NLS-1$
 
 	/** Separator for file extension and filename. */
 	public static final String EXTENSION_SEPARATOR = "."; //$NON-NLS-1$

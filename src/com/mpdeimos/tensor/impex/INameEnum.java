@@ -6,8 +6,8 @@ package com.mpdeimos.tensor.impex;
  * @author mpdeimos
  * 
  */
-public interface IXmlNameEnum
+public interface INameEnum
 {
 	/** @return the name of an xml attribute or tag. */
-	public String getName();
+	public String $();
 }

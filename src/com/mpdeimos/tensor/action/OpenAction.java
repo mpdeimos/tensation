@@ -1,6 +1,6 @@
 package com.mpdeimos.tensor.action;
 
-import com.mpdeimos.tensor.impex.Importer;
+import com.mpdeimos.tensor.impex.TdgImporter;
 import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.util.Log;
@@ -35,7 +35,7 @@ public class OpenAction extends ActionBase
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		Importer importer = new Importer();
+		TdgImporter importer = new TdgImporter();
 
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter(

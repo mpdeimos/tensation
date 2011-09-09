@@ -25,29 +25,29 @@ public class TensorImporter implements IImporter
 		@SuppressWarnings("unchecked")
 		Wrapper<Integer> outId = (Wrapper<Integer>) helpers[0];
 
-		NodeList anchors = node.getElementsByTagName(EXmlTensor.ELEMENT_TENSOR_ANCHOR.getName());
+		NodeList anchors = node.getElementsByTagName(ETdgTensor.ELEMENT_TENSOR_ANCHOR.$());
 		EDirection[] directions = new EDirection[anchors.getLength()];
 		for (int i = 0; i < anchors.getLength(); i++)
 		{
 			Element anchor = (Element) anchors.item(i);
 			EDirection dir = EDirection.SOURCE;
-			String dirName = anchor.getAttribute(EXmlTensor.ATTRIB_ANCHOR_DIRECTION.getName());
-			if (EXmlTensor.VALUE_ANCHOR_SINK.getName().equals(dirName))
+			String dirName = anchor.getAttribute(ETdgTensor.ATTRIB_ANCHOR_DIRECTION.$());
+			if (ETdgTensor.VALUE_ANCHOR_SINK.$().equals(dirName))
 				dir = EDirection.SINK;
 
-			directions[Integer.parseInt(anchor.getAttribute(EXmlTensor.ATTRIB_ANCHOR_ID.getName()))] = dir;
+			directions[Integer.parseInt(anchor.getAttribute(ETdgTensor.ATTRIB_ANCHOR_ID.$()))] = dir;
 		}
 
 		GenericTensor tensor = new GenericTensor(mr, directions);
 
-		int id = Integer.parseInt(node.getAttribute(EXmlTensor.ATTRIB_ID.getName()));
+		int id = Integer.parseInt(node.getAttribute(ETdgTensor.ATTRIB_ID.$()));
 		outId.set(id);
 
-		int x = Integer.parseInt(node.getAttribute(EXmlTensor.ATTRIB_POS_X.getName()));
-		int y = Integer.parseInt(node.getAttribute(EXmlTensor.ATTRIB_POS_Y.getName()));
+		int x = Integer.parseInt(node.getAttribute(ETdgTensor.ATTRIB_POS_X.$()));
+		int y = Integer.parseInt(node.getAttribute(ETdgTensor.ATTRIB_POS_Y.$()));
 		tensor.setPosition(new Point(x, y));
 
-		double rot = Double.parseDouble(node.getAttribute(EXmlTensor.ATTRIB_ROTATION.getName()));
+		double rot = Double.parseDouble(node.getAttribute(ETdgTensor.ATTRIB_ROTATION.$()));
 		tensor.setRotation(rot);
 
 		return tensor;

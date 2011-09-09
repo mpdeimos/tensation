@@ -135,6 +135,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 	}
 
 	/** @return the figure responsible for drawing this object */
+	@Override
 	public IFigure getFigure()
 	{
 		return this.figure;

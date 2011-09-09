@@ -6,7 +6,7 @@ package com.mpdeimos.tensor.impex;
  * @author mpdeimos
  * 
  */
-public enum EXmlConnection implements IXmlNameEnum
+public enum ETdgConnection implements INameEnum
 {
 	/** element representing a connection. */
 	ELEMENT_CONECTION("connection"), //$NON-NLS-1$
@@ -34,13 +34,13 @@ public enum EXmlConnection implements IXmlNameEnum
 	private String name;
 
 	/** Constructor. */
-	private EXmlConnection(String name)
+	private ETdgConnection(String name)
 	{
 		this.name = name;
 	}
 
 	@Override
-	public String getName()
+	public String $()
 	{
 		return this.name;
 	}

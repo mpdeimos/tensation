@@ -401,6 +401,11 @@ public class DrawingCanvas extends JPanel
 				rect.add(r);
 		}
 
+		if (rect == null)
+		{
+			rect = new Rectangle();
+		}
+
 		return rect;
 	}
 

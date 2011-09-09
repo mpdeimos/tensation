@@ -4,6 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 /**
  * Interface definition for canvas elements, called figures
  * 
@@ -28,4 +31,6 @@ public interface IFigure
 	/** Schedules a figure redraw. */
 	public void redraw();
 
+	/** @return the svg node of this element. may be null. */
+	public Element getSvgNode(Document parent);
 }

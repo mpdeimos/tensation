@@ -20,7 +20,7 @@ import org.w3c.dom.NodeList;
  * @author mpdeimos
  * 
  */
-public class Importer
+public class TdgImporter
 {
 	/** exports a root model to an XML document. */
 	public ModelRoot fromXml(File file)
@@ -29,8 +29,8 @@ public class Importer
 
 		Element root = xmlDoc.getDocumentElement();
 
-		NodeList tensorNodes = root.getElementsByTagName(EXmlTensor.ELEMENT_TENSOR.getName());
-		NodeList connectionNodes = root.getElementsByTagName(EXmlConnection.ELEMENT_CONECTION.getName());
+		NodeList tensorNodes = root.getElementsByTagName(ETdgTensor.ELEMENT_TENSOR.$());
+		NodeList connectionNodes = root.getElementsByTagName(ETdgConnection.ELEMENT_CONECTION.$());
 
 		ModelRoot mr = new ModelRoot();
 

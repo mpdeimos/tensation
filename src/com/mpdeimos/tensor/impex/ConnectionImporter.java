@@ -25,14 +25,14 @@ public class ConnectionImporter implements IImporter
 		@SuppressWarnings("unchecked")
 		HashMap<Integer, TensorBase> tensors = (HashMap<Integer, TensorBase>) helpers[0];
 
-		int sinkID = Integer.parseInt(node.getAttribute(EXmlConnection.ATTRIB_SINK.getName()));
-		int sinkAnchorID = Integer.parseInt(node.getAttribute(EXmlConnection.ATTRIB_SINK_ANCHOR.getName()));
-		double sinkAnchorDist = Double.parseDouble(node.getAttribute(EXmlConnection.ATTRIB_SINK_DISTANCE.getName()));
+		int sinkID = Integer.parseInt(node.getAttribute(ETdgConnection.ATTRIB_SINK.$()));
+		int sinkAnchorID = Integer.parseInt(node.getAttribute(ETdgConnection.ATTRIB_SINK_ANCHOR.$()));
+		double sinkAnchorDist = Double.parseDouble(node.getAttribute(ETdgConnection.ATTRIB_SINK_DISTANCE.$()));
 		TensorBase sink = tensors.get(sinkID);
 
-		int sourceID = Integer.parseInt(node.getAttribute(EXmlConnection.ATTRIB_SOURCE.getName()));
-		int sourceAnchorID = Integer.parseInt(node.getAttribute(EXmlConnection.ATTRIB_SOURCE_ANCHOR.getName()));
-		double sourceAnchorDist = Double.parseDouble(node.getAttribute(EXmlConnection.ATTRIB_SOURCE_DISTANCE.getName()));
+		int sourceID = Integer.parseInt(node.getAttribute(ETdgConnection.ATTRIB_SOURCE.$()));
+		int sourceAnchorID = Integer.parseInt(node.getAttribute(ETdgConnection.ATTRIB_SOURCE_ANCHOR.$()));
+		double sourceAnchorDist = Double.parseDouble(node.getAttribute(ETdgConnection.ATTRIB_SOURCE_DISTANCE.$()));
 		TensorBase source = tensors.get(sourceID);
 
 		TensorConnection connection = new TensorConnection(

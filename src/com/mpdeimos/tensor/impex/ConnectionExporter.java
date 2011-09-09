@@ -25,26 +25,26 @@ public class ConnectionExporter implements IExporter
 		@SuppressWarnings("unchecked")
 		HashMap<TensorBase, Integer> tensorsToIds = (HashMap<TensorBase, Integer>) helpers[0];
 
-		Element eCon = xmlDoc.createElement(EXmlConnection.ELEMENT_CONECTION.getName());
+		Element eCon = xmlDoc.createElement(ETdgConnection.ELEMENT_CONECTION.$());
 
 		eCon.setAttribute(
-				EXmlConnection.ATTRIB_SOURCE.getName(),
+				ETdgConnection.ATTRIB_SOURCE.$(),
 				Integer.toString(tensorsToIds.get(con.getSource().getTensor())));
 		eCon.setAttribute(
-				EXmlConnection.ATTRIB_SOURCE_ANCHOR.getName(),
+				ETdgConnection.ATTRIB_SOURCE_ANCHOR.$(),
 				Integer.toString(con.getSource().getId()));
 		eCon.setAttribute(
-				EXmlConnection.ATTRIB_SOURCE_DISTANCE.getName(),
+				ETdgConnection.ATTRIB_SOURCE_DISTANCE.$(),
 				Double.toString(con.getSourceDistance()));
 
 		eCon.setAttribute(
-				EXmlConnection.ATTRIB_SINK.getName(),
+				ETdgConnection.ATTRIB_SINK.$(),
 				Integer.toString(tensorsToIds.get(con.getSink().getTensor())));
 		eCon.setAttribute(
-				EXmlConnection.ATTRIB_SINK_ANCHOR.getName(),
+				ETdgConnection.ATTRIB_SINK_ANCHOR.$(),
 				Integer.toString(con.getSink().getId()));
 		eCon.setAttribute(
-				EXmlConnection.ATTRIB_SINK_DISTANCE.getName(),
+				ETdgConnection.ATTRIB_SINK_DISTANCE.$(),
 				Double.toString(con.getSinkDistance()));
 
 		return eCon;

@@ -1,5 +1,7 @@
 package com.mpdeimos.tensor.figure;
 
+import com.mpdeimos.tensor.editpart.IEditPart;
+
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -7,7 +9,8 @@ import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mpdeimos.tensor.editpart.IEditPart;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Abstract base class for figures.
@@ -107,5 +110,11 @@ public abstract class FigureBase implements IFigure
 		}
 
 		return false;
+	}
+
+	@Override
+	public Element getSvgNode(Document parent)
+	{
+		return null;
 	}
 }
