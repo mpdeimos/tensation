@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * Exports editparts (or model data) to SVG.
@@ -55,8 +56,17 @@ public class SvgExporter
 				Integer.toString(Math.max(0, r.y) + r.height));
 
 		HashMap<String, Element> definitions = new HashMap<String, Element>();
-		Element defs = xmlDoc.createElement(ESvg.ELEMENT_DEFS.$());
-		eRoot.appendChild(defs);
+		NodeList defsList = eRoot.getElementsByTagName(ESvg.ELEMENT_DEFS.$());
+		Element defs = null;
+		if (defsList.getLength() > 0)
+		{
+			defs = (Element) defsList.item(0);
+		}
+		else
+		{
+			defs = xmlDoc.createElement(ESvg.ELEMENT_DEFS.$());
+			eRoot.appendChild(defs);
+		}
 
 		for (IEditPart part : parts)
 		{

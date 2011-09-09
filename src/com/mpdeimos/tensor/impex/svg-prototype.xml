@@ -6,5 +6,18 @@
   - Tensor SVG Export
   - https://code.launchpad.net/~mpdeimos/+junk/tensor
  -->
+  <defs>
+    <style type="text/css"><![CDATA[
+.tensor
+{
+	fill: black;
+}
+line
+{
+	stroke: black;
+	stroke-width: 1px;
+}
+    ]]></style>
+  </defs>
 
 </svg>

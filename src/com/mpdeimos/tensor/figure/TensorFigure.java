@@ -278,13 +278,7 @@ public class TensorFigure extends FigureBase
 		{
 			Element group = doc.createElement(ESvg.ELEMENT_GROUP.$());
 			group.setAttribute(ESvg.ATTRIB_ID.$(), def);
-			group.setAttribute(ESvg.ATTRIB_FILL.$(), ESvg.VALUE_COLOR_BLACK.$());
-			group.setAttribute(
-					ESvg.ATTRIB_STROKE.$(),
-					ESvg.VALUE_COLOR_BLACK.$());
-			group.setAttribute(
-					ESvg.ATTRIB_STROKE_WIDTH.$(),
-					Integer.toString(1));
+			group.setAttribute(ESvg.ATTRIB_CLASS.$(), "tensor"); //$NON-NLS-1$
 
 			ImmutableList<TensorConnectionAnchor> anchors = tensor.getAnchors();
 			for (int i = 0; i < anchors.size(); i++)
