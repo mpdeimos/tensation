@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -113,7 +114,9 @@ public abstract class FigureBase implements IFigure
 	}
 
 	@Override
-	public Element getSvgNode(Document parent)
+	public Element getSvgNode(
+			Document parent,
+			HashMap<String, Element> definitions)
 	{
 		return null;
 	}

@@ -9,6 +9,7 @@ import com.mpdeimos.tensor.util.XmlUtil;
 
 import java.awt.Rectangle;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -53,12 +54,21 @@ public class SvgExporter
 				ESvg.ATTRIB_HEIGHT.$(),
 				Integer.toString(Math.max(0, r.y) + r.height));
 
+		HashMap<String, Element> definitions = new HashMap<String, Element>();
+		Element defs = xmlDoc.createElement(ESvg.ELEMENT_DEFS.$());
+		eRoot.appendChild(defs);
+
 		for (IEditPart part : parts)
 		{
 			IFigure figure = part.getFigure();
-			Element svgNode = figure.getSvgNode(xmlDoc);
+			Element svgNode = figure.getSvgNode(xmlDoc, definitions);
 			if (svgNode != null)
 				eRoot.appendChild(svgNode);
+		}
+
+		for (Element def : definitions.values())
+		{
+			defs.appendChild(def);
 		}
 
 		return xmlDoc;

@@ -3,6 +3,7 @@ package com.mpdeimos.tensor.figure;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.HashMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,6 +32,13 @@ public interface IFigure
 	/** Schedules a figure redraw. */
 	public void redraw();
 
-	/** @return the svg node of this element. may be null. */
-	public Element getSvgNode(Document parent);
+	/**
+	 * The definition map contains all svg definitions so far. It may be
+	 * extended and acts as well as out param.
+	 * 
+	 * @return the svg node of this element. may be null.
+	 */
+	public Element getSvgNode(
+			Document parent,
+			HashMap<String, Element> definitions);
 }

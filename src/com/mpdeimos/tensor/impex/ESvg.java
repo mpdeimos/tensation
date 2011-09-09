@@ -17,8 +17,17 @@ public enum ESvg implements INameEnum
 	/** The line element. */
 	ELEMENT_LINE("line"), //$NON-NLS-1$
 
-	/** The group elements. */
+	/** The group element. */
 	ELEMENT_GROUP("g"), //$NON-NLS-1$
+
+	/** The use element. */
+	ELEMENT_USE("use"), //$NON-NLS-1$
+
+	/** The defs element. */
+	ELEMENT_DEFS("defs"), //$NON-NLS-1$
+
+	/** the id attribute. */
+	ATTRIB_ID("id"), //$NON-NLS-1$
 
 	/** the width attribute. */
 	ATTRIB_WIDTH("width"), //$NON-NLS-1$
@@ -59,6 +68,9 @@ public enum ESvg implements INameEnum
 
 	/** the transform attribute. */
 	ATTRIB_TRANSFORM("transform"), //$NON-NLS-1$
+
+	/** the xlink href attribute. */
+	ATTRIB_XLINK_HREF("xlink:href"), //$NON-NLS-1$
 
 	/** color value for black. */
 	VALUE_COLOR_BLACK("black"), //$NON-NLS-1$

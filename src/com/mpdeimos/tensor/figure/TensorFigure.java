@@ -19,6 +19,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -255,13 +256,16 @@ public class TensorFigure extends FigureBase
 	}
 
 	@Override
-	public Element getSvgNode(Document doc)
+	public Element getSvgNode(Document doc, HashMap<String, Element> defs)
 	{
 		TensorBase tensor = (TensorBase) this.editPart.getModel();
 		Point position = tensor.getPosition();
 
-		Element group = doc.createElement(ESvg.ELEMENT_GROUP.$());
-		group.setAttribute(
+		String def = getSvgDefName();
+
+		Element use = doc.createElement(ESvg.ELEMENT_USE.$());
+		use.setAttribute(ESvg.ATTRIB_XLINK_HREF.$(), "#" + def); //$NON-NLS-1$
+		use.setAttribute(
 				ESvg.ATTRIB_TRANSFORM.$(),
 				String.format(
 						ESvg.VALUE_TRANSFORM_FUNC_TRANSLATE.$() +
@@ -269,47 +273,79 @@ public class TensorFigure extends FigureBase
 						position.getX(),
 						position.getY(),
 						tensor.getRotation()));
-		group.setAttribute(ESvg.ATTRIB_FILL.$(), ESvg.VALUE_COLOR_BLACK.$());
-		group.setAttribute(ESvg.ATTRIB_STROKE.$(), ESvg.VALUE_COLOR_BLACK.$());
-		group.setAttribute(ESvg.ATTRIB_STROKE_WIDTH.$(), Integer.toString(1));
 
-		ImmutableList<TensorConnectionAnchor> anchors = tensor.getAnchors();
-		for (int i = 0; i < anchors.size(); i++)
+		if (!defs.containsKey(def))
 		{
-			Point2D top = new Point2D.Double();
-			Point2D bottom = new Point2D.Double();
-			initAnchorPoints(
-					tensor,
-					i,
-					top,
-					bottom,
-					null,
-					0);
+			Element group = doc.createElement(ESvg.ELEMENT_GROUP.$());
+			group.setAttribute(ESvg.ATTRIB_ID.$(), def);
+			group.setAttribute(ESvg.ATTRIB_FILL.$(), ESvg.VALUE_COLOR_BLACK.$());
+			group.setAttribute(
+					ESvg.ATTRIB_STROKE.$(),
+					ESvg.VALUE_COLOR_BLACK.$());
+			group.setAttribute(
+					ESvg.ATTRIB_STROKE_WIDTH.$(),
+					Integer.toString(1));
 
-			PointUtil.move(top, -position.x, -position.y);
-			PointUtil.move(bottom, -position.x, -position.y);
+			ImmutableList<TensorConnectionAnchor> anchors = tensor.getAnchors();
+			for (int i = 0; i < anchors.size(); i++)
+			{
+				Point2D top = new Point2D.Double();
+				Point2D bottom = new Point2D.Double();
+				initAnchorPoints(
+						tensor,
+						i,
+						top,
+						bottom,
+						null,
+						0);
 
-			// TensorConnectionAnchor anchor = anchors.get(i);
+				PointUtil.move(top, -position.x, -position.y);
+				PointUtil.move(bottom, -position.x, -position.y);
 
-			Element line = doc.createElement(ESvg.ELEMENT_LINE.$());
-			group.appendChild(line);
+				// TensorConnectionAnchor anchor = anchors.get(i);
 
-			line.setAttribute(
-					ESvg.ATTRIB_FROM_X.$(),
-					Double.toString(bottom.getX()));
-			line.setAttribute(
-					ESvg.ATTRIB_FROM_Y.$(),
-					Double.toString(bottom.getY()));
-			line.setAttribute(ESvg.ATTRIB_TO_X.$(), Double.toString(top.getX()));
-			line.setAttribute(ESvg.ATTRIB_TO_Y.$(), Double.toString(top.getY()));
+				Element line = doc.createElement(ESvg.ELEMENT_LINE.$());
+				group.appendChild(line);
+
+				line.setAttribute(
+						ESvg.ATTRIB_FROM_X.$(),
+						Double.toString(bottom.getX()));
+				line.setAttribute(
+						ESvg.ATTRIB_FROM_Y.$(),
+						Double.toString(bottom.getY()));
+				line.setAttribute(
+						ESvg.ATTRIB_TO_X.$(),
+						Double.toString(top.getX()));
+				line.setAttribute(
+						ESvg.ATTRIB_TO_Y.$(),
+						Double.toString(top.getY()));
+			}
+
+			Element circle = doc.createElement(ESvg.ELEMENT_CIRCLE.$());
+			group.appendChild(circle);
+			circle.setAttribute(
+					ESvg.ATTRIB_RADIUS.$(),
+					Double.toString(CENTER_CIRCLE_RADIUS - 0.5));
+
+			defs.put(def, group);
 		}
 
-		Element circle = doc.createElement(ESvg.ELEMENT_CIRCLE.$());
-		group.appendChild(circle);
-		circle.setAttribute(
-				ESvg.ATTRIB_RADIUS.$(),
-				Double.toString(CENTER_CIRCLE_RADIUS - 0.5));
+		return use;
+	}
 
-		return group;
+	/** @return the string used as svg def. */
+	private String getSvgDefName()
+	{
+		TensorBase tensor = (TensorBase) this.editPart.getModel();
+		List<TensorConnectionAnchor> anchors = tensor.getAnchors();
+
+		String name = "tensor_" + anchors.size(); //$NON-NLS-1$
+
+		for (int i = 0; i < anchors.size(); i++)
+		{
+			name += anchors.get(i).getDirection() == EDirection.SINK ? "i" : "o"; //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		return name;
 	}
 }
