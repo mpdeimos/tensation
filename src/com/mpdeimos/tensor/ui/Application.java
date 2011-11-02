@@ -84,8 +84,10 @@ public class Application extends JFrame
 
 	/**
 	 * Launch the application.
+	 * 
+	 * @param args
 	 */
-	public static void createAndDisplay()
+	public static void createAndDisplay(final String[] args)
 	{
 		EventQueue.invokeLater(new Runnable()
 		{
@@ -94,9 +96,25 @@ public class Application extends JFrame
 			public void run()
 			{
 				app = new Application();
+				app.evaluateArguments(args);
 				app.setVisible(true);
 			}
 		});
+	}
+
+	/** Evaluates command-line arguments. */
+	protected void evaluateArguments(String[] args)
+	{
+		for (int i = 0; i < args.length; i++)
+		{
+			String arg = args[i];
+
+			if (arg.equals("--open") || arg.equals("-o")) //$NON-NLS-1$ //$NON-NLS-2$
+			{
+				arg = args[++i];
+				OpenAction.openFile(arg);
+			}
+		}
 	}
 
 	/**

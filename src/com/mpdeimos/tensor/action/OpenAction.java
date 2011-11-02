@@ -35,8 +35,6 @@ public class OpenAction extends ActionBase
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		TdgImporter importer = new TdgImporter();
-
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter(
 				R.string.APP_EXTENSION_TDX.string(),
@@ -46,18 +44,34 @@ public class OpenAction extends ActionBase
 		if (answer != JFileChooser.APPROVE_OPTION)
 			return;
 
-		File selectedFile = fc.getSelectedFile();
+		openFile(fc.getSelectedFile());
+	}
 
-		if (!selectedFile.exists())
+	/** Opens a file by filename */
+	public static void openFile(String filename)
+	{
+		openFile(new File(filename));
+	}
+
+	/** Opens a file via file descriptor. */
+	public static void openFile(File file)
+	{
+		if (!file.exists())
 		{
-			Log.e(this, "open file failed, file does not exist..."); //$NON-NLS-1$
-			// TODO show dialog
+			Log.e(
+					OpenAction.class,
+					"open file failed, file '" + file.getPath() + "' does not exist..."); //$NON-NLS-1$ //$NON-NLS-2$
+			// TODO show dialog?
+
+			return;
 		}
 
-		ModelRoot mr = importer.fromXml(selectedFile);
+		TdgImporter importer = new TdgImporter();
+
+		ModelRoot mr = importer.fromXml(file);
 		// TODO check for null
 
 		Application.getApp().setModel(mr);
-		Application.getApp().setModelExportLocation(selectedFile);
+		Application.getApp().setModelExportLocation(file);
 	}
 }

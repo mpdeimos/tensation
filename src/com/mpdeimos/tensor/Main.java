@@ -34,6 +34,6 @@ public class Main
 			}
 		});
 
-		Application.createAndDisplay();
+		Application.createAndDisplay(args);
 	}
 }
