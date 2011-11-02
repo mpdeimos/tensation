@@ -104,19 +104,35 @@ public class ExportAction extends ActionBase
 		else if (ff == ffSvg)
 			selectedExtension = FileUtil.FILE_EXTENSION_SVG;
 
-		File selectedFile = fc.getSelectedFile();
-		if (!selectedFile.getName().endsWith(selectedExtension))
-			selectedFile = new File(selectedFile.getPath()
+		File file = fc.getSelectedFile();
+
+		if (!file.getName().endsWith(selectedExtension))
+			file = new File(file.getPath()
 					+ FileUtil.EXTENSION_SEPARATOR
 					+ selectedExtension);
 
-		if (selectedFile.exists())
+		double scale = ((Integer) contextPanel.model.getValue() / 100.0);
+
+		exportFile(file, scale);
+	}
+
+	/** Exports the opened document to a file. */
+	public static void exportFile(String filename)
+	{
+		exportFile(new File(filename), 1);
+	}
+
+	/** Exports the opened document to a file. */
+	public static void exportFile(File file, double scale)
+	{
+		if (file.exists())
 		{
+			// TODO commandline
 			int answer2 = JOptionPane.showConfirmDialog(
 					Application.getApp(),
 					String.format(
 							R.string.DLG_QUESTION_SAVE_OVERWRITE.string(),
-							selectedFile.getName()),
+							file.getName()),
 					R.string.DLG_QUESTION_SAVE_OVERWRITE_TITLE.string(),
 					JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE);
@@ -125,18 +141,25 @@ public class ExportAction extends ActionBase
 				return;
 		}
 
-		if (ff == ffSvg)
+		String extension = FileUtil.getExtension(file);
+
+		if (FileUtil.FILE_EXTENSION_SVG.equals(extension))
 		{
-			handleSvg(selectedFile);
+			handleSvg(file);
 			return;
 		}
 
-		double scale = ((Integer) contextPanel.model.getValue() / 100.0);
+		handleBitmap(file, scale, extension);
+	}
+
+	/** exports as bitmap. */
+	private static void handleBitmap(File file, double scale, String extension)
+	{
 		Rectangle rect = Application.getApp().getDrawingCanvas().getImageRectangle();
 		int width = (int) ((rect.width + Math.abs(rect.x)) * scale);
 		int height = (int) ((rect.height + Math.abs(rect.y)) * scale);
 
-		boolean hasTransparency = ff == ffPng;
+		boolean hasTransparency = FileUtil.FILE_EXTENSION_PNG.equals(extension);
 		int imgType = hasTransparency ? BufferedImage.TYPE_INT_ARGB
 				: BufferedImage.TYPE_INT_RGB;
 
@@ -168,24 +191,23 @@ public class ExportAction extends ActionBase
 
 		try
 		{
-			ImageIO.write(bufferedImage, selectedExtension, selectedFile);
+			ImageIO.write(bufferedImage, extension, file);
 		}
 		catch (IOException exc)
 		{
-			Log.e(this, "could not write image file", exc); //$NON-NLS-1$
+			Log.e(ExportAction.class, "could not write image file", exc); //$NON-NLS-1$
 		}
 	}
 
 	/** handles svg saving. */
-	private void handleSvg(File file)
+	private static void handleSvg(File file)
 	{
-		Log.d(this, "producing svg output"); //$NON-NLS-1$
 		SvgExporter svgExporter = new SvgExporter();
 		Document svg = svgExporter.toSvg(Application.getApp().getDrawingCanvas().getEditParts());
 
 		if (!XmlUtil.writeDomDocumentToFile(svg, file))
 		{
-			Log.e(this, "could not write svg file"); //$NON-NLS-1$
+			Log.e(ExportAction.class, "could not write svg file"); //$NON-NLS-1$
 		}
 	}
 

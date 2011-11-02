@@ -43,11 +43,6 @@ public class SaveAsAction extends ActionBase
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		ModelRoot model = Application.getApp().getModel();
-		TdgExporter ex = new TdgExporter();
-
-		Document doc = ex.toXml(model);
-
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter(
 				R.string.APP_EXTENSION_TDX.string(),
@@ -57,14 +52,31 @@ public class SaveAsAction extends ActionBase
 		if (answer != JFileChooser.APPROVE_OPTION)
 			return;
 
-		File selectedFile = fc.getSelectedFile();
+		saveFile(fc.getSelectedFile());
+	}
+
+	/** Saves the currently open file. */
+	public static void saveFile(String filename)
+	{
+		saveFile(new File(filename));
+	}
+
+	/** Saves the currently open file. */
+	public static void saveFile(File selectedFile)
+	{
+		ModelRoot model = Application.getApp().getModel();
+		TdgExporter ex = new TdgExporter();
+
+		Document doc = ex.toXml(model);
+
 		if (!selectedFile.getName().endsWith(XML_FILE_EXTENSION))
 			selectedFile = new File(selectedFile.getPath()
 					+ FileUtil.EXTENSION_SEPARATOR + XML_FILE_EXTENSION);
 
 		if (selectedFile.exists())
 		{
-			int answer2 = JOptionPane.showConfirmDialog(
+			// TODO commandline!
+			final int answer2 = JOptionPane.showConfirmDialog(
 					Application.getApp(),
 					String.format(
 							R.string.DLG_QUESTION_SAVE_OVERWRITE.string(),
@@ -79,7 +91,9 @@ public class SaveAsAction extends ActionBase
 
 		if (!XmlUtil.writeDomDocumentToFile(doc, selectedFile))
 		{
-			Log.e(this, "saving file failed..."); //$NON-NLS-1$
+			Log.e(
+					SaveAsAction.class,
+					"saving file '" + selectedFile.getPath() + "' failed..."); //$NON-NLS-1$ //$NON-NLS-2$
 			// TODO show dialog
 		}
 

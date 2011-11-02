@@ -25,4 +25,20 @@ public class StringUtil
 	{
 		return s == null || s.isEmpty();
 	}
+
+	/** Flattens a string array with an optional glue. */
+	public static String flatten(String glue, String... strings)
+	{
+		StringBuilder sb = new StringBuilder();
+
+		for (String s : strings)
+		{
+			if (glue != null)
+				sb.append(glue);
+
+			sb.append(s);
+		}
+
+		return sb.toString();
+	}
 }

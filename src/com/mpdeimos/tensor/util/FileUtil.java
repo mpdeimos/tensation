@@ -1,5 +1,7 @@
 package com.mpdeimos.tensor.util;
 
+import java.io.File;
+
 /**
  * Utility class for file functions.
  * 
@@ -21,4 +23,11 @@ public class FileUtil
 
 	/** Separator for file extension and filename. */
 	public static final String EXTENSION_SEPARATOR = "."; //$NON-NLS-1$
+
+	/** @return the extension of a file. */
+	public static String getExtension(File file)
+	{
+		int idx = file.getName().lastIndexOf(EXTENSION_SEPARATOR);
+		return file.getName().substring(idx + 1);
+	}
 }

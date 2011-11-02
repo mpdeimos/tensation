@@ -96,25 +96,10 @@ public class Application extends JFrame
 			public void run()
 			{
 				app = new Application();
-				app.evaluateArguments(args);
+				Commandline.evaluateArguments(args);
 				app.setVisible(true);
 			}
 		});
-	}
-
-	/** Evaluates command-line arguments. */
-	protected void evaluateArguments(String[] args)
-	{
-		for (int i = 0; i < args.length; i++)
-		{
-			String arg = args[i];
-
-			if (arg.equals("--open") || arg.equals("-o")) //$NON-NLS-1$ //$NON-NLS-2$
-			{
-				arg = args[++i];
-				OpenAction.openFile(arg);
-			}
-		}
 	}
 
 	/**
