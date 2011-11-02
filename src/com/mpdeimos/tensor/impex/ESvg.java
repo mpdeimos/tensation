@@ -68,6 +68,9 @@ public enum ESvg implements INameEnum
 	/** marker start attribute. */
 	ATTRIB_MARKER_START("marker-start"), //$NON-NLS-1$
 
+	/** The path data attribute. */
+	ATTRIB_PATH_DATA("d"), //$NON-NLS-1$
+
 	/** The circle element. */
 	ELEMENT_CIRCLE("circle"), //$NON-NLS-1$
 
@@ -79,6 +82,9 @@ public enum ESvg implements INameEnum
 
 	/** The line element. */
 	ELEMENT_LINE("line"), //$NON-NLS-1$
+
+	/** The path element. */
+	ELEMENT_PATH("path"), //$NON-NLS-1$
 
 	/** The root element. */
 	ELEMENT_SVG("svg"), //$NON-NLS-1$

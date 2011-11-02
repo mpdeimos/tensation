@@ -3,6 +3,7 @@ package com.mpdeimos.tensor.figure;
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.figure.ShapePack.EDrawingMode;
 import com.mpdeimos.tensor.impex.ESvg;
+import com.mpdeimos.tensor.impex.ESvgDefinitions;
 import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
@@ -247,10 +248,10 @@ public class TensorFigure extends FigureBase
 				+ CONNECTOR_STROKE_OFFSET;
 
 		return new Rectangle(
-				(int) position.getX() - offset,
-				(int) position.getY() - offset,
-				2 * offset,
-				2 * offset);
+				(int) position.getX() - offset - 1,
+				(int) position.getY() - offset - 1,
+				2 * offset + 2,
+				2 * offset + 2);
 	}
 
 	/** @return the connections points of this figure. */
@@ -281,7 +282,9 @@ public class TensorFigure extends FigureBase
 		{
 			Element group = doc.createElement(ESvg.ELEMENT_GROUP.$());
 			group.setAttribute(ESvg.ATTRIB_ID.$(), def);
-			group.setAttribute(ESvg.ATTRIB_CLASS.$(), "tensor"); //$NON-NLS-1$
+			group.setAttribute(
+					ESvg.ATTRIB_CLASS.$(),
+					ESvgDefinitions.CLASS_TENSOR.$());
 
 			ImmutableList<TensorConnectionAnchor> anchors = tensor.getAnchors();
 			for (int i = 0; i < anchors.size(); i++)
@@ -322,13 +325,13 @@ public class TensorFigure extends FigureBase
 				{
 					line.setAttribute(
 							ESvg.ATTRIB_MARKER_END.$(),
-							ESvg.VALUE_REF_URL.$("marker_triangle_end"));
+							ESvg.VALUE_REF_URL.$(ESvgDefinitions.MARKER_TRIANGLE_END.$()));
 				}
 				else
 				{
 					line.setAttribute(
 							ESvg.ATTRIB_MARKER_START.$(),
-							ESvg.VALUE_REF_URL.$("marker_triangle_start"));
+							ESvg.VALUE_REF_URL.$(ESvgDefinitions.MARKER_TRIANGLE_START.$()));
 				}
 			}
 
@@ -350,11 +353,12 @@ public class TensorFigure extends FigureBase
 		TensorBase tensor = (TensorBase) this.editPart.getModel();
 		List<TensorConnectionAnchor> anchors = tensor.getAnchors();
 
-		String name = "tensor_" + anchors.size(); //$NON-NLS-1$
+		String name = ESvgDefinitions.TENSOR_DEF_PREFIX.$() + anchors.size();
 
 		for (int i = 0; i < anchors.size(); i++)
 		{
-			name += anchors.get(i).getDirection() == EDirection.SINK ? "i" : "o"; //$NON-NLS-1$ //$NON-NLS-2$
+			name += anchors.get(i).getDirection() == EDirection.SINK ? ESvgDefinitions.TENSOR_DEF_SINK.$()
+					: ESvgDefinitions.TENSOR_DEF_SOURCE.$();
 		}
 
 		return name;

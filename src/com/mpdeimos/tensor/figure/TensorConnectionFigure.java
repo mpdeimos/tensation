@@ -2,6 +2,8 @@ package com.mpdeimos.tensor.figure;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.figure.ShapePack.EDrawingMode;
+import com.mpdeimos.tensor.impex.ESvg;
+import com.mpdeimos.tensor.impex.ESvgDefinitions;
 import com.mpdeimos.tensor.model.TensorConnection;
 import com.mpdeimos.tensor.util.PointUtil;
 
@@ -10,9 +12,12 @@ import java.awt.Shape;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Figure class for Tensor connections.
@@ -35,10 +40,10 @@ public class TensorConnectionFigure extends FigureBase
 	private Point2D sourceAnchor;
 
 	/** the position of the source anchor (unstretched). */
-	private Double sourceControlPointUnstretched;
+	private Point2D.Double sourceControlPointUnstretched;
 
 	/** the position of the sink anchor (unstretched). */
-	private Double sinkControlPointUnstretched;
+	private Point2D.Double sinkControlPointUnstretched;
 
 	/** Constructor. */
 	public TensorConnectionFigure(IEditPart editPart)
@@ -128,6 +133,32 @@ public class TensorConnectionFigure extends FigureBase
 
 		ShapePack pack = new ShapePack(EDrawingMode.STROKE, shapes);
 		this.shapePacks.add(pack);
+	}
+
+	@Override
+	public Element getSvgNode(Document doc, HashMap<String, Element> defs)
+	{
+		this.updateShapes();
+
+		Element path = doc.createElement(ESvg.ELEMENT_PATH.$());
+
+		path.setAttribute(ESvg.ATTRIB_PATH_DATA.$(),
+				String.format("M %f %f C %f %f %f %f %f %f", //$NON-NLS-1$
+						this.sourceAnchor.getX(),
+						this.sourceAnchor.getY(),
+						this.sourceControlPoint.getX(),
+						this.sourceControlPoint.getY(),
+						this.sinkControlPoint.getX(),
+						this.sinkControlPoint.getY(),
+						this.sinkAnchor.getX(),
+						this.sinkAnchor.getY()
+						));
+
+		path.setAttribute(
+				ESvg.ATTRIB_MARKER_END.$(),
+				ESvg.VALUE_REF_URL.$(ESvgDefinitions.MARKER_CRICLE.$()));
+
+		return path;
 	}
 
 	/** @return the control point for the sink anchor. */
