@@ -61,6 +61,7 @@
 			<fileset dir="./build/classes" includes="**/*" />
 			<fileset dir="./res" includes="string/*.properties" />
 			<fileset dir="./res" includes="drawable/*.png" />
+			<fileset dir="./src" includes="**/*.xml" />
 			<zipfileset excludes="META-INF/*.MF" src="lib/ant-resource-compiler.jar"/>
 		</jar>
 
