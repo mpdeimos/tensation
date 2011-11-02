@@ -40,6 +40,17 @@ public class PointUtil
 	}
 
 	/**
+	 * moves a given point by the specified offset.
+	 * 
+	 * @return the rotated point
+	 */
+	public static Point2D move(Point2D p, Point2D p2)
+	{
+		p.setLocation(p.getX() + p2.getX(), p.getY() + p2.getY());
+		return p;
+	}
+
+	/**
 	 * @return the distance between two points as dimension
 	 */
 	public static Dimension getDelta(Point2D p1, Point2D p2)
@@ -58,6 +69,13 @@ public class PointUtil
 
 	/** the scaled point. */
 	public static Point scale(Point point, double scale)
+	{
+		point.setLocation(point.getX() * scale, point.getY() * scale);
+		return point;
+	}
+
+	/** the scaled point. */
+	public static Point2D scale(Point2D point, double scale)
 	{
 		point.setLocation(point.getX() * scale, point.getY() * scale);
 		return point;

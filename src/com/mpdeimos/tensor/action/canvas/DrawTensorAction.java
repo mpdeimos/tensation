@@ -11,7 +11,6 @@ import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.ContextPanelContentBase;
 import com.mpdeimos.tensor.ui.DividerLabel;
-import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.ui.EditPartListCellRenderer;
 import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
 import com.mpdeimos.tensor.util.LayoutUtil;
@@ -54,13 +53,9 @@ public class DrawTensorAction extends CanvasActionBase
 	/**
 	 * Constructor.
 	 */
-	public DrawTensorAction(
-			Application applicationWindow,
-			DrawingCanvas drawingPanel)
+	public DrawTensorAction()
 	{
 		super(
-				applicationWindow,
-				drawingPanel,
 				R.string.WINDOW_ACTION_DRAWTENSOR.string(),
 				new ImageIcon(R.drawable.DRAW_TENSOR.url()));
 

@@ -36,14 +36,12 @@ public abstract class CanvasActionBase extends ActionBase implements
 	 * Constructor.
 	 */
 	public CanvasActionBase(
-			Application applicationWindow,
-			DrawingCanvas canvas,
 			String name,
 			ImageIcon icon)
 	{
 		super(name, icon);
-		this.applicationWindow = applicationWindow;
-		this.canvas = canvas;
+		this.applicationWindow = Application.getApp();
+		this.canvas = Application.getApp().getDrawingCanvas();
 	}
 
 	@Override
@@ -240,6 +238,12 @@ public abstract class CanvasActionBase extends ActionBase implements
 				return true;
 		}
 
+		return false;
+	}
+
+	@Override
+	public boolean drawOverlay(Graphics2D gfx)
+	{
 		return false;
 	}
 

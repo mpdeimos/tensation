@@ -3,7 +3,6 @@ package com.mpdeimos.tensor.action.canvas;
 import com.mpdeimos.tensor.editpart.feature.IConnectable.ConnectionPoint;
 import com.mpdeimos.tensor.model.TensorConnection;
 import com.mpdeimos.tensor.ui.Application;
-import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
 
 import java.awt.Color;
@@ -38,13 +37,9 @@ public class TensorConnectAction extends CanvasActionBase
 	/**
 	 * Constructor.
 	 */
-	public TensorConnectAction(
-			Application applicationWindow,
-			DrawingCanvas canvas)
+	public TensorConnectAction()
 	{
 		super(
-				applicationWindow,
-				canvas,
 				R.string.WINDOW_ACTION_CONNECT.string(),
 				new ImageIcon(R.drawable.ACTION_CONNECT.url()));
 	}

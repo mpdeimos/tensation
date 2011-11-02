@@ -12,6 +12,7 @@ import com.mpdeimos.tensor.action.UndoAction;
 import com.mpdeimos.tensor.action.canvas.DrawTensorAction;
 import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensor.action.canvas.TensorConnectAction;
+import com.mpdeimos.tensor.layout.ScaleLayouter;
 import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.util.Log;
 
@@ -82,6 +83,9 @@ public class Application extends JFrame
 	/** the export location of the model. */
 	private File modelExportLocation;
 
+	/** flag if the application has a gui or is still in command window mode. */
+	private boolean hasGui = false;
+
 	/**
 	 * Launch the application.
 	 * 
@@ -96,7 +100,9 @@ public class Application extends JFrame
 			public void run()
 			{
 				app = new Application();
+				app.initializeGui();
 				Commandline.evaluateArguments(args);
+				app.hasGui = true;
 				app.setVisible(true);
 			}
 		});
@@ -120,15 +126,15 @@ public class Application extends JFrame
 		this.undoManager = new CanvasUndoManager();
 
 		this.model = new ModelRoot();
-
-		initialize();
 	}
 
 	/**
 	 * Initializes the contents of the frame.
 	 */
-	private void initialize()
+	private void initializeGui()
 	{
+		this.hasGui = true;
+
 		try
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -194,17 +200,17 @@ public class Application extends JFrame
 
 		this.selectEditPartButton = new ToolBarButton(
 				sideToolBar,
-				new SelectEditPartAction(this, this.drawingCanvas));
+				new SelectEditPartAction());
 		sideToolBar.add(this.selectEditPartButton);
 		JButton drawTensorButton = new ToolBarButton(
 				sideToolBar,
-				new DrawTensorAction(this, this.drawingCanvas));
+				new DrawTensorAction());
 		drawTensorButton.setHideActionText(true);
 		sideToolBar.add(drawTensorButton);
 
 		JButton connectButton = new ToolBarButton(
 				sideToolBar,
-				new TensorConnectAction(this, this.drawingCanvas));
+				new TensorConnectAction());
 		connectButton.setHideActionText(true);
 		sideToolBar.add(connectButton);
 
@@ -310,6 +316,12 @@ public class Application extends JFrame
 		item = new JMenuItem(this.redoAction);
 		menuEdit.add(item);
 
+		// layout menu
+		JMenu menuLayout = new JMenu(R.string.WINDOW_MENU_LAYOUT.string());
+		menuBar.add(menuLayout);
+		item = new JMenuItem(new ScaleLayouter());
+		menuLayout.add(item);
+
 		// options menu
 		JMenu menuOptions = new JMenu(R.string.WINDOW_MENU_VIEW.string());
 		menuBar.add(menuOptions);
@@ -378,8 +390,8 @@ public class Application extends JFrame
 	public void setModel(ModelRoot model)
 	{
 		this.model = model;
-		this.drawingCanvas.onModelExchanged();
 		this.modelExportLocation = null;
+		this.drawingCanvas.onModelExchanged();
 		this.undoManager.discardAllEdits();
 	}
 

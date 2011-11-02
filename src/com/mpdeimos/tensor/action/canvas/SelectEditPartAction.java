@@ -2,8 +2,6 @@ package com.mpdeimos.tensor.action.canvas;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.editpart.feature.IDuplicatable;
-import com.mpdeimos.tensor.ui.Application;
-import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -51,13 +49,9 @@ public class SelectEditPartAction extends CanvasActionBase
 	/**
 	 * Constructor.
 	 */
-	public SelectEditPartAction(
-			Application applicationWindow,
-			DrawingCanvas canvas)
+	public SelectEditPartAction()
 	{
 		super(
-				applicationWindow,
-				canvas,
 				R.string.WINDOW_ACTION_SELECT.string(),
 				new ImageIcon(R.drawable.SELECT.url()));
 	}

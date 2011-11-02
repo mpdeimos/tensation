@@ -59,7 +59,7 @@ public enum Commandline
 		@Override
 		public int run(String[] args)
 		{
-			System.exit(0); // stop system
+			Application.getApp().exit();
 			return 0;
 		}
 
@@ -83,7 +83,7 @@ public enum Commandline
 			}
 			System.out.println();
 			System.out.println(R.string.CMD_HELP_CONTENT_POST.string());
-			System.exit(0); // stop system
+			Application.getApp().exit();
 			return 0;
 		}
 

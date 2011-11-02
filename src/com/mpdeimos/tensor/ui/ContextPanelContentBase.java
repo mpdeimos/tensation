@@ -6,6 +6,7 @@ package com.mpdeimos.tensor.ui;
 import com.mpdeimos.tensor.util.LayoutUtil;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -32,7 +33,9 @@ public abstract class ContextPanelContentBase extends JPanel
 	@Override
 	public Component add(Component comp)
 	{
+		Dimension preferredSize = comp.getPreferredSize();
 		LayoutUtil.setWidth(comp, Short.MAX_VALUE);
+		LayoutUtil.setHeight(comp, (int) preferredSize.getHeight());
 		return super.add(comp);
 	}
 }
