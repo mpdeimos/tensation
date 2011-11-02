@@ -35,8 +35,8 @@ public enum ETdgGeneric implements INameEnum
 
 	/** @return the name of the xml tag. */
 	@Override
-	public String $()
+	public String $(Object... format)
 	{
-		return this.name;
+		return INameEnum.Impl.$(this.name, format);
 	}
 }

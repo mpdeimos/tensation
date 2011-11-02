@@ -7,6 +7,16 @@
   - https://code.launchpad.net/~mpdeimos/+junk/tensor
  -->
   <defs>
+	<defs>
+		<marker id="marker_triangle_end" viewBox="0 0 5 8" refX="1.1" refY="4"
+			markerUnits="strokeWidth" markerWidth="5" markerHeight="8" orient="auto">
+			<path d="M 0 0 L 5 4 L 0 8 z" />
+		</marker>
+		<marker id="marker_triangle_start" viewBox="0 0 5 8" refX="3.9" refY="4"
+			markerUnits="strokeWidth" markerWidth="5" markerHeight="8" orient="auto">
+			<path d="M 5 0 L 0 4 L 5 8 z" />
+		</marker>
+	</defs>
     <style type="text/css"><![CDATA[
 .tensor
 {

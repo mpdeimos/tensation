@@ -40,8 +40,8 @@ public enum ETdgConnection implements INameEnum
 	}
 
 	@Override
-	public String $()
+	public String $(Object... format)
 	{
-		return this.name;
+		return INameEnum.Impl.$(this.name, format);
 	}
 }

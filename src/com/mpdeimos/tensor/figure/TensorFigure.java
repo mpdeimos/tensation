@@ -181,8 +181,8 @@ public class TensorFigure extends FigureBase
 		if (bottom != null)
 		{
 			bottom.setLocation(
-					tensor.getPosition().x + offset * cos,
-					tensor.getPosition().y + offset * sin);
+					tensor.getPosition().x + (offset - 1) * cos,
+					tensor.getPosition().y + (offset - 1) * sin);
 
 			if (triangleHead != null && EDirection.SINK == direction)
 			{
@@ -190,28 +190,32 @@ public class TensorFigure extends FigureBase
 
 				bottom.setLocation(
 						tensor.getPosition().x
-								+ (offset + CONNECTOR_STROKE_OFFSET) * cos,
+								+ (offset + CONNECTOR_STROKE_OFFSET + 1) * cos,
 						tensor.getPosition().y
-								+ (offset + CONNECTOR_STROKE_OFFSET) * sin);
+								+ (offset + CONNECTOR_STROKE_OFFSET + 1) * sin);
 			}
 		}
 
 		if (top != null)
 		{
 			top.setLocation(
-					tensor.getPosition().x + (offset + CONNECTOR_STROKE_LENGTH)
+					tensor.getPosition().x
+							+ (offset + 1 + CONNECTOR_STROKE_LENGTH)
 							* cos,
-					tensor.getPosition().y + (offset + CONNECTOR_STROKE_LENGTH)
+					tensor.getPosition().y
+							+ (offset + 1 + CONNECTOR_STROKE_LENGTH)
 							* sin);
 			if (triangleHead != null && EDirection.SOURCE == direction)
 			{
 				triangleHead.setLocation(top);
 				top.setLocation(
 						tensor.getPosition().x
-								+ (offset - CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH)
+								+ (offset - CONNECTOR_STROKE_OFFSET
+										+ CONNECTOR_STROKE_LENGTH - 1)
 								* cos,
 						tensor.getPosition().y
-								+ (offset - CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH)
+								+ (offset - CONNECTOR_STROKE_OFFSET
+										+ CONNECTOR_STROKE_LENGTH - 1)
 								* sin);
 			}
 		}
@@ -264,15 +268,14 @@ public class TensorFigure extends FigureBase
 		String def = getSvgDefName();
 
 		Element use = doc.createElement(ESvg.ELEMENT_USE.$());
-		use.setAttribute(ESvg.ATTRIB_XLINK_HREF.$(), "#" + def); //$NON-NLS-1$
+		use.setAttribute(ESvg.ATTRIB_XLINK_HREF.$(), ESvg.VALUE_REF.$(def));
 		use.setAttribute(
 				ESvg.ATTRIB_TRANSFORM.$(),
-				String.format(
-						ESvg.VALUE_TRANSFORM_FUNC_TRANSLATE.$() +
-								ESvg.VALUE_TRANSFORM_FUNC_ROTATE.$(),
+				ESvg.VALUE_TRANSFORM_FUNC_TRANSLATE.$(
 						position.getX(),
-						position.getY(),
-						tensor.getRotation()));
+						position.getY())
+						+ ESvg.VALUE_TRANSFORM_FUNC_ROTATE.$(tensor.getRotation())
+				);
 
 		if (!defs.containsKey(def))
 		{
@@ -285,12 +288,13 @@ public class TensorFigure extends FigureBase
 			{
 				Point2D top = new Point2D.Double();
 				Point2D bottom = new Point2D.Double();
+				Point2D dummy = new Point2D.Double();
 				initAnchorPoints(
 						tensor,
 						i,
 						top,
 						bottom,
-						null,
+						dummy,
 						0);
 
 				PointUtil.move(top, -position.x, -position.y);
@@ -313,6 +317,19 @@ public class TensorFigure extends FigureBase
 				line.setAttribute(
 						ESvg.ATTRIB_TO_Y.$(),
 						Double.toString(top.getY()));
+
+				if (anchors.get(i).getDirection() == EDirection.SOURCE)
+				{
+					line.setAttribute(
+							ESvg.ATTRIB_MARKER_END.$(),
+							ESvg.VALUE_REF_URL.$("marker_triangle_end"));
+				}
+				else
+				{
+					line.setAttribute(
+							ESvg.ATTRIB_MARKER_START.$(),
+							ESvg.VALUE_REF_URL.$("marker_triangle_start"));
+				}
 			}
 
 			Element circle = doc.createElement(ESvg.ELEMENT_CIRCLE.$());

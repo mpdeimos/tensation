@@ -62,6 +62,12 @@ public enum ESvg implements INameEnum
 	/** the y attribute. */
 	ATTRIB_POS_Y("y"), //$NON-NLS-1$
 
+	/** marker end attribute. */
+	ATTRIB_MARKER_END("marker-end"), //$NON-NLS-1$
+
+	/** marker start attribute. */
+	ATTRIB_MARKER_START("marker-start"), //$NON-NLS-1$
+
 	/** The circle element. */
 	ELEMENT_CIRCLE("circle"), //$NON-NLS-1$
 
@@ -89,6 +95,12 @@ public enum ESvg implements INameEnum
 	/** string format value for translate transformations. */
 	VALUE_TRANSFORM_FUNC_TRANSLATE("translate(%f,%f) "), //$NON-NLS-1$
 
+	/** reference to an url within the document. */
+	VALUE_REF_URL("url(#%s)"), //$NON-NLS-1$
+
+	/** reference to an element within the document. */
+	VALUE_REF("#%s"), //$NON-NLS-1$
+
 	;
 
 	/** the name of the xml tag. */
@@ -102,8 +114,8 @@ public enum ESvg implements INameEnum
 
 	/** @return the name of the xml tag. */
 	@Override
-	public String $()
+	public String $(Object... format)
 	{
-		return this.name;
+		return INameEnum.Impl.$(this.name, format);
 	}
 }
