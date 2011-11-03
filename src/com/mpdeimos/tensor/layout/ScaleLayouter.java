@@ -1,17 +1,13 @@
 package com.mpdeimos.tensor.layout;
 
-import com.mpdeimos.tensor.model.IModelData;
-import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.model.TensorBase;
-import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.DividerLabel;
 import com.mpdeimos.tensor.util.PointUtil;
 
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
@@ -43,27 +39,17 @@ public class ScaleLayouter extends LayouterBase
 	}
 
 	@Override
-	void layout()
+	void layout(HashMap<TensorBase, Point> tensors)
 	{
-		ModelRoot model = Application.getApp().getModel();
 
-		List<TensorBase> tensors = new ArrayList<TensorBase>();
 		Point2D centroid = new Point2D.Double(0, 0);
-		for (IModelData child : model.getChildren())
-		{
-			if (child instanceof TensorBase)
-			{
-				TensorBase tensor = (TensorBase) child;
-				tensors.add(tensor);
-				if (this.mass.isSelected())
-				{
-					PointUtil.move(centroid, tensor.getPosition());
-				}
-			}
-		}
 
 		if (this.mass.isSelected())
 		{
+			for (TensorBase tensor : tensors.keySet())
+			{
+				PointUtil.move(centroid, tensor.getPosition());
+			}
 			PointUtil.scale(centroid, 1.0 / tensors.size());
 		}
 		else
@@ -76,14 +62,14 @@ public class ScaleLayouter extends LayouterBase
 		Point2D centroidInv = (Point2D) centroid.clone();
 		PointUtil.scale(centroidInv, -1.0);
 
-		for (TensorBase tensor : tensors)
+		for (TensorBase tensor : tensors.keySet())
 		{
 			Point2D p = new Point(tensor.getPosition());
 			PointUtil.move(p, centroidInv);
 			PointUtil.scale(p, this.factor.getNumber().doubleValue());
 			PointUtil.move(p, centroid);
 
-			tensor.setPosition(new Point((int) p.getX(), (int) p.getY()));
+			tensors.put(tensor, new Point((int) p.getX(), (int) p.getY()));
 		}
 	}
 
