@@ -45,8 +45,10 @@ public abstract class LayouterBase extends CanvasActionBase
 	/**
 	 * Layouts the current diagram. The new tensor positions need to be stored
 	 * in the newPos array.
+	 * 
+	 * @return true on success
 	 */
-	abstract void layout(HashMap<TensorBase, Point> newPos);
+	abstract boolean layout(HashMap<TensorBase, Point> newPos);
 
 	/** Callback for creating a context panel. */
 	public void onContextPanelInit(ContextPanel panel)
@@ -81,7 +83,8 @@ public abstract class LayouterBase extends CanvasActionBase
 			}
 
 			// layout
-			layout(newPos);
+			if (!layout(newPos))
+				return;
 
 			// build undo stack
 			Application.getApp().getUndoManager().addEdit(
