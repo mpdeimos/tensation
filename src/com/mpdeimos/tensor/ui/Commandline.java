@@ -12,7 +12,7 @@ import resources.R;
 
 /**
  * Enumeration of all Commandline Tasks
- * 
+ *
  * @author mpdeimos
  */
 public enum Commandline
@@ -59,7 +59,7 @@ public enum Commandline
 		@Override
 		public int run(String[] args)
 		{
-			Application.getApp().exit();
+			System.exit(0);
 			return 0;
 		}
 
@@ -83,7 +83,7 @@ public enum Commandline
 			}
 			System.out.println();
 			System.out.println(R.string.CMD_HELP_CONTENT_POST.string());
-			Application.getApp().exit();
+			System.exit(0);
 			return 0;
 		}
 
