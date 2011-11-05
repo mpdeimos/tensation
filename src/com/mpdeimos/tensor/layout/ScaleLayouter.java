@@ -1,8 +1,9 @@
 package com.mpdeimos.tensor.layout;
 
 import com.mpdeimos.tensor.model.TensorBase;
+import com.mpdeimos.tensor.model.TensorConnection;
 import com.mpdeimos.tensor.ui.DividerLabel;
-import com.mpdeimos.tensor.util.PointUtil;
+import com.mpdeimos.tensor.util.VecMath;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -11,6 +12,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
@@ -20,7 +22,8 @@ import javax.swing.SpinnerNumberModel;
 import resources.R;
 
 /**
- * Scaling a
+ * Scaling the whole graph. No auto-layouting, but may be useful in some
+ * situations.
  * 
  * @author mpdeimos
  */
@@ -51,42 +54,45 @@ public class ScaleLayouter extends LayouterBase
 	}
 
 	@Override
-	public boolean layout(HashMap<TensorBase, Point> tensors)
+	public boolean layout(
+			HashMap<TensorBase, Point2D> tensors,
+			List<TensorConnection> connections)
 	{
 
-		Point2D centroid = new Point2D.Double(0, 0);
+		Point2D centroid = VecMath.fresh();
 
 		if (this.mass.isSelected())
 		{
 			for (TensorBase tensor : tensors.keySet())
 			{
-				PointUtil.move(centroid, tensor.getPosition());
+				VecMath.add(centroid, tensor.getPosition());
 			}
-			PointUtil.scale(centroid, 1.0 / tensors.size());
+			VecMath.div(centroid, tensors.size());
 		}
 		else if (this.select.isSelected())
 		{
 			if (this.selectedCentroid == null)
 				return false;
 
-			centroid.setLocation(this.selectedCentroid);
+			VecMath.set(centroid, this.selectedCentroid);
 		}
 		else
 		{
 			Rectangle imageRectangle = this.canvas.getImageRectangle();
-			centroid.setLocation(
+			VecMath.set(
+					centroid,
 					imageRectangle.getCenterX(),
 					imageRectangle.getCenterY());
 		}
-		Point2D centroidInv = (Point2D) centroid.clone();
-		PointUtil.scale(centroidInv, -1.0);
+
+		Point2D centroidInv = VecMath.mul(VecMath.fresh(centroid), -1.0);
 
 		for (TensorBase tensor : tensors.keySet())
 		{
-			Point2D p = new Point(tensor.getPosition());
-			PointUtil.move(p, centroidInv);
-			PointUtil.scale(p, this.factor.getNumber().doubleValue());
-			PointUtil.move(p, centroid);
+			Point2D p = VecMath.fresh(tensor.getPosition());
+			VecMath.add(p, centroidInv);
+			VecMath.mul(p, this.factor.getNumber().doubleValue());
+			VecMath.add(p, centroid);
 
 			tensors.put(tensor, new Point((int) p.getX(), (int) p.getY()));
 		}
