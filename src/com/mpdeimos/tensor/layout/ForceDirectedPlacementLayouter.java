@@ -2,13 +2,25 @@ package com.mpdeimos.tensor.layout;
 
 import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnection;
+import com.mpdeimos.tensor.ui.DividerLabel;
+import com.mpdeimos.tensor.util.Gfx;
 import com.mpdeimos.tensor.util.VecMath;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import resources.R;
 
@@ -20,8 +32,15 @@ import resources.R;
  */
 public class ForceDirectedPlacementLayouter extends LayouterBase
 {
+	/** algorithm iterations. */
+	private SpinnerNumberModel uiIterations;
 
-	private static final int ITERATIONS = 1000;
+	/** reference boundings. */
+	private ComboBoxModel uiBounds;
+
+	private Rectangle2D selectedRect;
+
+	private Point startPoint;
 
 	/** Constructor. */
 	public ForceDirectedPlacementLayouter()
@@ -39,22 +58,40 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 
 		Rectangle2D imageRectangle = null;
 
+		Object boundMode = this.uiBounds.getSelectedItem();
+		if (R.string.LAYOUT_FDP_BOUNDS_SCREEN == boundMode)
+		{
+			imageRectangle = new Rectangle2D.Double(
+					0,
+					0,
+					this.canvas.getBounds().getWidth(),
+					this.canvas.getBounds().getHeight());
+		}
+		else if (R.string.LAYOUT_FDP_BOUNDS_SELECT == boundMode)
+		{
+			if (this.selectedRect == null)
+				return false;
+
+			imageRectangle = this.selectedRect;
+		}
+
 		HashMap<TensorBase, Point2D> displacements = new HashMap<TensorBase, Point2D>();
 		for (TensorBase u : tensors.keySet())
 		{
 			displacements.put(u, VecMath.fresh());
-			if (imageRectangle == null)
+			if (R.string.LAYOUT_FDP_BOUNDS_TENSORS == boundMode)
 			{
-				imageRectangle = new Rectangle2D.Double(
-						u.getPosition().getX(),
-						u.getPosition().getY(), 0, 0);
+				if (imageRectangle == null)
+				{
+					imageRectangle = new Rectangle2D.Double(
+							u.getPosition().getX(),
+							u.getPosition().getY(), 0, 0);
+				}
+				else
+				{
+					imageRectangle.add(u.getPosition());
+				}
 			}
-			else
-			{
-				imageRectangle.add(u.getPosition());
-			}
-
-			this.canvas.repaint();
 		}
 
 		@SuppressWarnings("null")
@@ -65,7 +102,7 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 				imageRectangle.getHeight());
 		VecMath.div(temperature, 10);
 
-		for (int i = 1; i < ITERATIONS; i++)
+		for (int i = 1; i < this.uiIterations.getNumber().intValue(); i++)
 		{
 			// calculate repulsive forces
 			for (TensorBase u : tensors.keySet())
@@ -154,14 +191,81 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 	}
 
 	@Override
+	public boolean doOnMousePressed(MouseEvent e)
+	{
+		if (this.uiBounds.getSelectedItem() == R.string.LAYOUT_FDP_BOUNDS_SELECT)
+		{
+			this.startPoint = new Point(e.getPoint());
+
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean doOnMouseDragged(MouseEvent e)
+	{
+		if (this.uiBounds.getSelectedItem() == R.string.LAYOUT_FDP_BOUNDS_SELECT)
+		{
+			this.selectedRect = new Rectangle2D.Double(
+					this.startPoint.x,
+					this.startPoint.y,
+					0,
+					0);
+			this.selectedRect.add(e.getPoint());
+
+			this.canvas.repaint();
+
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean doOnMouseMoved(MouseEvent e)
+	{
+		if (this.uiBounds.getSelectedItem() == R.string.LAYOUT_FDP_BOUNDS_SELECT)
+		{
+			this.canvas.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+			return true;
+		}
+		this.canvas.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		return false;
+	}
+
+	@Override
 	public boolean drawOverlay(Graphics2D gfx)
 	{
+		if (this.uiBounds.getSelectedItem() == R.string.LAYOUT_FDP_BOUNDS_SELECT)
+		{
+			gfx.setColor(Color.BLUE);
+
+			if (this.selectedRect != null)
+				Gfx.drawRect(gfx, this.selectedRect);
+
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public void onContextPanelInit(ContextPanel panel)
 	{
+		panel.add(new DividerLabel(R.string.LAYOUT_FDP_ITERATIONS.string()));
+
+		this.uiIterations = new SpinnerNumberModel(500, 0, 10000, 100);
+		JSpinner spinner = new JSpinner(this.uiIterations);
+
+		panel.add(spinner);
+
+		panel.add(new DividerLabel(R.string.LAYOUT_FDP_BOUNDS.string()));
+
+		this.uiBounds = new DefaultComboBoxModel(new R.string[] {
+				R.string.LAYOUT_FDP_BOUNDS_TENSORS,
+				R.string.LAYOUT_FDP_BOUNDS_SCREEN,
+				R.string.LAYOUT_FDP_BOUNDS_SELECT });
+		JComboBox bounds = new JComboBox(this.uiBounds);
+		panel.add(bounds);
 	}
 
 }

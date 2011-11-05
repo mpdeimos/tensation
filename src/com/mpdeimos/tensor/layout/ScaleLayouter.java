@@ -3,9 +3,11 @@ package com.mpdeimos.tensor.layout;
 import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnection;
 import com.mpdeimos.tensor.ui.DividerLabel;
+import com.mpdeimos.tensor.util.Gfx;
 import com.mpdeimos.tensor.util.VecMath;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -14,8 +16,8 @@ import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JRadioButton;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
@@ -29,15 +31,6 @@ import resources.R;
  */
 public class ScaleLayouter extends LayouterBase
 {
-	/** Centroid mass options. */
-	private JRadioButton mass;
-
-	/** Centroid areas option. */
-	private JRadioButton area;
-
-	/** Centroid select option. */
-	private JRadioButton select;
-
 	/** The selected centroid. */
 	private Point selectedCentroid;
 
@@ -46,6 +39,11 @@ public class ScaleLayouter extends LayouterBase
 
 	/** Scaling factor. */
 	private SpinnerNumberModel factor;
+
+	/** the centroid selection combobox. */
+	private DefaultComboBoxModel uiCentroid;
+
+	private DefaultComboBoxModel uiMethod;
 
 	/** Constructor. */
 	public ScaleLayouter()
@@ -61,7 +59,7 @@ public class ScaleLayouter extends LayouterBase
 
 		Point2D centroid = VecMath.fresh();
 
-		if (this.mass.isSelected())
+		if (R.string.LAYOUT_SCALE_CENTROID_MASS == this.uiCentroid.getSelectedItem())
 		{
 			for (TensorBase tensor : tensors.keySet())
 			{
@@ -69,7 +67,7 @@ public class ScaleLayouter extends LayouterBase
 			}
 			VecMath.div(centroid, tensors.size());
 		}
-		else if (this.select.isSelected())
+		else if (R.string.LAYOUT_SCALE_CENTROID_SELECT == this.uiCentroid.getSelectedItem())
 		{
 			if (this.selectedCentroid == null)
 				return false;
@@ -91,7 +89,14 @@ public class ScaleLayouter extends LayouterBase
 		{
 			Point2D p = VecMath.fresh(tensor.getPosition());
 			VecMath.add(p, centroidInv);
+
 			VecMath.mul(p, this.factor.getNumber().doubleValue());
+			// Object method = this.uiMethod.getSelectedItem();
+			// if (R.string.LAYOUT_SCALE_METHOD_LOG == method)
+			// {
+			// VecMath.set(p, logG(p.getX()), logG(p.getY()));
+			// }
+
 			VecMath.add(p, centroid);
 
 			tensors.put(tensor, new Point((int) p.getX(), (int) p.getY()));
@@ -100,11 +105,35 @@ public class ScaleLayouter extends LayouterBase
 		return true;
 	}
 
+	// /** Graceful, mirrored log. */
+	// private double logG(double x)
+	// {
+	// // double m = 1;
+	// // if (x < 0)
+	// // {
+	// // m = -1;
+	// // x = -x;
+	// // }
+	// // if (x < 1)
+	// // {
+	// // return 0;
+	// // }
+	// //
+	// // return m * Math.log(x);
+	//
+	// // if (x == 0)
+	// // return 0;
+	// //
+	// // return 1 / x;
+	//
+	// }
+
 	@Override
 	public boolean doOnMouseMoved(MouseEvent e)
 	{
-		if (!this.select.isSelected())
+		if (R.string.LAYOUT_SCALE_CENTROID_SELECT != this.uiCentroid.getSelectedItem())
 		{
+			this.canvas.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			return false;
 		}
 
@@ -117,7 +146,7 @@ public class ScaleLayouter extends LayouterBase
 	@Override
 	public boolean doOnMouseClicked(MouseEvent e)
 	{
-		if (!this.select.isSelected())
+		if (R.string.LAYOUT_SCALE_CENTROID_SELECT != this.uiCentroid.getSelectedItem())
 		{
 			return false;
 		}
@@ -131,37 +160,18 @@ public class ScaleLayouter extends LayouterBase
 	@Override
 	public boolean drawOverlay(Graphics2D gfx)
 	{
-		if (!this.select.isSelected())
+		if (R.string.LAYOUT_SCALE_CENTROID_SELECT != this.uiCentroid.getSelectedItem())
 		{
 			return false;
 		}
 
 		if (this.selectedCentroid != null)
 		{
-			gfx.setColor(Color.blue);
-			gfx.drawLine(
-					this.selectedCentroid.x - 5,
-					this.selectedCentroid.y,
-					this.selectedCentroid.x + 5,
-					this.selectedCentroid.y);
-			gfx.drawLine(
-					this.selectedCentroid.x,
-					this.selectedCentroid.y - 5,
-					this.selectedCentroid.x,
-					this.selectedCentroid.y + 5);
+			gfx.setColor(Color.RED);
+			Gfx.drawCrosshair(gfx, this.selectedCentroid);
 		}
 
-		gfx.setColor(Color.gray);
-		gfx.drawLine(
-				this.lastMousePos.x - 5,
-				this.lastMousePos.y,
-				this.lastMousePos.x + 5,
-				this.lastMousePos.y);
-		gfx.drawLine(
-				this.lastMousePos.x,
-				this.lastMousePos.y - 5,
-				this.lastMousePos.x,
-				this.lastMousePos.y + 5);
+		this.canvas.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 
 		return false;
 	}
@@ -178,22 +188,19 @@ public class ScaleLayouter extends LayouterBase
 
 		panel.add(new DividerLabel(R.string.LAYOUT_SCALE_CENTROID.string()));
 
-		ButtonGroup centroid = new ButtonGroup();
-		this.mass = new JRadioButton(
-				R.string.LAYOUT_SCALE_CENTROID_MASS.string());
-		this.mass.setSelected(true);
-		centroid.add(this.mass);
-		panel.add(this.mass);
+		this.uiCentroid = new DefaultComboBoxModel(new R.string[] {
+				R.string.LAYOUT_SCALE_CENTROID_MASS,
+				R.string.LAYOUT_SCALE_CENTROID_AREA,
+				R.string.LAYOUT_SCALE_CENTROID_SELECT });
+		JComboBox bounds = new JComboBox(this.uiCentroid);
+		panel.add(bounds);
 
-		this.area = new JRadioButton(
-				R.string.LAYOUT_SCALE_CENTROID_AREA.string());
-		centroid.add(this.area);
-		panel.add(this.area);
+		panel.add(new DividerLabel(R.string.LAYOUT_SCALE_METHOD.string()));
 
-		this.select = new JRadioButton(
-				R.string.LAYOUT_SCALE_CENTROID_SELECT.string());
-		centroid.add(this.select);
-		panel.add(this.select);
-
+		// this.uiMethod = new DefaultComboBoxModel(new R.string[] {
+		// R.string.LAYOUT_SCALE_METHOD_LINEAR,
+		// R.string.LAYOUT_SCALE_METHOD_LOG });
+		// JComboBox method = new JComboBox(this.uiMethod);
+		// panel.add(method);
 	}
 }

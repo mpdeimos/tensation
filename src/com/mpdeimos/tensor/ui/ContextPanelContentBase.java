@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
@@ -33,9 +34,19 @@ public abstract class ContextPanelContentBase extends JPanel
 	@Override
 	public Component add(Component comp)
 	{
+		return add(comp, Component.CENTER_ALIGNMENT);
+	}
+
+	/** add with alignment. */
+	public Component add(Component comp, float alignment)
+	{
 		Dimension preferredSize = comp.getPreferredSize();
 		LayoutUtil.setWidth(comp, Short.MAX_VALUE);
 		LayoutUtil.setHeight(comp, (int) preferredSize.getHeight());
+		if (comp instanceof JComponent)
+		{
+			((JComponent) comp).setAlignmentX(alignment);
+		}
 		return super.add(comp);
 	}
 }

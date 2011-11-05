@@ -25,6 +25,18 @@ public class VecMath
 		return add(p1, p2, p1);
 	}
 
+	/** @return p1 + d */
+	public static Point2D add(Point2D p1, double d, Point2D result)
+	{
+		return add(p1, fresh(d), result);
+	}
+
+	/** @return p1 + d */
+	public static Point2D add(Point2D p1, double d)
+	{
+		return add(p1, d, p1);
+	}
+
 	/** @return p1 - p2 */
 	public static Point2D sub(Point2D p1, Point2D p2, Point2D result)
 	{
@@ -35,6 +47,18 @@ public class VecMath
 	public static Point2D sub(Point2D p1, Point2D p2)
 	{
 		return sub(p1, p2, p1);
+	}
+
+	/** @return p1 - d */
+	public static Point2D sub(Point2D p1, double d, Point2D result)
+	{
+		return sub(p1, fresh(d), result);
+	}
+
+	/** @return p1 - d */
+	public static Point2D sub(Point2D p1, double d)
+	{
+		return sub(p1, d, p1);
 	}
 
 	/** @return p1 * p2 (pointwise) */
