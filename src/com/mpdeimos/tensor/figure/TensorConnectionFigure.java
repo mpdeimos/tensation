@@ -15,6 +15,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -143,7 +144,7 @@ public class TensorConnectionFigure extends FigureBase
 		Element path = doc.createElement(ESvg.ELEMENT_PATH.$());
 
 		path.setAttribute(ESvg.ATTRIB_PATH_DATA.$(),
-				String.format("M %f %f C %f %f %f %f %f %f", //$NON-NLS-1$
+				String.format(Locale.ENGLISH, "M %f %f C %f %f %f %f %f %f", //$NON-NLS-1$
 						this.sourceAnchor.getX(),
 						this.sourceAnchor.getY(),
 						this.sourceControlPoint.getX(),

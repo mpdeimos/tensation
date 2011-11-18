@@ -1,5 +1,7 @@
 package com.mpdeimos.tensor.impex;
 
+import java.util.Locale;
+
 /**
  * Interface for xml nameing definition enums.
  * 
@@ -18,7 +20,7 @@ public interface INameEnum
 		protected static String $(String name, Object... format)
 		{
 			if (format != null && format.length > 0)
-				return String.format(name, format);
+				return String.format(Locale.ENGLISH, name, format);
 
 			return name;
 		}
