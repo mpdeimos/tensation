@@ -19,6 +19,7 @@ import com.mpdeimos.tensor.util.Log;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -31,6 +32,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -149,7 +151,12 @@ public class Application extends JFrame
 		this.setTitle(R.string.WINDOW_MAIN_TITLE.string());
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.addWindowListener(new WindowListener());
-		this.setBounds(50, 50, 600, 400);
+
+		int x = Preferences.get().getInt(Preferences.WINDOW_X, 50);
+		int y = Preferences.get().getInt(Preferences.WINDOW_Y, 50);
+		int w = Preferences.get().getInt(Preferences.WINDOW_W, 600);
+		int h = Preferences.get().getInt(Preferences.WINDOW_H, 400);
+		this.setBounds(x, y, w, h);
 
 		initializeContextPanel();
 		initializeCanvas();
@@ -409,6 +416,7 @@ public class Application extends JFrame
 	 */
 	public void setModelExportLocation(File location)
 	{
+		Preferences.get().put(Preferences.SAVE_LOCATION, location.getParent());
 		this.modelExportLocation = location;
 	}
 
@@ -433,6 +441,17 @@ public class Application extends JFrame
 	 */
 	private class WindowListener extends WindowAdapter
 	{
+		@Override
+		public void windowClosing(WindowEvent arg0)
+		{
+			Rectangle r = Application.this.getBounds();
+			Preferences.get().putInt(Preferences.WINDOW_X, r.x);
+			Preferences.get().putInt(Preferences.WINDOW_Y, r.y);
+			Preferences.get().putInt(Preferences.WINDOW_W, r.width);
+			Preferences.get().putInt(Preferences.WINDOW_H, r.height);
+			Preferences.save();
+		}
+
 		@Override
 		public void windowClosed(WindowEvent arg0)
 		{
@@ -501,5 +520,16 @@ public class Application extends JFrame
 					Action.SHORT_DESCRIPTION,
 					getRedoPresentationName());
 		}
+	}
+
+	/**
+	 * @return a new file chooser opened at the last save location.
+	 */
+	public JFileChooser createFileChooser()
+	{
+		String saveLocation = Preferences.get().get(
+				Preferences.SAVE_LOCATION,
+				null);
+		return new JFileChooser(saveLocation);
 	}
 }

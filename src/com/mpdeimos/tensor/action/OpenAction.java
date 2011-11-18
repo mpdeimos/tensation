@@ -35,7 +35,7 @@ public class OpenAction extends ActionBase
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		JFileChooser fc = new JFileChooser();
+		JFileChooser fc = Application.getApp().createFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter(
 				R.string.APP_EXTENSION_TDX.string(),
 				SaveAsAction.XML_FILE_EXTENSION));

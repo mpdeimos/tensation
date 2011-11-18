@@ -53,7 +53,7 @@ public class ExportAction extends ActionBase
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		JFileChooser fc = new JFileChooser();
+		JFileChooser fc = Application.getApp().createFileChooser();
 		fc.setAcceptAllFileFilterUsed(false);
 		FileFilter ffBmp = new FileNameExtensionFilter(
 				R.string.APP_EXTENSION_BMP.string(),

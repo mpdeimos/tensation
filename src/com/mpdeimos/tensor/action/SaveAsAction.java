@@ -43,7 +43,7 @@ public class SaveAsAction extends ActionBase
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		JFileChooser fc = new JFileChooser();
+		JFileChooser fc = Application.getApp().createFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter(
 				R.string.APP_EXTENSION_TDX.string(),
 				XML_FILE_EXTENSION));
