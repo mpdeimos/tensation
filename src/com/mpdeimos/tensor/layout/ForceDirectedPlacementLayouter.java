@@ -32,6 +32,9 @@ import resources.R;
  */
 public class ForceDirectedPlacementLayouter extends LayouterBase
 {
+	/** Offset for screen bounding mode. */
+	private static final double SCREEN_MARGIN = 25;
+
 	/** algorithm iterations. */
 	private SpinnerNumberModel uiIterations;
 
@@ -62,10 +65,10 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 		if (R.string.LAYOUT_FDP_BOUNDS_SCREEN == boundMode)
 		{
 			imageRectangle = new Rectangle2D.Double(
-					0,
-					0,
-					this.canvas.getBounds().getWidth(),
-					this.canvas.getBounds().getHeight());
+					SCREEN_MARGIN,
+					SCREEN_MARGIN,
+					this.canvas.getBounds().getWidth() - 2 * SCREEN_MARGIN,
+					this.canvas.getBounds().getHeight() - 2 * SCREEN_MARGIN);
 		}
 		else if (R.string.LAYOUT_FDP_BOUNDS_SELECT == boundMode)
 		{
@@ -261,8 +264,8 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 		panel.add(new DividerLabel(R.string.LAYOUT_FDP_BOUNDS.string()));
 
 		this.uiBounds = new DefaultComboBoxModel(new R.string[] {
-				R.string.LAYOUT_FDP_BOUNDS_TENSORS,
 				R.string.LAYOUT_FDP_BOUNDS_SCREEN,
+				R.string.LAYOUT_FDP_BOUNDS_TENSORS,
 				R.string.LAYOUT_FDP_BOUNDS_SELECT });
 		JComboBox bounds = new JComboBox(this.uiBounds);
 		panel.add(bounds);
