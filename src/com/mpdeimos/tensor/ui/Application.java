@@ -13,6 +13,7 @@ import com.mpdeimos.tensor.action.canvas.DrawTensorAction;
 import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensor.action.canvas.TensorConnectAction;
 import com.mpdeimos.tensor.layout.ForceDirectedPlacementLayouter;
+import com.mpdeimos.tensor.layout.RandomLayouter;
 import com.mpdeimos.tensor.layout.ScaleLayouter;
 import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.util.Log;
@@ -328,6 +329,8 @@ public class Application extends JFrame
 		JMenu menuLayout = new JMenu(R.string.WINDOW_MENU_LAYOUT.string());
 		menuBar.add(menuLayout);
 		item = new JMenuItem(new ScaleLayouter());
+		menuLayout.add(item);
+		item = new JMenuItem(new RandomLayouter());
 		menuLayout.add(item);
 		item = new JMenuItem(new ForceDirectedPlacementLayouter());
 		menuLayout.add(item);
