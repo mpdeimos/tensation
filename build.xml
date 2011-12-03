@@ -11,9 +11,22 @@
 	</target>
 
 	<target name="run">
-		<java jar="./build/jars/tensor.jar" fork="true"/>
+		<java jar="./build/jars/tensor.jar" fork="true">
+		</java>
 	</target>
 
+	<target name="run-de">
+		<java jar="./build/jars/tensor.jar" fork="true">
+			<sysproperty key="user.language" value="de"/>
+		</java>
+	</target>
+
+	<target name="run-en">
+		<java jar="./build/jars/tensor.jar" fork="true">
+			<sysproperty key="user.language" value="en"/>
+		</java>
+	</target>
+	
 	<target name="clean" description="Clean build output">
 		<delete dir="./build" />
 	</target>
