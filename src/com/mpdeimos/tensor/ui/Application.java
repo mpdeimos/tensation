@@ -88,7 +88,7 @@ public class Application extends JFrame
 	private File modelExportLocation;
 
 	/** flag if the application has a gui or is still in command window mode. */
-	private boolean hasGui = false;
+	// private boolean hasGui = false;
 
 	/**
 	 * Launch the application.
@@ -106,7 +106,7 @@ public class Application extends JFrame
 				app = new Application();
 				app.initializeGui();
 				Commandline.evaluateArguments(args);
-				app.hasGui = true;
+				// app.hasGui = true;
 				app.setVisible(true);
 			}
 		});
@@ -137,7 +137,7 @@ public class Application extends JFrame
 	 */
 	private void initializeGui()
 	{
-		this.hasGui = true;
+		// this.hasGui = true;
 
 		try
 		{

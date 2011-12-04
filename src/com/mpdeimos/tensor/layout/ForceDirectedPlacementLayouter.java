@@ -48,10 +48,13 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 	/** reference boundings. */
 	private ComboBoxModel uiBounds;
 
+	/** the bounding rect for manual selection */
 	private Rectangle2D selectedRect;
 
+	/** the start point for manual bounding rect selection. */
 	private Point startPoint;
 
+	/** combobox for toggling separate component layouting. */
 	private JCheckBox uiComponents;
 
 	/** Constructor. */

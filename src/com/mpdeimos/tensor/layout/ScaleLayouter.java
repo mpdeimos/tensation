@@ -43,7 +43,8 @@ public class ScaleLayouter extends LayouterBase
 	/** the centroid selection combobox. */
 	private DefaultComboBoxModel uiCentroid;
 
-	private DefaultComboBoxModel uiMethod;
+	/** the method selection combobox */
+	// private DefaultComboBoxModel uiMethod;
 
 	/** Constructor. */
 	public ScaleLayouter()
