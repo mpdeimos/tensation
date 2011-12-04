@@ -100,7 +100,7 @@ public class VecMath
 	/** @return p1 / d */
 	public static Point2D div(Point2D p, double d, Point2D result)
 	{
-		return div(result, fresh(d), result);
+		return div(p, fresh(d), result);
 	}
 
 	/** @return p1 / d */
@@ -221,6 +221,63 @@ public class VecMath
 	/** Creates a new 2D point (p.x,p.y). */
 	public static Point2D fresh(Point2D p)
 	{
-		return new Point2D.Double(p.getX(), p.getY());
+		return fresh(p.getX(), p.getY());
+	}
+
+	/** @return the distance between two points. */
+	public static double distance(Point2D p1, Point2D p2)
+	{
+		return norm(sub(fresh(p1), p2));
+	}
+
+	/** @return the center between both points. */
+	public static Point2D center(Point2D p1, Point2D p2, Point2D r)
+	{
+		sub(p1, p2, r);
+		div(r, 2);
+		add(r, p2);
+		return r;
+	}
+
+	/** @return the center between both points. */
+	public static Point2D center(Point2D p1, Point2D p2)
+	{
+		return center(p1, p2, p1);
+	}
+
+	/** @return the values to the next integer. */
+	public static Point2D round(Point2D pos)
+	{
+		return round(pos, pos);
+	}
+
+	/** @return the values to the next integer. */
+	public static Point2D round(Point2D pos, Point2D result)
+	{
+		return set(result, Math.round(pos.getX()), Math.round(pos.getY()));
+	}
+
+	/** @return the values to the bottom integer. */
+	public static Point2D floor(Point2D pos)
+	{
+		return floor(pos, pos);
+	}
+
+	/** @return the values to the bottom integer. */
+	public static Point2D floor(Point2D pos, Point2D result)
+	{
+		return set(result, Math.floor(pos.getX()), Math.floor(pos.getY()));
+	}
+
+	/** @return the signum of the vector. */
+	public static Point2D signum(Point2D pos)
+	{
+		return signum(pos, pos);
+	}
+
+	/** @return the signum of the vector. */
+	public static Point2D signum(Point2D pos, Point2D result)
+	{
+		return set(result, Math.signum(pos.getX()), Math.signum(pos.getY()));
 	}
 }
