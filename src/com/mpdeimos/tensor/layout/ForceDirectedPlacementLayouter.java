@@ -40,7 +40,7 @@ import resources.R;
 public class ForceDirectedPlacementLayouter extends LayouterBase
 {
 	/** Offset for screen bounding mode. */
-	static final double SCREEN_MARGIN = 25;
+	static final double SCREEN_MARGIN = 35;
 
 	/** algorithm iterations. */
 	private SpinnerNumberModel uiIterations;

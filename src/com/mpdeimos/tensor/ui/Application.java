@@ -5,6 +5,7 @@ import com.mpdeimos.tensor.action.ExportAction;
 import com.mpdeimos.tensor.action.NewAction;
 import com.mpdeimos.tensor.action.OpenAction;
 import com.mpdeimos.tensor.action.RedoAction;
+import com.mpdeimos.tensor.action.ResetViewAction;
 import com.mpdeimos.tensor.action.SaveAction;
 import com.mpdeimos.tensor.action.SaveAsAction;
 import com.mpdeimos.tensor.action.ScaleCanvasAction;
@@ -18,6 +19,7 @@ import com.mpdeimos.tensor.layout.ScaleLayouter;
 import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.util.Log;
 
+import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Rectangle;
@@ -39,6 +41,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -285,8 +288,17 @@ public class Application extends JFrame
 		getContentPane().add(drawingPanelOuter, BorderLayout.CENTER);
 		drawingPanelOuter.setLayout(new BorderLayout(0, 0));
 
-		this.drawingCanvas = new DrawingCanvas(this);
-		drawingPanelOuter.add(this.drawingCanvas);
+		JScrollBar hScrollBar = new JScrollBar(Adjustable.HORIZONTAL);
+		drawingPanelOuter.add(hScrollBar, BorderLayout.SOUTH);
+
+		JScrollBar vScrollBar = new JScrollBar(Adjustable.VERTICAL);
+		drawingPanelOuter.add(vScrollBar, BorderLayout.EAST);
+
+		this.drawingCanvas = new DrawingCanvas(
+				this,
+				hScrollBar.getModel(),
+				vScrollBar.getModel());
+		drawingPanelOuter.add(this.drawingCanvas, BorderLayout.CENTER);
 	}
 
 	/**
@@ -338,6 +350,9 @@ public class Application extends JFrame
 		// options menu
 		JMenu menuOptions = new JMenu(R.string.WINDOW_MENU_VIEW.string());
 		menuBar.add(menuOptions);
+
+		item = new JMenuItem(new ResetViewAction());
+		menuOptions.add(item);
 
 		// options menu >> scale
 		JMenu menuOptionsScale = new JMenu(

@@ -15,14 +15,20 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.BoundedRangeModel;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputAdapter;
 
 /**
@@ -57,20 +63,65 @@ public class DrawingCanvas extends JPanel
 	/** the scaling factor of the canvas. */
 	private double canvasScale = 1.0;
 
+	/** horizontal scroll bar model. */
+	private final BoundedRangeModel hScrollModel;
+
+	/** vertical scroll bar model. */
+	private final BoundedRangeModel vScrollModel;
+
+	/** Canvas resize listener. */
+	private final ComponentListener componentListener;
+
+	/** Maximum Canvas Size. */
+	private static final short MAX_CANVAS_SIZE = 4000;
+
 	/**
 	 * Create the panel.
+	 * 
+	 * @param vScrollModel
+	 * @param hScrollModel
 	 */
-	public DrawingCanvas(Application appWindow)
+	public DrawingCanvas(
+			Application appWindow,
+			BoundedRangeModel hScrollModel,
+			BoundedRangeModel vScrollModel)
 	{
 		this.appWindow = appWindow;
 		setBackground(Color.WHITE);
 		this.mouseListener = new MouseListener();
 		this.keyListener = new KeyListener();
 		this.modelChangedListener = new ModelChangedListener();
+		this.componentListener = new ComponentListener();
+
+		hScrollModel.setMaximum(MAX_CANVAS_SIZE / 2);
+		hScrollModel.setMinimum(-MAX_CANVAS_SIZE / 2);
+		this.hScrollModel = hScrollModel;
+		this.hScrollModel.addChangeListener(new ChangeListener()
+		{
+			@Override
+			public void stateChanged(ChangeEvent arg0)
+			{
+				repaint();
+			}
+		});
+
+		vScrollModel.setMaximum(MAX_CANVAS_SIZE / 2);
+		vScrollModel.setMinimum(-MAX_CANVAS_SIZE / 2);
+		this.vScrollModel = vScrollModel;
+		this.vScrollModel.addChangeListener(new ChangeListener()
+		{
+			@Override
+			public void stateChanged(ChangeEvent arg0)
+			{
+				repaint();
+			}
+		});
 
 		addMouseMotionListener(this.mouseListener);
 		addMouseListener(this.mouseListener);
+		addMouseWheelListener(this.mouseListener);
 		addKeyListener(this.keyListener);
+		addComponentListener(this.componentListener);
 
 		onModelExchanged();
 	}
@@ -89,6 +140,10 @@ public class DrawingCanvas extends JPanel
 		Graphics2D g2 = (Graphics2D) g;
 
 		g2.scale(this.canvasScale, this.canvasScale);
+
+		g2.translate(
+				-this.hScrollModel.getValue(),
+				-this.vScrollModel.getValue());
 
 		render(g2, true);
 	}
@@ -154,8 +209,8 @@ public class DrawingCanvas extends JPanel
 					e.getID(),
 					e.getWhen(),
 					e.getModifiers(),
-					p.x,
-					p.y,
+					p.x + DrawingCanvas.this.hScrollModel.getValue(),
+					p.y + DrawingCanvas.this.vScrollModel.getValue(),
 					e.getLocationOnScreen().x,
 					e.getLocationOnScreen().y,
 					e.getClickCount(),
@@ -260,6 +315,16 @@ public class DrawingCanvas extends JPanel
 				DrawingCanvas.this.canvasAction.doOnMouseExited(e);
 			}
 		}
+
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e)
+		{
+			BoundedRangeModel m = DrawingCanvas.this.vScrollModel;
+			if (e.isShiftDown())
+				m = DrawingCanvas.this.hScrollModel;
+			m.setValue(m.getValue()
+					+ 5 * e.getUnitsToScroll());
+		}
 	}
 
 	/**
@@ -299,6 +364,22 @@ public class DrawingCanvas extends JPanel
 			stopCanvasAction();
 
 			repaint();
+		}
+	}
+
+	/**
+	 * Listener class for component changes.
+	 */
+	private class ComponentListener extends ComponentAdapter
+	{
+		@Override
+		public void componentResized(ComponentEvent e)
+		{
+			super.componentResized(e);
+
+			DrawingCanvas.this.hScrollModel.setExtent(DrawingCanvas.this.getWidth());
+			DrawingCanvas.this.vScrollModel.setExtent(DrawingCanvas.this.getHeight());
+
 		}
 	}
 
@@ -420,6 +501,13 @@ public class DrawingCanvas extends JPanel
 	public double getScale()
 	{
 		return this.canvasScale;
+	}
+
+	/** Sets the canvas scrolling. */
+	public void setScroll(int h, int v)
+	{
+		this.hScrollModel.setValue(h);
+		this.vScrollModel.setValue(v);
 	}
 
 }

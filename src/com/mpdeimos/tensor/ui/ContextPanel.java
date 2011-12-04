@@ -20,7 +20,7 @@ import resources.R;
 public class ContextPanel extends JPanel
 {
 	/** The fixed width of this panel. */
-	/* package */static final int PANEL_WIDTH = 150;
+	/* package */static final int PANEL_WIDTH = 180;
 
 	/** the content to display on this JPanel. */
 	private ContextPanelContentBase content = null;
