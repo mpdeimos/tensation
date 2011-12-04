@@ -19,6 +19,8 @@ public class Preferences
 	public static final String WINDOW_W = "wnd_w"; //$NON-NLS-1$
 	/** app save location */
 	public static final String SAVE_LOCATION = "save_location"; //$NON-NLS-1$
+	/** window maximized state */
+	public static final String WINDOW_MAXIMIZED = "wnd_maximized"; //$NON-NLS-1$
 
 	/** @return the app preferences */
 	public static java.util.prefs.Preferences get()

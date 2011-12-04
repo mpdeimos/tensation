@@ -156,17 +156,23 @@ public class Application extends JFrame
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.addWindowListener(new WindowListener());
 
+		initializeContextPanel();
+		initializeCanvas();
+		initializeMenu();
+		initializeToolbars();
+		initializeKeystrokes();
+
 		int x = Preferences.get().getInt(Preferences.WINDOW_X, 50);
 		int y = Preferences.get().getInt(Preferences.WINDOW_Y, 50);
 		int w = Preferences.get().getInt(Preferences.WINDOW_W, 600);
 		int h = Preferences.get().getInt(Preferences.WINDOW_H, 400);
 		this.setBounds(x, y, w, h);
 
-		initializeContextPanel();
-		initializeCanvas();
-		initializeMenu();
-		initializeToolbars();
-		initializeKeystrokes();
+		if (Preferences.get().getBoolean(Preferences.WINDOW_MAXIMIZED, false))
+		{
+			this.pack();
+			this.setExtendedState(MAXIMIZED_BOTH);
+		}
 	}
 
 	/** Initializes global keystrokes. */
@@ -462,11 +468,20 @@ public class Application extends JFrame
 		@Override
 		public void windowClosing(WindowEvent arg0)
 		{
-			Rectangle r = Application.this.getBounds();
-			Preferences.get().putInt(Preferences.WINDOW_X, r.x);
-			Preferences.get().putInt(Preferences.WINDOW_Y, r.y);
-			Preferences.get().putInt(Preferences.WINDOW_W, r.width);
-			Preferences.get().putInt(Preferences.WINDOW_H, r.height);
+			if (Application.getApp().getExtendedState() == MAXIMIZED_BOTH)
+				Preferences.get().putBoolean(Preferences.WINDOW_MAXIMIZED, true);
+			else
+			{
+				Preferences.get().putBoolean(
+						Preferences.WINDOW_MAXIMIZED,
+						false);
+
+				Rectangle r = Application.this.getBounds();
+				Preferences.get().putInt(Preferences.WINDOW_X, r.x);
+				Preferences.get().putInt(Preferences.WINDOW_Y, r.y);
+				Preferences.get().putInt(Preferences.WINDOW_W, r.width);
+				Preferences.get().putInt(Preferences.WINDOW_H, r.height);
+			}
 			Preferences.save();
 		}
 
