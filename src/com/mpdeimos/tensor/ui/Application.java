@@ -162,6 +162,8 @@ public class Application extends JFrame
 		initializeToolbars();
 		initializeKeystrokes();
 
+		this.pack();
+
 		int x = Preferences.get().getInt(Preferences.WINDOW_X, 50);
 		int y = Preferences.get().getInt(Preferences.WINDOW_Y, 50);
 		int w = Preferences.get().getInt(Preferences.WINDOW_W, 600);
@@ -170,7 +172,6 @@ public class Application extends JFrame
 
 		if (Preferences.get().getBoolean(Preferences.WINDOW_MAXIMIZED, false))
 		{
-			this.pack();
 			this.setExtendedState(MAXIMIZED_BOTH);
 		}
 	}

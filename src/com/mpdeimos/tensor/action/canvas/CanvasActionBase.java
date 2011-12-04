@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Action;
@@ -171,7 +172,7 @@ public abstract class CanvasActionBase extends ActionBase implements
 			List<IEditPart> editParts,
 			KeyEvent e)
 	{
-		for (IEditPart editPart : editParts)
+		for (IEditPart editPart : new ArrayList<IEditPart>(editParts))
 		{
 			if (handleKeyEventForFeatures(editPart, e))
 				return true;
@@ -186,7 +187,7 @@ public abstract class CanvasActionBase extends ActionBase implements
 			MouseEvent e,
 			int which)
 	{
-		for (IEditPart editPart : editParts)
+		for (IEditPart editPart : new ArrayList<IEditPart>(editParts))
 		{
 			if (handleMouseEventForFeatures(editPart, e, which))
 				return true;

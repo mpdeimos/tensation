@@ -200,6 +200,9 @@ public interface IRotatable extends IFeatureEditPart
 		@Override
 		public boolean drawOverlay(ICanvasAction action, Graphics2D gfx)
 		{
+			if (this.rotationIndicator == null)
+				return false;
+
 			try
 			{
 				Rectangle r = this.editPart.getBoundingRectangle();

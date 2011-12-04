@@ -41,7 +41,8 @@ public interface IDuplicatable extends IFeatureEditPart
 			if (!e.isControlDown())
 				return false;
 
-			if ((KeyEvent.VK_V == e.getKeyCode() && this.editPart == ((SelectEditPartAction) action).getCopiedEditPart())
+			if ((KeyEvent.VK_V == e.getKeyCode() && ((SelectEditPartAction) action).getCopiedEditParts().contains(
+					this.editPart))
 					|| (KeyEvent.VK_D == e.getKeyCode() && this.editPart.isSelected()))
 			{
 				IModelData md = this.editPart.duplicateModel();
@@ -57,7 +58,7 @@ public interface IDuplicatable extends IFeatureEditPart
 					tensor.setPosition(new Point((int) p.getX(), (int) p.getY()));
 				}
 				DrawTensorAction.drawTensor(md);
-				return true;
+				return false;
 			}
 
 			return false;

@@ -6,11 +6,11 @@ package com.mpdeimos.tensor.editpart.feature;
 import com.mpdeimos.tensor.action.canvas.ICanvasAction;
 import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensor.ui.Application;
+import com.mpdeimos.tensor.util.CompoundInfiniteUndoableEdit;
 import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
-import com.mpdeimos.tensor.util.PointUtil;
+import com.mpdeimos.tensor.util.VecMath;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
@@ -34,10 +34,16 @@ public interface IMovable extends IFeatureEditPart
 	public class Feature extends FeatureBase<IMovable, SelectEditPartAction>
 	{
 		/** The offset to the EditPart position when in moving mode. */
-		private Dimension moveStartPointDelta;
+		private static Point moveStartPoint;
+
+		/** Amount of tensors to move along. */
+		private static int moveAlongCount = 0;
 
 		/** The EditPart position when starting movement. */
 		private Point initialPosition;
+
+		/** The compound edit */
+		private static CompoundInfiniteUndoableEdit compoundEdit;
 
 		/** Constructor. */
 		public Feature(IMovable editPart)
@@ -64,11 +70,10 @@ public interface IMovable extends IFeatureEditPart
 			{
 				if (this.editPart.getBoundingRectangle().contains(e.getPoint()))
 				{
-					Point curPos = this.editPart.getPosition();
-					this.moveStartPointDelta = PointUtil.getDelta(
-							curPos,
-							e.getPoint());
-					this.initialPosition = new Point(curPos);
+					Feature.moveStartPoint = new Point(e.getPoint());
+					this.initialPosition = new Point(
+							this.editPart.getPosition());
+					moveAlongCount = 1;
 					return true;
 				}
 			}
@@ -79,20 +84,27 @@ public interface IMovable extends IFeatureEditPart
 		@Override
 		public boolean doOnMouseDragged(ICanvasAction action, MouseEvent e)
 		{
-			if (this.moveStartPointDelta != null)
+			if (Feature.moveStartPoint != null)
 			{
-				Point curPos = e.getPoint();
-				curPos.translate(
-						this.moveStartPointDelta.width,
-						this.moveStartPointDelta.height);
+				if (this.initialPosition == null)
+				{
+					this.initialPosition = new Point(
+							this.editPart.getPosition());
+					moveAlongCount++;
+				}
+
+				Point p = this.editPart.getPosition();
+				VecMath.sub(
+						VecMath.fresh(e.getPoint()),
+						Feature.moveStartPoint,
+						p);
+				VecMath.add(p, this.initialPosition);
 
 				if (e.isControlDown())
-					curPos.setLocation(
-							(curPos.x / 10) * 10,
-							(curPos.y / 10) * 10);
+					VecMath.mul(VecMath.div(p, 10), 10);
 
-				this.editPart.setPosition(curPos);
-				return true;
+				this.editPart.setPosition(p);
+				return false;
 			}
 
 			return false;
@@ -101,13 +113,17 @@ public interface IMovable extends IFeatureEditPart
 		@Override
 		public boolean doOnMouseReleased(ICanvasAction action, MouseEvent e)
 		{
-			if (this.moveStartPointDelta != null)
+			if (Feature.moveStartPoint != null)
 			{
-				if (Feature.this.initialPosition.equals(Feature.this.editPart.getPosition()))
+				moveAlongCount--;
+				if (moveAlongCount == 0)
+					Feature.moveStartPoint = null;
+
+				if (Feature.this.editPart.getPosition().equals(
+						Feature.this.initialPosition))
 					return false;
 
-				Application.getApp().getUndoManager().addEdit(
-						new InfiniteUndoableEdit()
+				InfiniteUndoableEdit edit = new InfiniteUndoableEdit()
 				{
 					private Point before;
 					private Point after;
@@ -137,9 +153,31 @@ public interface IMovable extends IFeatureEditPart
 					{
 						Feature.this.editPart.setPosition(this.after);
 					}
-				});
+				};
+
+				if (moveAlongCount > 0)
+				{
+					if (compoundEdit == null)
+						compoundEdit = new CompoundInfiniteUndoableEdit();
+
+					compoundEdit.add(edit);
+				}
+				else
+				{
+					if (compoundEdit == null)
+					{
+						Application.getApp().getUndoManager().addEdit(edit);
+					}
+					else
+					{
+						compoundEdit.add(edit);
+						Application.getApp().getUndoManager().addEdit(
+								compoundEdit);
+						compoundEdit = null;
+					}
+				}
 			}
-			this.moveStartPointDelta = null;
+			this.initialPosition = null;
 			return false;
 		}
 	}

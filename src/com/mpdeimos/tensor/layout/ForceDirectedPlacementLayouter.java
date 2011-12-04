@@ -49,7 +49,7 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 	private ComboBoxModel uiBounds;
 
 	/** the bounding rect for manual selection */
-	private Rectangle2D selectedRect;
+	private Rectangle2D selectRect;
 
 	/** the start point for manual bounding rect selection. */
 	private Point startPoint;
@@ -119,10 +119,10 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 		}
 		else if (R.string.LAYOUT_FDP_BOUNDS_SELECT == boundMode)
 		{
-			if (this.selectedRect == null)
+			if (this.selectRect == null)
 				return false;
 
-			imageRectangle = this.selectedRect;
+			imageRectangle = this.selectRect;
 		}
 		else if (R.string.LAYOUT_FDP_BOUNDS_TENSORS_CIRCLE == boundMode)
 		{
@@ -334,12 +334,12 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 	{
 		if (this.uiBounds.getSelectedItem() == R.string.LAYOUT_FDP_BOUNDS_SELECT)
 		{
-			this.selectedRect = new Rectangle2D.Double(
+			this.selectRect = new Rectangle2D.Double(
 					this.startPoint.x,
 					this.startPoint.y,
 					0,
 					0);
-			this.selectedRect.add(e.getPoint());
+			this.selectRect.add(e.getPoint());
 
 			this.canvas.repaint();
 
@@ -367,8 +367,8 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 		{
 			gfx.setColor(Color.BLUE);
 
-			if (this.selectedRect != null)
-				Gfx.drawRect(gfx, this.selectedRect);
+			if (this.selectRect != null)
+				Gfx.drawRect(gfx, this.selectRect);
 
 			return true;
 		}
