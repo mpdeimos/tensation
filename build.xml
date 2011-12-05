@@ -39,6 +39,21 @@
 	<target name="copy-arc" description="Copies Ant Resource Compiler jar from its dev env">
 		<copy file="../../AntResourceCompiler/build/jars/ant-resource-compiler.jar" todir="./lib"/>
 	</target>
+	
+	<target name="prop2po">
+		<exec executable="msgcat">
+			<arg value="-P" />
+			<arg path="./res/string/string.properties" />
+			<arg value="-o" />
+			<arg path="./po/string/en.po" />
+		</exec>
+		<exec executable="msgcat">
+			<arg value="-P" />
+			<arg path="./res/string/string_de.properties" />
+			<arg value="-o" />
+			<arg path="./po/string/de.po" />
+		</exec>
+	</target>
 
 	<target name="build" description="Comiple classes" depends="rc">
 		<mkdir dir="./build" />
