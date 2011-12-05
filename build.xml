@@ -41,18 +41,13 @@
 	</target>
 	
 	<target name="prop2po">
-		<exec executable="msgcat">
-			<arg value="-P" />
+		<exec executable="prop2po">
+			<arg path="./res/string" />
+			<arg path="./po/string" />
+			<arg value="-t" />
 			<arg path="./res/string/string.properties" />
-			<arg value="-o" />
-			<arg path="./po/string/en.po" />
 		</exec>
-		<exec executable="msgcat">
-			<arg value="-P" />
-			<arg path="./res/string/string_de.properties" />
-			<arg value="-o" />
-			<arg path="./po/string/de.po" />
-		</exec>
+		<move file="./po/string/string.po" tofile="./po/string/string.pot"/>
 	</target>
 
 	<target name="build" description="Comiple classes" depends="rc">
