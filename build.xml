@@ -42,14 +42,35 @@
 	
 	<target name="prop2po">
 		<exec executable="prop2po">
+			<arg path="./res/string/string.properties" />
+			<arg value="-P" />
+			<arg path="./po/string/string.pot" />
+			<arg value="--encoding=utf-8" />
+			<arg value="--progress=none" />
+		</exec>
+		<exec executable="prop2po">
 			<arg path="./res/string" />
 			<arg path="./po/string" />
-			<arg value="-t" />
+			<arg value="-t"/> 
 			<arg path="./res/string/string.properties" />
+			<arg value="--progress=none" />
+			<arg value="--encoding=utf-8" />
 		</exec>
-		<move file="./po/string/string.po" tofile="./po/string/string.pot"/>
+		<delete file="./po/string/string.po"/>
 	</target>
-
+	
+	<target name="po2prop">
+		<exec executable="po2prop">
+			<arg path="./res/string" />
+			<arg path="./po/string" />
+			<arg value="-t"/> 
+			<arg path="./res/string/string.properties" />
+			<arg value="--progress=none" />
+			<arg value="--encoding=utf-8" />
+			<arg value="--personality=java-utf8">
+		</exec>
+	</target>
+	
 	<target name="build" description="Comiple classes" depends="rc">
 		<mkdir dir="./build" />
 		<mkdir dir="./build/classes" />
