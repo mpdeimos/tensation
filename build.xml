@@ -40,7 +40,7 @@
 		<copy file="../../AntResourceCompiler/build/jars/ant-resource-compiler.jar" todir="./lib"/>
 	</target>
 	
-	<target name="prop2po">
+	<target name="pot" description="Creates a POT file from main properties file">
 		<exec executable="prop2po">
 			<arg path="./res/string/string.properties" />
 			<arg value="-P" />
@@ -48,6 +48,9 @@
 			<arg value="--encoding=utf-8" />
 			<arg value="--progress=none" />
 		</exec>
+	</target>
+	
+	<target name="prop2po" depends="pot" description="Creates PO files from properties files">
 		<exec executable="prop2po">
 			<arg path="./res/string" />
 			<arg path="./po/string" />
@@ -59,7 +62,7 @@
 		<delete file="./po/string/string.po"/>
 	</target>
 	
-	<target name="po2prop">
+	<target name="po2prop" description="Creates properties files from PO files">
 		<exec executable="po2prop">
 			<arg path="./res/string" />
 			<arg path="./po/string" />
@@ -67,7 +70,7 @@
 			<arg path="./res/string/string.properties" />
 			<arg value="--progress=none" />
 			<arg value="--encoding=utf-8" />
-			<arg value="--personality=java-utf8">
+			<arg value="--personality=java-utf8"/>
 		</exec>
 	</target>
 	
