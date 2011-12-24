@@ -54,7 +54,8 @@ public class ScaleLayouter extends LayouterBase
 
 	@Override
 	public boolean layout(
-			HashMap<TensorBase, Point2D> tensors,
+			HashMap<TensorBase, Point2D> positions,
+			HashMap<TensorBase, Double> rotations,
 			List<TensorConnection> connections)
 	{
 
@@ -62,11 +63,11 @@ public class ScaleLayouter extends LayouterBase
 
 		if (R.string.LAYOUT_SCALE_CENTROID_MASS == this.uiCentroid.getSelectedItem())
 		{
-			for (TensorBase tensor : tensors.keySet())
+			for (TensorBase tensor : positions.keySet())
 			{
 				VecMath.add(centroid, tensor.getPosition());
 			}
-			VecMath.div(centroid, tensors.size());
+			VecMath.div(centroid, positions.size());
 		}
 		else if (R.string.LAYOUT_SCALE_CENTROID_SELECT == this.uiCentroid.getSelectedItem())
 		{
@@ -86,7 +87,7 @@ public class ScaleLayouter extends LayouterBase
 
 		Point2D centroidInv = VecMath.mul(VecMath.fresh(centroid), -1.0);
 
-		for (TensorBase tensor : tensors.keySet())
+		for (TensorBase tensor : positions.keySet())
 		{
 			Point2D p = VecMath.fresh(tensor.getPosition());
 			VecMath.add(p, centroidInv);
@@ -100,7 +101,7 @@ public class ScaleLayouter extends LayouterBase
 
 			VecMath.add(p, centroid);
 
-			tensors.put(tensor, new Point((int) p.getX(), (int) p.getY()));
+			positions.put(tensor, new Point((int) p.getX(), (int) p.getY()));
 		}
 
 		return true;

@@ -118,4 +118,10 @@ public class TensorConnectionAnchor
 
 		return list;
 	}
+
+	/** @return the connection for this anchor. */
+	public TensorConnection getConnection()
+	{
+		return this.connection;
+	}
 }

@@ -35,7 +35,8 @@ public class RandomLayouter extends LayouterBase
 
 	@Override
 	public boolean layout(
-			HashMap<TensorBase, Point2D> tensors,
+			HashMap<TensorBase, Point2D> positions,
+			HashMap<TensorBase, Double> rotations,
 			List<TensorConnection> connections)
 	{
 		Rectangle2D imageRectangle = new Rectangle2D.Double(
@@ -46,17 +47,17 @@ public class RandomLayouter extends LayouterBase
 				this.canvas.getBounds().getHeight() - 2
 						* ForceDirectedPlacementLayouter.SCREEN_MARGIN);
 
-		for (TensorBase tensor : tensors.keySet())
+		for (TensorBase tensor : positions.keySet())
 		{
 			if (this.uiRotation.isSelected())
 			{
-				tensor.setRotation(Math.random() * 360.0);
+				rotations.put(tensor, Math.random() * 360.0);
 			}
 			if (this.uiPosition.isSelected())
 			{
 				int x = (int) (Math.random() * imageRectangle.getWidth() + imageRectangle.getX());
 				int y = (int) (Math.random() * imageRectangle.getHeight() + imageRectangle.getX());
-				tensors.put(tensor, new Point(x, y));
+				positions.put(tensor, new Point(x, y));
 			}
 		}
 

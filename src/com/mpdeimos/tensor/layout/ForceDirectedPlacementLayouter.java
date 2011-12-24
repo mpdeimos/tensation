@@ -65,24 +65,25 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 
 	@Override
 	public boolean layout(
-			HashMap<TensorBase, Point2D> tensors,
+			HashMap<TensorBase, Point2D> positions,
+			HashMap<TensorBase, Double> rotations,
 			List<TensorConnection> connections)
 	{
-		if (tensors.size() < 1)
+		if (positions.size() < 1)
 			return false;
 
 		Set<Tupel<Set<TensorBase>, Set<TensorConnection>>> connectedSubgraphs = null;
 		if (this.uiComponents.isSelected())
 		{
 			connectedSubgraphs = getConnectedSubgraphs(
-					tensors.keySet(),
+					positions.keySet(),
 					connections);
 		}
 		else
 		{
 			connectedSubgraphs = new HashSet<Tupel<Set<TensorBase>, Set<TensorConnection>>>();
 			connectedSubgraphs.add(new Tupel<Set<TensorBase>, Set<TensorConnection>>(
-					tensors.keySet(),
+					positions.keySet(),
 					new HashSet<TensorConnection>(connections)));
 		}
 
@@ -92,7 +93,7 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 			updates |= layoutSubgraphs(
 					connectedSubgraph.$1,
 					connectedSubgraph.$2,
-					tensors);
+					positions);
 		}
 
 		return updates;
@@ -167,9 +168,6 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 		HashMap<TensorBase, Point2D> displacements = new HashMap<TensorBase, Point2D>();
 		for (TensorBase u : tensors)
 		{
-			// ensure we have double points
-			positionMap.put(u, VecMath.fresh(u.getPosition()));
-
 			displacements.put(u, VecMath.fresh());
 			if (R.string.LAYOUT_FDP_BOUNDS_TENSORS_RECT == boundMode)
 			{

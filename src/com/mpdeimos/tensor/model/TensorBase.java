@@ -4,6 +4,7 @@ import com.mpdeimos.tensor.util.ImmutableList;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -59,6 +60,8 @@ public abstract class TensorBase extends ModelDataBase
 	 */
 	public void setRotation(double rotation)
 	{
+		rotation %= 360; // ensure 0..2PI values
+
 		this.rotation = rotation;
 		fireOnModelDataChanged(this);
 	}
@@ -87,4 +90,18 @@ public abstract class TensorBase extends ModelDataBase
 
 	/** Duplicates this tensor with the given model as parent. */
 	abstract public TensorBase duplicate(IModelData root);
+
+	/** @return the anchors being connected. */
+	public List<TensorConnectionAnchor> getOccupiedAnchors()
+	{
+		List<TensorConnectionAnchor> l = new LinkedList<TensorConnectionAnchor>();
+		for (TensorConnectionAnchor anchor : this.anchors)
+		{
+			if (anchor.isOccopied())
+			{
+				l.add(anchor);
+			}
+		}
+		return l;
+	}
 }

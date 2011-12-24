@@ -280,4 +280,60 @@ public class VecMath
 	{
 		return set(result, Math.signum(pos.getX()), Math.signum(pos.getY()));
 	}
+
+	/** @return the dot product between p1 and p2. */
+	public static double dot(Point2D p1, Point2D p2)
+	{
+		return p1.getX() * p2.getX() + p1.getY() * p2.getY();
+	}
+
+	/** @return the angle between vectors p1 and p2. */
+	public static double ang(Point2D p1, Point2D p2)
+	{
+		// double v = dot(p1, p2) / (norm(p1) * norm(p2));
+		// double cos = Math.acos(v);
+		// return cos;
+
+		// p1 = normalize(fresh(p1));
+		// p2 = normalize(fresh(p2));
+		//
+		// double s, c;
+		// if (p1.getX() != 0)
+		// {
+		// s = (p1.getX() * p2.getY() - p1.getY() * p2.getX());
+		// c = (p2.getX() + s * p1.getY()) / p1.getX();
+		// }
+		// else if (p1.getY() != 0)
+		// {
+		// s = (p1.getX() * p2.getY() - p1.getY() * p2.getX());
+		// c = (p2.getY() - s * p1.getX()) / p1.getY();
+		// }
+		// else
+		// {
+		// throw new IllegalArgumentException();
+		// }
+		//
+		// double alpha = Math.asin(s);
+		// // if (s > 0)
+		// // alpha = 2 * Math.PI - alpha;
+		//
+		// return alpha;
+
+		double alpha = ang(p2) - ang(p1);
+		if (alpha < 0)
+			alpha += 2 * Math.PI;
+
+		return alpha;
+	}
+
+	/** @return the radius of the vector from (1,0) */
+	public static double ang(Point2D p)
+	{
+		p = normalize(fresh(p));
+		double alpha = Math.acos(p.getX());
+		if (p.getY() < 0)
+			alpha = 2 * Math.PI - alpha;
+
+		return alpha;
+	}
 }

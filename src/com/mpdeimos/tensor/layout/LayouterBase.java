@@ -10,6 +10,7 @@ import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.ContextPanelContentBase;
 import com.mpdeimos.tensor.ui.DividerLabel;
 import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
+import com.mpdeimos.tensor.util.VecMath;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -53,7 +54,8 @@ public abstract class LayouterBase extends CanvasActionBase
 	 * @return true on success
 	 */
 	abstract boolean layout(
-			HashMap<TensorBase, Point2D> newPos,
+			HashMap<TensorBase, Point2D> positions,
+			HashMap<TensorBase, Double> rotations,
 			List<TensorConnection> connections);
 
 	/** Callback for creating a context panel. */
@@ -78,25 +80,28 @@ public abstract class LayouterBase extends CanvasActionBase
 			ModelRoot model = Application.getApp().getModel();
 			final HashMap<TensorBase, Point2D> oldPos = new HashMap<TensorBase, Point2D>();
 			final HashMap<TensorBase, Point2D> newPos = new HashMap<TensorBase, Point2D>();
+			final HashMap<TensorBase, Double> oldRot = new HashMap<TensorBase, Double>();
+			final HashMap<TensorBase, Double> newRot = new HashMap<TensorBase, Double>();
 			ArrayList<TensorConnection> connections = new ArrayList<TensorConnection>();
 			for (IModelData child : model.getChildren())
 			{
 				if (child instanceof TensorBase)
 				{
 					TensorBase tensor = (TensorBase) child;
-					oldPos.put(tensor, new Point(tensor.getPosition()));
-					newPos.put(tensor, new Point(tensor.getPosition()));
+					oldPos.put(tensor, VecMath.fresh((tensor.getPosition())));
+					newPos.put(tensor, VecMath.fresh((tensor.getPosition())));
+					oldRot.put(tensor, tensor.getRotation());
+					newRot.put(tensor, tensor.getRotation());
 				}
 				else if (child instanceof TensorConnection)
 				{
 					TensorConnection connection = (TensorConnection) child;
 					connections.add(connection);
 				}
-
 			}
 
 			// layout
-			if (!layout(newPos, connections))
+			if (!layout(newPos, newRot, connections))
 				return;
 
 			// build undo stack
@@ -118,6 +123,7 @@ public abstract class LayouterBase extends CanvasActionBase
 						tensor.setPosition(new Point(
 								(int) point.getX(),
 								(int) point.getY()));
+						tensor.setRotation(oldRot.get(tensor));
 					}
 				}
 
@@ -130,6 +136,7 @@ public abstract class LayouterBase extends CanvasActionBase
 						tensor.setPosition(new Point(
 								(int) point.getX(),
 								(int) point.getY()));
+						tensor.setRotation(newRot.get(tensor));
 					}
 				}
 			}.act());
