@@ -254,7 +254,7 @@ public class TensorFigure extends FigureBase
 				2 * offset + 2);
 	}
 
-	/** @return the connections points of this figure. */
+	/** @return the connection points of this figure. */
 	public Point2D[] getConnectionPoints()
 	{
 		return this.connectionPoints;

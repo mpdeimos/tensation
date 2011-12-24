@@ -2,10 +2,12 @@ package com.mpdeimos.tensor.layout;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.editpart.feature.IConnectable;
-import com.mpdeimos.tensor.editpart.feature.IConnectable.ConnectionPoint;
+import com.mpdeimos.tensor.figure.TensorFigure;
 import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnection;
 import com.mpdeimos.tensor.model.TensorConnectionAnchor;
+import com.mpdeimos.tensor.ui.DrawingCanvas;
+import com.mpdeimos.tensor.util.MapUtil;
 import com.mpdeimos.tensor.util.VecMath;
 
 import java.awt.geom.Point2D;
@@ -33,18 +35,32 @@ public class RotateLayouter extends LayouterBase
 			HashMap<TensorBase, Double> rotations,
 			List<TensorConnection> connections)
 	{
-		HashMap<TensorBase, IConnectable> tensorsToEditParts = new HashMap<TensorBase, IConnectable>();
-		for (TensorBase tensor : positions.keySet())
-		{
-			inner: for (IEditPart part : this.canvas.getEditParts())
-			{
-				if (part.getModel() == tensor && part instanceof IConnectable)
-				{
-					tensorsToEditParts.put(tensor, (IConnectable) part);
-					break inner;
-				}
-			}
-		}
+		HashMap<TensorBase, IConnectable> tensorsToEditParts = extractConnectables(
+				this.canvas,
+				positions);
+
+		return optimizeRotation(rotations, connections, tensorsToEditParts);
+	}
+
+	/**
+	 * Optimizes the tensor rotation.
+	 * 
+	 * @param rotations
+	 *            HashMap for storing the new tensor rotations (= result) and
+	 *            original rotations are read from.
+	 * @param connections
+	 *            Tensor connection list.
+	 * @param tensorsToEditParts
+	 *            a HashMap mapping from tensors to EditParts, use
+	 *            extractConnectables for gathering this mapping.
+	 * @return true if rotations were adjusted.
+	 */
+	public static boolean optimizeRotation(
+			HashMap<TensorBase, Double> rotations,
+			List<TensorConnection> connections,
+			HashMap<TensorBase, IConnectable> tensorsToEditParts)
+	{
+		HashMap<TensorBase, Double> rotationsClone = MapUtil.clone(rotations);
 
 		for (TensorConnection connection : connections)
 		{
@@ -53,18 +69,36 @@ public class RotateLayouter extends LayouterBase
 			TensorBase sink = sinkAnchor.getTensor();
 			TensorBase source = sourceAnchor.getTensor();
 
-			ConnectionPoint sinkPoint = getConnectionPoint(
-					sinkAnchor,
-					tensorsToEditParts.get(sink));
-			ConnectionPoint sourcePoint = getConnectionPoint(
-					sourceAnchor,
-					tensorsToEditParts.get(source));
+			Point2D sinkPoint = getConnectionPoint(rotations, sinkAnchor);
+			Point2D sourcePoint = getConnectionPoint(rotations, sourceAnchor);
 
-			calculateRotation(rotations, sink, source, sourcePoint);
-			calculateRotation(rotations, source, sink, sinkPoint);
+			calculateRotation(rotationsClone, sink, source, sourcePoint);
+			calculateRotation(rotationsClone, source, sink, sinkPoint);
 
 		}
+
+		rotations.putAll(rotationsClone);
 		return true;
+	}
+
+	/** @return a HashMap containing the connectable editparts. */
+	public static HashMap<TensorBase, IConnectable> extractConnectables(
+			DrawingCanvas canvas,
+			HashMap<TensorBase, Point2D> positions)
+	{
+		HashMap<TensorBase, IConnectable> tensorsToEditParts = new HashMap<TensorBase, IConnectable>();
+		for (TensorBase tensor : positions.keySet())
+		{
+			inner: for (IEditPart part : canvas.getEditParts())
+			{
+				if (part.getModel() == tensor && part instanceof IConnectable)
+				{
+					tensorsToEditParts.put(tensor, (IConnectable) part);
+					break inner;
+				}
+			}
+		}
+		return tensorsToEditParts;
 	}
 
 	/**
@@ -73,14 +107,14 @@ public class RotateLayouter extends LayouterBase
 	 * 
 	 * The result is stored within the rotation hash map.
 	 */
-	private void calculateRotation(
+	private static void calculateRotation(
 			HashMap<TensorBase, Double> rotations,
 			TensorBase otherTensor,
 			TensorBase tensor,
-			ConnectionPoint connectionPoint)
+			Point2D connectionPoint)
 	{
 		Point2D anchorPoint = VecMath.sub(
-				VecMath.fresh(connectionPoint.getPoint()),
+				VecMath.fresh(connectionPoint),
 				tensor.getPosition());
 		Point2D otherPoint = VecMath.sub(
 				VecMath.fresh(otherTensor.getPosition()),
@@ -97,7 +131,7 @@ public class RotateLayouter extends LayouterBase
 	}
 
 	/** Converts a 0..2PI angle to -PI..PI */
-	private double halfAng(double ang)
+	private static double halfAng(double ang)
 	{
 		if (ang < Math.PI)
 			return ang;
@@ -106,30 +140,20 @@ public class RotateLayouter extends LayouterBase
 	}
 
 	/** @return the connection point for a given anchor. */
-	private ConnectionPoint getConnectionPoint(
-			TensorConnectionAnchor anchor,
-			IConnectable editPart)
+	private static Point2D getConnectionPoint(
+			HashMap<TensorBase, Double> rotations,
+			TensorConnectionAnchor anchor)
 	{
-		ConnectionPoint p2 = null;
-		for (ConnectionPoint pp : editPart.getConnectionSinks())
-		{
-			if (pp.getAnchor() == anchor)
-			{
-				p2 = pp;
-				break;
-			}
-		}
-		if (p2 == null)
-		{
-			for (ConnectionPoint pp : editPart.getConnectionSources())
-			{
-				if (pp.getAnchor() == anchor)
-				{
-					p2 = pp;
-					break;
-				}
-			}
-		}
-		return p2;
+		double rot = rotations.get(anchor.getTensor());
+		Point2D connectionPoint = VecMath.fresh();
+		TensorFigure.initAnchorPoints(
+				anchor.getTensor(),
+				anchor.getId(),
+				connectionPoint,
+				null,
+				null,
+				rot);
+
+		return connectionPoint;
 	}
 }
