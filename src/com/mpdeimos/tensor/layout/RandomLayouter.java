@@ -8,7 +8,7 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Set;
 
 import javax.swing.JCheckBox;
 
@@ -37,7 +37,7 @@ public class RandomLayouter extends LayouterBase
 	public boolean layout(
 			HashMap<TensorBase, Point2D> positions,
 			HashMap<TensorBase, Double> rotations,
-			List<TensorConnection> connections)
+			Set<TensorConnection> connections)
 	{
 		Rectangle2D imageRectangle = new Rectangle2D.Double(
 				ForceDirectedPlacementLayouter.SCREEN_MARGIN,

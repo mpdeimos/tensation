@@ -19,7 +19,6 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.ComboBoxModel;
@@ -54,8 +53,11 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 	/** the start point for manual bounding rect selection. */
 	private Point startPoint;
 
-	/** combobox for toggling separate component layouting. */
+	/** checkbox for toggling separate component layouting. */
 	private JCheckBox uiComponents;
+
+	/** checkbox for toggling rotation optimization. */
+	private JCheckBox uiRotation;
 
 	/** Constructor. */
 	public ForceDirectedPlacementLayouter()
@@ -67,7 +69,7 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 	public boolean layout(
 			HashMap<TensorBase, Point2D> positions,
 			HashMap<TensorBase, Double> rotations,
-			List<TensorConnection> connections)
+			Set<TensorConnection> connections)
 	{
 		if (positions.size() < 1)
 			return false;
@@ -93,7 +95,8 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 			updates |= layoutSubgraphs(
 					connectedSubgraph.$1,
 					connectedSubgraph.$2,
-					positions);
+					positions,
+					rotations);
 		}
 
 		return updates;
@@ -103,7 +106,9 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 	private boolean layoutSubgraphs(
 			Set<TensorBase> tensors,
 			Set<TensorConnection> connections,
-			HashMap<TensorBase, Point2D> positionMap)
+			HashMap<TensorBase, Point2D> positions,
+			HashMap<TensorBase, Double> rotations)
+
 	{
 		Rectangle2D imageRectangle = null;
 		Ellipse2D tensorRadius = null;
@@ -133,8 +138,8 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 			{
 				for (TensorBase t2 : tensors)
 				{
-					Point2D p1 = positionMap.get(t1);
-					Point2D p2 = positionMap.get(t2);
+					Point2D p1 = positions.get(t1);
+					Point2D p2 = positions.get(t2);
 
 					double d = VecMath.distance(p1, p2) / 2;
 					if (d > radius)
@@ -217,8 +222,8 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 					{
 						Point2D disp = displacements.get(v);
 						Point2D delta = VecMath.sub(
-								positionMap.get(v),
-								positionMap.get(u),
+								positions.get(v),
+								positions.get(u),
 								VecMath.fresh());
 
 						double norm = VecMath.norm(delta);
@@ -238,8 +243,8 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 				Point2D vDisp = displacements.get(v);
 
 				Point2D delta = VecMath.sub(
-						positionMap.get(v),
-						positionMap.get(u),
+						positions.get(v),
+						positions.get(u),
 						VecMath.fresh());
 				double norm = VecMath.norm(delta);
 				VecMath.div(delta, norm);
@@ -252,7 +257,7 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 			for (TensorBase u : tensors)
 			{
 				Point2D disp = displacements.get(u);
-				Point2D pos = positionMap.get(u);
+				Point2D pos = positions.get(u);
 
 				Point2D min = VecMath.min(VecMath.fresh(disp), temperature);
 				VecMath.mul(min, temperature);
@@ -290,6 +295,14 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 									imageRectangle.getMinX(),
 									imageRectangle.getMinY()));
 				}
+			}
+
+			if (this.uiRotation.isSelected())
+			{
+				RotateLayouter.optimizeRotation(
+						positions,
+						rotations,
+						connections);
 			}
 
 			temperature = coolDown(temperature);
@@ -373,37 +386,10 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 		return false;
 	}
 
-	@Override
-	public void onContextPanelInit(ContextPanel panel)
-	{
-		panel.add(new DividerLabel(R.string.LAYOUT_FDP_ITERATIONS.string()));
-
-		this.uiIterations = new SpinnerNumberModel(500, 0, 10000, 100);
-		JSpinner spinner = new JSpinner(this.uiIterations);
-
-		panel.add(spinner);
-
-		panel.add(new DividerLabel(R.string.LAYOUT_FDP_BOUNDS.string()));
-
-		this.uiBounds = new DefaultComboBoxModel(new R.string[] {
-				R.string.LAYOUT_FDP_BOUNDS_SCREEN,
-				R.string.LAYOUT_FDP_BOUNDS_TENSORS_RECT,
-				R.string.LAYOUT_FDP_BOUNDS_TENSORS_CIRCLE,
-				R.string.LAYOUT_FDP_BOUNDS_SELECT });
-		JComboBox bounds = new JComboBox(this.uiBounds);
-		panel.add(bounds);
-
-		panel.add(new DividerLabel(R.string.LAYOUT_FDP_COMPONENTS.string()));
-		this.uiComponents = new JCheckBox(
-				R.string.LAYOUT_FDP_COMPONENTS_SEPERATE.string(), true);
-		panel.add(this.uiComponents);
-
-	}
-
 	/** @returns the connected subgraphs based ona bfs algorithm */
 	public static Set<Tupel<Set<TensorBase>, Set<TensorConnection>>> getConnectedSubgraphs(
 			Set<TensorBase> tensors,
-			List<TensorConnection> connections)
+			Set<TensorConnection> connections)
 	{
 		Deque<TensorBase> u = new LinkedList<TensorBase>(tensors);
 		Deque<TensorBase> v = new LinkedList<TensorBase>();
@@ -445,5 +431,36 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 		}
 
 		return retSet;
+	}
+
+	@Override
+	public void onContextPanelInit(ContextPanel panel)
+	{
+		panel.add(new DividerLabel(R.string.LAYOUT_FDP_ITERATIONS.string()));
+
+		this.uiIterations = new SpinnerNumberModel(500, 0, 10000, 100);
+		JSpinner spinner = new JSpinner(this.uiIterations);
+
+		panel.add(spinner);
+
+		panel.add(new DividerLabel(R.string.LAYOUT_FDP_BOUNDS.string()));
+
+		this.uiBounds = new DefaultComboBoxModel(new R.string[] {
+				R.string.LAYOUT_FDP_BOUNDS_SCREEN,
+				R.string.LAYOUT_FDP_BOUNDS_TENSORS_RECT,
+				R.string.LAYOUT_FDP_BOUNDS_TENSORS_CIRCLE,
+				R.string.LAYOUT_FDP_BOUNDS_SELECT });
+		JComboBox bounds = new JComboBox(this.uiBounds);
+		panel.add(bounds);
+
+		panel.add(new DividerLabel(R.string.LAYOUT_FDP_COMPONENTS.string()));
+		this.uiComponents = new JCheckBox(
+				R.string.LAYOUT_FDP_COMPONENTS_SEPERATE.string(), true);
+		panel.add(this.uiComponents);
+
+		panel.add(new DividerLabel(R.string.LAYOUT_FDP_ROTATION.string()));
+		this.uiRotation = new JCheckBox(
+				R.string.LAYOUT_FDP_ROTATION_OPTIMIZE.string(), true);
+		panel.add(this.uiRotation);
 	}
 }

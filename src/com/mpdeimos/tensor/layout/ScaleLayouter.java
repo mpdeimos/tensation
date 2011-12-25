@@ -14,7 +14,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -56,7 +56,7 @@ public class ScaleLayouter extends LayouterBase
 	public boolean layout(
 			HashMap<TensorBase, Point2D> positions,
 			HashMap<TensorBase, Double> rotations,
-			List<TensorConnection> connections)
+			Set<TensorConnection> connections)
 	{
 
 		Point2D centroid = VecMath.fresh();

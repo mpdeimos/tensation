@@ -15,9 +15,9 @@ import com.mpdeimos.tensor.util.VecMath;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JButton;
 
@@ -56,7 +56,7 @@ public abstract class LayouterBase extends CanvasActionBase
 	abstract boolean layout(
 			HashMap<TensorBase, Point2D> positions,
 			HashMap<TensorBase, Double> rotations,
-			List<TensorConnection> connections);
+			Set<TensorConnection> connections);
 
 	/** Callback for creating a context panel. */
 	public void onContextPanelInit(ContextPanel panel)
@@ -82,7 +82,7 @@ public abstract class LayouterBase extends CanvasActionBase
 			final HashMap<TensorBase, Point2D> newPos = new HashMap<TensorBase, Point2D>();
 			final HashMap<TensorBase, Double> oldRot = new HashMap<TensorBase, Double>();
 			final HashMap<TensorBase, Double> newRot = new HashMap<TensorBase, Double>();
-			ArrayList<TensorConnection> connections = new ArrayList<TensorConnection>();
+			HashSet<TensorConnection> connections = new HashSet<TensorConnection>();
 			for (IModelData child : model.getChildren())
 			{
 				if (child instanceof TensorBase)
