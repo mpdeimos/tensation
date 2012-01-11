@@ -1,5 +1,6 @@
 package com.mpdeimos.tensor.ui;
 
+import com.mpdeimos.tensor.action.CloseTabAction;
 import com.mpdeimos.tensor.action.ExitAction;
 import com.mpdeimos.tensor.action.ExportAction;
 import com.mpdeimos.tensor.action.NewAction;
@@ -17,10 +18,8 @@ import com.mpdeimos.tensor.layout.ForceDirectedPlacementLayouter;
 import com.mpdeimos.tensor.layout.RandomLayouter;
 import com.mpdeimos.tensor.layout.RotateLayouter;
 import com.mpdeimos.tensor.layout.ScaleLayouter;
-import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.util.Log;
 
-import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Rectangle;
@@ -31,7 +30,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -41,18 +40,14 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
+import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import javax.swing.border.EtchedBorder;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.UndoManager;
-import javax.swing.undo.UndoableEdit;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import resources.R;
 
@@ -67,8 +62,8 @@ public class Application extends JFrame
 	/** singleton window instance */
 	private static Application app;
 
-	/** the drawing canvas of our app */
-	private DrawingCanvas drawingCanvas;
+	/** the tabbed pane for holding various canvases */
+	private JTabbedPane tabbedPane;
 
 	/** the default button for canvas actions. */
 	private ToolBarButton selectEditPartButton;
@@ -76,23 +71,20 @@ public class Application extends JFrame
 	/** the context panel of our app. */
 	private ContextPanel contextPanel;
 
-	/** the undo manager of our app. */
-	private final CanvasUndoManager undoManager;
-
-	/** the global undo action. */
-	private final AbstractAction undoAction;
-
-	/** the global redo action. */
-	private final AbstractAction redoAction;
-
-	/** the model loadd. */
-	private ModelRoot model;
-
 	/** the export location of the model. */
 	private File modelExportLocation;
 
 	/** flag if the application has a gui or is still in command window mode. */
 	// private boolean hasGui = false;
+
+	/** action for closing an tab */
+	public final AbstractAction ACTION_CLOSE_TAB = new CloseTabAction();
+
+	/** the global undo action. */
+	public final AbstractAction ACTION_UNDO = new UndoAction();
+
+	/** the global redo action. */
+	public final AbstractAction ACTION_REDO = new RedoAction();
 
 	/**
 	 * Launch the application.
@@ -110,6 +102,12 @@ public class Application extends JFrame
 				app = new Application();
 				app.initializeGui();
 				Commandline.evaluateArguments(args);
+
+				if (app.tabbedPane.getTabCount() == 0)
+				{
+					app.createNewCanvas();
+				}
+
 				// app.hasGui = true;
 				app.setVisible(true);
 			}
@@ -129,11 +127,7 @@ public class Application extends JFrame
 	 */
 	public Application()
 	{
-		this.undoAction = new UndoAction();
-		this.redoAction = new RedoAction();
-		this.undoManager = new CanvasUndoManager();
-
-		this.model = new ModelRoot();
+		// nothing for now
 	}
 
 	/**
@@ -158,7 +152,7 @@ public class Application extends JFrame
 		this.addWindowListener(new WindowListener());
 
 		initializeContextPanel();
-		initializeCanvas();
+		initializeTabs();
 		initializeMenu();
 		initializeToolbars();
 		initializeKeystrokes();
@@ -177,15 +171,35 @@ public class Application extends JFrame
 		}
 	}
 
+	/** Initializes the Tabbed canvas switches. */
+	private void initializeTabs()
+	{
+		this.tabbedPane = new JTabbedPane(
+				SwingConstants.BOTTOM,
+				JTabbedPane.SCROLL_TAB_LAYOUT);
+		getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
+
+		this.tabbedPane.addChangeListener(new ChangeListener()
+		{
+			@Override
+			public void stateChanged(ChangeEvent arg0)
+			{
+				getActiveCanvas().getUndoManager().updateActions();
+				getActiveCanvas().startCanvasAction();
+			}
+		});
+	}
+
+	// TODO use accelerators
 	/** Initializes global keystrokes. */
 	private void initializeKeystrokes()
 	{
 		((JComponent) getContentPane()).registerKeyboardAction(
-				this.undoAction,
+				this.ACTION_UNDO,
 				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK),
 				JComponent.WHEN_IN_FOCUSED_WINDOW);
 		((JComponent) getContentPane()).registerKeyboardAction(
-				this.redoAction,
+				this.ACTION_REDO,
 				KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK),
 				JComponent.WHEN_IN_FOCUSED_WINDOW);
 
@@ -213,6 +227,8 @@ public class Application extends JFrame
 	 */
 	private void initializeToolbars()
 	{
+		// side toolbar
+
 		JToolBar sideToolBar = new JToolBar();
 		sideToolBar.setOrientation(SwingConstants.VERTICAL);
 		sideToolBar.setFloatable(false);
@@ -234,11 +250,13 @@ public class Application extends JFrame
 		connectButton.setHideActionText(true);
 		sideToolBar.add(connectButton);
 
-		JButton exitButton = new ToolBarButton(sideToolBar, new ExitAction());
-		exitButton.setHideActionText(true);
-		sideToolBar.add(exitButton);
+		sideToolBar.add(Box.createVerticalGlue());
 
-		startDefaultToolbarAction();
+		JButton tabClose = new ToolBarButton(sideToolBar, this.ACTION_CLOSE_TAB);
+		tabClose.setHideActionText(true);
+		sideToolBar.add(tabClose);
+
+		// top toolbar
 
 		JToolBar topToolBar = new JToolBar();
 		getContentPane().add(topToolBar, BorderLayout.NORTH);
@@ -271,13 +289,13 @@ public class Application extends JFrame
 
 		final JButton undoButton = new ToolBarButton(
 				topToolBar,
-				this.undoAction);
+				this.ACTION_UNDO);
 		undoButton.setHideActionText(true);
 		undoButton.setIcon(new ImageIcon(R.drawable.EDIT_UNDO_24.url()));
 		topToolBar.add(undoButton);
 		final JButton redoButton = new ToolBarButton(
 				topToolBar,
-				this.redoAction);
+				this.ACTION_REDO);
 		redoButton.setIcon(new ImageIcon(R.drawable.EDIT_REDO_24.url()));
 		redoButton.setHideActionText(true);
 		topToolBar.add(redoButton);
@@ -286,27 +304,12 @@ public class Application extends JFrame
 	/**
 	 * initializes the painting canvas
 	 */
-	private void initializeCanvas()
+	public void createNewCanvas()
 	{
-		JPanel drawingPanelOuter = new JPanel();
-		drawingPanelOuter.setBorder(new EtchedBorder(
-				EtchedBorder.LOWERED,
-				null,
-				null));
-		getContentPane().add(drawingPanelOuter, BorderLayout.CENTER);
-		drawingPanelOuter.setLayout(new BorderLayout(0, 0));
-
-		JScrollBar hScrollBar = new JScrollBar(Adjustable.HORIZONTAL);
-		drawingPanelOuter.add(hScrollBar, BorderLayout.SOUTH);
-
-		JScrollBar vScrollBar = new JScrollBar(Adjustable.VERTICAL);
-		drawingPanelOuter.add(vScrollBar, BorderLayout.EAST);
-
-		this.drawingCanvas = new DrawingCanvas(
-				this,
-				hScrollBar.getModel(),
-				vScrollBar.getModel());
-		drawingPanelOuter.add(this.drawingCanvas, BorderLayout.CENTER);
+		DrawingCanvasHolder holder = new DrawingCanvasHolder();
+		this.tabbedPane.addTab(holder.getDrawingCanvas().getName(), holder);
+		this.tabbedPane.setSelectedIndex(this.tabbedPane.getTabCount() - 1);
+		this.ACTION_CLOSE_TAB.setEnabled(this.tabbedPane.getTabCount() > 1);
 	}
 
 	/**
@@ -333,16 +336,21 @@ public class Application extends JFrame
 		menuFile.add(item);
 
 		menuFile.addSeparator();
-		item = new JMenuItem(new ExitAction());
+
+		item = new JMenuItem(this.ACTION_CLOSE_TAB);
 		menuFile.add(item);
+
+		menuFile.addSeparator();
+
+		menuFile.add(new ExitAction());
 
 		// edit menu
 		JMenu menuEdit = new JMenu(R.string.WINDOW_MENU_EDIT.string());
 		menuBar.add(menuEdit);
 
-		item = new JMenuItem(this.undoAction);
+		item = new JMenuItem(this.ACTION_UNDO);
 		menuEdit.add(item);
-		item = new JMenuItem(this.redoAction);
+		item = new JMenuItem(this.ACTION_REDO);
 		menuEdit.add(item);
 
 		// layout menu
@@ -400,52 +408,21 @@ public class Application extends JFrame
 		getContentPane().add(this.contextPanel, BorderLayout.EAST);
 	}
 
-	/** @return the drawing canvas of this application. */
-	public DrawingCanvas getDrawingCanvas()
+	/** @return the active drawing canvas of this application. */
+	public DrawingCanvas getActiveCanvas()
 	{
-		return this.drawingCanvas;
+		DrawingCanvasHolder selected = (DrawingCanvasHolder) this.tabbedPane.getSelectedComponent();
+
+		if (selected == null)
+			throw new IllegalStateException();
+
+		return selected.getDrawingCanvas();
 	}
 
 	/** @return the context panel of this application. */
 	public ContextPanel getContextPanel()
 	{
 		return this.contextPanel;
-	}
-
-	/** @return the global undo manager. */
-	public UndoManager getUndoManager()
-	{
-		return this.undoManager;
-	}
-
-	/** @return the main root model. */
-	public ModelRoot getModel()
-	{
-		return this.model;
-	}
-
-	/** sets the current main root model. the export location is reset to null */
-	public void setModel(ModelRoot model)
-	{
-		this.model = model;
-		this.modelExportLocation = null;
-		this.drawingCanvas.onModelExchanged();
-		this.undoManager.discardAllEdits();
-	}
-
-	/** @return the export location of the model. may be null if not saved yet. */
-	public File getModelExportLocation()
-	{
-		return this.modelExportLocation;
-	}
-
-	/**
-	 * sets the filename of the current model export.
-	 */
-	public void setModelExportLocation(File location)
-	{
-		Preferences.get().put(Preferences.SAVE_LOCATION, location.getParent());
-		this.modelExportLocation = location;
 	}
 
 	/**
@@ -496,69 +473,6 @@ public class Application extends JFrame
 		}
 	}
 
-	/** Extended UndoManager */
-	private class CanvasUndoManager extends UndoManager
-	{
-		/** Constructor. */
-		public CanvasUndoManager()
-		{
-			updateActions();
-		}
-
-		@Override
-		public synchronized void undo() throws CannotUndoException
-		{
-			super.undo();
-
-			updateActions();
-		}
-
-		@Override
-		public synchronized void redo() throws CannotRedoException
-		{
-			super.redo();
-
-			updateActions();
-		}
-
-		@Override
-		public synchronized void discardAllEdits()
-		{
-			super.discardAllEdits();
-
-			updateActions();
-		}
-
-		@Override
-		public synchronized boolean addEdit(UndoableEdit anEdit)
-		{
-			boolean addEdit = super.addEdit(anEdit);
-
-			updateActions();
-
-			return addEdit;
-		}
-
-		/** updates the action states. */
-		private void updateActions()
-		{
-			Application.this.undoAction.setEnabled(canUndo());
-			Application.this.undoAction.putValue(
-					Action.NAME,
-					getUndoPresentationName());
-			Application.this.undoAction.putValue(
-					Action.SHORT_DESCRIPTION,
-					getUndoPresentationName());
-			Application.this.redoAction.setEnabled(canRedo());
-			Application.this.redoAction.putValue(
-					Action.NAME,
-					getRedoPresentationName());
-			Application.this.redoAction.putValue(
-					Action.SHORT_DESCRIPTION,
-					getRedoPresentationName());
-		}
-	}
-
 	/**
 	 * @return a new file chooser opened at the last save location.
 	 */
@@ -568,5 +482,44 @@ public class Application extends JFrame
 				Preferences.SAVE_LOCATION,
 				null);
 		return new JFileChooser(saveLocation);
+	}
+
+	/** Closes a canvas tab. */
+	public void closeActiveCanvas()
+	{
+		if (!this.ACTION_CLOSE_TAB.isEnabled())
+			return;
+
+		this.tabbedPane.remove(this.tabbedPane.getSelectedIndex());
+
+		this.ACTION_CLOSE_TAB.setEnabled(this.tabbedPane.getTabCount() > 1);
+	}
+
+	/** @return the export location of the model. may be null if not saved yet. */
+	/* package */File getModelExportLocation()
+	{
+		return this.modelExportLocation;
+	}
+
+	/**
+	 * sets the filename of the current model export.
+	 */
+	/* package */void setModelExportLocation(File location)
+	{
+		if (location != null)
+		{
+			Preferences.get().put(
+					Preferences.SAVE_LOCATION,
+					location.getParent());
+		}
+		this.modelExportLocation = location;
+	}
+
+	/** Updates the active tab name. */
+	public void updateActiveTabName()
+	{
+		this.tabbedPane.setTitleAt(
+				this.tabbedPane.getSelectedIndex(),
+				getActiveCanvas().getName());
 	}
 }

@@ -164,7 +164,7 @@ public interface IConnectionControl extends IFeatureEditPart
 						&& this.initialControlDistances.$2 == Feature.this.editPart.getSourceControlPointDistance())
 					return false;
 
-				Application.getApp().getUndoManager().addEdit(
+				Application.getApp().getActiveCanvas().getUndoManager().addEdit(
 						new InfiniteUndoableEdit()
 				{
 					private Tupel<Double, Double> before;

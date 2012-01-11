@@ -1,8 +1,8 @@
 package com.mpdeimos.tensor.action.canvas;
 
 import com.mpdeimos.tensor.editpart.feature.IConnectable.ConnectionPoint;
+import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.model.TensorConnection;
-import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
 
 import java.awt.Color;
@@ -173,12 +173,13 @@ public class TensorConnectAction extends CanvasActionBase
 
 		if (this.endConnectionPoint != null)
 		{
+			final ModelRoot model = this.canvas.getModel();
 			final TensorConnection connection = new TensorConnection(
-					Application.getApp().getModel(),
+					model,
 					this.startConnectionPoint.getAnchor(),
 					this.endConnectionPoint.getAnchor());
 
-			this.applicationWindow.getUndoManager().addEdit(
+			this.canvas.getUndoManager().addEdit(
 					new InfiniteUndoableEdit()
 			{
 				@Override
@@ -190,7 +191,7 @@ public class TensorConnectAction extends CanvasActionBase
 				@Override
 				public void redo()
 				{
-					Application.getApp().getModel().addChild(connection);
+					model.addChild(connection);
 					connection.renew();
 				}
 

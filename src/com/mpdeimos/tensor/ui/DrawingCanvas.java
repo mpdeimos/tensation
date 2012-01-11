@@ -5,6 +5,7 @@ import com.mpdeimos.tensor.editpart.EditPartFactory;
 import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.model.IModelChangedListener;
 import com.mpdeimos.tensor.model.IModelData;
+import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.PointUtil;
 
@@ -21,6 +22,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,6 +33,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputAdapter;
 
+import resources.R;
+
 /**
  * Holds the drawing canvas for our diagram.
  * 
@@ -38,12 +42,17 @@ import javax.swing.event.MouseInputAdapter;
  */
 public class DrawingCanvas extends JPanel
 {
+	/** the model loaded for this canvas. */
+	private ModelRoot model;
 
 	/** the EditPart factory */
 	private final EditPartFactory editPartFactory = new EditPartFactory();
 
 	/** list of all known EditParts. */
 	private final List<IEditPart> editParts = new ArrayList<IEditPart>();
+
+	/** the export location of the model. */
+	private File modelExportLocation;
 
 	/** the current drawing action */
 	private ICanvasAction canvasAction = null;
@@ -53,9 +62,6 @@ public class DrawingCanvas extends JPanel
 
 	/** key event listener. */
 	private final KeyListener keyListener;
-
-	/** the linked application window. */
-	private final Application appWindow;
 
 	/** the model change listener. */
 	private final IModelChangedListener modelChangedListener;
@@ -72,6 +78,15 @@ public class DrawingCanvas extends JPanel
 	/** Canvas resize listener. */
 	private final ComponentListener componentListener;
 
+	/** the undo manager of our app. */
+	private final CanvasUndoManager undoManager;
+
+	/** the number of instantiated canvases till program start. */
+	private static int canvasCount = 0;
+
+	/** The canvas instance number. */
+	private final int instanceNum;
+
 	/** Maximum Canvas Size. */
 	private static final short MAX_CANVAS_SIZE = 4000;
 
@@ -81,21 +96,22 @@ public class DrawingCanvas extends JPanel
 	 * @param vScrollModel
 	 * @param hScrollModel
 	 */
-	public DrawingCanvas(
-			Application appWindow,
-			BoundedRangeModel hScrollModel,
-			BoundedRangeModel vScrollModel)
+	/* package */DrawingCanvas(DrawingCanvasHolder holder)
 	{
-		this.appWindow = appWindow;
+		this.instanceNum = canvasCount++;
+
+		this.model = new ModelRoot();
+		this.undoManager = new CanvasUndoManager();
+
 		setBackground(Color.WHITE);
 		this.mouseListener = new MouseListener();
 		this.keyListener = new KeyListener();
 		this.modelChangedListener = new ModelChangedListener();
 		this.componentListener = new ComponentListener();
 
-		hScrollModel.setMaximum(MAX_CANVAS_SIZE / 2);
-		hScrollModel.setMinimum(-MAX_CANVAS_SIZE / 2);
-		this.hScrollModel = hScrollModel;
+		this.hScrollModel = holder.getHorizontalScrollModel();
+		this.hScrollModel.setMaximum(MAX_CANVAS_SIZE / 2);
+		this.hScrollModel.setMinimum(-MAX_CANVAS_SIZE / 2);
 		this.hScrollModel.addChangeListener(new ChangeListener()
 		{
 			@Override
@@ -105,9 +121,9 @@ public class DrawingCanvas extends JPanel
 			}
 		});
 
-		vScrollModel.setMaximum(MAX_CANVAS_SIZE / 2);
-		vScrollModel.setMinimum(-MAX_CANVAS_SIZE / 2);
-		this.vScrollModel = vScrollModel;
+		this.vScrollModel = holder.getVerticalScrollModel();
+		this.vScrollModel.setMaximum(MAX_CANVAS_SIZE / 2);
+		this.vScrollModel.setMinimum(-MAX_CANVAS_SIZE / 2);
 		this.vScrollModel.addChangeListener(new ChangeListener()
 		{
 			@Override
@@ -405,6 +421,19 @@ public class DrawingCanvas extends JPanel
 		Log.d(this, "Started canvas action: %s", this.canvasAction); //$NON-NLS-1$
 	}
 
+	/** restarts the last canvas action or the default toolbar action */
+	public void startCanvasAction()
+	{
+		if (this.canvasAction == null)
+		{
+			Application.getApp().startDefaultToolbarAction();
+		}
+		else
+		{
+			this.canvasAction.actionPerformed(null);
+		}
+	}
+
 	/** flag for determining if we've stopped the current action */
 	private boolean stopCanvasActionMyChange = false;
 
@@ -425,7 +454,7 @@ public class DrawingCanvas extends JPanel
 		this.stopCanvasActionMyChange = true;
 		this.canvasAction.stopAction();
 		if (startDefault)
-			this.appWindow.startDefaultToolbarAction();
+			Application.getApp().startDefaultToolbarAction();
 		this.stopCanvasActionMyChange = false;
 
 		repaint();
@@ -452,14 +481,14 @@ public class DrawingCanvas extends JPanel
 	}
 
 	/** Called every time the model got exchanged. */
-	public void onModelExchanged()
+	private void onModelExchanged()
 	{
 		this.editParts.clear();
 
-		this.appWindow.getModel().addModelChangedListener(
+		this.model.addModelChangedListener(
 				this.modelChangedListener);
 
-		for (IModelData data : this.appWindow.getModel().getChildren())
+		for (IModelData data : this.model.getChildren())
 		{
 			convertToEditPart(data);
 		}
@@ -510,4 +539,52 @@ public class DrawingCanvas extends JPanel
 		this.vScrollModel.setValue(v);
 	}
 
+	/** @return the human readable name of this canvas. */
+	@Override
+	public String getName()
+	{
+		if (this.modelExportLocation != null)
+			return this.modelExportLocation.getName();
+
+		return String.format(
+				R.string.WINDOW_MAIN_TAB.string(),
+				1 + this.instanceNum);
+	}
+
+	/** @return the canvas undo manager. */
+	public CanvasUndoManager getUndoManager()
+	{
+		return this.undoManager;
+	}
+
+	/** @return the main root model. */
+	public ModelRoot getModel()
+	{
+		return this.model;
+	}
+
+	/** sets the current main root model. the export location is reset to null */
+	public void setModel(ModelRoot model)
+	{
+		this.model = model;
+		this.modelExportLocation = null;
+		this.undoManager.discardAllEdits();
+		onModelExchanged();
+	}
+
+	/** @return the export location of the model. may be null if not saved yet. */
+	public File getModelExportLocation()
+	{
+		return this.modelExportLocation;
+	}
+
+	/**
+	 * sets the filename of the current model export.
+	 */
+	public void setModelExportLocation(File location)
+	{
+		this.modelExportLocation = location;
+		Application.getApp().setModelExportLocation(location);
+		Application.getApp().updateActiveTabName();
+	}
 }

@@ -53,7 +53,7 @@ public class ScaleCanvasAction extends ActionBase
 					((JCheckBoxMenuItem) comp).setSelected(false);
 			}
 		}
-		Application.getApp().getDrawingCanvas().setScale(this.percent / 100.0);
+		Application.getApp().getActiveCanvas().setScale(this.percent / 100.0);
 		this.parentMenu.setSelected(true);
 	}
 }

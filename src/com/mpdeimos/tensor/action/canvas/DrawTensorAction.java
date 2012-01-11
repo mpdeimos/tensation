@@ -11,6 +11,7 @@ import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.ContextPanelContentBase;
 import com.mpdeimos.tensor.ui.DividerLabel;
+import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.ui.EditPartListCellRenderer;
 import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
 import com.mpdeimos.tensor.util.LayoutUtil;
@@ -91,7 +92,7 @@ public class DrawTensorAction extends CanvasActionBase
 
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
-			ModelRoot root = Application.getApp().getModel();
+			ModelRoot root = this.canvas.getModel();
 			TensorBase duplicate = ((TensorBase) this.editPart.getModel()).duplicate(root);
 
 			drawTensor(duplicate);
@@ -106,8 +107,9 @@ public class DrawTensorAction extends CanvasActionBase
 	/** Adds a tensor to the current model. */
 	public static void drawTensor(final IModelData tensor)
 	{
-		final ModelRoot root = Application.getApp().getModel();
-		Application.getApp().getUndoManager().addEdit(
+		DrawingCanvas activeCanvas = Application.getApp().getActiveCanvas();
+		final ModelRoot root = activeCanvas.getModel();
+		activeCanvas.getUndoManager().addEdit(
 				new InfiniteUndoableEdit()
 		{
 			@Override
@@ -151,6 +153,9 @@ public class DrawTensorAction extends CanvasActionBase
 		/** cell size of the editpart list. */
 		private static final int CELL_SIZE = 40;
 
+		/** the editpart factory. */
+		private final EditPartFactory editPartFactory = new EditPartFactory();
+
 		/** Constructor. */
 		public ContextPanelContent()
 		{
@@ -189,8 +194,7 @@ public class DrawTensorAction extends CanvasActionBase
 
 				TensorEditPartBase editPart = DrawTensorAction.this.tensorList.getElementAt(index);
 				TensorBase tensor = ((TensorBase) editPart.getModel()).duplicate(null);
-				EditPartFactory editPartFactory = DrawTensorAction.this.canvas.getEditPartFactory();
-				DrawTensorAction.this.editPart = (TensorEditPartBase) editPartFactory.createEditPart(tensor);
+				DrawTensorAction.this.editPart = (TensorEditPartBase) this.editPartFactory.createEditPart(tensor);
 			}
 		}
 	}

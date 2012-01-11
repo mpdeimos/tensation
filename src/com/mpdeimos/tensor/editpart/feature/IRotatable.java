@@ -145,7 +145,7 @@ public interface IRotatable extends IFeatureEditPart
 				if (Feature.this.indicatorRoatation == Feature.this.editPart.getRotation())
 					return false;
 
-				Application.getApp().getUndoManager().addEdit(
+				Application.getApp().getActiveCanvas().getUndoManager().addEdit(
 						new InfiniteUndoableEdit()
 				{
 					private double before;

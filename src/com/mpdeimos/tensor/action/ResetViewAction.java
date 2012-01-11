@@ -27,7 +27,7 @@ public class ResetViewAction extends ActionBase
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		Application.getApp().getDrawingCanvas().setScale(1);
-		Application.getApp().getDrawingCanvas().setScroll(0, 0);
+		Application.getApp().getActiveCanvas().setScale(1);
+		Application.getApp().getActiveCanvas().setScroll(0, 0);
 	}
 }

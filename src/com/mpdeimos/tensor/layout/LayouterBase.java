@@ -9,6 +9,7 @@ import com.mpdeimos.tensor.model.TensorConnection;
 import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.ContextPanelContentBase;
 import com.mpdeimos.tensor.ui.DividerLabel;
+import com.mpdeimos.tensor.ui.DrawingCanvas;
 import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
 import com.mpdeimos.tensor.util.VecMath;
 
@@ -76,8 +77,10 @@ public abstract class LayouterBase extends CanvasActionBase
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
+			DrawingCanvas activeCanvas = Application.getApp().getActiveCanvas();
+
 			// save original position
-			ModelRoot model = Application.getApp().getModel();
+			ModelRoot model = activeCanvas.getModel();
 			final HashMap<TensorBase, Point2D> oldPos = new HashMap<TensorBase, Point2D>();
 			final HashMap<TensorBase, Point2D> newPos = new HashMap<TensorBase, Point2D>();
 			final HashMap<TensorBase, Double> oldRot = new HashMap<TensorBase, Double>();
@@ -105,7 +108,7 @@ public abstract class LayouterBase extends CanvasActionBase
 				return;
 
 			// build undo stack
-			Application.getApp().getUndoManager().addEdit(
+			activeCanvas.getUndoManager().addEdit(
 					new InfiniteUndoableEdit()
 			{
 				@Override

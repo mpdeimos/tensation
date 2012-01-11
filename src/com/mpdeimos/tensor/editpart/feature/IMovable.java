@@ -14,6 +14,8 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import javax.swing.undo.UndoManager;
+
 import resources.R;
 
 /**
@@ -164,15 +166,15 @@ public interface IMovable extends IFeatureEditPart
 				}
 				else
 				{
+					UndoManager undoManager = Application.getApp().getActiveCanvas().getUndoManager();
 					if (compoundEdit == null)
 					{
-						Application.getApp().getUndoManager().addEdit(edit);
+						undoManager.addEdit(edit);
 					}
 					else
 					{
 						compoundEdit.add(edit);
-						Application.getApp().getUndoManager().addEdit(
-								compoundEdit);
+						undoManager.addEdit(compoundEdit);
 						compoundEdit = null;
 					}
 				}

@@ -31,7 +31,7 @@ public class RedoAction extends ActionBase
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		UndoManager undoManager = Application.getApp().getUndoManager();
+		UndoManager undoManager = Application.getApp().getActiveCanvas().getUndoManager();
 
 		if (!undoManager.canRedo())
 			return;

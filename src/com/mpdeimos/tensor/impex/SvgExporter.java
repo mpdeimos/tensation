@@ -46,7 +46,7 @@ public class SvgExporter
 		}
 
 		Element eRoot = xmlDoc.getDocumentElement();
-		DrawingCanvas canvas = Application.getApp().getDrawingCanvas();
+		DrawingCanvas canvas = Application.getApp().getActiveCanvas();
 		Rectangle r = canvas.getImageRectangle(); // TODO calculate real rect
 		eRoot.setAttribute(
 				ESvg.ATTRIB_WIDTH.$(),

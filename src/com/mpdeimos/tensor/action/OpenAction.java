@@ -28,7 +28,7 @@ public class OpenAction extends ActionBase
 	public OpenAction()
 	{
 		super(
-				R.string.WINDOW_MENU_OPEN.string(),
+				R.string.WINDOW_MENU_FILE_OPEN.string(),
 				new ImageIcon(R.drawable.DOCUMENT_OPEN_16.url()));
 	}
 
@@ -71,7 +71,10 @@ public class OpenAction extends ActionBase
 		ModelRoot mr = importer.fromXml(file);
 		// TODO check for null
 
-		Application.getApp().setModel(mr);
-		Application.getApp().setModelExportLocation(file);
+		Application app = Application.getApp();
+
+		app.createNewCanvas();
+		app.getActiveCanvas().setModel(mr);
+		app.getActiveCanvas().setModelExportLocation(file);
 	}
 }

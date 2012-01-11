@@ -31,7 +31,7 @@ public abstract class CanvasActionBase extends ActionBase implements
 	protected final Application applicationWindow;
 
 	/** back reference to the drawing panel. */
-	protected final DrawingCanvas canvas;
+	protected DrawingCanvas canvas;
 
 	/**
 	 * Constructor.
@@ -42,7 +42,6 @@ public abstract class CanvasActionBase extends ActionBase implements
 	{
 		super(name, icon);
 		this.applicationWindow = Application.getApp();
-		this.canvas = Application.getApp().getDrawingCanvas();
 	}
 
 	@Override
@@ -57,10 +56,12 @@ public abstract class CanvasActionBase extends ActionBase implements
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		putValue(Action.SELECTED_KEY, true);
+		this.canvas = this.applicationWindow.getActiveCanvas();
+
 		this.canvas.startCanvasAction(this);
 
 		this.applicationWindow.getContextPanel().setContent(getContextPanel());
+		putValue(Action.SELECTED_KEY, true);
 	}
 
 	@Override

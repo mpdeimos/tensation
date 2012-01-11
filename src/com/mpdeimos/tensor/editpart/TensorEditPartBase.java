@@ -106,6 +106,6 @@ public abstract class TensorEditPartBase extends EditPartBase implements
 	public IModelData duplicateModel()
 	{
 		TensorBase model = (TensorBase) getModel();
-		return model.duplicate(Application.getApp().getModel());
+		return model.duplicate(Application.getApp().getActiveCanvas().getModel());
 	}
 }

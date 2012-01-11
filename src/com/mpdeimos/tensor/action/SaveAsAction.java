@@ -36,7 +36,7 @@ public class SaveAsAction extends ActionBase
 	public SaveAsAction()
 	{
 		super(
-				R.string.WINDOW_MENU_SAVEAS.string(),
+				R.string.WINDOW_MENU_FILE_SAVEAS.string(),
 				new ImageIcon(R.drawable.DOCUMENT_SAVE_AS_16.url()));
 	}
 
@@ -64,7 +64,7 @@ public class SaveAsAction extends ActionBase
 	/** Saves the currently open file. */
 	public static void saveFile(File selectedFile)
 	{
-		ModelRoot model = Application.getApp().getModel();
+		ModelRoot model = Application.getApp().getActiveCanvas().getModel();
 		TdgExporter ex = new TdgExporter();
 
 		Document doc = ex.toXml(model);
@@ -97,6 +97,7 @@ public class SaveAsAction extends ActionBase
 			// TODO show dialog
 		}
 
-		Application.getApp().setModelExportLocation(selectedFile);
+		Application.getApp().getActiveCanvas().setModelExportLocation(
+				selectedFile);
 	}
 }

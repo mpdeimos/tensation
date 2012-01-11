@@ -29,14 +29,14 @@ public class SaveAction extends ActionBase
 	public SaveAction()
 	{
 		super(
-				R.string.WINDOW_MENU_SAVE.string(),
+				R.string.WINDOW_MENU_FILE_SAVE.string(),
 				new ImageIcon(R.drawable.DOCUMENT_SAVE_16.url()));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		File exportLocation = Application.getApp().getModelExportLocation();
+		File exportLocation = Application.getApp().getActiveCanvas().getModelExportLocation();
 
 		if (exportLocation == null)
 		{
@@ -44,7 +44,7 @@ public class SaveAction extends ActionBase
 			return;
 		}
 
-		ModelRoot model = Application.getApp().getModel();
+		ModelRoot model = Application.getApp().getActiveCanvas().getModel();
 		TdgExporter ex = new TdgExporter();
 
 		Document doc = ex.toXml(model);

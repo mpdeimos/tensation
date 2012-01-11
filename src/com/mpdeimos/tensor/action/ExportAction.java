@@ -46,7 +46,7 @@ public class ExportAction extends ActionBase
 	public ExportAction()
 	{
 		super(
-				R.string.WINDOW_MENU_EXPORT.string(),
+				R.string.WINDOW_MENU_FILE_EXPORT.string(),
 				new ImageIcon(R.drawable.DOCUMENT_EXPORT_16.url()));
 	}
 
@@ -155,7 +155,7 @@ public class ExportAction extends ActionBase
 	/** exports as bitmap. */
 	private static void handleBitmap(File file, double scale, String extension)
 	{
-		Rectangle rect = Application.getApp().getDrawingCanvas().getImageRectangle();
+		Rectangle rect = Application.getApp().getActiveCanvas().getImageRectangle();
 		int width = (int) ((rect.width + Math.abs(rect.x)) * scale);
 		int height = (int) ((rect.height + Math.abs(rect.y)) * scale);
 
@@ -179,7 +179,7 @@ public class ExportAction extends ActionBase
 		gfx.scale(scale, scale);
 		gfx.translate(-rect.x, -rect.y);
 
-		Application.getApp().getDrawingCanvas().render(gfx, false);
+		Application.getApp().getActiveCanvas().render(gfx, false);
 
 		gfx.dispose();
 
@@ -203,7 +203,7 @@ public class ExportAction extends ActionBase
 	private static void handleSvg(File file)
 	{
 		SvgExporter svgExporter = new SvgExporter();
-		Document svg = svgExporter.toSvg(Application.getApp().getDrawingCanvas().getEditParts());
+		Document svg = svgExporter.toSvg(Application.getApp().getActiveCanvas().getEditParts());
 
 		if (!XmlUtil.writeDomDocumentToFile(svg, file))
 		{
