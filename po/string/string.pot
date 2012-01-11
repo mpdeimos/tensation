@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-05 23:34+0200\n"
+"POT-Creation-Date: 2012-01-11 12:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,29 +28,41 @@ msgstr ""
 msgid "Tensor"
 msgstr ""
 
+#: window_main_tab
+msgid "Canvas %d"
+msgstr ""
+
 #. # menus
 #: window_menu_file
 msgid "File"
 msgstr ""
 
-#: window_menu_new
+#: window_menu_file_new
 msgid "New"
 msgstr ""
 
-#: window_menu_open
+#: window_menu_file_open
 msgid "Open..."
 msgstr ""
 
-#: window_menu_save
+#: window_menu_file_save
 msgid "Save"
 msgstr ""
 
-#: window_menu_saveas
+#: window_menu_file_saveas
 msgid "Save As..."
 msgstr ""
 
-#: window_menu_export
+#: window_menu_file_export
 msgid "Export..."
+msgstr ""
+
+#: window_menu_file_closetab
+msgid "Close Canvas"
+msgstr ""
+
+#: window_menu_file_closetab_description
+msgid "Close active drawing canvas"
 msgstr ""
 
 #: window_menu_file_exit
@@ -199,6 +211,16 @@ msgstr ""
 msgid "Separate Layout"
 msgstr ""
 
+#: layout_fdp_rotation
+msgctxt "layout_fdp_rotation"
+msgid "Rotation"
+msgstr ""
+
+#: layout_fdp_rotation_optimize
+msgctxt "layout_fdp_rotation_optimize"
+msgid "Optimize Rotation"
+msgstr ""
+
 #: layout_random
 msgid "Random"
 msgstr ""
@@ -212,7 +234,13 @@ msgid "Position"
 msgstr ""
 
 #: layout_random_what_rotation
+msgctxt "layout_random_what_rotation"
 msgid "Rotation"
+msgstr ""
+
+#: layout_rotate
+msgctxt "layout_rotate"
+msgid "Optimize Rotation"
 msgstr ""
 
 #. # window context panel
