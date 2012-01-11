@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-11 12:20+0200\n"
-"PO-Revision-Date: 2012-01-11 11:46+0000\n"
+"PO-Revision-Date: 2011-12-05 14:58+0000\n"
 "Last-Translator: mpdeimos <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: exception_model_connection_missmatch
 msgid "A connection consists of exactly one sink and one source"
-msgstr "EIne Verbindung besteht aus genau einem Anfang und einem Ende"
+msgstr ""
 
 #. # windows
 #: window_main_title
@@ -28,7 +28,7 @@ msgstr ""
 
 #: window_main_tab
 msgid "Canvas %d"
-msgstr "Zeichnung %d"
+msgstr ""
 
 #. # menus
 #: window_menu_file
@@ -57,11 +57,11 @@ msgstr "Exportieren..."
 
 #: window_menu_file_closetab
 msgid "Close Canvas"
-msgstr "Zeichnung schließen"
+msgstr ""
 
 #: window_menu_file_closetab_description
 msgid "Close active drawing canvas"
-msgstr "Aktive Zeichnung schließen"
+msgstr ""
 
 #: window_menu_file_exit
 msgid "Exit"
@@ -186,11 +186,11 @@ msgstr "Rahmen"
 
 #: layout_fdp_bounds_tensors_rect
 msgid "Tensors (Rectangle)"
-msgstr "Tensoren (Rechteck)"
+msgstr ""
 
 #: layout_fdp_bounds_tensors_circle
 msgid "Tensors (Circle)"
-msgstr "Tensoren (Kreis)"
+msgstr ""
 
 #: layout_fdp_bounds_screen
 msgid "Screen"
@@ -212,12 +212,12 @@ msgstr "Getrennte Anordnung"
 #: layout_fdp_rotation
 msgctxt "layout_fdp_rotation"
 msgid "Rotation"
-msgstr "Drehung"
+msgstr ""
 
 #: layout_fdp_rotation_optimize
 msgctxt "layout_fdp_rotation_optimize"
 msgid "Optimize Rotation"
-msgstr "Drehung optimieren"
+msgstr ""
 
 #: layout_random
 msgid "Random"
@@ -234,12 +234,12 @@ msgstr "Position"
 #: layout_random_what_rotation
 msgctxt "layout_random_what_rotation"
 msgid "Rotation"
-msgstr "Drehung"
+msgstr ""
 
 #: layout_rotate
 msgctxt "layout_rotate"
 msgid "Optimize Rotation"
-msgstr "Drehung optimieren"
+msgstr ""
 
 #. # window context panel
 #: window_contextpanel_disabled
