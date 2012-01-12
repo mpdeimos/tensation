@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-01-11 13:49+0000\n"
+"X-Launchpad-Export-Date: 2012-01-12 06:48+0000\n"
 "X-Generator: Launchpad (build 14640)\n"
 
 #. # exception strings
@@ -345,6 +345,3 @@ msgstr "Diese Hilfe."
 #: cmd_quit
 msgid "Quits the application."
 msgstr "Schließt die Anwendung."
-
-#~ msgid "Rotation"
-#~ msgstr "Rotation"
