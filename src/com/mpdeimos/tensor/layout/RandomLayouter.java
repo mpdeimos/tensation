@@ -40,8 +40,10 @@ public class RandomLayouter extends LayouterBase
 			Set<TensorConnection> connections)
 	{
 		Rectangle2D imageRectangle = new Rectangle2D.Double(
-				ForceDirectedPlacementLayouter.SCREEN_MARGIN,
-				ForceDirectedPlacementLayouter.SCREEN_MARGIN,
+				this.canvas.getScroll().getX()
+						+ ForceDirectedPlacementLayouter.SCREEN_MARGIN,
+				this.canvas.getScroll().getY()
+						+ ForceDirectedPlacementLayouter.SCREEN_MARGIN,
 				this.canvas.getBounds().getWidth() - 2
 						* ForceDirectedPlacementLayouter.SCREEN_MARGIN,
 				this.canvas.getBounds().getHeight() - 2
@@ -56,7 +58,7 @@ public class RandomLayouter extends LayouterBase
 			if (this.uiPosition.isSelected())
 			{
 				int x = (int) (Math.random() * imageRectangle.getWidth() + imageRectangle.getX());
-				int y = (int) (Math.random() * imageRectangle.getHeight() + imageRectangle.getX());
+				int y = (int) (Math.random() * imageRectangle.getHeight() + imageRectangle.getY());
 				positions.put(tensor, new Point(x, y));
 			}
 		}

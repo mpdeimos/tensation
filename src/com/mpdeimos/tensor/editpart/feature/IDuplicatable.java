@@ -1,15 +1,10 @@
 package com.mpdeimos.tensor.editpart.feature;
 
-import com.mpdeimos.tensor.action.canvas.DrawTensorAction;
-import com.mpdeimos.tensor.action.canvas.ICanvasAction;
-import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensor.model.IModelData;
-import com.mpdeimos.tensor.model.TensorBase;
-import com.mpdeimos.tensor.util.PointUtil;
 
-import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.geom.Point2D;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * Feature for duplicatable editparts.
@@ -17,51 +12,39 @@ import java.awt.geom.Point2D;
  * @author mpdeimos
  * 
  */
-public interface IDuplicatable extends IFeatureEditPart
+public interface IDuplicatable
 {
-	/** @return a duplicate of the editparts model. */
-	public IModelData duplicateModel();
+	/**
+	 * Duplicates the EditPart to the active canvas.
+	 * 
+	 * @param duplicates
+	 *            a hash map that maps from old EditParts to new ones. Note:
+	 *            This map may not include all EditParts yet; use the
+	 *            duplicationPriority to steer the order.
+	 * @return a duplicate of the EditPart's model.
+	 */
+	public IModelData duplicateModel(
+			HashMap<IDuplicatable, IModelData> duplicates);
 
-	/** feature class for movable EditParts */
-	public class Feature extends
-			FeatureBase<IDuplicatable, SelectEditPartAction>
+	/**
+	 * @return the priority of duplication of an EditPart, higher values mean
+	 *         earlier duplication.
+	 */
+	public int getDuplicatePriority();
+
+	/**
+	 * @return a collection of EditParts that this EditPart requires upon
+	 *         duplicating. Nullable.
+	 */
+	public Collection<? extends IDuplicatable> getLinkedEditParts();
+
+	/** Comparator for IDuplicatables by priority. */
+	public static final Comparator<? super IDuplicatable> COMPARATOR = new Comparator<IDuplicatable>()
 	{
-		/** offset multiplicator. */
-		private short multiplicator = 0;
-
-		/** Constructor. */
-		public Feature(IDuplicatable editPart)
-		{
-			super(editPart);
-		}
-
 		@Override
-		public boolean doOnKeyPressed(ICanvasAction action, KeyEvent e)
+		public int compare(IDuplicatable o1, IDuplicatable o2)
 		{
-			if (!e.isControlDown())
-				return false;
-
-			if ((KeyEvent.VK_V == e.getKeyCode() && ((SelectEditPartAction) action).getCopiedEditParts().contains(
-					this.editPart))
-					|| (KeyEvent.VK_D == e.getKeyCode() && this.editPart.isSelected()))
-			{
-				IModelData md = this.editPart.duplicateModel();
-				// TODO make positionable base ifc
-				if (md instanceof TensorBase)
-				{
-					this.multiplicator++;
-					TensorBase tensor = (TensorBase) md;
-					Point2D p = PointUtil.move(
-							tensor.getPosition(),
-							this.multiplicator * 10,
-							this.multiplicator * 10);
-					tensor.setPosition(new Point((int) p.getX(), (int) p.getY()));
-				}
-				DrawTensorAction.drawTensor(md);
-				return false;
-			}
-
-			return false;
+			return o1.getDuplicatePriority() - o2.getDuplicatePriority();
 		}
-	}
+	};
 }

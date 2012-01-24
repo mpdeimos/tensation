@@ -3,10 +3,12 @@ package com.mpdeimos.tensor.action;
 import com.mpdeimos.tensor.ui.Application;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import resources.R;
 
@@ -26,7 +28,9 @@ public class CloseTabAction extends ActionBase
 	{
 		super(
 				R.string.WINDOW_MENU_FILE_CLOSETAB.string(),
-				new ImageIcon(R.drawable.TAB_CLOSE.url()));
+				new ImageIcon(R.drawable.TAB_CLOSE.url()),
+				KeyStroke.getKeyStroke(
+						KeyEvent.VK_W, ActionEvent.CTRL_MASK));
 		this.putValue(
 				Action.SHORT_DESCRIPTION,
 				R.string.WINDOW_MENU_FILE_CLOSETAB_DESCRIPTION.string());

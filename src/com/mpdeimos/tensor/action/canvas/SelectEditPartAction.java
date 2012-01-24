@@ -1,7 +1,6 @@
 package com.mpdeimos.tensor.action.canvas;
 
 import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.editpart.feature.IDuplicatable;
 import com.mpdeimos.tensor.util.Gfx;
 
 import java.awt.BasicStroke;
@@ -13,9 +12,7 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -29,17 +26,11 @@ import resources.R;
  */
 public class SelectEditPartAction extends CanvasActionBase
 {
-	/** The currently selected EditParts. */
-	private final List<IEditPart> selectedEditParts = new ArrayList<IEditPart>();
-
 	/** The currently highlighted EditPart. */
 	private IEditPart highlightedEditPart;
 
 	/** newly selected editpart. */
 	private IEditPart newlySelectedEditPart = null;
-
-	/** The currently copied EditParts. */
-	private final List<IDuplicatable> copiedEditParts = new ArrayList<IDuplicatable>();
 
 	/** the bounding rect for manual selection */
 	private Rectangle selectionRect;
@@ -66,7 +57,7 @@ public class SelectEditPartAction extends CanvasActionBase
 	{
 		super(
 				R.string.WINDOW_ACTION_SELECT.string(),
-				new ImageIcon(R.drawable.SELECT.url()));
+				new ImageIcon(R.drawable.SELECT.url()), KeyEvent.VK_S);
 	}
 
 	@Override
@@ -75,11 +66,12 @@ public class SelectEditPartAction extends CanvasActionBase
 		super.stopAction();
 
 		// reset some stuff
-		for (IEditPart e : this.selectedEditParts)
-			e.setSelected(false);
+		this.highlightedEditPart = null;
 
-		this.selectedEditParts.clear();
-		this.canvas.setCursor(Cursor.getDefaultCursor());
+		if (this.canvas != null)
+		{
+			this.canvas.setCursor(Cursor.getDefaultCursor());
+		}
 	}
 
 	@Override
@@ -91,7 +83,7 @@ public class SelectEditPartAction extends CanvasActionBase
 			this.highlightedEditPart.setHighlighted(false);
 
 		if (handleMouseEventForFeatures(
-				this.selectedEditParts,
+				this.canvas.getSelectedEditParts(),
 				e,
 				MouseEvent.MOUSE_MOVED))
 			return true;
@@ -129,11 +121,11 @@ public class SelectEditPartAction extends CanvasActionBase
 	{
 		super.doOnMousePressed(e);
 
-		for (IEditPart ep : this.selectedEditParts)
+		for (IEditPart ep : this.canvas.getSelectedEditParts())
 			ep.setHighlighted(false);
 
 		if (handleMouseEventForFeatures(
-				this.selectedEditParts,
+				this.canvas.getSelectedEditParts(),
 				e,
 				MouseEvent.MOUSE_PRESSED))
 			return true;
@@ -142,25 +134,21 @@ public class SelectEditPartAction extends CanvasActionBase
 		{
 			if (!e.isShiftDown())
 			{
-				for (IEditPart ep : this.selectedEditParts)
-					ep.setSelected(false);
-
-				this.selectedEditParts.clear();
+				this.canvas.clearSelectedEditParts();
 			}
 
 			for (IEditPart editPart : this.canvas.getEditParts())
 			{
 				if (isMouseOver(editPart, e.getPoint()))
 				{
-					this.selectedEditParts.add(editPart);
-					editPart.setSelected(true);
+					this.canvas.addSelectedEditPart(editPart);
 
 					this.newlySelectedEditPart = editPart;
 
 					this.canvas.repaint();
 
 					handleMouseEventForFeatures(
-							this.selectedEditParts,
+							this.canvas.getSelectedEditParts(),
 							e,
 							MouseEvent.MOUSE_PRESSED);
 
@@ -192,17 +180,12 @@ public class SelectEditPartAction extends CanvasActionBase
 					0);
 			this.selectionRect.add(e.getPoint());
 
-			this.selectedEditParts.clear();
+			this.canvas.clearSelectedEditParts();
 			for (IEditPart part : this.canvas.getEditParts())
 			{
 				if (part.intersects(this.selectionRect))
 				{
-					part.setSelected(true);
-					this.selectedEditParts.add(part);
-				}
-				else
-				{
-					part.setSelected(false);
+					this.canvas.addSelectedEditPart(part);
 				}
 			}
 
@@ -212,7 +195,7 @@ public class SelectEditPartAction extends CanvasActionBase
 		}
 
 		if (handleMouseEventForFeatures(
-				this.selectedEditParts,
+				this.canvas.getSelectedEditParts(),
 				e,
 				MouseEvent.MOUSE_DRAGGED))
 			return true;
@@ -229,7 +212,7 @@ public class SelectEditPartAction extends CanvasActionBase
 		this.selectionStartPoint = null;
 
 		if (handleMouseEventForFeatures(
-				this.selectedEditParts,
+				this.canvas.getSelectedEditParts(),
 				e,
 				MouseEvent.MOUSE_RELEASED))
 			return true;
@@ -238,16 +221,14 @@ public class SelectEditPartAction extends CanvasActionBase
 				&& this.newlySelectedEditPart == null)
 		{
 			for (IEditPart editPart : new LinkedList<IEditPart>(
-					this.selectedEditParts))
+					this.canvas.getSelectedEditParts()))
 			{
 				if (isMouseOver(editPart, e.getPoint()))
 				{
-					this.selectedEditParts.remove(editPart);
-					editPart.setSelected(false);
-
-					this.canvas.repaint();
+					this.canvas.removeSelectedEditPart(editPart);
 				}
 			}
+			this.canvas.repaint();
 		}
 
 		this.newlySelectedEditPart = null;
@@ -258,66 +239,21 @@ public class SelectEditPartAction extends CanvasActionBase
 	@Override
 	public boolean doOnKeyPressed(KeyEvent e)
 	{
-		boolean handled = false;
-		if (e.getKeyCode() == KeyEvent.VK_DELETE)
-		{
-			if (!this.selectedEditParts.isEmpty())
-			{
-				// CompoundInfiniteUndoableEdit edit = new
-				// CompoundInfiniteUndoableEdit();
-				// final ModelRoot root = Application.getApp().getModel();
-				// for (final IEditPart part : this.selectedEditParts)
-				// {
-				// edit.add(new CompoundInfiniteUndoableEdit()
-				// {
-				// @Override
-				// public void redo()
-				// {
-				// root.removeChild(part.getModel());
-				// }
-				//
-				// @Override
-				// public void undo()
-				// {
-				// root.addChild(part.getModel());
-				// }
-				//
-				// @Override
-				// public String getPresentationName()
-				// {
-				// return R.string.WINDOW_MENU_EDIT_DELETE.string();
-				// }
-				// });
-				// handled = true;
-				// }
-				for (final IEditPart part : new LinkedList<IEditPart>(
-						this.selectedEditParts))
-				{
-					// TODO make undoable
-					part.getModel().remove();
-					handled = true;
-				}
-				this.selectedEditParts.clear();
-			}
-		}
+		return this.handleKeyEventForFeatures(
+				this.canvas.getEditParts(),
+				e,
+				false);
+	}
 
-		if (e.getKeyCode() == KeyEvent.VK_C)
-		{
-			this.copiedEditParts.clear();
-			for (IEditPart part : this.selectedEditParts)
-			{
-				if (part instanceof IDuplicatable)
-				{
-					this.copiedEditParts.add((IDuplicatable) part);
-					handled = true;
-				}
-			}
-		}
+	@Override
+	public boolean doOnKeyReleased(KeyEvent e)
+	{
+		boolean handled = this.handleKeyEventForFeatures(
+				this.canvas.getEditParts(),
+				e,
+				true);
 
-		if (handled)
-			return true;
-
-		return this.handleKeyEventForFeatures(this.canvas.getEditParts(), e);
+		return handled;
 	}
 
 	@Override
@@ -339,7 +275,7 @@ public class SelectEditPartAction extends CanvasActionBase
 			return true;
 		}
 
-		for (IEditPart part : this.selectedEditParts)
+		for (IEditPart part : this.canvas.getSelectedEditParts())
 		{
 			// old bounding box code
 			//
@@ -361,7 +297,7 @@ public class SelectEditPartAction extends CanvasActionBase
 
 			drawOverlayForFeatures(part, gfx);
 		}
-		if (!this.selectedEditParts.isEmpty())
+		if (!this.canvas.getSelectedEditParts().isEmpty())
 			return true;
 
 		return false;
@@ -373,11 +309,5 @@ public class SelectEditPartAction extends CanvasActionBase
 		int offset = 2;
 		Rectangle rect = new Rectangle(point.x - offset, point.y - offset, 4, 4);
 		return editPart.intersects(rect);
-	}
-
-	/** @return the currently copied edit part. */
-	public List<IDuplicatable> getCopiedEditParts()
-	{
-		return this.copiedEditParts;
 	}
 }

@@ -3,8 +3,10 @@ package com.mpdeimos.tensor.action;
 import com.mpdeimos.tensor.ui.Application;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
 import javax.swing.undo.UndoManager;
 
 import resources.R;
@@ -25,7 +27,9 @@ public class UndoAction extends ActionBase
 	{
 		super(
 				R.string.WINDOW_MENU_EDIT_UNDO.string(),
-				new ImageIcon(R.drawable.EDIT_UNDO_16.url()));
+				new ImageIcon(R.drawable.EDIT_UNDO_16.url()),
+				KeyStroke.getKeyStroke(
+						KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
 	}
 
 	@Override

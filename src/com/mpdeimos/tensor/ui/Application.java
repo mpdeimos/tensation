@@ -1,10 +1,15 @@
 package com.mpdeimos.tensor.ui;
 
 import com.mpdeimos.tensor.action.CloseTabAction;
+import com.mpdeimos.tensor.action.CopyAction;
+import com.mpdeimos.tensor.action.DeleteSelectionAction;
+import com.mpdeimos.tensor.action.DuplicateAction;
+import com.mpdeimos.tensor.action.DuplicateNewCanvasAction;
 import com.mpdeimos.tensor.action.ExitAction;
 import com.mpdeimos.tensor.action.ExportAction;
 import com.mpdeimos.tensor.action.NewAction;
 import com.mpdeimos.tensor.action.OpenAction;
+import com.mpdeimos.tensor.action.PasteAction;
 import com.mpdeimos.tensor.action.RedoAction;
 import com.mpdeimos.tensor.action.ResetViewAction;
 import com.mpdeimos.tensor.action.SaveAction;
@@ -23,8 +28,6 @@ import com.mpdeimos.tensor.util.Log;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Rectangle;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -34,7 +37,6 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -42,7 +44,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
@@ -85,6 +86,9 @@ public class Application extends JFrame
 
 	/** the global redo action. */
 	public final AbstractAction ACTION_REDO = new RedoAction();
+
+	/** the global new action. */
+	public final AbstractAction ACTION_NEW = new NewAction();
 
 	/**
 	 * Launch the application.
@@ -155,7 +159,6 @@ public class Application extends JFrame
 		initializeTabs();
 		initializeMenu();
 		initializeToolbars();
-		initializeKeystrokes();
 
 		this.pack();
 
@@ -188,38 +191,6 @@ public class Application extends JFrame
 				getActiveCanvas().startCanvasAction();
 			}
 		});
-	}
-
-	// TODO use accelerators
-	/** Initializes global keystrokes. */
-	private void initializeKeystrokes()
-	{
-		((JComponent) getContentPane()).registerKeyboardAction(
-				this.ACTION_UNDO,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
-		((JComponent) getContentPane()).registerKeyboardAction(
-				this.ACTION_REDO,
-				KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-		((JComponent) getContentPane()).registerKeyboardAction(
-				new NewAction(),
-				KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
-		((JComponent) getContentPane()).registerKeyboardAction(
-				new OpenAction(),
-				KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
-		((JComponent) getContentPane()).registerKeyboardAction(
-				new SaveAction(),
-				KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
-		((JComponent) getContentPane()).registerKeyboardAction(
-				new SaveAsAction(),
-				KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK
-						+ InputEvent.SHIFT_DOWN_MASK),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 
 	/**
@@ -266,7 +237,7 @@ public class Application extends JFrame
 
 		final JButton newButton = new ToolBarButton(
 				topToolBar,
-				new NewAction());
+				this.ACTION_NEW);
 		newButton.setHideActionText(true);
 		newButton.setIcon(new ImageIcon(R.drawable.DOCUMENT_NEW_24.url()));
 		topToolBar.add(newButton);
@@ -323,7 +294,7 @@ public class Application extends JFrame
 		JMenu menuFile = new JMenu(R.string.WINDOW_MENU_FILE.string());
 		menuBar.add(menuFile);
 
-		JMenuItem item = new JMenuItem(new NewAction());
+		JMenuItem item = new JMenuItem(this.ACTION_NEW);
 		menuFile.add(item);
 		item = new JMenuItem(new OpenAction());
 		menuFile.add(item);
@@ -352,6 +323,13 @@ public class Application extends JFrame
 		menuEdit.add(item);
 		item = new JMenuItem(this.ACTION_REDO);
 		menuEdit.add(item);
+		menuEdit.addSeparator();
+		menuEdit.add(new CopyAction());
+		menuEdit.add(new PasteAction());
+		menuEdit.add(new DuplicateAction());
+		menuEdit.add(new DuplicateNewCanvasAction());
+		menuEdit.addSeparator();
+		menuEdit.add(new DeleteSelectionAction());
 
 		// layout menu
 		JMenu menuLayout = new JMenu(R.string.WINDOW_MENU_LAYOUT.string());

@@ -8,11 +8,13 @@ import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.XmlUtil;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.w3c.dom.Document;
@@ -37,7 +39,10 @@ public class SaveAsAction extends ActionBase
 	{
 		super(
 				R.string.WINDOW_MENU_FILE_SAVEAS.string(),
-				new ImageIcon(R.drawable.DOCUMENT_SAVE_AS_16.url()));
+				new ImageIcon(R.drawable.DOCUMENT_SAVE_AS_16.url()),
+				KeyStroke.getKeyStroke(
+						KeyEvent.VK_S, ActionEvent.CTRL_MASK
+								+ ActionEvent.SHIFT_MASK));
 	}
 
 	@Override

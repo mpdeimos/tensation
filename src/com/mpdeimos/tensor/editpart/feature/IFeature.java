@@ -35,6 +35,9 @@ public interface IFeature
 	/** being called once a key has been pressed */
 	public boolean doOnKeyPressed(ICanvasAction action, KeyEvent e);
 
+	/** being called once a key has been released */
+	boolean doOnKeyReleased(ICanvasAction action, KeyEvent e);
+
 	/** being called once a EditPart has been selected or deselected. */
 	public void doOnEditPartSelected(boolean selected);
 

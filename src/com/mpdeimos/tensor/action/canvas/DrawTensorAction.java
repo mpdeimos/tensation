@@ -18,6 +18,7 @@ import com.mpdeimos.tensor.util.LayoutUtil;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractListModel;
@@ -58,7 +59,7 @@ public class DrawTensorAction extends CanvasActionBase
 	{
 		super(
 				R.string.WINDOW_ACTION_DRAWTENSOR.string(),
-				new ImageIcon(R.drawable.DRAW_TENSOR.url()));
+				new ImageIcon(R.drawable.DRAW_TENSOR.url()), KeyEvent.VK_D);
 
 		this.contextPanelcontent = this.new ContextPanelContent();
 	}
@@ -235,6 +236,12 @@ public class DrawTensorAction extends CanvasActionBase
 							null,
 							p,
 							new EDirection[] { EDirection.SOURCE,
+									EDirection.SOURCE, })),
+
+					new GenericTensorEditPart(new GenericTensor(
+							null,
+							p,
+							new EDirection[] { EDirection.SINK,
 									EDirection.SOURCE, })),
 
 					new GenericTensorEditPart(new GenericTensor(

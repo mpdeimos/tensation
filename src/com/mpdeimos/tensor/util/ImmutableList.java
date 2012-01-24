@@ -164,7 +164,7 @@ public class ImmutableList<T> implements List<T>
 
 	@SuppressWarnings("hiding")
 	@Override
-	public <T> T[] toArray(T[] a)
+	public <T extends Object> T[] toArray(T[] a)
 	{
 		return this.backend.toArray(a);
 	}

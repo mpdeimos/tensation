@@ -7,9 +7,11 @@ import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.XmlUtil;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
 
 import org.w3c.dom.Document;
 
@@ -30,7 +32,9 @@ public class SaveAction extends ActionBase
 	{
 		super(
 				R.string.WINDOW_MENU_FILE_SAVE.string(),
-				new ImageIcon(R.drawable.DOCUMENT_SAVE_16.url()));
+				new ImageIcon(R.drawable.DOCUMENT_SAVE_16.url()),
+				KeyStroke.getKeyStroke(
+						KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 	}
 
 	@Override

@@ -4,13 +4,21 @@
 package com.mpdeimos.tensor.editpart;
 
 import com.mpdeimos.tensor.editpart.feature.IConnectionControl;
+import com.mpdeimos.tensor.editpart.feature.IDuplicatable;
 import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.figure.TensorConnectionFigure;
 import com.mpdeimos.tensor.model.IModelData;
 import com.mpdeimos.tensor.model.ModelChangedAdapter;
+import com.mpdeimos.tensor.model.ModelRoot;
+import com.mpdeimos.tensor.model.TensorBase;
 import com.mpdeimos.tensor.model.TensorConnection;
+import com.mpdeimos.tensor.ui.Application;
+import com.mpdeimos.tensor.ui.DrawingCanvas;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * EditPart for Tensor Connections
@@ -19,7 +27,7 @@ import java.awt.geom.Point2D;
  * 
  */
 public class TensorConnectionEditPart extends EditPartBase implements
-		IConnectionControl
+		IConnectionControl, IDuplicatable
 {
 	/** Constructor. */
 	public TensorConnectionEditPart(IModelData modelData)
@@ -96,5 +104,45 @@ public class TensorConnectionEditPart extends EditPartBase implements
 	public double getSinkControlPointDistance()
 	{
 		return ((TensorConnection) this.getModel()).getSinkDistance();
+	}
+
+	@Override
+	public IModelData duplicateModel(
+			HashMap<IDuplicatable, IModelData> duplicates)
+	{
+		DrawingCanvas canvas = Application.getApp().getActiveCanvas();
+		TensorConnection connection = (TensorConnection) this.getModel();
+		DrawingCanvas canvasOrig = ((ModelRoot) connection.getParent()).getDrawingCanvas();
+
+		TensorEditPartBase sourceOrig = (TensorEditPartBase) canvasOrig.getEditPartForModelData(connection.getSource().getTensor());
+		TensorEditPartBase sinkOrig = (TensorEditPartBase) canvasOrig.getEditPartForModelData(connection.getSink().getTensor());
+
+		TensorBase source = (TensorBase) duplicates.get(sourceOrig);
+		TensorBase sink = (TensorBase) duplicates.get(sinkOrig);
+
+		return new TensorConnection(
+				canvas.getModel(),
+				source.getAnchors().get(connection.getSource().getId()),
+				sink.getAnchors().get(connection.getSink().getId()));
+	}
+
+	@Override
+	public int getDuplicatePriority()
+	{
+		return 100;
+	}
+
+	@Override
+	public List<IDuplicatable> getLinkedEditParts()
+	{
+		List<IDuplicatable> tensors = new ArrayList<IDuplicatable>();
+
+		TensorConnection connection = (TensorConnection) this.getModel();
+		DrawingCanvas canvas = Application.getApp().getActiveCanvas();
+
+		tensors.add((IDuplicatable) canvas.getEditPartForModelData(connection.getSource().getTensor()));
+		tensors.add((IDuplicatable) canvas.getEditPartForModelData(connection.getSink().getTensor()));
+
+		return tensors;
 	}
 }

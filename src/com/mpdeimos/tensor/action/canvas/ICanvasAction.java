@@ -40,6 +40,9 @@ public interface ICanvasAction extends Action
 	/** being called when a key is pressed. */
 	public boolean doOnKeyPressed(KeyEvent e);
 
+	/** being called when a key is released. */
+	public boolean doOnKeyReleased(KeyEvent e);
+
 	/** being called during the paint cycle of the canvas */
 	public boolean drawOverlay(Graphics2D gfx);
 

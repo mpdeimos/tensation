@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
@@ -47,7 +49,9 @@ public class ExportAction extends ActionBase
 	{
 		super(
 				R.string.WINDOW_MENU_FILE_EXPORT.string(),
-				new ImageIcon(R.drawable.DOCUMENT_EXPORT_16.url()));
+				new ImageIcon(R.drawable.DOCUMENT_EXPORT_16.url()),
+				KeyStroke.getKeyStroke(
+						KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 	}
 
 	@Override

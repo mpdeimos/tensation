@@ -10,6 +10,7 @@ import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 
@@ -41,7 +42,7 @@ public class TensorConnectAction extends CanvasActionBase
 	{
 		super(
 				R.string.WINDOW_ACTION_CONNECT.string(),
-				new ImageIcon(R.drawable.ACTION_CONNECT.url()));
+				new ImageIcon(R.drawable.ACTION_CONNECT.url()), KeyEvent.VK_C);
 	}
 
 	@Override

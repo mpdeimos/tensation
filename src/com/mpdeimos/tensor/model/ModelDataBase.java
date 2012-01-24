@@ -136,4 +136,10 @@ public abstract class ModelDataBase implements IModelData
 		if (this.parent != null && this.parent instanceof ModelDataBase)
 			((ModelDataBase) this.parent).fireOnModelDataChanged(child);
 	}
+
+	/** @return the parent model */
+	public IModelData getParent()
+	{
+		return this.parent;
+	}
 }

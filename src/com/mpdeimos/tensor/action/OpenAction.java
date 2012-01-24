@@ -6,10 +6,12 @@ import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.util.Log;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import resources.R;
@@ -29,7 +31,9 @@ public class OpenAction extends ActionBase
 	{
 		super(
 				R.string.WINDOW_MENU_FILE_OPEN.string(),
-				new ImageIcon(R.drawable.DOCUMENT_OPEN_16.url()));
+				new ImageIcon(R.drawable.DOCUMENT_OPEN_16.url()),
+				KeyStroke.getKeyStroke(
+						KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 	}
 
 	@Override

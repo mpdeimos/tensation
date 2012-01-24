@@ -1,38 +1,41 @@
 package com.mpdeimos.tensor.action;
 
+import com.mpdeimos.tensor.impex.Clipboard;
 import com.mpdeimos.tensor.ui.Application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import resources.R;
 
 /**
- * Creates a new tensor model.
+ * Action for duplicating the active selection.
  * 
  * @author mpdeimos
  * 
  */
-public class NewAction extends ActionBase
+public class DuplicateNewCanvasAction extends ActionBase
 {
 	/**
 	 * Constructor.
 	 */
-	public NewAction()
+	public DuplicateNewCanvasAction()
 	{
 		super(
-				R.string.WINDOW_MENU_FILE_NEW.string(),
-				new ImageIcon(R.drawable.DOCUMENT_NEW_16.url()),
+				R.string.WINDOW_MENU_EDIT_DUPLICATE_NEWCANVAS.string(),
+				null,
 				KeyStroke.getKeyStroke(
-						KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+						KeyEvent.VK_D, ActionEvent.CTRL_MASK
+								+ ActionEvent.SHIFT_MASK));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		Clipboard.get().clipSelection();
 		Application.getApp().createNewCanvas();
+		Clipboard.get().copyToCanvas();
 	}
 }

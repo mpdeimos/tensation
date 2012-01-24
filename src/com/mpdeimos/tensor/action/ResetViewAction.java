@@ -3,6 +3,9 @@ package com.mpdeimos.tensor.action;
 import com.mpdeimos.tensor.ui.Application;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
 
 import resources.R;
 
@@ -21,7 +24,9 @@ public class ResetViewAction extends ActionBase
 	 */
 	public ResetViewAction()
 	{
-		super(R.string.WINDOW_MENU_VIEW_RESET.string(), null);
+		super(R.string.WINDOW_MENU_VIEW_RESET.string(), null,
+				KeyStroke.getKeyStroke(
+						KeyEvent.VK_NUMPAD0, ActionEvent.CTRL_MASK));
 	}
 
 	@Override

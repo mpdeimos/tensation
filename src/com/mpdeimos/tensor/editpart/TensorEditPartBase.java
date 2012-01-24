@@ -16,6 +16,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -103,9 +105,23 @@ public abstract class TensorEditPartBase extends EditPartBase implements
 	}
 
 	@Override
-	public IModelData duplicateModel()
+	public IModelData duplicateModel(
+			HashMap<IDuplicatable, IModelData> duplicates)
 	{
 		TensorBase model = (TensorBase) getModel();
-		return model.duplicate(Application.getApp().getActiveCanvas().getModel());
+		model = model.duplicate(Application.getApp().getActiveCanvas().getModel());
+		return model;
+	}
+
+	@Override
+	public int getDuplicatePriority()
+	{
+		return 10;
+	}
+
+	@Override
+	public Collection<? extends IDuplicatable> getLinkedEditParts()
+	{
+		return null;
 	}
 }

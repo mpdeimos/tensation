@@ -33,6 +33,9 @@ public abstract class CanvasActionBase extends ActionBase implements
 	/** back reference to the drawing panel. */
 	protected DrawingCanvas canvas;
 
+	/** flag for bypassing the stop event. */
+	private boolean myStop = false;
+
 	/**
 	 * Constructor.
 	 */
@@ -40,13 +43,27 @@ public abstract class CanvasActionBase extends ActionBase implements
 			String name,
 			ImageIcon icon)
 	{
+		this(name, icon, null);
+	}
+
+	/** Constructor. */
+	public CanvasActionBase(
+			String name,
+			ImageIcon icon,
+			Integer mnemonic)
+	{
 		super(name, icon);
 		this.applicationWindow = Application.getApp();
+		if (mnemonic != null)
+			putValue(MNEMONIC_KEY, mnemonic);
 	}
 
 	@Override
 	public void stopAction()
 	{
+		if (this.myStop)
+			return;
+
 		this.applicationWindow.getContextPanel().setContent(null);
 
 		putValue(Action.SELECTED_KEY, false);
@@ -56,6 +73,10 @@ public abstract class CanvasActionBase extends ActionBase implements
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		this.myStop = true;
+		stopAction();
+		this.myStop = false;
+
 		this.canvas = this.applicationWindow.getActiveCanvas();
 
 		this.canvas.startCanvasAction(this);
@@ -112,6 +133,12 @@ public abstract class CanvasActionBase extends ActionBase implements
 		return false;
 	}
 
+	@Override
+	public boolean doOnKeyReleased(KeyEvent e)
+	{
+		return false;
+	}
+
 	/** Draws an overlay for all features of the given EditPart. */
 	protected final boolean drawOverlayForFeatures(
 			List<IEditPart> editParts,
@@ -150,7 +177,8 @@ public abstract class CanvasActionBase extends ActionBase implements
 	/** handles the feature action for a specific key event. */
 	protected final boolean handleKeyEventForFeatures(
 			IEditPart editPart,
-			KeyEvent e)
+			KeyEvent e,
+			boolean release)
 	{
 		if (!(editPart instanceof IFeatureEditPart))
 			return false;
@@ -161,7 +189,9 @@ public abstract class CanvasActionBase extends ActionBase implements
 
 		for (IFeature feature : features)
 		{
-			if (feature.doOnKeyPressed(this, e))
+			if (release && feature.doOnKeyReleased(this, e))
+				return true;
+			if (!release && feature.doOnKeyPressed(this, e))
 				return true;
 		}
 
@@ -171,11 +201,12 @@ public abstract class CanvasActionBase extends ActionBase implements
 	/** handles the feature action for a specific key event. */
 	protected final boolean handleKeyEventForFeatures(
 			List<IEditPart> editParts,
-			KeyEvent e)
+			KeyEvent e,
+			boolean release)
 	{
 		for (IEditPart editPart : new ArrayList<IEditPart>(editParts))
 		{
-			if (handleKeyEventForFeatures(editPart, e))
+			if (handleKeyEventForFeatures(editPart, e, release))
 				return true;
 		}
 

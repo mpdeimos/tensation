@@ -3,8 +3,10 @@ package com.mpdeimos.tensor.action;
 import com.mpdeimos.tensor.ui.Application;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
 
 import resources.R;
 
@@ -24,7 +26,9 @@ public class ExitAction extends ActionBase
 	{
 		super(
 				R.string.WINDOW_MENU_FILE_EXIT.string(),
-				new ImageIcon(R.drawable.WINDOW_EXIT.url()));
+				new ImageIcon(R.drawable.WINDOW_EXIT.url()),
+				KeyStroke.getKeyStroke(
+						KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import com.mpdeimos.tensor.editpart.IEditPart;
 import com.mpdeimos.tensor.model.IModelChangedListener;
 import com.mpdeimos.tensor.model.IModelData;
 import com.mpdeimos.tensor.model.ModelRoot;
+import com.mpdeimos.tensor.util.ImmutableList;
 import com.mpdeimos.tensor.util.Log;
 import com.mpdeimos.tensor.util.PointUtil;
 
@@ -87,6 +88,9 @@ public class DrawingCanvas extends JPanel
 	/** The canvas instance number. */
 	private final int instanceNum;
 
+	/** The currently selected EditParts. */
+	private final List<IEditPart> selectedEditParts = new ArrayList<IEditPart>();
+
 	/** Maximum Canvas Size. */
 	private static final short MAX_CANVAS_SIZE = 4000;
 
@@ -100,7 +104,7 @@ public class DrawingCanvas extends JPanel
 	{
 		this.instanceNum = canvasCount++;
 
-		this.model = new ModelRoot();
+		this.model = new ModelRoot(this);
 		this.undoManager = new CanvasUndoManager();
 
 		setBackground(Color.WHITE);
@@ -110,7 +114,7 @@ public class DrawingCanvas extends JPanel
 		this.componentListener = new ComponentListener();
 
 		this.hScrollModel = holder.getHorizontalScrollModel();
-		this.hScrollModel.setMaximum(MAX_CANVAS_SIZE / 2);
+		this.hScrollModel.setMaximum(MAX_CANVAS_SIZE / 2 + getWidth());
 		this.hScrollModel.setMinimum(-MAX_CANVAS_SIZE / 2);
 		this.hScrollModel.addChangeListener(new ChangeListener()
 		{
@@ -122,7 +126,7 @@ public class DrawingCanvas extends JPanel
 		});
 
 		this.vScrollModel = holder.getVerticalScrollModel();
-		this.vScrollModel.setMaximum(MAX_CANVAS_SIZE / 2);
+		this.vScrollModel.setMaximum(MAX_CANVAS_SIZE / 2 + getHeight());
 		this.vScrollModel.setMinimum(-MAX_CANVAS_SIZE / 2);
 		this.vScrollModel.addChangeListener(new ChangeListener()
 		{
@@ -372,6 +376,7 @@ public class DrawingCanvas extends JPanel
 				if (part.getModel() == child) // ref comp ok here
 				{
 					toBeRemoved.add(part);
+					DrawingCanvas.this.removeSelectedEditPart(part);
 				}
 			}
 
@@ -393,6 +398,10 @@ public class DrawingCanvas extends JPanel
 		{
 			super.componentResized(e);
 
+			DrawingCanvas.this.hScrollModel.setMaximum(MAX_CANVAS_SIZE / 2
+					+ DrawingCanvas.this.getWidth());
+			DrawingCanvas.this.vScrollModel.setMaximum(MAX_CANVAS_SIZE / 2
+					+ DrawingCanvas.this.getHeight());
 			DrawingCanvas.this.hScrollModel.setExtent(DrawingCanvas.this.getWidth());
 			DrawingCanvas.this.vScrollModel.setExtent(DrawingCanvas.this.getHeight());
 
@@ -408,6 +417,15 @@ public class DrawingCanvas extends JPanel
 			if (DrawingCanvas.this.canvasAction != null)
 			{
 				DrawingCanvas.this.canvasAction.doOnKeyPressed(e);
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e)
+		{
+			if (DrawingCanvas.this.canvasAction != null)
+			{
+				DrawingCanvas.this.canvasAction.doOnKeyReleased(e);
 			}
 		}
 	}
@@ -464,6 +482,23 @@ public class DrawingCanvas extends JPanel
 	public List<IEditPart> getEditParts()
 	{
 		return this.editParts;
+	}
+
+	/**
+	 * @param model
+	 *            to search the editpart for.
+	 * @return the editpart for a given model. null if not found.
+	 */
+	public IEditPart getEditPartForModelData(IModelData model)
+	{
+		for (IEditPart editPart : this.editParts)
+		{
+			if (editPart.getModel() == model) // ref comp
+			{
+				return editPart;
+			}
+		}
+		return null;
 	}
 
 	/** @return the EditPartFactory of the canvas. */
@@ -539,6 +574,14 @@ public class DrawingCanvas extends JPanel
 		this.vScrollModel.setValue(v);
 	}
 
+	/** @return the scroll position of the canvas. */
+	public Point getScroll()
+	{
+		return new Point(
+				this.hScrollModel.getValue(),
+				this.vScrollModel.getValue());
+	}
+
 	/** @return the human readable name of this canvas. */
 	@Override
 	public String getName()
@@ -567,6 +610,7 @@ public class DrawingCanvas extends JPanel
 	public void setModel(ModelRoot model)
 	{
 		this.model = model;
+		this.model.setDrawingCanvas(this);
 		this.modelExportLocation = null;
 		this.undoManager.discardAllEdits();
 		onModelExchanged();
@@ -586,5 +630,46 @@ public class DrawingCanvas extends JPanel
 		this.modelExportLocation = location;
 		Application.getApp().setModelExportLocation(location);
 		Application.getApp().updateActiveTabName();
+	}
+
+	/** marks the given editparts as selected and resets the previous selection. */
+	public void setSelectedEditParts(List<IEditPart> parts)
+	{
+		clearSelectedEditParts();
+
+		for (IEditPart part : parts)
+		{
+			addSelectedEditPart(part);
+		}
+	}
+
+	/** Clears the EditPart selection. */
+	public void clearSelectedEditParts()
+	{
+		for (IEditPart part : this.selectedEditParts)
+		{
+			part.setSelected(false);
+		}
+		this.selectedEditParts.clear();
+	}
+
+	/** adds an editpart to the current selection. */
+	public void addSelectedEditPart(IEditPart part)
+	{
+		part.setSelected(true);
+		this.selectedEditParts.add(part);
+	}
+
+	/** adds an editpart to the current selection. */
+	public void removeSelectedEditPart(IEditPart part)
+	{
+		part.setSelected(false);
+		this.selectedEditParts.remove(part);
+	}
+
+	/** @return a list of all selected aditparts. */
+	public ImmutableList<IEditPart> getSelectedEditParts()
+	{
+		return new ImmutableList<IEditPart>(this.selectedEditParts);
 	}
 }

@@ -24,5 +24,4 @@ public class GenericTensorEditPart extends TensorEditPartBase
 	{
 		return new TensorFigure(this);
 	}
-
 }

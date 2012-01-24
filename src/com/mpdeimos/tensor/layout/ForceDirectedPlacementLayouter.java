@@ -118,8 +118,10 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 		if (R.string.LAYOUT_FDP_BOUNDS_SCREEN == boundMode)
 		{
 			imageRectangle = new Rectangle2D.Double(
-					SCREEN_MARGIN,
-					SCREEN_MARGIN,
+					this.canvas.getScroll().getX()
+							+ ForceDirectedPlacementLayouter.SCREEN_MARGIN,
+					this.canvas.getScroll().getY()
+							+ ForceDirectedPlacementLayouter.SCREEN_MARGIN,
 					this.canvas.getBounds().getWidth() - 2 * SCREEN_MARGIN,
 					this.canvas.getBounds().getHeight() - 2 * SCREEN_MARGIN);
 		}

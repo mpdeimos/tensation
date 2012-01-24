@@ -83,6 +83,12 @@ public abstract class FeatureBase<T extends IFeatureEditPart, U extends ICanvasA
 	}
 
 	@Override
+	public boolean doOnKeyReleased(ICanvasAction action, KeyEvent e)
+	{
+		return false;
+	}
+
+	@Override
 	public void doOnEditPartSelected(boolean selected)
 	{
 		// nothing
