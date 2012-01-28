@@ -11,18 +11,18 @@
 	</target>
 
 	<target name="run">
-		<java jar="./build/jars/tensor.jar" fork="true">
+		<java jar="./build/jars/tensation.jar" fork="true">
 		</java>
 	</target>
 
 	<target name="run-de">
-		<java jar="./build/jars/tensor.jar" fork="true">
+		<java jar="./build/jars/tensation.jar" fork="true">
 			<sysproperty key="user.language" value="de"/>
 		</java>
 	</target>
 
 	<target name="run-en">
-		<java jar="./build/jars/tensor.jar" fork="true">
+		<java jar="./build/jars/tensation.jar" fork="true">
 			<sysproperty key="user.language" value="en"/>
 		</java>
 	</target>
@@ -98,9 +98,9 @@
 		<mkdir dir="./build/tmp/" />
 		<mkdir dir="./build/jars/" />
 
-		<jar jarfile="./build/jars/tensor.jar">
+		<jar jarfile="./build/jars/tensation.jar">
 			<manifest>
-				<attribute name="Main-Class" value="com.mpdeimos.tensor.Main" />
+				<attribute name="Main-Class" value="com.mpdeimos.tensation.Main" />
 				<attribute name="Class-Path" value="." />
 				<attribute name="Bzr-Revision" value="${bzr.revision}" />
 	        		<attribute name="Implementation-Version" value="${bzr.revision}" />

@@ -1,0 +1,41 @@
+package com.mpdeimos.tensation.action;
+
+import com.mpdeimos.tensation.impex.Clipboard;
+import com.mpdeimos.tensation.ui.Application;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
+
+import resources.R;
+
+/**
+ * Action for duplicating the active selection.
+ * 
+ * @author mpdeimos
+ * 
+ */
+public class DuplicateNewCanvasAction extends ActionBase
+{
+	/**
+	 * Constructor.
+	 */
+	public DuplicateNewCanvasAction()
+	{
+		super(
+				R.string.WINDOW_MENU_EDIT_DUPLICATE_NEWCANVAS.string(),
+				null,
+				KeyStroke.getKeyStroke(
+						KeyEvent.VK_D, ActionEvent.CTRL_MASK
+								+ ActionEvent.SHIFT_MASK));
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		Clipboard.get().clipSelection();
+		Application.getApp().createNewCanvas();
+		Clipboard.get().copyToCanvas();
+	}
+}
