@@ -1,9 +1,13 @@
 package com.mpdeimos.tensation.action.canvas;
 
 import com.mpdeimos.tensation.editpart.IEditPart;
+import com.mpdeimos.tensation.editpart.feature.EditPartFeatureBase;
 import com.mpdeimos.tensation.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensation.feature.contract.ICanvasFeatureContract;
+import com.mpdeimos.tensation.ui.ContextPanelContentBase;
+import com.mpdeimos.tensation.ui.RefreshablePanel;
 import com.mpdeimos.tensation.util.Gfx;
+import com.mpdeimos.tensation.util.ImmutableList;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -12,9 +16,13 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 
@@ -40,6 +48,9 @@ public class SelectEditPartAction extends CanvasActionBase
 	/** the selection start point. */
 	private Point selectionStartPoint;
 
+	/** the context panel. */
+	private final ContextPanelContentBase contextPanel;
+
 	/** The stroke of selection rectangle. */
 	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(
 			1.0f,
@@ -60,6 +71,11 @@ public class SelectEditPartAction extends CanvasActionBase
 		super(
 				R.string.WINDOW_ACTION_SELECT.string(),
 				new ImageIcon(R.drawable.SELECT.url()), KeyEvent.VK_S);
+
+		this.contextPanel = new ContextPanelContentBase()
+		{
+			//
+		};
 	}
 
 	@Override
@@ -74,6 +90,13 @@ public class SelectEditPartAction extends CanvasActionBase
 		{
 			this.canvas.setCursor(Cursor.getDefaultCursor());
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		super.actionPerformed(e);
+		updateContextPanel();
 	}
 
 	@Override
@@ -210,6 +233,7 @@ public class SelectEditPartAction extends CanvasActionBase
 	{
 		super.doOnMousePressed(e);
 
+		boolean update = this.selectionStartPoint != null;
 		this.selectionRect = null;
 		this.selectionStartPoint = null;
 
@@ -228,12 +252,17 @@ public class SelectEditPartAction extends CanvasActionBase
 				if (isMouseOver(editPart, e.getPoint()))
 				{
 					this.canvas.removeSelectedEditPart(editPart);
+					update = true;
 				}
 			}
-			this.canvas.repaint();
 		}
 
 		this.newlySelectedEditPart = null;
+
+		if (update)
+		{
+			this.canvas.repaint();
+		}
 
 		return false;
 	}
@@ -279,24 +308,6 @@ public class SelectEditPartAction extends CanvasActionBase
 
 		for (IEditPart part : this.canvas.getSelectedEditParts())
 		{
-			// old bounding box code
-			//
-			// Stroke s = gfx.getStroke();
-			// gfx.setStroke(EDITPART_SELECTION_STROKE);
-			// Rectangle r = part.getBoundingRectangle();
-			// Rectangle2D rect = new Rectangle2D.Double(
-			// r.getX()
-			// - EDITPART_SELECTION_STROKE_OFFSET + 0.5,
-			// r.getY()
-			// - EDITPART_SELECTION_STROKE_OFFSET + 0.5,
-			// r.getWidth() + 2
-			// * EDITPART_SELECTION_STROKE_OFFSET,
-			// r.getHeight() + 2
-			// * EDITPART_SELECTION_STROKE_OFFSET);
-			// gfx.draw(rect);
-			//
-			// gfx.setStroke(s);
-
 			drawOverlayForFeatures(part, gfx);
 		}
 		if (!this.canvas.getSelectedEditParts().isEmpty())
@@ -309,8 +320,59 @@ public class SelectEditPartAction extends CanvasActionBase
 	private boolean isMouseOver(IEditPart editPart, Point point)
 	{
 		int offset = 2;
-		Rectangle rect = new Rectangle(point.x - offset, point.y - offset, 4, 4);
+		Rectangle rect = new Rectangle(
+				point.x - offset,
+				point.y - offset,
+				2 * offset,
+				2 * offset);
 		return editPart.intersects(rect);
+	}
+
+	@Override
+	protected ContextPanelContentBase getContextPanel()
+	{
+		return this.contextPanel;
+	}
+
+	@Override
+	public void doOnSelectionChanged()
+	{
+		updateContextPanel();
+	}
+
+	/** updates the contextpanel w/ features from selected editparts. */
+	protected void updateContextPanel()
+	{
+		this.contextPanel.removeAll();
+
+		ImmutableList<IEditPart> selectedEditParts = this.applicationWindow.getActiveCanvas().getSelectedEditParts();
+		if (selectedEditParts.size() > 0)
+		{
+			Set<RefreshablePanel> subPanels = new HashSet<RefreshablePanel>();
+			for (IEditPart ep : selectedEditParts)
+			{
+				if (ep instanceof IFeatureEditPart)
+				{
+					@SuppressWarnings("rawtypes")
+					List<IContextFeature> fs = ((IFeatureEditPart) ep).getFeatures(IContextFeature.class);
+
+					if (fs == null)
+						continue;
+
+					for (IContextFeature<?> f : fs)
+					{
+						subPanels.add(f.getStaticContextPanel());
+					}
+				}
+			}
+			for (RefreshablePanel subPanel : subPanels)
+			{
+				subPanel.refresh();
+				this.contextPanel.add(subPanel);
+			}
+		}
+		this.contextPanel.validate();
+		this.contextPanel.repaint();
 	}
 
 	/** Contract for tensor connection features. */
@@ -322,6 +384,23 @@ public class SelectEditPartAction extends CanvasActionBase
 		{
 			super(editPart);
 		}
+	}
+
+	/** Contract for context panel features. */
+	public static abstract class IContextFeature<I extends IFeatureEditPart>
+			extends EditPartFeatureBase<I, IContextFeature<?>>
+	{
+		/** Constructor. */
+		public IContextFeature(I editPart)
+		{
+			super(editPart);
+		}
+
+		/**
+		 * @return a context panel with edit operations. This method should
+		 *         return the same panel for each call.
+		 */
+		abstract public RefreshablePanel getStaticContextPanel();
 	}
 
 	@Override

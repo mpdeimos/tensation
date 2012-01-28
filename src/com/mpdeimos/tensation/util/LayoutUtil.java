@@ -48,4 +48,16 @@ public class LayoutUtil
 		return comp;
 	}
 
+	/**
+	 * Sets the minimum, maximum and preferred width/height value of this
+	 * component.
+	 */
+	public static Component setSize(Component comp, int width, int height)
+	{
+		setWidth(comp, width);
+		setHeight(comp, height);
+
+		return comp;
+	}
+
 }

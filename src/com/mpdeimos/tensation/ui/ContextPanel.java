@@ -28,17 +28,13 @@ public class ContextPanel extends JPanel
 	/** The default content panel. */
 	private final ContextPanelContentBase defaultContent = new DefaultContent();
 
-	// /** The linked application window. */
-	// private final ApplicationWindow applicationWindow;
-
 	/**
 	 * Constructor.
 	 * 
 	 * @param applicationWindow
 	 */
-	public ContextPanel(Application applicationWindow)
+	public ContextPanel()
 	{
-		// this.applicationWindow = applicationWindow;
 		this.setLayout(new GridLayout());
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, 0));
 		this.setBorder(new EmptyBorder(0, 1, 0, 1));

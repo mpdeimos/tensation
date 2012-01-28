@@ -139,6 +139,12 @@ public abstract class CanvasActionBase extends ActionBase implements
 		return false;
 	}
 
+	@Override
+	public void doOnSelectionChanged()
+	{
+		// nothing
+	}
+
 	/** Draws an overlay for all features of the given EditPart. */
 	protected final boolean drawOverlayForFeatures(
 			List<IEditPart> editParts,

@@ -632,15 +632,21 @@ public class DrawingCanvas extends JPanel
 		Application.getApp().updateActiveTabName();
 	}
 
+	/** flag for bypassing selection changes. */
+	boolean selectionBypassChange = false;
+
 	/** marks the given editparts as selected and resets the previous selection. */
 	public void setSelectedEditParts(List<IEditPart> parts)
 	{
+		this.selectionBypassChange = true;
 		clearSelectedEditParts();
 
 		for (IEditPart part : parts)
 		{
 			addSelectedEditPart(part);
 		}
+		DrawingCanvas.this.canvasAction.doOnSelectionChanged();
+		this.selectionBypassChange = false;
 	}
 
 	/** Clears the EditPart selection. */
@@ -651,6 +657,8 @@ public class DrawingCanvas extends JPanel
 			part.setSelected(false);
 		}
 		this.selectedEditParts.clear();
+		if (!this.selectionBypassChange)
+			DrawingCanvas.this.canvasAction.doOnSelectionChanged();
 	}
 
 	/** adds an editpart to the current selection. */
@@ -658,6 +666,8 @@ public class DrawingCanvas extends JPanel
 	{
 		part.setSelected(true);
 		this.selectedEditParts.add(part);
+		if (!this.selectionBypassChange)
+			DrawingCanvas.this.canvasAction.doOnSelectionChanged();
 	}
 
 	/** adds an editpart to the current selection. */
@@ -665,6 +675,8 @@ public class DrawingCanvas extends JPanel
 	{
 		part.setSelected(false);
 		this.selectedEditParts.remove(part);
+		if (!this.selectionBypassChange)
+			DrawingCanvas.this.canvasAction.doOnSelectionChanged();
 	}
 
 	/** @return a list of all selected aditparts. */

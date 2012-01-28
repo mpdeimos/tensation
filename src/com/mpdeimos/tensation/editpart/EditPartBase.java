@@ -1,7 +1,7 @@
 package com.mpdeimos.tensation.editpart;
 
-import com.mpdeimos.tensation.action.canvas.CanvasFeatureBase;
 import com.mpdeimos.tensation.action.canvas.SelectEditPartAction;
+import com.mpdeimos.tensation.editpart.feature.ICustomizable;
 import com.mpdeimos.tensation.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensation.feature.IFeature;
 import com.mpdeimos.tensation.feature.contract.ICanvasFeatureContract;
@@ -25,7 +25,7 @@ import java.util.List;
  * @author mpdeimos
  * 
  */
-public abstract class EditPartBase implements IFeatureEditPart
+public abstract class EditPartBase implements ICustomizable
 {
 
 	/** Flag whether the mouse is hovered over this EditPart. */
@@ -46,6 +46,9 @@ public abstract class EditPartBase implements IFeatureEditPart
 	/** The model change listener for this class. */
 	private final ModelChangedListener listener;
 
+	/** the editpart drawing color. */
+	private Color drawingColor = null;
+
 	/** @return the newly created figure for this EditPart. */
 	abstract protected IFigure createFigure();
 
@@ -61,7 +64,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 		this.model.addModelChangedListener(this.listener);
 
 		Class<?> currentClass = this.getClass();
-		while (!currentClass.equals(EditPartBase.class))
+		do
 		{
 			for (Class<?> editPartIfc : currentClass.getInterfaces())
 			{
@@ -70,7 +73,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 
 				for (Class<?> feature : editPartIfc.getClasses())
 				{
-					if (!CanvasFeatureBase.class.isAssignableFrom(feature))
+					if (!IFeature.class.isAssignableFrom(feature))
 						continue;
 
 					try
@@ -105,6 +108,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 
 			currentClass = currentClass.getSuperclass();
 		}
+		while (currentClass != null);
 	}
 
 	@Override
@@ -123,6 +127,9 @@ public abstract class EditPartBase implements IFeatureEditPart
 	public void draw(Graphics2D gfx)
 	{
 		Color oldPaint = gfx.getColor();
+
+		if (this.drawingColor != null)
+			gfx.setColor(this.drawingColor);
 		if (this.highlighted)
 			gfx.setColor(Color.MAGENTA);
 		if (this.selected)
@@ -130,8 +137,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 
 		getFigure().draw(gfx);
 
-		if (this.highlighted || this.selected)
-			gfx.setColor(oldPaint);
+		gfx.setColor(oldPaint);
 	}
 
 	/** @return the figure responsible for drawing this object */
@@ -215,5 +221,17 @@ public abstract class EditPartBase implements IFeatureEditPart
 	public boolean isHighlighted()
 	{
 		return this.highlighted;
+	}
+
+	@Override
+	public void setColor(Color color)
+	{
+		this.drawingColor = color;
+	}
+
+	@Override
+	public Color getColor()
+	{
+		return this.drawingColor;
 	}
 }

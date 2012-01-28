@@ -52,4 +52,7 @@ public interface ICanvasAction extends Action
 	/** @return the current drawing canvas. */
 	public DrawingCanvas getCanvas();
 
+	/** Called upon selection changes on the canvas. */
+	public void doOnSelectionChanged();
+
 }

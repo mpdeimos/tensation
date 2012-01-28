@@ -382,7 +382,7 @@ public class Application extends JFrame
 	/** Initializes the application's context panel. */
 	private void initializeContextPanel()
 	{
-		this.contextPanel = new ContextPanel(this);
+		this.contextPanel = new ContextPanel();
 		getContentPane().add(this.contextPanel, BorderLayout.EAST);
 	}
 

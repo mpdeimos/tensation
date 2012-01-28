@@ -10,7 +10,6 @@ import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 /**
  * Abstract class for content implementation being shown in the context panel.
@@ -19,10 +18,16 @@ import javax.swing.JPanel;
  * @author mpdeimos
  * 
  */
-public abstract class ContextPanelContentBase extends JPanel
+public abstract class ContextPanelContentBase extends RefreshablePanel
 {
 	/** The maximum width of the panel container. */
 	public static final int PANEL_WIDTH = ContextPanel.PANEL_WIDTH;
+
+	/** The left margin for insets. */
+	public static final int INSET_LEFT_MARGIN = 5;
+
+	/** The right margin for insets. */
+	public static final int INSET_RIGHT_MARGIN = 5;
 
 	/** Constructor. */
 	public ContextPanelContentBase()
@@ -48,5 +53,21 @@ public abstract class ContextPanelContentBase extends JPanel
 			((JComponent) comp).setAlignmentX(alignment);
 		}
 		return super.add(comp);
+	}
+
+	/** @return a new labeled component with inset margins. */
+	public static LabeledComponent label(String text, Component component)
+	{
+		return new LabeledComponent(
+				text,
+				component,
+				INSET_LEFT_MARGIN,
+				INSET_RIGHT_MARGIN);
+	}
+
+	@Override
+	public void refresh()
+	{
+		// nothing
 	}
 }
