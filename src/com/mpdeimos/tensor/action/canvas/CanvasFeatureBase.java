@@ -1,43 +1,25 @@
-package com.mpdeimos.tensor.editpart.feature;
+package com.mpdeimos.tensor.action.canvas;
 
-import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+import com.mpdeimos.tensation.feature.contract.ICanvasContract;
+import com.mpdeimos.tensor.editpart.feature.EditPartFeatureBase;
+import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.ParameterizedType;
 
 /**
  * Base class for EditPart Features.
  * 
  * @author mpdeimos
  */
-public abstract class FeatureBase<T extends IFeatureEditPart, U extends ICanvasAction>
-		implements IFeature
+public abstract class CanvasFeatureBase<T extends IFeatureEditPart, F extends ICanvasContract>
+		extends EditPartFeatureBase<T, F> implements ICanvasContract
 {
-	/** The EditPart for this feature. */
-	protected final T editPart;
-
-	/** The class of the canvas action */
-	private final Class<U> canvasActionClass;
-
 	/** Constructor. */
-	@SuppressWarnings("unchecked")
-	public FeatureBase(T editPart)
+	public CanvasFeatureBase(T editPart)
 	{
-		this.editPart = editPart;
-
-		ParameterizedType superclass = (ParameterizedType) getClass()
-				.getGenericSuperclass();
-
-		this.canvasActionClass = (Class<U>) (superclass)
-				.getActualTypeArguments()[1];
-	}
-
-	@Override
-	public Class<? extends ICanvasAction> getActionGroup()
-	{
-		return this.canvasActionClass;
+		super(editPart);
 	}
 
 	@Override

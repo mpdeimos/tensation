@@ -1,8 +1,8 @@
 package com.mpdeimos.tensor.action.canvas;
 
+import com.mpdeimos.tensation.feature.contract.ICanvasContract;
 import com.mpdeimos.tensor.action.ActionBase;
 import com.mpdeimos.tensor.editpart.IEditPart;
-import com.mpdeimos.tensor.editpart.feature.IFeature;
 import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensor.ui.Application;
 import com.mpdeimos.tensor.ui.ContextPanelContentBase;
@@ -161,11 +161,11 @@ public abstract class CanvasActionBase extends ActionBase implements
 		if (!(editPart instanceof IFeatureEditPart))
 			return false;
 
-		List<IFeature> features = ((IFeatureEditPart) editPart).getFeatures(this.getClass());
+		List<? extends ICanvasContract> features = ((IFeatureEditPart) editPart).getFeatures(getCanvasContract());
 		if (features == null)
 			return false;
 
-		for (IFeature feature : features)
+		for (ICanvasContract feature : features)
 		{
 			if (feature.drawOverlay(this, gfx))
 				return true;
@@ -183,11 +183,11 @@ public abstract class CanvasActionBase extends ActionBase implements
 		if (!(editPart instanceof IFeatureEditPart))
 			return false;
 
-		List<IFeature> features = ((IFeatureEditPart) editPart).getFeatures(this.getClass());
+		List<? extends ICanvasContract> features = ((IFeatureEditPart) editPart).getFeatures(getCanvasContract());
 		if (features == null)
 			return false;
 
-		for (IFeature feature : features)
+		for (ICanvasContract feature : features)
 		{
 			if (release && feature.doOnKeyReleased(this, e))
 				return true;
@@ -237,11 +237,11 @@ public abstract class CanvasActionBase extends ActionBase implements
 		if (!(editPart instanceof IFeatureEditPart))
 			return false;
 
-		List<IFeature> features = ((IFeatureEditPart) editPart).getFeatures(this.getClass());
+		List<? extends ICanvasContract> features = ((IFeatureEditPart) editPart).getFeatures(getCanvasContract());
 		if (features == null)
 			return false;
 
-		for (IFeature feature : features)
+		for (ICanvasContract feature : features)
 		{
 			boolean handled = false;
 
@@ -291,4 +291,7 @@ public abstract class CanvasActionBase extends ActionBase implements
 	{
 		return null;
 	}
+
+	/** @return the canvas action contract. */
+	protected abstract Class<? extends ICanvasContract> getCanvasContract();
 }

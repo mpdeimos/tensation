@@ -1,5 +1,6 @@
 package com.mpdeimos.tensor.action.canvas;
 
+import com.mpdeimos.tensation.feature.contract.ICanvasContract;
 import com.mpdeimos.tensor.editpart.EditPartFactory;
 import com.mpdeimos.tensor.editpart.GenericTensorEditPart;
 import com.mpdeimos.tensor.editpart.TensorEditPartBase;
@@ -267,5 +268,11 @@ public class DrawTensorAction extends CanvasActionBase
 		{
 			return this.editParts.length;
 		}
+	}
+
+	@Override
+	protected Class<? extends ICanvasContract> getCanvasContract()
+	{
+		return null;
 	}
 }

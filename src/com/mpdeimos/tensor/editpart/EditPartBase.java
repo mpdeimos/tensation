@@ -1,9 +1,9 @@
 package com.mpdeimos.tensor.editpart;
 
-import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+import com.mpdeimos.tensation.feature.IFeature;
+import com.mpdeimos.tensation.feature.contract.ICanvasContract;
+import com.mpdeimos.tensor.action.canvas.CanvasFeatureBase;
 import com.mpdeimos.tensor.action.canvas.SelectEditPartAction;
-import com.mpdeimos.tensor.editpart.feature.FeatureBase;
-import com.mpdeimos.tensor.editpart.feature.IFeature;
 import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensor.figure.IFigure;
 import com.mpdeimos.tensor.model.IModelChangedListener;
@@ -41,7 +41,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 	private final IFigure figure;
 
 	/** The list of Features linked to this EditPart. Default is null. */
-	protected HashMap<Class<? extends ICanvasAction>, List<IFeature>> featureMap = new HashMap<Class<? extends ICanvasAction>, List<IFeature>>();
+	protected HashMap<Class<?>, List<? super IFeature>> featureMap = new HashMap<Class<?>, List<? super IFeature>>();
 
 	/** The model change listener for this class. */
 	private final ModelChangedListener listener;
@@ -70,7 +70,7 @@ public abstract class EditPartBase implements IFeatureEditPart
 
 				for (Class<?> feature : editPartIfc.getClasses())
 				{
-					if (!FeatureBase.class.isAssignableFrom(feature))
+					if (!CanvasFeatureBase.class.isAssignableFrom(feature))
 						continue;
 
 					try
@@ -80,12 +80,12 @@ public abstract class EditPartBase implements IFeatureEditPart
 						Constructor<? extends IFeature> constructor = (Constructor<? extends IFeature>) feature.getConstructor(editPartIfc);
 						IFeature featureInstance = constructor.newInstance(this);
 
-						List<IFeature> features = this.featureMap.get(featureInstance.getActionGroup());
+						List<? super IFeature> features = this.featureMap.get(featureInstance.getFeatureContract());
 						if (features == null)
 						{
 							features = new ArrayList<IFeature>();
 							this.featureMap.put(
-										featureInstance.getActionGroup(),
+										featureInstance.getFeatureContract(),
 										features);
 						}
 						features.add(featureInstance);
@@ -177,11 +177,11 @@ public abstract class EditPartBase implements IFeatureEditPart
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<IFeature> getFeatures(
-			Class<? extends ICanvasAction> group)
+	public <T extends IFeature> List<T> getFeatures(Class<T> contract)
 	{
-		return this.featureMap.get(group);
+		return (List<T>) this.featureMap.get(contract);
 	}
 
 	@Override
@@ -189,11 +189,11 @@ public abstract class EditPartBase implements IFeatureEditPart
 	{
 		this.selected = selected;
 
-		List<IFeature> features = getFeatures(SelectEditPartAction.class);
+		List<? extends ICanvasContract> features = getFeatures(SelectEditPartAction.IFeature.class);
 		if (features == null)
 			return;
 
-		for (IFeature feature : features)
+		for (ICanvasContract feature : features)
 		{
 			feature.doOnEditPartSelected(selected);
 		}

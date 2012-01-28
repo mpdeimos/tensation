@@ -38,7 +38,7 @@ public interface IRotatable extends IFeatureEditPart
 	public Dimension getRotationIndicatorOffset();
 
 	/** The feature for interacting with this EditPart. */
-	class Feature extends FeatureBase<IRotatable, SelectEditPartAction>
+	class Feature extends SelectEditPartAction.IFeature<IRotatable>
 	{
 		/** The Point where the rotation indicator is shown */
 		private Point rotationIndicator;

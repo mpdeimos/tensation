@@ -60,7 +60,7 @@ public interface IConnectionControl extends IFeatureEditPart
 
 	/** the control feature. */
 	public class Feature extends
-			FeatureBase<IConnectionControl, SelectEditPartAction>
+			SelectEditPartAction.IFeature<IConnectionControl>
 	{
 		/** The stroke of the anchor line. */
 		private static BasicStroke ANCHOR_CONTROL_STROKE = new BasicStroke(

@@ -33,7 +33,7 @@ public interface IMovable extends IFeatureEditPart
 	public void setPosition(Point p);
 
 	/** feature class for movable EditParts */
-	public class Feature extends FeatureBase<IMovable, SelectEditPartAction>
+	public class Feature extends SelectEditPartAction.IFeature<IMovable>
 	{
 		/** The offset to the EditPart position when in moving mode. */
 		private static Point moveStartPoint;

@@ -1,6 +1,8 @@
 package com.mpdeimos.tensor.action.canvas;
 
+import com.mpdeimos.tensation.feature.contract.ICanvasContract;
 import com.mpdeimos.tensor.editpart.IEditPart;
+import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensor.util.Gfx;
 
 import java.awt.BasicStroke;
@@ -309,5 +311,22 @@ public class SelectEditPartAction extends CanvasActionBase
 		int offset = 2;
 		Rectangle rect = new Rectangle(point.x - offset, point.y - offset, 4, 4);
 		return editPart.intersects(rect);
+	}
+
+	/** Contract for tensor connection features. */
+	public static abstract class IFeature<I extends IFeatureEditPart> extends
+			CanvasFeatureBase<I, SelectEditPartAction.IFeature<?>>
+	{
+		/** Constructor. */
+		public IFeature(I editPart)
+		{
+			super(editPart);
+		}
+	}
+
+	@Override
+	protected Class<? extends ICanvasContract> getCanvasContract()
+	{
+		return IFeature.class;
 	}
 }

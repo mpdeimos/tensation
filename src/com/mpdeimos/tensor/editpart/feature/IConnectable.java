@@ -1,5 +1,10 @@
 package com.mpdeimos.tensor.editpart.feature;
 
+import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+import com.mpdeimos.tensor.action.canvas.TensorConnectAction;
+import com.mpdeimos.tensor.model.TensorConnectionAnchor;
+import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
+
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -7,11 +12,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.mpdeimos.tensor.action.canvas.ICanvasAction;
-import com.mpdeimos.tensor.action.canvas.TensorConnectAction;
-import com.mpdeimos.tensor.model.TensorConnectionAnchor;
-import com.mpdeimos.tensor.model.TensorConnectionAnchor.EDirection;
 
 /**
  * Interface for EditParts with Connection abilities.
@@ -28,8 +28,7 @@ public interface IConnectable extends IFeatureEditPart
 	public List<ConnectionPoint> getConnectionSinks();
 
 	/** feature class for EditParts with connection sources. */
-	public class Feature extends
-			FeatureBase<IConnectable, TensorConnectAction>
+	public class Feature extends TensorConnectAction.IFeature<IConnectable>
 	{
 		/** Constructor. */
 		public Feature(IConnectable editPart)

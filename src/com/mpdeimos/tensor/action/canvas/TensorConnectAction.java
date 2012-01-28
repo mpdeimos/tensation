@@ -1,6 +1,8 @@
 package com.mpdeimos.tensor.action.canvas;
 
+import com.mpdeimos.tensation.feature.contract.ICanvasContract;
 import com.mpdeimos.tensor.editpart.feature.IConnectable.ConnectionPoint;
+import com.mpdeimos.tensor.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensor.model.ModelRoot;
 import com.mpdeimos.tensor.model.TensorConnection;
 import com.mpdeimos.tensor.util.InfiniteUndoableEdit;
@@ -231,5 +233,22 @@ public class TensorConnectAction extends CanvasActionBase
 	public ConnectionPoint getStartPoint()
 	{
 		return this.startConnectionPoint;
+	}
+
+	/** Contract for tensor connection features. */
+	public static abstract class IFeature<I extends IFeatureEditPart> extends
+			CanvasFeatureBase<I, TensorConnectAction.IFeature<?>>
+	{
+		/** Constructor. */
+		public IFeature(I editPart)
+		{
+			super(editPart);
+		}
+	}
+
+	@Override
+	protected Class<? extends ICanvasContract> getCanvasContract()
+	{
+		return IFeature.class;
 	}
 }

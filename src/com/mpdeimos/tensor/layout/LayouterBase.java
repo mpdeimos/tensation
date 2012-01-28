@@ -1,5 +1,6 @@
 package com.mpdeimos.tensor.layout;
 
+import com.mpdeimos.tensation.feature.contract.ICanvasContract;
 import com.mpdeimos.tensor.action.ActionBase;
 import com.mpdeimos.tensor.action.canvas.CanvasActionBase;
 import com.mpdeimos.tensor.editpart.IEditPart;
@@ -203,5 +204,11 @@ public abstract class LayouterBase extends CanvasActionBase
 			onContextPanelInit(this);
 
 		}
+	}
+
+	@Override
+	protected Class<? extends ICanvasContract> getCanvasContract()
+	{
+		return null;
 	}
 }

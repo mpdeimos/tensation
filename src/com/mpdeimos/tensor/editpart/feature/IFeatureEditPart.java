@@ -1,9 +1,9 @@
 package com.mpdeimos.tensor.editpart.feature;
 
-import java.util.List;
-
-import com.mpdeimos.tensor.action.canvas.ICanvasAction;
+import com.mpdeimos.tensation.feature.IFeature;
 import com.mpdeimos.tensor.editpart.IEditPart;
+
+import java.util.List;
 
 /**
  * Interface for EditParts supporting canvas features.
@@ -14,5 +14,6 @@ import com.mpdeimos.tensor.editpart.IEditPart;
 public interface IFeatureEditPart extends IEditPart
 {
 	/** @return List of all interaction features. May be null. */
-	public List<IFeature> getFeatures(Class<? extends ICanvasAction> group);
+	public <T extends IFeature> List<T> getFeatures(
+			Class<T> contract);
 }
