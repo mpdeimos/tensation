@@ -10,7 +10,6 @@ import com.mpdeimos.tensation.util.PointUtil;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.CubicCurve2D;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -122,11 +121,11 @@ public class TensorConnectionFigure extends FigureBase
 		// 2,
 		// 2);
 
-		Shape circle2 = new Ellipse2D.Double(
-				this.sinkAnchor.getX() - 2,
-				this.sinkAnchor.getY() - 2,
-				4,
-				4);
+		// Shape circle2 = new Ellipse2D.Double(
+		// this.sinkAnchor.getX() - 2,
+		// this.sinkAnchor.getY() - 2,
+		// 4,
+		// 4);
 
 		shapes.add(bezier);
 

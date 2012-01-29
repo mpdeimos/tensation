@@ -1,6 +1,5 @@
 package com.mpdeimos.tensation.impex;
 
-import com.mpdeimos.tensation.model.IModelData;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnection;
 
@@ -12,18 +11,22 @@ import org.w3c.dom.Element;
 /**
  * Handles export of Tensors to valid XML data.
  * 
+ * Helpers:
+ * 
+ * (0) TensorConnection, (1) HashMap<TensorBase, Integer>
+ * 
  * @author mpdeimos
  * 
  */
 public class ConnectionExporter implements IExporter
 {
 	@Override
-	public Element export(Document xmlDoc, IModelData data, Object... helpers)
+	public Element export(Document xmlDoc, Object... helpers)
 	{
-		TensorConnection con = (TensorConnection) data;
+		TensorConnection con = (TensorConnection) helpers[0];
 
 		@SuppressWarnings("unchecked")
-		HashMap<TensorBase, Integer> tensorsToIds = (HashMap<TensorBase, Integer>) helpers[0];
+		HashMap<TensorBase, Integer> tensorsToIds = (HashMap<TensorBase, Integer>) helpers[1];
 
 		Element eCon = xmlDoc.createElement(ETdgConnection.ELEMENT_CONECTION.$());
 
@@ -46,6 +49,14 @@ public class ConnectionExporter implements IExporter
 		eCon.setAttribute(
 				ETdgConnection.ATTRIB_SINK_DISTANCE.$(),
 				Double.toString(con.getSinkDistance()));
+
+		KeyValueStoreExporter kve = new KeyValueStoreExporter();
+		Element export = kve.export(
+				xmlDoc, con.getAppearanceContainer().getValues(), "appearance"); //$NON-NLS-1$
+		if (export != null)
+		{
+			eCon.appendChild(export);
+		}
 
 		return eCon;
 	}

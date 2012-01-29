@@ -3,6 +3,7 @@ package com.mpdeimos.tensation.util;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,6 +20,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -154,5 +158,64 @@ public class XmlUtil
 		}
 
 		return null;
+	}
+
+	/** Iterates over the child nodes of an element. */
+	public static Iterable<Element> iterate(final Element e)
+	{
+		return iterate(e.getChildNodes());
+	}
+
+	/** Iterates over a NodeList. Does not permit deletions. */
+	public static Iterable<Element> iterate(final NodeList node)
+	{
+		return new Iterable<Element>()
+		{
+			@Override
+			public Iterator<Element> iterator()
+			{
+				return new Iterator<Element>()
+				{
+					/** position */
+					private int i = 0;
+
+					/** the next element. */
+					Element next = null;
+
+					@Override
+					public boolean hasNext()
+					{
+						if (this.next != null)
+							return true;
+
+						while (this.i < node.getLength())
+						{
+							Node c = node.item(this.i++);
+							if (c instanceof Element)
+							{
+								this.next = (Element) c;
+								return true;
+							}
+						}
+						return false;
+					}
+
+					@Override
+					public Element next()
+					{
+						hasNext();
+						Element r = this.next;
+						this.next = null;
+						return r;
+					}
+
+					@Override
+					public void remove()
+					{
+						throw new IllegalStateException();
+					}
+				};
+			}
+		};
 	}
 }

@@ -1,12 +1,13 @@
 package com.mpdeimos.tensation.model;
 
+import com.mpdeimos.tensation.impex.serialize.Export;
 import com.mpdeimos.tensation.util.Gfx;
+import com.mpdeimos.tensation.util.StringUtil;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import resources.R;
-import resources.R.string;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 
 /**
  * Container class for appearance settings.
@@ -16,12 +17,15 @@ import resources.R.string;
 public class AppearanceContainer
 {
 	/** The color of this object. */
+	@Export
 	private Color color;
 
 	/** The line width of this object. */
+	@Export
 	private Integer lineWidth;
 
 	/** The line style of this object. */
+	@Export
 	private ELineStyle lineStyle;
 
 	/**
@@ -80,7 +84,7 @@ public class AppearanceContainer
 		}
 		if (this.lineStyle != null)
 		{
-			multiplier = this.lineStyle.patternMultiplier;
+			multiplier = this.lineStyle.getPatternMultiplier();
 		}
 		gfx.setStroke(Gfx.createStroke(width, multiplier));
 	}
@@ -92,33 +96,53 @@ public class AppearanceContainer
 		public AppearanceContainer getAppearanceContainer();
 	}
 
-	/** Line style enumeration. */
-	public enum ELineStyle
+	public HashMap<String, Object> getValues()
 	{
-		/** Solid stroke */
-		SOLID(0, R.string.WINDOW_CONTEXTPANEL_CUSTOMIZE_APPEARANCE_LINE_STYLE_SOLID),
-		/** Dotted stroke */
-		DOTTED(1, R.string.WINDOW_CONTEXTPANEL_CUSTOMIZE_APPEARANCE_LINE_STYLE_DOTTED),
-		/** Dashed stroke */
-		DASHED(3, R.string.WINDOW_CONTEXTPANEL_CUSTOMIZE_APPEARANCE_LINE_STYLE_DASHED);
+		HashMap<String, Object> map = new HashMap<String, Object>();
 
-		/** The style display name. */
-		private final string name;
-
-		/** the pattern multiplier. */
-		private final int patternMultiplier;
-
-		/** Constructor. */
-		private ELineStyle(int patternMultiplier, R.string name)
+		for (Field field : this.getClass().getDeclaredFields())
 		{
-			this.patternMultiplier = patternMultiplier;
-			this.name = name;
+			Export annotation = field.getAnnotation(Export.class);
+			if (annotation != null)
+			{
+				String name = annotation.name();
+				if (StringUtil.isNullOrEmpty(name))
+					name = field.getName();
+				try
+				{
+					Object object = field.get(this);
+					if (object != null || annotation.nulls())
+						map.put(name, object);
+				}
+				catch (IllegalAccessException e)
+				{
+					e.printStackTrace();
+				}
+			}
 		}
 
-		@Override
-		public String toString()
+		return map;
+	}
+
+	public void setValues(HashMap<String, Object> map)
+	{
+		for (Field field : this.getClass().getDeclaredFields())
 		{
-			return this.name.toString();
+			Export annotation = field.getAnnotation(Export.class);
+			if (annotation != null)
+			{
+				String name = annotation.name();
+				if (StringUtil.isNullOrEmpty(name))
+					name = field.getName();
+				try
+				{
+					field.set(this, map.get(name));
+				}
+				catch (IllegalAccessException e)
+				{
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }

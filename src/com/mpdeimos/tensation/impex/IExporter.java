@@ -1,7 +1,5 @@
 package com.mpdeimos.tensation.impex;
 
-import com.mpdeimos.tensation.model.IModelData;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -14,7 +12,7 @@ import org.w3c.dom.Element;
 public interface IExporter
 {
 	/**
-	 * exports the specific model to an xml element.
+	 * exports the specific data to an xml element.
 	 */
-	public Element export(Document xmlDoc, IModelData data, Object... helpers);
+	public Element export(Document xmlDoc, Object... helpers);
 }

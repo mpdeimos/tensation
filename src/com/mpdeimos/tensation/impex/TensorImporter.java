@@ -5,8 +5,10 @@ import com.mpdeimos.tensation.model.ModelRoot;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensation.util.Wrapper;
+import com.mpdeimos.tensation.util.XmlUtil;
 
 import java.awt.Point;
+import java.util.HashMap;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -20,10 +22,11 @@ import org.w3c.dom.NodeList;
 public class TensorImporter implements IImporter
 {
 	@Override
-	public TensorBase importNode(Element node, ModelRoot mr, Object... helpers)
+	public TensorBase importNode(Element node, Object... helpers)
 	{
+		ModelRoot mr = (ModelRoot) helpers[0];
 		@SuppressWarnings("unchecked")
-		Wrapper<Integer> outId = (Wrapper<Integer>) helpers[0];
+		Wrapper<Integer> outId = (Wrapper<Integer>) helpers[1];
 
 		NodeList anchors = node.getElementsByTagName(ETdgTensor.ELEMENT_TENSOR_ANCHOR.$());
 		EDirection[] directions = new EDirection[anchors.getLength()];
@@ -49,6 +52,16 @@ public class TensorImporter implements IImporter
 
 		double rot = Double.parseDouble(node.getAttribute(ETdgTensor.ATTRIB_ROTATION.$()));
 		tensor.setRotation(rot);
+
+		for (Element e : XmlUtil.iterate(node))
+		{
+			if ("appearance".equals(e.getAttribute(ETdgKeyValueStore.ATTRIB_GROUP_NAME.$()))) //$NON-NLS-1$
+			{
+				KeyValueStoreImporter kvi = new KeyValueStoreImporter();
+				HashMap<String, Object> map = kvi.importNode(e);
+				tensor.getAppearanceContainer().setValues(map);
+			}
+		}
 
 		return tensor;
 	}

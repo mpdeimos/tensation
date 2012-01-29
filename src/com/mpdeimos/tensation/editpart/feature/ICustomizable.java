@@ -2,8 +2,8 @@ package com.mpdeimos.tensation.editpart.feature;
 
 import com.mpdeimos.tensation.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensation.model.AppearanceContainer;
-import com.mpdeimos.tensation.model.AppearanceContainer.ELineStyle;
 import com.mpdeimos.tensation.model.AppearanceContainer.IAppearanceHolder;
+import com.mpdeimos.tensation.model.ELineStyle;
 import com.mpdeimos.tensation.ui.Application;
 import com.mpdeimos.tensation.ui.ContextPanelContentBase;
 import com.mpdeimos.tensation.ui.DividerLabel;
@@ -135,7 +135,7 @@ public interface ICustomizable extends IFeatureEditPart, IAppearanceHolder
 						combo));
 				this.uiLineStyle = new DefaultComboBoxModel();
 				this.uiLineStyle.addElement(null);
-				for (Object o : AppearanceContainer.ELineStyle.values())
+				for (Object o : ELineStyle.values())
 					this.uiLineStyle.addElement(o);
 				combo = new JComboBox(this.uiLineStyle);
 				combo.addActionListener(this.updateTrigger);

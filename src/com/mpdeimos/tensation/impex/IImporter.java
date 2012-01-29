@@ -1,8 +1,5 @@
 package com.mpdeimos.tensation.impex;
 
-import com.mpdeimos.tensation.model.IModelData;
-import com.mpdeimos.tensation.model.ModelRoot;
-
 import org.w3c.dom.Element;
 
 /**
@@ -14,7 +11,7 @@ import org.w3c.dom.Element;
 public interface IImporter
 {
 	/**
-	 * imports an xml node to a model data object.
+	 * imports an xml node to an object.
 	 */
-	public IModelData importNode(Element node, ModelRoot mr, Object... helpers);
+	public Object importNode(Element node, Object... helpers);
 }
