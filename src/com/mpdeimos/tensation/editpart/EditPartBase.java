@@ -6,6 +6,8 @@ import com.mpdeimos.tensation.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensation.feature.IFeature;
 import com.mpdeimos.tensation.feature.contract.ICanvasFeatureContract;
 import com.mpdeimos.tensation.figure.IFigure;
+import com.mpdeimos.tensation.model.AppearanceContainer;
+import com.mpdeimos.tensation.model.AppearanceContainer.IAppearanceHolder;
 import com.mpdeimos.tensation.model.IModelChangedListener;
 import com.mpdeimos.tensation.model.IModelData;
 import com.mpdeimos.tensation.util.Log;
@@ -13,6 +15,7 @@ import com.mpdeimos.tensation.util.Log;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -46,8 +49,8 @@ public abstract class EditPartBase implements ICustomizable
 	/** The model change listener for this class. */
 	private final ModelChangedListener listener;
 
-	/** the editpart drawing color. */
-	private Color drawingColor = null;
+	/** dummy appearance container, if not supported by the given model. */
+	private AppearanceContainer dummyAppearanceContainer;
 
 	/** @return the newly created figure for this EditPart. */
 	abstract protected IFigure createFigure();
@@ -57,6 +60,18 @@ public abstract class EditPartBase implements ICustomizable
 	 */
 	public EditPartBase(IModelData modelData)
 	{
+		if (!(modelData instanceof IAppearanceHolder))
+		{
+			this.dummyAppearanceContainer = new AppearanceContainer()
+			{
+				@Override
+				public void applyAppearance(Graphics2D gfx)
+				{
+					// do nothing
+				}
+			};
+		}
+
 		this.model = modelData;
 		this.figure = createFigure();
 
@@ -127,9 +142,10 @@ public abstract class EditPartBase implements ICustomizable
 	public void draw(Graphics2D gfx)
 	{
 		Color oldPaint = gfx.getColor();
+		Stroke oldStroke = gfx.getStroke();
 
-		if (this.drawingColor != null)
-			gfx.setColor(this.drawingColor);
+		getAppearanceContainer().applyAppearance(gfx);
+
 		if (this.highlighted)
 			gfx.setColor(Color.MAGENTA);
 		if (this.selected)
@@ -138,6 +154,7 @@ public abstract class EditPartBase implements ICustomizable
 		getFigure().draw(gfx);
 
 		gfx.setColor(oldPaint);
+		gfx.setStroke(oldStroke);
 	}
 
 	/** @return the figure responsible for drawing this object */
@@ -224,14 +241,9 @@ public abstract class EditPartBase implements ICustomizable
 	}
 
 	@Override
-	public void setColor(Color color)
+	public AppearanceContainer getAppearanceContainer()
 	{
-		this.drawingColor = color;
-	}
-
-	@Override
-	public Color getColor()
-	{
-		return this.drawingColor;
+		return this.dummyAppearanceContainer != null ? this.dummyAppearanceContainer
+				: ((IAppearanceHolder) this.model).getAppearanceContainer();
 	}
 }

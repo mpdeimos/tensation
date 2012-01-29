@@ -10,11 +10,9 @@ import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensation.util.ImmutableList;
 import com.mpdeimos.tensation.util.PointUtil;
 
-import java.awt.BasicStroke;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
@@ -42,10 +40,7 @@ public class TensorFigure extends FigureBase
 	private static final int CONNECTOR_STROKE_OFFSET = 2;
 
 	/** length of the connector strokes */
-	private static final int CONNECTOR_STROKE_LENGTH = 10;
-
-	/** the style of the connector stroke */
-	private static final Stroke CONNECTOR_STROKE = new BasicStroke(1.1f);
+	private static final int CONNECTOR_STROKE_LENGTH = 11;
 
 	/** buffer for connection points. */
 	private Point2D[] connectionPoints;
@@ -141,7 +136,6 @@ public class TensorFigure extends FigureBase
 		}
 
 		ShapePack linePack = new ShapePack(EDrawingMode.STROKE, lines);
-		linePack.setStroke(CONNECTOR_STROKE);
 		this.shapePacks.add(linePack);
 		this.shapePacks.add(new ShapePack(EDrawingMode.FILL, fills));
 	}

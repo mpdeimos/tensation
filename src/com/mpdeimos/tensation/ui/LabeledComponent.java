@@ -36,7 +36,7 @@ public class LabeledComponent extends JPanel
 		add(Box.createHorizontalGlue());
 		add(component);
 		if (rightMargin > 0)
-			add(Box.createHorizontalStrut(10));
+			add(Box.createHorizontalStrut(rightMargin));
 	}
 
 	/** Sets the text of the divider label. */

@@ -23,11 +23,8 @@ public abstract class ContextPanelContentBase extends RefreshablePanel
 	/** The maximum width of the panel container. */
 	public static final int PANEL_WIDTH = ContextPanel.PANEL_WIDTH;
 
-	/** The left margin for insets. */
-	public static final int INSET_LEFT_MARGIN = 5;
-
-	/** The right margin for insets. */
-	public static final int INSET_RIGHT_MARGIN = 5;
+	/** The margin for insets. */
+	public static final int INSET_MARGIN = 5;
 
 	/** Constructor. */
 	public ContextPanelContentBase()
@@ -52,7 +49,8 @@ public abstract class ContextPanelContentBase extends RefreshablePanel
 		{
 			((JComponent) comp).setAlignmentX(alignment);
 		}
-		return super.add(comp);
+		Component r = super.add(comp);
+		return r;
 	}
 
 	/** @return a new labeled component with inset margins. */
@@ -61,8 +59,8 @@ public abstract class ContextPanelContentBase extends RefreshablePanel
 		return new LabeledComponent(
 				text,
 				component,
-				INSET_LEFT_MARGIN,
-				INSET_RIGHT_MARGIN);
+				INSET_MARGIN,
+				INSET_MARGIN);
 	}
 
 	@Override

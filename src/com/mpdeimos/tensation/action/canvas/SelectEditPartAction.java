@@ -52,13 +52,9 @@ public class SelectEditPartAction extends CanvasActionBase
 	private final ContextPanelContentBase contextPanel;
 
 	/** The stroke of selection rectangle. */
-	private static BasicStroke EDITPART_SELECTION_STROKE = new BasicStroke(
-			1.0f,
-			BasicStroke.CAP_SQUARE,
-			BasicStroke.JOIN_MITER,
+	private static BasicStroke EDITPART_SELECTION_STROKE = Gfx.createStroke(
 			1,
-			new float[] { 3f, 3f },
-			0);
+			3);
 
 	/** the offset of the selection rectangle. */
 	public static int EDITPART_SELECTION_STROKE_OFFSET = 3;

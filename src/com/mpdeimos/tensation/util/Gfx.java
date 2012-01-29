@@ -1,5 +1,6 @@
 package com.mpdeimos.tensation.util;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -53,5 +54,22 @@ public class Gfx
 				pos.getY(),
 				rect.getWidth(),
 				rect.getHeight()));
+	}
+
+	/**
+	 * Creates a stroke with the given width and pattern multiplication (0 = no
+	 * pattern).
+	 */
+	public static BasicStroke createStroke(float width, float patternMultiplier)
+	{
+		return new BasicStroke(
+				width,
+				BasicStroke.CAP_BUTT,
+				BasicStroke.JOIN_MITER,
+				1,
+				patternMultiplier * width > 0 ? new float[] {
+						width * patternMultiplier,
+						width * patternMultiplier } : null,
+				0);
 	}
 }

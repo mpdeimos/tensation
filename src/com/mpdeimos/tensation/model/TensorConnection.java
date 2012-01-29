@@ -10,7 +10,8 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public class TensorConnection extends ModelDataBase
+public class TensorConnection extends ModelDataBase implements
+		AppearanceContainer.IAppearanceHolder
 {
 	/** Start tensor anchor of the connection. */
 	private TensorConnectionAnchor source;
@@ -23,6 +24,9 @@ public class TensorConnection extends ModelDataBase
 
 	/** The relative distance of the sink anchor. */
 	private double sinkDistance = 2;
+
+	/** The appearance container of this object. */
+	private final AppearanceContainer appearanceContainer = new AppearanceContainer();
 
 	/**
 	 * Constructor.
@@ -107,5 +111,11 @@ public class TensorConnection extends ModelDataBase
 	public double getSinkDistance()
 	{
 		return this.sinkDistance;
+	}
+
+	@Override
+	public AppearanceContainer getAppearanceContainer()
+	{
+		return this.appearanceContainer;
 	}
 }

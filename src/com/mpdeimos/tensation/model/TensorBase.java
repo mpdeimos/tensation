@@ -1,5 +1,6 @@
 package com.mpdeimos.tensation.model;
 
+import com.mpdeimos.tensation.model.AppearanceContainer.IAppearanceHolder;
 import com.mpdeimos.tensation.util.ImmutableList;
 
 import java.awt.Point;
@@ -13,7 +14,8 @@ import java.util.List;
  * @author mpdeimos
  * 
  */
-public abstract class TensorBase extends ModelDataBase
+public abstract class TensorBase extends ModelDataBase implements
+		IAppearanceHolder
 {
 	/** Position of the object in screen coordinates. */
 	protected final Point position;
@@ -23,6 +25,9 @@ public abstract class TensorBase extends ModelDataBase
 
 	/** Anchors for this tensor. */
 	protected final List<TensorConnectionAnchor> anchors = new ArrayList<TensorConnectionAnchor>();
+
+	/** The appearance container of this object. */
+	private final AppearanceContainer appearanceContainer = new AppearanceContainer();
 
 	/** Constructor. */
 	public TensorBase(IModelData parent)
@@ -103,5 +108,11 @@ public abstract class TensorBase extends ModelDataBase
 			}
 		}
 		return l;
+	}
+
+	@Override
+	public AppearanceContainer getAppearanceContainer()
+	{
+		return this.appearanceContainer;
 	}
 }

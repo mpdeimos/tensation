@@ -59,6 +59,7 @@ public class TensorConnectionFigure extends FigureBase
 
 		TensorConnection connection = (TensorConnection) this.editPart.getModel();
 		List<Shape> shapes = new ArrayList<Shape>(1);
+		// List<Shape> fills = new ArrayList<Shape>(1);
 
 		this.sinkAnchor = new Point2D.Double();
 		this.sourceAnchor = new Point2D.Double();
@@ -122,18 +123,19 @@ public class TensorConnectionFigure extends FigureBase
 		// 2);
 
 		Shape circle2 = new Ellipse2D.Double(
-				this.sinkAnchor.getX() - 1,
-				this.sinkAnchor.getY() - 1,
-				2,
-				2);
+				this.sinkAnchor.getX() - 2,
+				this.sinkAnchor.getY() - 2,
+				4,
+				4);
 
 		shapes.add(bezier);
 
-		// shapes.add(circle1);
-		shapes.add(circle2);
+		// fills.add(circle2);
 
 		ShapePack pack = new ShapePack(EDrawingMode.STROKE, shapes);
 		this.shapePacks.add(pack);
+		// pack = new ShapePack(EDrawingMode.FILL, fills);
+		// this.shapePacks.add(pack);
 	}
 
 	@Override
