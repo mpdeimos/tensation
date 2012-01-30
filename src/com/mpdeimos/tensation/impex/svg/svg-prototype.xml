@@ -9,29 +9,32 @@
   <defs>
 	<defs>
 		<marker id="marker_triangle_end" viewBox="0 0 5 8" refX="0.1" refY="4"
-			markerUnits="strokeWidth" markerWidth="5" markerHeight="8" orient="auto">
+			markerUnits="userSpaceOnUse" markerWidth="5" markerHeight="8" orient="auto">
 			<path d="M 0 0 L 5 4 L 0 8 z" />
 		</marker>
 		<marker id="marker_triangle_start" viewBox="0 0 5 8" refX="3.9" refY="4"
-			markerUnits="strokeWidth" markerWidth="5" markerHeight="8" orient="auto">
+			markerUnits="userSpaceOnUse" markerWidth="5" markerHeight="8" orient="auto">
 			<path d="M 5 0 L 0 4 L 5 8 z" />
 		</marker>
-		<marker id="marker_circle" markerHeight="3" markerUnits="strokeWidth"
+		<marker id="marker_circle" markerHeight="3" markerUnits="userSpaceOnUse"
 			markerWidth="3" orient="auto" refX="1.5" refY="1.5" viewBox="0 0 3 3">
 			<circle cx="1.5" cy="1.5" fill="black" r="1.5" />
 		</marker>
 	</defs>
     <style type="text/css"><![CDATA[
-.tensor
-{
-	fill: black;
-}
-line, path
+.connection
 {
 	stroke: black;
 	stroke-width: 1px;
-	fill: none;
+	fill: none !important;
 }
+.tensor
+{
+	stroke: black;
+	stroke-width: 1px;
+	fill: black; 
+}
+.g_tensor_circle { stroke: none; }
     ]]></style>
   </defs>
 

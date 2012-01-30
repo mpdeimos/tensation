@@ -3,11 +3,14 @@ package com.mpdeimos.tensation.figure;
 import com.mpdeimos.tensation.impex.export.Export;
 import com.mpdeimos.tensation.impex.export.ExportHandler;
 import com.mpdeimos.tensation.impex.export.IExportable;
+import com.mpdeimos.tensation.impex.svg.ESvg;
 import com.mpdeimos.tensation.util.Gfx;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.HashMap;
+
+import org.w3c.dom.Element;
 
 /**
  * Container class for appearance settings.
@@ -90,6 +93,53 @@ public class AppearanceContainer implements IExportable
 			multiplier = this.lineStyle.getPatternMultiplier();
 		}
 		gfx.setStroke(Gfx.createStroke(width, multiplier));
+	}
+
+	/**
+	 * Applies the appearance settings to the given SVG Node.
+	 */
+	public void applyAppearance(Element path)
+	{
+		StringBuilder style = new StringBuilder();
+
+		if (this.color != null)
+		{
+			String c = ESvg.VALUE_RGB.$(
+					this.color.getRed(),
+					this.color.getGreen(),
+					this.color.getBlue());
+			style.append(ESvg.VALUE_STYLE_FILL.$(c));
+			style.append(ESvg.VALUE_STYLE_STROKE.$(c));
+		}
+		if (this.lineWidth != null)
+		{
+			style.append(ESvg.VALUE_STYLE_STROKE_WIDTH.$(this.lineWidth));
+		}
+		if (this.lineStyle != null)
+		{
+			int width = 1;
+			if (this.lineWidth != null)
+				width = this.lineWidth;
+
+			float[] pattern = Gfx.createPatternArray(
+					width,
+					this.lineStyle.getPatternMultiplier());
+
+			if (pattern != null)
+			{
+				StringBuilder dash = new StringBuilder();
+				for (float f : pattern)
+				{
+					dash.append(f + " "); //$NON-NLS-1$
+				}
+				style.append(ESvg.VALUE_STYLE_STROKE_DASHARRAY.$(dash.toString()));
+			}
+		}
+		if (style.length() > 0)
+			path.setAttribute(
+					ESvg.ATTRIB_STYLE.$(),
+					style.toString());
+
 	}
 
 	/** Interface for objects holding an appearance container. */

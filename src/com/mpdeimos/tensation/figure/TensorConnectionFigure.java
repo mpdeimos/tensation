@@ -1,5 +1,6 @@
 package com.mpdeimos.tensation.figure;
 
+import com.mpdeimos.tensation.editpart.EditPartBase;
 import com.mpdeimos.tensation.editpart.IEditPart;
 import com.mpdeimos.tensation.figure.ShapePack.EDrawingMode;
 import com.mpdeimos.tensation.impex.svg.ESvg;
@@ -156,9 +157,16 @@ public class TensorConnectionFigure extends FigureBase
 						this.sinkAnchor.getY()
 						));
 
+		// path.setAttribute(
+		// ESvg.ATTRIB_MARKER_END.$(),
+		// ESvg.VALUE_REF_URL.$(ESvgDefinitions.MARKER_CRICLE.$()));
+
 		path.setAttribute(
-				ESvg.ATTRIB_MARKER_END.$(),
-				ESvg.VALUE_REF_URL.$(ESvgDefinitions.MARKER_CRICLE.$()));
+				ESvg.ATTRIB_CLASS.$(),
+				ESvgDefinitions.CLASS_CONNECTION.$());
+
+		((EditPartBase) this.editPart).getAppearanceContainer().applyAppearance(
+				path);
 
 		return path;
 	}

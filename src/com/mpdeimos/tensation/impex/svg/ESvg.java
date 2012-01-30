@@ -19,6 +19,9 @@ public enum ESvg implements INameEnum
 	/** the css class attribute. */
 	ATTRIB_CLASS("class"), //$NON-NLS-1$
 
+	/** the css style attribute. */
+	ATTRIB_STYLE("style"), //$NON-NLS-1$
+
 	/** the color fill attribute. */
 	ATTRIB_FILL("fill"), //$NON-NLS-1$
 
@@ -108,6 +111,18 @@ public enum ESvg implements INameEnum
 
 	/** reference to an element within the document. */
 	VALUE_REF("#%s"), //$NON-NLS-1$
+
+	/** The stroke width style value. */
+	VALUE_STYLE_STROKE("stroke:%s;"), //$NON-NLS-1$
+	/** The stroke width style value. */
+	VALUE_STYLE_STROKE_WIDTH("stroke-width:%d;"), //$NON-NLS-1$
+	/** The stroke width style value. */
+	VALUE_STYLE_STROKE_DASHARRAY("stroke-dasharray:%s;"), //$NON-NLS-1$
+	/** The element color. */
+	VALUE_STYLE_FILL("fill:%s;"), //$NON-NLS-1$
+
+	/** rgb value */
+	VALUE_RGB("rgb(%d,%d,%d)"), //$NON-NLS-1$
 
 	;
 

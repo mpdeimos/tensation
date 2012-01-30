@@ -1,5 +1,6 @@
 package com.mpdeimos.tensation.figure;
 
+import com.mpdeimos.tensation.editpart.EditPartBase;
 import com.mpdeimos.tensation.editpart.IEditPart;
 import com.mpdeimos.tensation.figure.ShapePack.EDrawingMode;
 import com.mpdeimos.tensation.impex.svg.ESvg;
@@ -271,14 +272,14 @@ public class TensorFigure extends FigureBase
 						position.getY())
 						+ ESvg.VALUE_TRANSFORM_FUNC_ROTATE.$(tensor.getRotation())
 				);
+		use.setAttribute(
+				ESvg.ATTRIB_CLASS.$(),
+				ESvgDefinitions.CLASS_TENSOR.$());
 
 		if (!defs.containsKey(def))
 		{
 			Element group = doc.createElement(ESvg.ELEMENT_GROUP.$());
 			group.setAttribute(ESvg.ATTRIB_ID.$(), def);
-			group.setAttribute(
-					ESvg.ATTRIB_CLASS.$(),
-					ESvgDefinitions.CLASS_TENSOR.$());
 
 			ImmutableList<TensorConnectionAnchor> anchors = tensor.getAnchors();
 			for (int i = 0; i < anchors.size(); i++)
@@ -334,9 +335,15 @@ public class TensorFigure extends FigureBase
 			circle.setAttribute(
 					ESvg.ATTRIB_RADIUS.$(),
 					Double.toString(CENTER_CIRCLE_RADIUS - 0.5));
+			circle.setAttribute(
+					ESvg.ATTRIB_CLASS.$(),
+					ESvgDefinitions.CLASS_TENSOR_CIRCLE.$());
 
 			defs.put(def, group);
 		}
+
+		((EditPartBase) this.editPart).getAppearanceContainer().applyAppearance(
+				use);
 
 		return use;
 	}

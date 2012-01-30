@@ -6,10 +6,11 @@ import com.mpdeimos.tensation.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensation.feature.IFeature;
 import com.mpdeimos.tensation.feature.contract.ICanvasFeatureContract;
 import com.mpdeimos.tensation.figure.AppearanceContainer;
-import com.mpdeimos.tensation.figure.IFigure;
 import com.mpdeimos.tensation.figure.AppearanceContainer.IAppearanceHolder;
+import com.mpdeimos.tensation.figure.IFigure;
 import com.mpdeimos.tensation.model.IModelChangedListener;
 import com.mpdeimos.tensation.model.IModelData;
+import com.mpdeimos.tensation.util.Gfx;
 import com.mpdeimos.tensation.util.Log;
 
 import java.awt.Color;
@@ -146,10 +147,12 @@ public abstract class EditPartBase implements ICustomizable
 
 		getAppearanceContainer().applyAppearance(gfx);
 
-		if (this.highlighted)
-			gfx.setColor(Color.MAGENTA);
-		if (this.selected)
-			gfx.setColor(Color.BLUE);
+		if (this.highlighted || this.selected)
+		{
+			Color c = gfx.getColor();
+			c = Gfx.brighten(c);
+			gfx.setColor(c);
+		}
 
 		getFigure().draw(gfx);
 

@@ -2,8 +2,8 @@ package com.mpdeimos.tensation.editpart.feature;
 
 import com.mpdeimos.tensation.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensation.figure.AppearanceContainer;
-import com.mpdeimos.tensation.figure.ELineStyle;
 import com.mpdeimos.tensation.figure.AppearanceContainer.IAppearanceHolder;
+import com.mpdeimos.tensation.figure.ELineStyle;
 import com.mpdeimos.tensation.ui.Application;
 import com.mpdeimos.tensation.ui.ContextPanelContentBase;
 import com.mpdeimos.tensation.ui.DividerLabel;
@@ -84,6 +84,9 @@ public interface ICustomizable extends IFeatureEditPart, IAppearanceHolder
 			/** the line width combobox model. */
 			private final DefaultComboBoxModel uiLineWidth;
 
+			/** flag for bypassing refresh triggers. */
+			private boolean byPassRefresh = false;
+
 			/** action listener that triggers the update actions. */
 			private final ActionListener updateTrigger = new ActionListener()
 			{
@@ -148,6 +151,8 @@ public interface ICustomizable extends IFeatureEditPart, IAppearanceHolder
 			@Override
 			public void refresh()
 			{
+				this.byPassRefresh = true;
+
 				this.customizables = ListUtil.filterByClass(
 						Application.getApp().getActiveCanvas().getSelectedEditParts(),
 						ICustomizable.class);
@@ -185,15 +190,7 @@ public interface ICustomizable extends IFeatureEditPart, IAppearanceHolder
 				});
 				this.uiLineStyle.setSelectedItem(commonLineStyle);
 
-				// for (int i = 0; i < this.uiLineWidth.getSize(); i++)
-				// {
-				// Object e = this.uiLineWidth.getElementAt(i);
-				// if (e == this.commonLineWidth)
-				// this.uiLineWidth.setSelectedItem(e);
-				// if (e != null && e.equals(commonLineWidth))
-				// {
-				// }
-				// }
+				this.byPassRefresh = false;
 			}
 
 			/** Functional iterator for reading common params. */
@@ -220,6 +217,9 @@ public interface ICustomizable extends IFeatureEditPart, IAppearanceHolder
 			/** Updates the EditParts with the current ui data. */
 			private void updateEditParts()
 			{
+				if (this.byPassRefresh)
+					return;
+
 				if (this.commonColor != null)
 				{
 					for (ICustomizable c : this.customizables)

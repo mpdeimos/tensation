@@ -1,6 +1,7 @@
 package com.mpdeimos.tensation.util;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -67,9 +68,33 @@ public class Gfx
 				BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_MITER,
 				1,
-				patternMultiplier * width > 0 ? new float[] {
-						width * patternMultiplier,
-						width * patternMultiplier } : null,
+				createPatternArray(width, patternMultiplier),
 				0);
+	}
+
+	/** Creates a stroke pattern array. */
+	public static float[] createPatternArray(
+			float width,
+			float patternMultiplier)
+	{
+		return patternMultiplier * width > 0 ? new float[] {
+				width * patternMultiplier,
+				width * patternMultiplier } : null;
+	}
+
+	/** @return a brighter variant of this color. */
+	public static Color brighten(Color c)
+	{
+		int sum = c.getRed() + c.getGreen() + c.getBlue();
+		if (sum < 384)
+			return new Color(
+					Math.min(255, c.getRed() + 100),
+					Math.min(255, c.getGreen() + 100),
+					Math.min(255, c.getBlue() + 100));
+		return new Color(
+				Math.max(0, c.getRed() - 100),
+				Math.max(0, c.getGreen() - 100),
+				Math.max(0, c.getBlue() - 100));
+
 	}
 }
