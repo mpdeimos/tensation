@@ -12,15 +12,22 @@ public enum ESvgDefinitions implements INameEnum
 {
 	/** Triangle start marker. */
 	MARKER_TRIANGLE_START("marker_triangle_start"), //$NON-NLS-1$
+	/** Triangle start marker w/ color. */
+	MARKER_TRIANGLE_START_COLOR("marker_triangle_start_%x"), //$NON-NLS-1$
 
 	/** Triangle end marker. */
 	MARKER_TRIANGLE_END("marker_triangle_end"), //$NON-NLS-1$
+	/** Triangle end marker w/ color. */
+	MARKER_TRIANGLE_END_COLOR("marker_triangle_end_%x"), //$NON-NLS-1$
 
 	/** Circle marker. */
 	MARKER_CRICLE("marker_circle"), //$NON-NLS-1$
 
 	/** prefix for tensor definitions. */
 	TENSOR_DEF_PREFIX("tensor_"), //$NON-NLS-1$
+
+	/** prefix for tensor definitions. */
+	TENSOR_DEF_COLOR_POSTFIX("_c%x"), //$NON-NLS-1$
 
 	/** suffix for sink edges */
 	TENSOR_DEF_SINK("i"), //$NON-NLS-1$

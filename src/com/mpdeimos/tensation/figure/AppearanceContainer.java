@@ -104,10 +104,7 @@ public class AppearanceContainer implements IExportable
 
 		if (this.color != null)
 		{
-			String c = ESvg.VALUE_RGB.$(
-					this.color.getRed(),
-					this.color.getGreen(),
-					this.color.getBlue());
+			String c = ESvg.VALUE_HEX.$(this.color.getRGB());
 			style.append(ESvg.VALUE_STYLE_FILL.$(c));
 			style.append(ESvg.VALUE_STYLE_STROKE.$(c));
 		}

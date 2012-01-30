@@ -67,6 +67,14 @@ public class SvgExporter
 			defs = xmlDoc.createElement(ESvg.ELEMENT_DEFS.$());
 			eRoot.appendChild(defs);
 		}
+		for (Element e : XmlUtil.iterate(defs))
+		{
+			String id = e.getAttribute(ESvg.ATTRIB_ID.$());
+			if (id != null)
+			{
+				definitions.put(id, e);
+			}
+		}
 
 		for (IEditPart part : parts)
 		{
@@ -78,7 +86,8 @@ public class SvgExporter
 
 		for (Element def : definitions.values())
 		{
-			defs.appendChild(def);
+			if (def.getParentNode() == null)
+				defs.appendChild(def);
 		}
 
 		return xmlDoc;

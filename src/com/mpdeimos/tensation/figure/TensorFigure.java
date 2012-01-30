@@ -11,6 +11,7 @@ import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensation.util.ImmutableList;
 import com.mpdeimos.tensation.util.PointUtil;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -260,7 +261,7 @@ public class TensorFigure extends FigureBase
 	{
 		TensorBase tensor = (TensorBase) this.editPart.getModel();
 		Point position = tensor.getPosition();
-
+		AppearanceContainer appearance = ((EditPartBase) this.editPart).getAppearanceContainer();
 		String def = getSvgDefName();
 
 		Element use = doc.createElement(ESvg.ELEMENT_USE.$());
@@ -281,6 +282,8 @@ public class TensorFigure extends FigureBase
 			Element group = doc.createElement(ESvg.ELEMENT_GROUP.$());
 			group.setAttribute(ESvg.ATTRIB_ID.$(), def);
 
+			String markerStartID = null;
+			String markerEndID = null;
 			ImmutableList<TensorConnectionAnchor> anchors = tensor.getAnchors();
 			for (int i = 0; i < anchors.size(); i++)
 			{
@@ -318,16 +321,50 @@ public class TensorFigure extends FigureBase
 
 				if (anchors.get(i).getDirection() == EDirection.SOURCE)
 				{
+					String id = ESvgDefinitions.MARKER_TRIANGLE_END.$();
+					if (appearance.getColor() != null)
+					{
+						id = ESvgDefinitions.MARKER_TRIANGLE_END_COLOR.$(appearance.getColor().getRGB());
+						markerEndID = id;
+					}
 					line.setAttribute(
 							ESvg.ATTRIB_MARKER_END.$(),
-							ESvg.VALUE_REF_URL.$(ESvgDefinitions.MARKER_TRIANGLE_END.$()));
+							ESvg.VALUE_REF_URL.$(id));
 				}
 				else
 				{
+					String id = ESvgDefinitions.MARKER_TRIANGLE_START.$();
+					if (appearance.getColor() != null)
+					{
+						id = ESvgDefinitions.MARKER_TRIANGLE_START_COLOR.$(appearance.getColor().getRGB());
+						markerStartID = id;
+					}
 					line.setAttribute(
 							ESvg.ATTRIB_MARKER_START.$(),
-							ESvg.VALUE_REF_URL.$(ESvgDefinitions.MARKER_TRIANGLE_START.$()));
+							ESvg.VALUE_REF_URL.$(id));
 				}
+			}
+
+			if (markerStartID != null && !defs.containsKey(markerStartID))
+			{
+				Element marker = defs.get(ESvgDefinitions.MARKER_TRIANGLE_START.$());
+				marker = (Element) marker.cloneNode(true);
+				marker.setAttribute(ESvg.ATTRIB_ID.$(), markerStartID);
+				marker.setAttribute(
+						ESvg.ATTRIB_FILL.$(),
+						ESvg.VALUE_HEX.$(appearance.getColor().getRGB()));
+				defs.put(markerStartID, marker);
+			}
+
+			if (markerEndID != null && !defs.containsKey(markerEndID))
+			{
+				Element marker = defs.get(ESvgDefinitions.MARKER_TRIANGLE_END.$());
+				marker = (Element) marker.cloneNode(true);
+				marker.setAttribute(ESvg.ATTRIB_ID.$(), markerEndID);
+				marker.setAttribute(
+						ESvg.ATTRIB_FILL.$(),
+						ESvg.VALUE_HEX.$(appearance.getColor().getRGB()));
+				defs.put(markerStartID, marker);
 			}
 
 			Element circle = doc.createElement(ESvg.ELEMENT_CIRCLE.$());
@@ -342,7 +379,7 @@ public class TensorFigure extends FigureBase
 			defs.put(def, group);
 		}
 
-		((EditPartBase) this.editPart).getAppearanceContainer().applyAppearance(
+		appearance.applyAppearance(
 				use);
 
 		return use;
@@ -360,6 +397,12 @@ public class TensorFigure extends FigureBase
 		{
 			name += anchors.get(i).getDirection() == EDirection.SINK ? ESvgDefinitions.TENSOR_DEF_SINK.$()
 					: ESvgDefinitions.TENSOR_DEF_SOURCE.$();
+		}
+
+		Color color = tensor.getAppearanceContainer().getColor();
+		if (color != null)
+		{
+			name += ESvgDefinitions.TENSOR_DEF_COLOR_POSTFIX.$(color.getRGB());
 		}
 
 		return name;

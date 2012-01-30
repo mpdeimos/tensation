@@ -73,6 +73,24 @@ public enum ESvg implements INameEnum
 	/** marker start attribute. */
 	ATTRIB_MARKER_START("marker-start"), //$NON-NLS-1$
 
+	/** marker height attribute. */
+	ATTRIB_MARKER_HEIGHT("markerHeight"), //$NON-NLS-1$
+
+	/** marker width attribute. */
+	ATTRIB_MARKER_WIDTH("markerWidth"), //$NON-NLS-1$
+
+	/** marker units attribute. */
+	ATTRIB_MARKER_UNITS("markerUnits"), //$NON-NLS-1$
+
+	/** marker x-reference attribute. */
+	ATTRIB_MARKER_REF_X("refX"), //$NON-NLS-1$
+
+	/** marker x-reference attribute. */
+	ATTRIB_MARKER_REF_Y("refY"), //$NON-NLS-1$
+
+	/** marker viewbox attribute. */
+	ATTRIB_MARKER_VIEWBOX("viewBox"), //$NON-NLS-1$
+
 	/** The path data attribute. */
 	ATTRIB_PATH_DATA("d"), //$NON-NLS-1$
 
@@ -96,6 +114,9 @@ public enum ESvg implements INameEnum
 
 	/** The use element. */
 	ELEMENT_USE("use"), //$NON-NLS-1$
+
+	/** The marker element. */
+	ELEMENT_MARKER("marker"), //$NON-NLS-1$
 
 	/** color value for black. */
 	VALUE_COLOR_BLACK("black"), //$NON-NLS-1$
@@ -123,6 +144,13 @@ public enum ESvg implements INameEnum
 
 	/** rgb value */
 	VALUE_RGB("rgb(%d,%d,%d)"), //$NON-NLS-1$
+	/** hex value */
+	VALUE_HEX("#%x"), //$NON-NLS-1$
+
+	/** user space unit value for markers. */
+	VALUE_MARKER_UNITS_USERSPACE("userSpaceOnUse"), //$NON-NLS-1$
+	/** marker viewbox w/ just height/width. */
+	VALUE_MARKER_VIEWBOX_HW("0 0 %d %d"), //$NON-NLS-1$
 
 	;
 
