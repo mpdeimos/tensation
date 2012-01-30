@@ -1,5 +1,11 @@
 package com.mpdeimos.tensation.impex.serialize;
 
+/**
+ * Serializer Class for Integers.
+ * 
+ * @author mpdeimos
+ * 
+ */
 public class IntegerSerializer implements IObjectSerializer<Integer>
 {
 	@Override
@@ -15,7 +21,7 @@ public class IntegerSerializer implements IObjectSerializer<Integer>
 	}
 
 	@Override
-	public Integer deserialize(String s)
+	public Integer deserialize(String s, Class<?> type)
 	{
 		return Integer.valueOf(s);
 	}

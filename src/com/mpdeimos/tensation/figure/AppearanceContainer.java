@@ -1,12 +1,12 @@
-package com.mpdeimos.tensation.model;
+package com.mpdeimos.tensation.figure;
 
-import com.mpdeimos.tensation.impex.serialize.Export;
+import com.mpdeimos.tensation.impex.export.Export;
+import com.mpdeimos.tensation.impex.export.ExportHandler;
+import com.mpdeimos.tensation.impex.export.IExportable;
 import com.mpdeimos.tensation.util.Gfx;
-import com.mpdeimos.tensation.util.StringUtil;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 /**
@@ -14,7 +14,7 @@ import java.util.HashMap;
  * 
  * @author mpdeimos
  */
-public class AppearanceContainer
+public class AppearanceContainer implements IExportable
 {
 	/** The color of this object. */
 	@Export
@@ -27,6 +27,9 @@ public class AppearanceContainer
 	/** The line style of this object. */
 	@Export
 	private ELineStyle lineStyle;
+
+	/** export handler for this container. */
+	private final ExportHandler exportHandler = new ExportHandler(this);
 
 	/**
 	 * @return the color of the container.
@@ -96,53 +99,15 @@ public class AppearanceContainer
 		public AppearanceContainer getAppearanceContainer();
 	}
 
+	@Override
 	public HashMap<String, Object> getValues()
 	{
-		HashMap<String, Object> map = new HashMap<String, Object>();
-
-		for (Field field : this.getClass().getDeclaredFields())
-		{
-			Export annotation = field.getAnnotation(Export.class);
-			if (annotation != null)
-			{
-				String name = annotation.name();
-				if (StringUtil.isNullOrEmpty(name))
-					name = field.getName();
-				try
-				{
-					Object object = field.get(this);
-					if (object != null || annotation.nulls())
-						map.put(name, object);
-				}
-				catch (IllegalAccessException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-
-		return map;
+		return this.exportHandler.getValues();
 	}
 
+	@Override
 	public void setValues(HashMap<String, Object> map)
 	{
-		for (Field field : this.getClass().getDeclaredFields())
-		{
-			Export annotation = field.getAnnotation(Export.class);
-			if (annotation != null)
-			{
-				String name = annotation.name();
-				if (StringUtil.isNullOrEmpty(name))
-					name = field.getName();
-				try
-				{
-					field.set(this, map.get(name));
-				}
-				catch (IllegalAccessException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
+		this.exportHandler.setValues(map);
 	}
 }

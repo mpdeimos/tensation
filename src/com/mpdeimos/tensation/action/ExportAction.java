@@ -1,6 +1,6 @@
 package com.mpdeimos.tensation.action;
 
-import com.mpdeimos.tensation.impex.SvgExporter;
+import com.mpdeimos.tensation.impex.svg.SvgExporter;
 import com.mpdeimos.tensation.ui.Application;
 import com.mpdeimos.tensation.ui.ContextPanelContentBase;
 import com.mpdeimos.tensation.ui.DividerLabel;

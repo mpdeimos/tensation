@@ -1,4 +1,4 @@
-package com.mpdeimos.tensation.impex.serialize;
+package com.mpdeimos.tensation.impex.export;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

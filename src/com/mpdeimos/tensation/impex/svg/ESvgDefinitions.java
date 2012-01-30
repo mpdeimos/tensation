@@ -1,4 +1,6 @@
-package com.mpdeimos.tensation.impex;
+package com.mpdeimos.tensation.impex.svg;
+
+import com.mpdeimos.tensation.impex.INameEnum;
 
 /**
  * Definitions used for SVG writing.

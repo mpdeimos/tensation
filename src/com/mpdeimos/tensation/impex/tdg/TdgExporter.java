@@ -1,4 +1,4 @@
-package com.mpdeimos.tensation.impex;
+package com.mpdeimos.tensation.impex.tdg;
 
 import com.mpdeimos.tensation.model.IModelData;
 import com.mpdeimos.tensation.model.ModelRoot;

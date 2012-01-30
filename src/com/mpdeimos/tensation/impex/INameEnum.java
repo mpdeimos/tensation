@@ -17,7 +17,7 @@ public interface INameEnum
 	public class Impl
 	{
 		/** reference implementation with formatting. */
-		protected static String $(String name, Object... format)
+		public static String $(String name, Object... format)
 		{
 			if (format != null && format.length > 0)
 				return String.format(Locale.ENGLISH, name, format);

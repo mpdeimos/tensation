@@ -1,4 +1,4 @@
-package com.mpdeimos.tensation.impex;
+package com.mpdeimos.tensation.impex.svg;
 
 import com.mpdeimos.tensation.editpart.IEditPart;
 import com.mpdeimos.tensation.figure.IFigure;

@@ -1,6 +1,7 @@
 package com.mpdeimos.tensation.model;
 
-import com.mpdeimos.tensation.model.AppearanceContainer.IAppearanceHolder;
+import com.mpdeimos.tensation.figure.AppearanceContainer;
+import com.mpdeimos.tensation.figure.AppearanceContainer.IAppearanceHolder;
 import com.mpdeimos.tensation.util.ImmutableList;
 
 import java.awt.Point;

@@ -1,5 +1,6 @@
 package com.mpdeimos.tensation.model;
 
+import com.mpdeimos.tensation.figure.AppearanceContainer;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
 
 import resources.R;

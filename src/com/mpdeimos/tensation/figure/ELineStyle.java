@@ -1,4 +1,4 @@
-package com.mpdeimos.tensation.model;
+package com.mpdeimos.tensation.figure;
 
 import resources.R;
 import resources.R.string;
@@ -32,8 +32,9 @@ public enum ELineStyle
 		return this.name.toString();
 	}
 
+	/** @return the pattern multiplier value */
 	public int getPatternMultiplier()
 	{
-		return patternMultiplier;
+		return this.patternMultiplier;
 	}
 }

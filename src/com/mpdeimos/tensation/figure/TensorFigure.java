@@ -2,8 +2,8 @@ package com.mpdeimos.tensation.figure;
 
 import com.mpdeimos.tensation.editpart.IEditPart;
 import com.mpdeimos.tensation.figure.ShapePack.EDrawingMode;
-import com.mpdeimos.tensation.impex.ESvg;
-import com.mpdeimos.tensation.impex.ESvgDefinitions;
+import com.mpdeimos.tensation.impex.svg.ESvg;
+import com.mpdeimos.tensation.impex.svg.ESvgDefinitions;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;

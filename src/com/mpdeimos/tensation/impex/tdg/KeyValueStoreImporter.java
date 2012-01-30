@@ -1,5 +1,6 @@
-package com.mpdeimos.tensation.impex;
+package com.mpdeimos.tensation.impex.tdg;
 
+import com.mpdeimos.tensation.impex.IImporter;
 import com.mpdeimos.tensation.impex.serialize.Serialized;
 import com.mpdeimos.tensation.impex.serialize.Serializer;
 import com.mpdeimos.tensation.util.XmlUtil;

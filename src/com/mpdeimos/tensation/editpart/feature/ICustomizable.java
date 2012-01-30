@@ -1,9 +1,9 @@
 package com.mpdeimos.tensation.editpart.feature;
 
 import com.mpdeimos.tensation.action.canvas.SelectEditPartAction;
-import com.mpdeimos.tensation.model.AppearanceContainer;
-import com.mpdeimos.tensation.model.AppearanceContainer.IAppearanceHolder;
-import com.mpdeimos.tensation.model.ELineStyle;
+import com.mpdeimos.tensation.figure.AppearanceContainer;
+import com.mpdeimos.tensation.figure.ELineStyle;
+import com.mpdeimos.tensation.figure.AppearanceContainer.IAppearanceHolder;
 import com.mpdeimos.tensation.ui.Application;
 import com.mpdeimos.tensation.ui.ContextPanelContentBase;
 import com.mpdeimos.tensation.ui.DividerLabel;

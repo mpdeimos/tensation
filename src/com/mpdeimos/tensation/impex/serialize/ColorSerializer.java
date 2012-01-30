@@ -2,6 +2,11 @@ package com.mpdeimos.tensation.impex.serialize;
 
 import java.awt.Color;
 
+/**
+ * Serializer class for AWT Colors.
+ * 
+ * @author mpdeimos
+ */
 public class ColorSerializer implements IObjectSerializer<Color>
 {
 	@Override
@@ -18,7 +23,7 @@ public class ColorSerializer implements IObjectSerializer<Color>
 	}
 
 	@Override
-	public Color deserialize(String s)
+	public Color deserialize(String s, Class<?> type)
 	{
 		String[] splits = s.split(","); //$NON-NLS-1$
 		int alpha = 0;

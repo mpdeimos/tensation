@@ -2,17 +2,28 @@ package com.mpdeimos.tensation.impex.serialize;
 
 import com.mpdeimos.tensation.util.Log;
 
+/**
+ * Serialized data object.
+ * 
+ * @author mpdeimos
+ * 
+ */
 public class Serialized
 {
+	/** the serialized data */
 	private final String data;
+
+	/** the original type of the object. */
 	private final Class<?> type;
 
+	/** COnstructor. */
 	public Serialized(String data, Class<?> type)
 	{
 		this.data = data;
 		this.type = type;
 	}
 
+	/** Constructor. */
 	public Serialized(String data, String type)
 	{
 		this.data = data;
@@ -27,18 +38,21 @@ public class Serialized
 		}
 	}
 
+	/** @return the serialized data. */
 	public String getData()
 	{
-		return data;
+		return this.data;
 	}
 
+	/** @return the class of the original type. */
 	public Class<?> getType()
 	{
-		return type;
+		return this.type;
 	}
 
+	/** @return the class name of the original type. */
 	public String getTypeName()
 	{
-		return type.getCanonicalName();
+		return this.type.getCanonicalName();
 	}
 }

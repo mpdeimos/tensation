@@ -1,6 +1,6 @@
 package com.mpdeimos.tensation.action;
 
-import com.mpdeimos.tensation.impex.TdgImporter;
+import com.mpdeimos.tensation.impex.tdg.TdgImporter;
 import com.mpdeimos.tensation.model.ModelRoot;
 import com.mpdeimos.tensation.ui.Application;
 import com.mpdeimos.tensation.util.Log;

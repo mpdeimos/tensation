@@ -1,5 +1,6 @@
-package com.mpdeimos.tensation.impex;
+package com.mpdeimos.tensation.impex.tdg;
 
+import com.mpdeimos.tensation.impex.IImporter;
 import com.mpdeimos.tensation.model.GenericTensor;
 import com.mpdeimos.tensation.model.ModelRoot;
 import com.mpdeimos.tensation.model.TensorBase;
