@@ -121,10 +121,18 @@ public class TensorConnectionEditPart extends EditPartBase implements
 		TensorBase source = (TensorBase) duplicates.get(sourceOrig);
 		TensorBase sink = (TensorBase) duplicates.get(sinkOrig);
 
-		return new TensorConnection(
+		TensorConnection tc = new TensorConnection(
 				canvas.getModel(),
 				source.getAnchors().get(connection.getSource().getId()),
 				sink.getAnchors().get(connection.getSink().getId()));
+
+		tc.setLabel(connection.getLabel());
+		tc.getAppearanceContainer().setValues(
+				connection.getAppearanceContainer().getValues());
+		tc.setSinkControlPointDistance(connection.getSinkDistance());
+		tc.setSourceControlPointDistance(connection.getSourceDistance());
+
+		return tc;
 	}
 
 	@Override

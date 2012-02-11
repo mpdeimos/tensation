@@ -78,6 +78,10 @@ public class GenericTensor extends TensorBase
 
 		tensor.setRotation(getRotation());
 		tensor.setPosition(getPosition());
+		tensor.setLabel(getLabel());
+
+		tensor.getAppearanceContainer().setValues(
+				getAppearanceContainer().getValues());
 
 		return tensor;
 	}
