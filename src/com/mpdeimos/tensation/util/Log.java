@@ -33,7 +33,7 @@ public class Log
 		ERROR("ERROR"); //$NON-NLS-1$
 
 		/** string representation of logging level */
-		private String prefix;
+		private final String prefix;
 
 		/**
 		 * Constructor.
@@ -59,6 +59,37 @@ public class Log
 	public static void setLevel(LogLevel level)
 	{
 		Log.level = level;
+	}
+
+	/** sets the global logging level from commandline arguments. */
+	public static void setLevelFromCommandline(
+			String[] args,
+			LogLevel defaultValue)
+	{
+		setLevel(defaultValue);
+		for (String arg : args)
+		{
+			if ("--verbose".equals(arg)) //$NON-NLS-1$
+			{
+				setLevel(LogLevel.VERBOSE);
+			}
+			else if ("--debug".equals(arg)) //$NON-NLS-1$
+			{
+				setLevel(LogLevel.DEBUG);
+			}
+			else if ("--info".equals(arg)) //$NON-NLS-1$
+			{
+				setLevel(LogLevel.INFO);
+			}
+			else if ("--warn".equals(arg)) //$NON-NLS-1$
+			{
+				setLevel(LogLevel.WARN);
+			}
+			else if ("--error".equals(arg)) //$NON-NLS-1$
+			{
+				setLevel(LogLevel.ERROR);
+			}
+		}
 	}
 
 	/**

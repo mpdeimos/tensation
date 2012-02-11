@@ -24,11 +24,11 @@ public class AppearanceContainer implements IExportable
 	private Color color;
 
 	/** The line width of this object. */
-	@Export
+	@Export(name = "line.width")
 	private Integer lineWidth;
 
 	/** The line style of this object. */
-	@Export
+	@Export(name = "line.style")
 	private ELineStyle lineStyle;
 
 	/** export handler for this container. */

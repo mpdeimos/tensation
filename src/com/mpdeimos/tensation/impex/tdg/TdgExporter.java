@@ -1,5 +1,7 @@
 package com.mpdeimos.tensation.impex.tdg;
 
+import com.mpdeimos.tensation.figure.AppearanceContainer.IAppearanceHolder;
+import com.mpdeimos.tensation.impex.export.ExportHandler;
 import com.mpdeimos.tensation.model.IModelData;
 import com.mpdeimos.tensation.model.ModelRoot;
 import com.mpdeimos.tensation.model.TensorBase;
@@ -43,6 +45,7 @@ public class TdgExporter
 			{
 				tensorsToIds.put((TensorBase) model, tensorIDs);
 				Element e = tensorExporter.export(xmlDoc, model, tensorIDs);
+				commonExport(xmlDoc, e, model);
 				eTensors.appendChild(e);
 				tensorIDs++;
 			}
@@ -58,10 +61,34 @@ public class TdgExporter
 			{
 				Element e = connectionExporter.export(
 						xmlDoc, model, tensorsToIds);
+				commonExport(xmlDoc, e, model);
 				eConnections.appendChild(e);
 			}
 		}
 
 		return xmlDoc;
+	}
+
+	/** Performs common export actions. */
+	private void commonExport(Document xmlDoc, Element e, IModelData model)
+	{
+		KeyValueStoreExporter kve = new KeyValueStoreExporter();
+		ExportHandler exp = new ExportHandler(model);
+		Element export = kve.export(xmlDoc, exp.getValues(), "this"); //$NON-NLS-1$
+		if (export != null)
+		{
+			e.appendChild(export);
+		}
+		if (model instanceof IAppearanceHolder)
+		{
+			export = kve.export(
+					xmlDoc,
+					((IAppearanceHolder) model).getAppearanceContainer().getValues(),
+					"appearance"); //$NON-NLS-1$
+			if (export != null)
+			{
+				e.appendChild(export);
+			}
+		}
 	}
 }

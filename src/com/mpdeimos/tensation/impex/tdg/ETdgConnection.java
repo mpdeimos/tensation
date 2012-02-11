@@ -19,17 +19,11 @@ public enum ETdgConnection implements INameEnum
 	/** the from tensor anchor id */
 	ATTRIB_SOURCE_ANCHOR("sourceanchor"), //$NON-NLS-1$
 
-	/** the from tensor anchor control point distance */
-	ATTRIB_SOURCE_DISTANCE("sourcedistance"), //$NON-NLS-1$
-
 	/** the tensor this connection is drawn to */
 	ATTRIB_SINK("sink"), //$NON-NLS-1$
 
 	/** the to anchor id */
 	ATTRIB_SINK_ANCHOR("sinkanchor"), //$NON-NLS-1$
-
-	/** the from tensor anchor control point distance */
-	ATTRIB_SINK_DISTANCE("sinkdistance"), //$NON-NLS-1$
 	;
 
 	/** the attribute name. */

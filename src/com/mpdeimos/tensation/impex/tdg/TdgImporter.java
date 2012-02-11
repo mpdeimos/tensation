@@ -1,5 +1,8 @@
 package com.mpdeimos.tensation.impex.tdg;
 
+import com.mpdeimos.tensation.figure.AppearanceContainer.IAppearanceHolder;
+import com.mpdeimos.tensation.impex.export.ExportHandler;
+import com.mpdeimos.tensation.model.ModelDataBase;
 import com.mpdeimos.tensation.model.ModelRoot;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnection;
@@ -48,6 +51,8 @@ public class TdgImporter
 						mr,
 						outId);
 
+				commonImport((Element) item, data);
+
 				tensorIDs.put(outId.get(), data);
 				mr.addChild(data);
 			}
@@ -64,10 +69,34 @@ public class TdgImporter
 						mr,
 						tensorIDs);
 
+				commonImport((Element) item, data);
+
 				mr.addChild(data);
 			}
 		}
 
 		return mr;
+	}
+
+	/** Common import actions. */
+	private void commonImport(Element node, ModelDataBase model)
+	{
+		KeyValueStoreImporter kvi = new KeyValueStoreImporter();
+		for (Element e : XmlUtil.iterate(node))
+		{
+			if ("this".equals(e.getAttribute(ETdgKeyValueStore.ATTRIB_GROUP_NAME.$()))) //$NON-NLS-1$
+			{
+				ExportHandler exp = new ExportHandler(model);
+				HashMap<String, Object> map = kvi.importNode(e);
+				exp.setValues(map);
+			}
+			if (model instanceof IAppearanceHolder
+					&& "appearance".equals(e.getAttribute(ETdgKeyValueStore.ATTRIB_GROUP_NAME.$()))) //$NON-NLS-1$
+			{
+				HashMap<String, Object> map = kvi.importNode(e);
+				((IAppearanceHolder) model).getAppearanceContainer().setValues(
+						map);
+			}
+		}
 	}
 }

@@ -29,16 +29,6 @@ public class TensorExporter implements IExporter
 		eTensor.setAttribute(
 				ETdgTensor.ATTRIB_ID.$(), Integer.toString(id));
 
-		eTensor.setAttribute(
-				ETdgTensor.ATTRIB_POS_X.$(),
-				Integer.toString(tensor.getPosition().x));
-		eTensor.setAttribute(
-				ETdgTensor.ATTRIB_POS_Y.$(),
-				Integer.toString(tensor.getPosition().y));
-		eTensor.setAttribute(
-				ETdgTensor.ATTRIB_ROTATION.$(),
-				Integer.toString((int) (tensor.getRotation())));
-
 		for (int i = 0; i < tensor.getAnchors().size(); i++)
 		{
 			TensorConnectionAnchor anchor = tensor.getAnchors().get(i);
@@ -58,16 +48,6 @@ public class TensorExporter implements IExporter
 					direction.$());
 
 			eTensor.appendChild(eAnchor);
-		}
-
-		KeyValueStoreExporter kve = new KeyValueStoreExporter();
-		Element export = kve.export(
-				xmlDoc,
-				tensor.getAppearanceContainer().getValues(),
-				"appearance"); //$NON-NLS-1$
-		if (export != null)
-		{
-			eTensor.appendChild(export);
 		}
 
 		return eTensor;

@@ -1,6 +1,7 @@
 package com.mpdeimos.tensation.model;
 
 import com.mpdeimos.tensation.figure.AppearanceContainer;
+import com.mpdeimos.tensation.impex.export.Export;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
 
 import resources.R;
@@ -21,9 +22,11 @@ public class TensorConnection extends ModelDataBase implements
 	private TensorConnectionAnchor sink;
 
 	/** The relative distance of the source anchor. */
+	@Export(name = "source.distance")
 	private double sourceDistance = 2;
 
 	/** The relative distance of the sink anchor. */
+	@Export(name = "sink.distance")
 	private double sinkDistance = 2;
 
 	/** The appearance container of this object. */

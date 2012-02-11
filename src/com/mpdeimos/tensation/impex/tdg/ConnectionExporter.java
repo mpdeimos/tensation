@@ -37,9 +37,6 @@ public class ConnectionExporter implements IExporter
 		eCon.setAttribute(
 				ETdgConnection.ATTRIB_SOURCE_ANCHOR.$(),
 				Integer.toString(con.getSource().getId()));
-		eCon.setAttribute(
-				ETdgConnection.ATTRIB_SOURCE_DISTANCE.$(),
-				Double.toString(con.getSourceDistance()));
 
 		eCon.setAttribute(
 				ETdgConnection.ATTRIB_SINK.$(),
@@ -47,17 +44,6 @@ public class ConnectionExporter implements IExporter
 		eCon.setAttribute(
 				ETdgConnection.ATTRIB_SINK_ANCHOR.$(),
 				Integer.toString(con.getSink().getId()));
-		eCon.setAttribute(
-				ETdgConnection.ATTRIB_SINK_DISTANCE.$(),
-				Double.toString(con.getSinkDistance()));
-
-		KeyValueStoreExporter kve = new KeyValueStoreExporter();
-		Element export = kve.export(
-				xmlDoc, con.getAppearanceContainer().getValues(), "appearance"); //$NON-NLS-1$
-		if (export != null)
-		{
-			eCon.appendChild(export);
-		}
 
 		return eCon;
 	}

@@ -2,6 +2,7 @@ package com.mpdeimos.tensation.model;
 
 import com.mpdeimos.tensation.figure.AppearanceContainer;
 import com.mpdeimos.tensation.figure.AppearanceContainer.IAppearanceHolder;
+import com.mpdeimos.tensation.impex.export.Export;
 import com.mpdeimos.tensation.util.ImmutableList;
 
 import java.awt.Point;
@@ -19,9 +20,11 @@ public abstract class TensorBase extends ModelDataBase implements
 		IAppearanceHolder
 {
 	/** Position of the object in screen coordinates. */
-	protected final Point position;
+	@Export
+	protected Point position;
 
 	/** Rotation of the current figure */
+	@Export
 	private double rotation = 0;
 
 	/** Anchors for this tensor. */
@@ -29,6 +32,10 @@ public abstract class TensorBase extends ModelDataBase implements
 
 	/** The appearance container of this object. */
 	private final AppearanceContainer appearanceContainer = new AppearanceContainer();
+
+	/** The label of the tensor. */
+	@Export
+	private String label = null;
 
 	/** Constructor. */
 	public TensorBase(IModelData parent)
@@ -115,5 +122,17 @@ public abstract class TensorBase extends ModelDataBase implements
 	public AppearanceContainer getAppearanceContainer()
 	{
 		return this.appearanceContainer;
+	}
+
+	/** @return the label of this tensor. */
+	public String getLabel()
+	{
+		return this.label;
+	}
+
+	/** sets the label of this tensor. */
+	public void setLabel(String label)
+	{
+		this.label = label;
 	}
 }

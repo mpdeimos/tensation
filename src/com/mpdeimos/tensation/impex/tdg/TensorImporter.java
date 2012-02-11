@@ -6,10 +6,6 @@ import com.mpdeimos.tensation.model.ModelRoot;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensation.util.Wrapper;
-import com.mpdeimos.tensation.util.XmlUtil;
-
-import java.awt.Point;
-import java.util.HashMap;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -46,23 +42,6 @@ public class TensorImporter implements IImporter
 
 		int id = Integer.parseInt(node.getAttribute(ETdgTensor.ATTRIB_ID.$()));
 		outId.set(id);
-
-		int x = Integer.parseInt(node.getAttribute(ETdgTensor.ATTRIB_POS_X.$()));
-		int y = Integer.parseInt(node.getAttribute(ETdgTensor.ATTRIB_POS_Y.$()));
-		tensor.setPosition(new Point(x, y));
-
-		double rot = Double.parseDouble(node.getAttribute(ETdgTensor.ATTRIB_ROTATION.$()));
-		tensor.setRotation(rot);
-
-		for (Element e : XmlUtil.iterate(node))
-		{
-			if ("appearance".equals(e.getAttribute(ETdgKeyValueStore.ATTRIB_GROUP_NAME.$()))) //$NON-NLS-1$
-			{
-				KeyValueStoreImporter kvi = new KeyValueStoreImporter();
-				HashMap<String, Object> map = kvi.importNode(e);
-				tensor.getAppearanceContainer().setValues(map);
-			}
-		}
 
 		return tensor;
 	}

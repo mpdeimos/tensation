@@ -4,6 +4,8 @@ import com.mpdeimos.tensation.util.Log;
 import com.mpdeimos.tensation.util.StringUtil;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -15,10 +17,10 @@ import java.util.HashMap;
 public class ExportHandler implements IExportable
 {
 	/** the underlying exportable. */
-	private final IExportable exportable;
+	private final Object exportable;
 
 	/** Constructor. */
-	public ExportHandler(IExportable exportable)
+	public ExportHandler(Object exportable)
 	{
 		this.exportable = exportable;
 
@@ -27,7 +29,7 @@ public class ExportHandler implements IExportable
 	@Override
 	public void setValues(HashMap<String, Object> map)
 	{
-		for (Field field : this.exportable.getClass().getDeclaredFields())
+		for (Field field : getAllFields())
 		{
 			Export annotation = field.getAnnotation(Export.class);
 			if (annotation != null)
@@ -38,7 +40,8 @@ public class ExportHandler implements IExportable
 				try
 				{
 					field.setAccessible(true);
-					field.set(this.exportable, map.get(name));
+					if (map.get(name) != null || annotation.nulls())
+						field.set(this.exportable, map.get(name));
 				}
 				catch (IllegalAccessException e)
 				{
@@ -49,12 +52,26 @@ public class ExportHandler implements IExportable
 		}
 	}
 
+	/** @return all fields of this object. */
+	private ArrayList<Field> getAllFields()
+	{
+		ArrayList<Field> fields = new ArrayList<Field>();
+
+		Class<?> clazz = this.exportable.getClass();
+		while (clazz != null)
+		{
+			fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+			clazz = clazz.getSuperclass();
+		}
+		return fields;
+	}
+
 	@Override
 	public HashMap<String, Object> getValues()
 	{
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
-		for (Field field : this.exportable.getClass().getDeclaredFields())
+		for (Field field : getAllFields())
 		{
 			Export annotation = field.getAnnotation(Export.class);
 			if (annotation != null)

@@ -20,8 +20,11 @@ public class Serializer
 	{
 		registerSerializers(
 				new ColorSerializer(),
-				new IntegerSerializer());
-		registerGenericSerializers(new EnumSerializer());
+				new PointSerializer(),
+				new StringSerializer());
+		registerGenericSerializers(
+				new EnumSerializer(),
+				new NumberSerializer());
 	}
 
 	/** @return the Serialized representation of an object. */

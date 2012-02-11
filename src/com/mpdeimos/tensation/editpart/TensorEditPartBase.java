@@ -2,6 +2,7 @@ package com.mpdeimos.tensation.editpart;
 
 import com.mpdeimos.tensation.editpart.feature.IConnectable;
 import com.mpdeimos.tensation.editpart.feature.IDuplicatable;
+import com.mpdeimos.tensation.editpart.feature.ILabelable;
 import com.mpdeimos.tensation.editpart.feature.IMovable;
 import com.mpdeimos.tensation.editpart.feature.IRotatable;
 import com.mpdeimos.tensation.figure.TensorFigure;
@@ -27,7 +28,7 @@ import java.util.List;
  * 
  */
 public abstract class TensorEditPartBase extends EditPartBase implements
-		IRotatable, IConnectable, IMovable, IDuplicatable
+		IRotatable, IConnectable, IMovable, IDuplicatable, ILabelable
 {
 
 	/** Constructor. */
@@ -123,5 +124,17 @@ public abstract class TensorEditPartBase extends EditPartBase implements
 	public Collection<? extends IDuplicatable> getLinkedEditParts()
 	{
 		return null;
+	}
+
+	@Override
+	public String getLabel()
+	{
+		return ((TensorBase) getModel()).getLabel();
+	}
+
+	@Override
+	public void setLabel(String label)
+	{
+		((TensorBase) getModel()).getLabel();
 	}
 }

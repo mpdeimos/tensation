@@ -22,7 +22,7 @@ public class Main
 	 */
 	public static void main(String[] args)
 	{
-		Log.setLevel(LogLevel.ERROR); // TODO add cli switch
+		Log.setLevelFromCommandline(args, LogLevel.ERROR);
 
 		R.setLogger(new ILogger()
 		{

@@ -357,7 +357,9 @@ public class SelectEditPartAction extends CanvasActionBase
 
 					for (IContextFeature<?> f : fs)
 					{
-						subPanels.add(f.getStaticContextPanel());
+						RefreshablePanel staticContextPanel = f.getStaticContextPanel();
+						if (staticContextPanel != null)
+							subPanels.add(staticContextPanel);
 					}
 				}
 			}
