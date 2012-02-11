@@ -32,6 +32,10 @@ public class TensorConnection extends ModelDataBase implements
 	/** The appearance container of this object. */
 	private final AppearanceContainer appearanceContainer = new AppearanceContainer();
 
+	/** The label of the connection. */
+	@Export
+	private String label;
+
 	/**
 	 * Constructor.
 	 */
@@ -121,5 +125,17 @@ public class TensorConnection extends ModelDataBase implements
 	public AppearanceContainer getAppearanceContainer()
 	{
 		return this.appearanceContainer;
+	}
+
+	/** @return the label of this tensor. */
+	public String getLabel()
+	{
+		return this.label;
+	}
+
+	/** sets the label of this tensor. */
+	public void setLabel(String label)
+	{
+		this.label = label;
 	}
 }

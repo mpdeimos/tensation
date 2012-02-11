@@ -67,6 +67,13 @@ public enum ESvg implements INameEnum
 	/** the y attribute. */
 	ATTRIB_POS_Y("y"), //$NON-NLS-1$
 
+	/** the text dx attribute. */
+	ATTRIB_TEXT_DX("dx"), //$NON-NLS-1$
+	/** the text dy attribute. */
+	ATTRIB_TEXT_DY("dy"), //$NON-NLS-1$
+	/** the text anchor attribute. */
+	ATTRIB_TEXT_ANCHOR("text-anchor"), //$NON-NLS-1$
+
 	/** marker end attribute. */
 	ATTRIB_MARKER_END("marker-end"), //$NON-NLS-1$
 
@@ -118,6 +125,9 @@ public enum ESvg implements INameEnum
 	/** The marker element. */
 	ELEMENT_MARKER("marker"), //$NON-NLS-1$
 
+	/** The text element. */
+	ELEMENT_TEXT("text"), //$NON-NLS-1$
+
 	/** color value for black. */
 	VALUE_COLOR_BLACK("black"), //$NON-NLS-1$
 
@@ -141,6 +151,9 @@ public enum ESvg implements INameEnum
 	VALUE_STYLE_STROKE_DASHARRAY("stroke-dasharray:%s;"), //$NON-NLS-1$
 	/** The element color. */
 	VALUE_STYLE_FILL("fill:%s;"), //$NON-NLS-1$
+
+	/** the text anchor moddle value. */
+	VALUE_TEXT_ANCHOR_MIDDLE("middle"), //$NON-NLS-1$
 
 	/** rgb value */
 	VALUE_RGB("rgb(%d,%d,%d)"), //$NON-NLS-1$

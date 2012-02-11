@@ -4,6 +4,7 @@ import com.mpdeimos.tensation.figure.AppearanceContainer;
 import com.mpdeimos.tensation.figure.AppearanceContainer.IAppearanceHolder;
 import com.mpdeimos.tensation.impex.export.Export;
 import com.mpdeimos.tensation.util.ImmutableList;
+import com.mpdeimos.tensation.util.StringUtil;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -133,6 +134,10 @@ public abstract class TensorBase extends ModelDataBase implements
 	/** sets the label of this tensor. */
 	public void setLabel(String label)
 	{
+		if (StringUtil.isNullOrEmpty(label))
+			label = null;
+
 		this.label = label;
+		fireOnModelDataChanged(this);
 	}
 }

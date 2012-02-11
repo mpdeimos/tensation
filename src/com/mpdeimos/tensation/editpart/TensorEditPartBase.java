@@ -135,6 +135,6 @@ public abstract class TensorEditPartBase extends EditPartBase implements
 	@Override
 	public void setLabel(String label)
 	{
-		((TensorBase) getModel()).getLabel();
+		((TensorBase) getModel()).setLabel(label);
 	}
 }

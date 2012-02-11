@@ -5,6 +5,7 @@ package com.mpdeimos.tensation.editpart;
 
 import com.mpdeimos.tensation.editpart.feature.IConnectionControl;
 import com.mpdeimos.tensation.editpart.feature.IDuplicatable;
+import com.mpdeimos.tensation.editpart.feature.ILabelable;
 import com.mpdeimos.tensation.figure.IFigure;
 import com.mpdeimos.tensation.figure.TensorConnectionFigure;
 import com.mpdeimos.tensation.model.IModelData;
@@ -27,7 +28,7 @@ import java.util.List;
  * 
  */
 public class TensorConnectionEditPart extends EditPartBase implements
-		IConnectionControl, IDuplicatable
+		IConnectionControl, IDuplicatable, ILabelable
 {
 	/** Constructor. */
 	public TensorConnectionEditPart(IModelData modelData)
@@ -144,5 +145,17 @@ public class TensorConnectionEditPart extends EditPartBase implements
 		tensors.add((IDuplicatable) canvas.getEditPartForModelData(connection.getSink().getTensor()));
 
 		return tensors;
+	}
+
+	@Override
+	public void setLabel(String label)
+	{
+		((TensorConnection) this.getModel()).setLabel(label);
+	}
+
+	@Override
+	public String getLabel()
+	{
+		return ((TensorConnection) this.getModel()).getLabel();
 	}
 }

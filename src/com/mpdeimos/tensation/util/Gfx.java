@@ -2,7 +2,12 @@ package com.mpdeimos.tensation.util;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -16,6 +21,17 @@ public class Gfx
 {
 	/** Antialiasing correction offset. */
 	private static final double AA_CORRECTION = .5;
+
+	/** Sans Serif Font, 12pt. */
+	public static final Font SANS_SERIF_12 = new Font(
+			Font.SANS_SERIF,
+			Font.PLAIN,
+			12);
+	/** Sans Serif Font, 10pt. */
+	public static final Font SANS_SERIF_10 = new Font(
+			Font.SANS_SERIF,
+			Font.PLAIN,
+			10);
 
 	/** Draws a crosshair at the given position with antialiasing correction. */
 	public static void drawCrosshair(Graphics2D gfx, Point2D pos)
@@ -96,5 +112,53 @@ public class Gfx
 				Math.max(0, c.getGreen() - 100),
 				Math.max(0, c.getBlue() - 100));
 
+	}
+
+	/** Aligns the text centered around the given point, no drawing. */
+	public static Dimension alignTextCentered(
+			Graphics2D gfx,
+			Point2D center,
+			String text)
+	{
+		if (text == null)
+			return null;
+
+		FontMetrics fm = gfx.getFontMetrics();
+		Dimension bounds = new Dimension(fm.stringWidth(text), fm.getAscent());
+		return bounds;
+
+	}
+
+	/** Draws text centered around the given point. */
+	public static Dimension drawTextCentered(
+			Graphics2D gfx,
+			Point2D center,
+			String text)
+	{
+		Dimension bounds = alignTextCentered(gfx, center, text);
+
+		if (bounds == null)
+			return null;
+
+		gfx.drawString(
+				text,
+				(float) (center.getX() - (bounds.getWidth() / 2)),
+				(float) (center.getY() + (bounds.getHeight() / 4)));
+		return bounds;
+
+	}
+
+	/** Approximates the font width of a given text. */
+	public static Dimension approximateTextWidth(Font font, String text)
+	{
+		FontRenderContext frc = new FontRenderContext(
+				new AffineTransform(),
+				true,
+				true);
+		Rectangle2D stringBounds = font.getStringBounds(text, frc);
+
+		return new Dimension(
+				(int) stringBounds.getWidth(),
+				(int) stringBounds.getHeight());
 	}
 }

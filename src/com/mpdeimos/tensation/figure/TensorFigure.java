@@ -8,10 +8,14 @@ import com.mpdeimos.tensation.impex.svg.ESvgDefinitions;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
+import com.mpdeimos.tensation.util.Gfx;
 import com.mpdeimos.tensation.util.ImmutableList;
 import com.mpdeimos.tensation.util.PointUtil;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -64,7 +68,7 @@ public class TensorFigure extends FigureBase
 	}
 
 	@Override
-	public void updateShapes()
+	protected void updateShapes()
 	{
 		super.updateShapes();
 
@@ -78,12 +82,16 @@ public class TensorFigure extends FigureBase
 		int x = (int) position.getX();
 		int y = (int) position.getY();
 
+		int centerCircleRadius = getCenterCircleRadius(tensor);
 		Ellipse2D circle = new Ellipse2D.Double(
-				x - CENTER_CIRCLE_RADIUS + 0.5,
-				y - CENTER_CIRCLE_RADIUS + 0.5,
-				2 * CENTER_CIRCLE_RADIUS - 1,
-				2 * CENTER_CIRCLE_RADIUS - 1);
-		fills.add(circle);
+				x - centerCircleRadius + 0.5,
+				y - centerCircleRadius + 0.5,
+				2 * centerCircleRadius - 1,
+				2 * centerCircleRadius - 1);
+		if (tensor.getLabel() != null)
+			lines.add(circle);
+		else
+			fills.add(circle);
 
 		ImmutableList<TensorConnectionAnchor> anchors = tensor.getAnchors();
 		for (int i = 0; i < numConnections; i++)
@@ -103,11 +111,13 @@ public class TensorFigure extends FigureBase
 			Point2D triangleL = null;
 			if (anchors.get(i).getDirection() == EDirection.SOURCE)
 				triangleL = new Point2D.Double(
-						CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH,
+						CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH
+								+ centerCircleRadius - CENTER_CIRCLE_RADIUS,
 						-CENTER_CIRCLE_RADIUS);
 			else
 				triangleL = new Point2D.Double(
-						2 * CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET,
+						centerCircleRadius + CENTER_CIRCLE_RADIUS
+								+ CONNECTOR_STROKE_OFFSET,
 						-CENTER_CIRCLE_RADIUS);
 
 			PointUtil.rotate(triangleL, ang);
@@ -116,11 +126,13 @@ public class TensorFigure extends FigureBase
 			Point2D triangleR = null;
 			if (anchors.get(i).getDirection() == EDirection.SOURCE)
 				triangleR = new Point2D.Double(
-							CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH,
+							CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH
+									+ centerCircleRadius - CENTER_CIRCLE_RADIUS,
 							CENTER_CIRCLE_RADIUS);
 			else
 				triangleR = new Point2D.Double(
-						2 * CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET,
+						centerCircleRadius + CENTER_CIRCLE_RADIUS
+								+ CONNECTOR_STROKE_OFFSET,
 						CENTER_CIRCLE_RADIUS);
 
 			PointUtil.rotate(triangleR, ang);
@@ -140,6 +152,21 @@ public class TensorFigure extends FigureBase
 		ShapePack linePack = new ShapePack(EDrawingMode.STROKE, lines);
 		this.shapePacks.add(linePack);
 		this.shapePacks.add(new ShapePack(EDrawingMode.FILL, fills));
+	}
+
+	/** @return the center circle radius of a tensor. */
+	private static int getCenterCircleRadius(TensorBase tensor)
+	{
+		if (tensor.getLabel() == null)
+			return CENTER_CIRCLE_RADIUS;
+
+		Dimension bounds = Gfx.approximateTextWidth(
+					Gfx.SANS_SERIF_10,
+					tensor.getLabel());
+
+		return (int) Math.ceil(Math.sqrt(bounds.getWidth()
+					* bounds.getWidth() + bounds.getHeight()
+					* bounds.getHeight()) / 2) + CONNECTOR_STROKE_OFFSET;
 	}
 
 	/** inits the anchor points for a tensor. */
@@ -174,7 +201,9 @@ public class TensorFigure extends FigureBase
 		double cos = Math.cos(ang);
 		EDirection direction = tensor.getAnchors().get(i).getDirection();
 
-		int offset = CENTER_CIRCLE_RADIUS + CONNECTOR_STROKE_OFFSET;
+		int centerCircleRadius = getCenterCircleRadius(tensor);
+
+		int offset = centerCircleRadius + CONNECTOR_STROKE_OFFSET;
 		if (bottom != null)
 		{
 			bottom.setLocation(
@@ -240,7 +269,7 @@ public class TensorFigure extends FigureBase
 		TensorBase tensor = (TensorBase) this.editPart.getModel();
 		Point position = tensor.getPosition();
 
-		int offset = CONNECTOR_STROKE_LENGTH + CENTER_CIRCLE_RADIUS
+		int offset = CONNECTOR_STROKE_LENGTH + getCenterCircleRadius(tensor)
 				+ CONNECTOR_STROKE_OFFSET;
 
 		return new Rectangle(
@@ -264,16 +293,23 @@ public class TensorFigure extends FigureBase
 		AppearanceContainer appearance = ((EditPartBase) this.editPart).getAppearanceContainer();
 		String def = getSvgDefName();
 
-		Element use = doc.createElement(ESvg.ELEMENT_USE.$());
-		use.setAttribute(ESvg.ATTRIB_XLINK_HREF.$(), ESvg.VALUE_REF.$(def));
-		use.setAttribute(
+		Element g = doc.createElement(ESvg.ELEMENT_GROUP.$());
+		g.setAttribute(
 				ESvg.ATTRIB_TRANSFORM.$(),
 				ESvg.VALUE_TRANSFORM_FUNC_TRANSLATE.$(
 						position.getX(),
 						position.getY())
-						+ ESvg.VALUE_TRANSFORM_FUNC_ROTATE.$(tensor.getRotation())
 				);
+
+		Element use = doc.createElement(ESvg.ELEMENT_USE.$());
+		g.appendChild(use);
+
+		use.setAttribute(ESvg.ATTRIB_XLINK_HREF.$(), ESvg.VALUE_REF.$(def));
 		use.setAttribute(
+				ESvg.ATTRIB_TRANSFORM.$(),
+				ESvg.VALUE_TRANSFORM_FUNC_ROTATE.$(tensor.getRotation())
+				);
+		g.setAttribute(
 				ESvg.ATTRIB_CLASS.$(),
 				ESvgDefinitions.CLASS_TENSOR.$());
 
@@ -369,20 +405,41 @@ public class TensorFigure extends FigureBase
 
 			Element circle = doc.createElement(ESvg.ELEMENT_CIRCLE.$());
 			group.appendChild(circle);
+
+			if (tensor.getLabel() == null)
+			{
+				circle.setAttribute(
+						ESvg.ATTRIB_CLASS.$(),
+						ESvgDefinitions.CLASS_TENSOR_CIRCLE.$());
+			}
+			else
+			{
+				circle.setAttribute(
+						ESvg.ATTRIB_CLASS.$(),
+						ESvgDefinitions.CLASS_TENSOR_CIRCLE_UNFILLED.$());
+			}
 			circle.setAttribute(
 					ESvg.ATTRIB_RADIUS.$(),
-					Double.toString(CENTER_CIRCLE_RADIUS - 0.5));
-			circle.setAttribute(
-					ESvg.ATTRIB_CLASS.$(),
-					ESvgDefinitions.CLASS_TENSOR_CIRCLE.$());
+					Double.toString(getCenterCircleRadius(tensor)));
 
 			defs.put(def, group);
 		}
 
-		appearance.applyAppearance(
-				use);
+		if (tensor.getLabel() != null)
+		{
+			Element txt = doc.createElement(ESvg.ELEMENT_TEXT.$());
+			txt.setTextContent(tensor.getLabel());
+			txt.setAttribute(ESvg.ATTRIB_TEXT_DY.$(), "0.5ex"); //$NON-NLS-1$
+			txt.setAttribute(
+					ESvg.ATTRIB_TEXT_ANCHOR.$(),
+					ESvg.VALUE_TEXT_ANCHOR_MIDDLE.$());
+			g.appendChild(txt);
+		}
 
-		return use;
+		appearance.applyAppearance(
+				g);
+
+		return g;
 	}
 
 	/** @return the string used as svg def. */
@@ -405,6 +462,24 @@ public class TensorFigure extends FigureBase
 			name += ESvgDefinitions.TENSOR_DEF_COLOR_POSTFIX.$(color.getRGB());
 		}
 
+		if (tensor.getLabel() != null)
+		{
+			name += ESvgDefinitions.TENSOR_DEF_LABEL_POSTFIX.$();
+		}
+
 		return name;
+	}
+
+	@Override
+	public void draw(Graphics2D gfx)
+	{
+		super.draw(gfx);
+		Font f = gfx.getFont();
+		gfx.setFont(Gfx.SANS_SERIF_10);
+		Gfx.drawTextCentered(
+				gfx,
+				((TensorBase) this.editPart.getModel()).getPosition(),
+				((TensorBase) this.editPart.getModel()).getLabel());
+		gfx.setFont(f);
 	}
 }

@@ -53,7 +53,7 @@ public class TensorConnectionFigure extends FigureBase
 	}
 
 	@Override
-	public void updateShapes()
+	protected void updateShapes()
 	{
 		super.updateShapes();
 

@@ -29,6 +29,9 @@ public enum ESvgDefinitions implements INameEnum
 	/** prefix for tensor definitions. */
 	TENSOR_DEF_COLOR_POSTFIX("_c%x"), //$NON-NLS-1$
 
+	/** prefix for tensor definitions. */
+	TENSOR_DEF_LABEL_POSTFIX("_l"), //$NON-NLS-1$
+
 	/** suffix for sink edges */
 	TENSOR_DEF_SINK("i"), //$NON-NLS-1$
 
@@ -43,6 +46,9 @@ public enum ESvgDefinitions implements INameEnum
 
 	/** tensor circle class. */
 	CLASS_TENSOR_CIRCLE("g_tensor_circle"), //$NON-NLS-1$
+
+	/** tensor circle unfilled class. */
+	CLASS_TENSOR_CIRCLE_UNFILLED("g_tensor_circle_unfilled"), //$NON-NLS-1$
 
 	;
 

@@ -8,6 +8,15 @@
  -->
   <defs>
     <style type="text/css"><![CDATA[
+*
+{
+	font-size: 10px;
+	font-family: sans-serif;
+}
+text
+{
+	stroke: none !important;
+}
 .connection
 {
 	stroke: black;
@@ -21,6 +30,7 @@
 	fill: black; 
 }
 .g_tensor_circle { stroke: none; }
+.g_tensor_circle_unfilled { fill: none; }
     ]]></style>
 	<g id="g_marker_triangle_end">
 		<path d="M 0 0 L 5 4 L 0 8 z"/>

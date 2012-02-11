@@ -28,13 +28,16 @@ public abstract class FigureBase implements IFigure
 	/** associated EditPart */
 	protected final IEditPart editPart;
 
+	/** Flag for determining needed shape updates. */
+	private boolean scheduleShapeUpdate;
+
 	/** Constructor. */
 	FigureBase(IEditPart editPart)
 	{
 		this.editPart = editPart;
 		this.shapePacks = new ArrayList<ShapePack>(0);
 		initBeforeFirstUpdateShapes();
-		updateShapes();
+		redraw();
 	}
 
 	/** Called before the first shape update cycle. */
@@ -46,18 +49,22 @@ public abstract class FigureBase implements IFigure
 	@Override
 	public void redraw()
 	{
-		updateShapes();
+		this.scheduleShapeUpdate = true;
 	}
 
 	/** Updates the shape Objects. */
-	public void updateShapes()
+	protected void updateShapes()
 	{
 		this.shapePacks.clear();
+		this.scheduleShapeUpdate = false;
 	}
 
 	@Override
 	public void draw(Graphics2D gfx)
 	{
+		if (this.scheduleShapeUpdate)
+			updateShapes();
+
 		for (ShapePack pack : this.shapePacks)
 		{
 			pack.draw(gfx);
