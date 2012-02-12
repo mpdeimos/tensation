@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-11 12:20+0200\n"
+"POT-Creation-Date: 2012-02-12 13:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 
 #. # windows
 #: window_main_title
-msgid "Tensor"
+msgid "Tensation"
 msgstr ""
 
 #: window_main_tab
@@ -81,8 +81,24 @@ msgstr ""
 msgid "Redo"
 msgstr ""
 
+#: window_menu_edit_copy
+msgid "Copy"
+msgstr ""
+
+#: window_menu_edit_paste
+msgid "Paste"
+msgstr ""
+
+#: window_menu_edit_duplicate
+msgid "Duplicate Selection"
+msgstr ""
+
+#: window_menu_edit_duplicate_newcanvas
+msgid "Duplicate Selection to Canvas"
+msgstr ""
+
 #: window_menu_edit_delete
-msgid "Delete"
+msgid "Delete Selection"
 msgstr ""
 
 #: window_menu_layout
@@ -250,6 +266,46 @@ msgstr ""
 
 #: window_contextpanel_drawtensor_select
 msgid "Select tensor"
+msgstr ""
+
+#: window_contextpanel_customize_appearance
+msgid "Appearance"
+msgstr ""
+
+#: window_contextpanel_customize_appearance_color
+msgid "Color"
+msgstr ""
+
+#: window_contextpanel_customize_appearance_color_title
+msgid "Change Color"
+msgstr ""
+
+#: window_contextpanel_customize_appearance_color_tooltip
+msgid "Click to change Color "
+msgstr ""
+
+#: window_contextpanel_customize_appearance_line_width
+msgid "Line Width"
+msgstr ""
+
+#: window_contextpanel_customize_appearance_line_style
+msgid "Line Style"
+msgstr ""
+
+#: window_contextpanel_customize_appearance_line_style_solid
+msgid "Solid"
+msgstr ""
+
+#: window_contextpanel_customize_appearance_line_style_dotted
+msgid "Dotted"
+msgstr ""
+
+#: window_contextpanel_customize_appearance_line_style_dashed
+msgid "Dashed"
+msgstr ""
+
+#: window_contextpanel_label
+msgid "Label"
 msgstr ""
 
 #. # dialog messages
