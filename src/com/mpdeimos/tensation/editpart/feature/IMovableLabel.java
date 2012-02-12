@@ -77,6 +77,7 @@ public interface IMovableLabel extends IFeatureEditPart
 			if (!labelBounds.contains(e.getPoint()))
 				return false;
 
+			this.drawOverlay = true;
 			this.moveStart = VecMath.fresh(e.getPoint());
 			this.moveInitial = VecMath.fresh(this.editPart.getLabelPosition());
 

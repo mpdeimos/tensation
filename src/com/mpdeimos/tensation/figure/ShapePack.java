@@ -5,6 +5,7 @@ import com.mpdeimos.tensation.util.ImmutableList;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,6 +32,8 @@ public class ShapePack
 		FILL,
 		/** Draws the outline of the shapes. */
 		STROKE,
+		/** Draws nothing, used for dummy objects. */
+		NONE,
 	}
 
 	/** Constructor. */
@@ -38,6 +41,13 @@ public class ShapePack
 	{
 		this.mode = mode;
 		this.shapes = shapes;
+	}
+
+	/** Constructor. */
+	ShapePack(EDrawingMode mode, Shape... shapes)
+	{
+		this.mode = mode;
+		this.shapes = Arrays.asList(shapes);
 	}
 
 	/** Draws this feature on a Graphics2D Canvas. */

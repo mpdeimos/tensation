@@ -32,9 +32,21 @@ public class VecMath
 	}
 
 	/** @return p1 + d */
+	public static Point2D add(Point2D p1, double x, double y, Point2D result)
+	{
+		return add(p1, fresh(x, y), result);
+	}
+
+	/** @return p1 + d */
 	public static Point2D add(Point2D p1, double d)
 	{
 		return add(p1, d, p1);
+	}
+
+	/** @return p1 + d */
+	public static Point2D add(Point2D p1, double x, double y)
+	{
+		return add(p1, x, y, p1);
 	}
 
 	/** @return p1 - p2 */

@@ -8,10 +8,13 @@ import com.mpdeimos.tensation.impex.svg.ESvgDefinitions;
 import com.mpdeimos.tensation.model.TensorConnection;
 import com.mpdeimos.tensation.util.Gfx;
 import com.mpdeimos.tensation.util.PointUtil;
+import com.mpdeimos.tensation.util.VecMath;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Point2D;
@@ -61,6 +64,7 @@ public class TensorConnectionFigure extends FigureBase
 		super.updateShapes();
 
 		TensorConnection connection = (TensorConnection) this.editPart.getModel();
+		TensorConnectionEditPart connectionPart = (TensorConnectionEditPart) this.editPart;
 		List<Shape> shapes = new ArrayList<Shape>(1);
 		// List<Shape> fills = new ArrayList<Shape>(1);
 
@@ -137,6 +141,15 @@ public class TensorConnectionFigure extends FigureBase
 
 		ShapePack pack = new ShapePack(EDrawingMode.STROKE, shapes);
 		this.shapePacks.add(pack);
+
+		Dimension dim = Gfx.approximateTextWidth(
+				Gfx.SANS_SERIF_10,
+				connectionPart.getLabel());
+		Point2D corner = VecMath.fresh(connectionPart.getLabelPosition());
+		VecMath.add(corner, dim.width / 2 + 2, dim.height / 2 + 2);
+		Rectangle labelDummy = new Rectangle();
+		labelDummy.setFrameFromCenter(connectionPart.getLabelPosition(), corner);
+		this.shapePacks.add(new ShapePack(EDrawingMode.NONE, labelDummy));
 		// pack = new ShapePack(EDrawingMode.FILL, fills);
 		// this.shapePacks.add(pack);
 	}
