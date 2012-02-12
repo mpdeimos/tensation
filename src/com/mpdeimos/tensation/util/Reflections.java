@@ -59,4 +59,32 @@ public class Reflections
 
 		return null;
 	}
+
+	/**
+	 * recursive class.forName.
+	 * 
+	 * @throws ClassNotFoundException
+	 */
+	public static Class<?> getClassForName(String name)
+			throws ClassNotFoundException
+	{
+		try
+		{
+			return Class.forName(name);
+		}
+		catch (ClassNotFoundException e)
+		{
+			int pos = name.lastIndexOf('.');
+			String parent = name.substring(0, pos);
+			String clazzName = name.substring(pos + 1);
+
+			Class<?> clazz = Class.forName(parent);
+			for (Class<?> inner : clazz.getDeclaredClasses())
+			{
+				if (inner.getSimpleName().equals(clazzName))
+					return inner;
+			}
+			throw e;
+		}
+	}
 }

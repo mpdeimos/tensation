@@ -1,11 +1,11 @@
 package com.mpdeimos.tensation.figure;
 
+import com.mpdeimos.tensation.util.ImmutableList;
+
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.util.List;
-
-import com.mpdeimos.tensation.util.ImmutableList;
 
 /**
  * Class that knows how to paint a parts of a figure.

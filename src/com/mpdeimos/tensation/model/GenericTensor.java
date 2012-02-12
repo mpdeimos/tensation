@@ -1,7 +1,5 @@
 package com.mpdeimos.tensation.model;
 
-import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;

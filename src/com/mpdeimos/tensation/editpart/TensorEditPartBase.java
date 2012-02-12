@@ -2,14 +2,14 @@ package com.mpdeimos.tensation.editpart;
 
 import com.mpdeimos.tensation.editpart.feature.IConnectable;
 import com.mpdeimos.tensation.editpart.feature.IDuplicatable;
-import com.mpdeimos.tensation.editpart.feature.ILabelable;
+import com.mpdeimos.tensation.editpart.feature.ILabeled;
 import com.mpdeimos.tensation.editpart.feature.IMovable;
 import com.mpdeimos.tensation.editpart.feature.IRotatable;
 import com.mpdeimos.tensation.figure.TensorFigure;
+import com.mpdeimos.tensation.model.EDirection;
 import com.mpdeimos.tensation.model.IModelData;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor;
-import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensation.ui.Application;
 
 import java.awt.Dimension;
@@ -28,7 +28,7 @@ import java.util.List;
  * 
  */
 public abstract class TensorEditPartBase extends EditPartBase implements
-		IRotatable, IConnectable, IMovable, IDuplicatable, ILabelable
+		IRotatable, IConnectable, IMovable, IDuplicatable, ILabeled
 {
 
 	/** Constructor. */

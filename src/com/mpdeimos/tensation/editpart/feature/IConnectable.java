@@ -2,8 +2,8 @@ package com.mpdeimos.tensation.editpart.feature;
 
 import com.mpdeimos.tensation.action.canvas.ICanvasAction;
 import com.mpdeimos.tensation.action.canvas.TensorConnectAction;
+import com.mpdeimos.tensation.model.EDirection;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor;
-import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
 
 import java.awt.Cursor;
 import java.awt.Graphics2D;

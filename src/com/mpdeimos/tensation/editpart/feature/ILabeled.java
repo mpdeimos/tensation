@@ -19,7 +19,7 @@ import resources.R;
  * @author mpdeimos
  * 
  */
-public interface ILabelable extends IFeatureEditPart
+public interface ILabeled extends IFeatureEditPart
 {
 	/** Sets the label of this object. */
 	public void setLabel(String label);
@@ -29,13 +29,13 @@ public interface ILabelable extends IFeatureEditPart
 
 	/** feature class for EditParts with customizable labels. */
 	public class Feature extends
-			SelectEditPartAction.IContextFeature<ILabelable>
+			SelectEditPartAction.IContextFeature<ILabeled>
 	{
 		/** the context panel for this feature. */
 		private RefreshablePanel contextPanel = null;
 
 		/** Constructor. */
-		public Feature(ILabelable editPart)
+		public Feature(ILabeled editPart)
 		{
 			super(editPart);
 			createContextPanel();
@@ -99,9 +99,15 @@ public interface ILabelable extends IFeatureEditPart
 
 			}
 
+			/** bypassing flag. */
+			private boolean myChange = false;
+
 			/** Updates the model data. */
 			public void updateModel()
 			{
+				if (this.myChange)
+					return;
+
 				Log.v(this, "Label changed to %s", this.uiLabel.getText()); //$NON-NLS-1$
 				Feature.this.editPart.setLabel(this.uiLabel.getText());
 			}
@@ -109,7 +115,9 @@ public interface ILabelable extends IFeatureEditPart
 			@Override
 			public void refresh()
 			{
+				this.myChange = true;
 				this.uiLabel.setText(Feature.this.editPart.getLabel());
+				this.myChange = false;
 			}
 		}
 	}

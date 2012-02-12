@@ -44,6 +44,9 @@ public enum ESvgDefinitions implements INameEnum
 	/** connection css class name. */
 	CLASS_CONNECTION("connection"), //$NON-NLS-1$
 
+	/** connection path css class name. */
+	CLASS_CONNECTION_PATH("connectionPath"), //$NON-NLS-1$
+
 	/** tensor circle class. */
 	CLASS_TENSOR_CIRCLE("g_tensor_circle"), //$NON-NLS-1$
 

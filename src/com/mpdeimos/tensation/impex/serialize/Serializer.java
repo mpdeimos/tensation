@@ -24,6 +24,7 @@ public class Serializer
 				new StringSerializer());
 		registerGenericSerializers(
 				new EnumSerializer(),
+				new Point2DSerializer(),
 				new NumberSerializer());
 	}
 
@@ -38,7 +39,7 @@ public class Serializer
 		}
 		if (serializer == null)
 		{
-			throw null;
+			throw new IllegalArgumentException();
 		}
 		return new Serialized(serializer.serialize(o), o.getClass());
 	}

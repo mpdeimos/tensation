@@ -1,10 +1,10 @@
 package com.mpdeimos.tensation.impex.tdg;
 
 import com.mpdeimos.tensation.impex.IImporter;
+import com.mpdeimos.tensation.model.EDirection;
 import com.mpdeimos.tensation.model.GenericTensor;
 import com.mpdeimos.tensation.model.ModelRoot;
 import com.mpdeimos.tensation.model.TensorBase;
-import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
 import com.mpdeimos.tensation.util.Wrapper;
 
 import org.w3c.dom.Element;

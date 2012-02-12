@@ -27,15 +27,6 @@ public class TensorConnectionAnchor
 	/** The connection of this anchor. */
 	TensorConnection connection = null;
 
-	/** Direction of this connection. */
-	public enum EDirection
-	{
-		/** outgoing connection. */
-		SOURCE,
-		/** ingoing connection. */
-		SINK
-	}
-
 	/** Constructor. */
 	public TensorConnectionAnchor(
 			TensorBase tensor,

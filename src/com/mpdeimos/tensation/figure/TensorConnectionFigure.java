@@ -1,13 +1,16 @@
 package com.mpdeimos.tensation.figure;
 
-import com.mpdeimos.tensation.editpart.EditPartBase;
 import com.mpdeimos.tensation.editpart.IEditPart;
+import com.mpdeimos.tensation.editpart.TensorConnectionEditPart;
 import com.mpdeimos.tensation.figure.ShapePack.EDrawingMode;
 import com.mpdeimos.tensation.impex.svg.ESvg;
 import com.mpdeimos.tensation.impex.svg.ESvgDefinitions;
 import com.mpdeimos.tensation.model.TensorConnection;
+import com.mpdeimos.tensation.util.Gfx;
 import com.mpdeimos.tensation.util.PointUtil;
 
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.CubicCurve2D;
@@ -139,12 +142,35 @@ public class TensorConnectionFigure extends FigureBase
 	}
 
 	@Override
+	public void draw(Graphics2D gfx)
+	{
+		super.draw(gfx);
+
+		Font f = gfx.getFont();
+		gfx.setFont(Gfx.SANS_SERIF_10);
+		Gfx.drawTextCentered(
+				gfx,
+				((TensorConnectionEditPart) this.editPart).getLabelPosition(),
+				((TensorConnectionEditPart) this.editPart).getLabel());
+		gfx.setFont(f);
+	}
+
+	@Override
 	public Element getSvgNode(Document doc, HashMap<String, Element> defs)
 	{
 		this.updateShapes();
 
-		Element path = doc.createElement(ESvg.ELEMENT_PATH.$());
+		Element g = doc.createElement(ESvg.ELEMENT_GROUP.$());
+		g.setAttribute(
+				ESvg.ATTRIB_CLASS.$(),
+				ESvgDefinitions.CLASS_CONNECTION.$());
 
+		Element path = doc.createElement(ESvg.ELEMENT_PATH.$());
+		g.appendChild(path);
+
+		path.setAttribute(
+				ESvg.ATTRIB_CLASS.$(),
+				ESvgDefinitions.CLASS_CONNECTION_PATH.$());
 		path.setAttribute(ESvg.ATTRIB_PATH_DATA.$(),
 				String.format(Locale.ENGLISH, "M %f %f C %f %f %f %f %f %f", //$NON-NLS-1$
 						this.sourceAnchor.getX(),
@@ -161,14 +187,28 @@ public class TensorConnectionFigure extends FigureBase
 		// ESvg.ATTRIB_MARKER_END.$(),
 		// ESvg.VALUE_REF_URL.$(ESvgDefinitions.MARKER_CRICLE.$()));
 
-		path.setAttribute(
-				ESvg.ATTRIB_CLASS.$(),
-				ESvgDefinitions.CLASS_CONNECTION.$());
+		TensorConnectionEditPart tc = (TensorConnectionEditPart) this.editPart;
+		tc.getAppearanceContainer().applyAppearance(
+				g);
 
-		((EditPartBase) this.editPart).getAppearanceContainer().applyAppearance(
-				path);
+		if (tc.getLabel() != null)
+		{
+			Element txt = doc.createElement(ESvg.ELEMENT_TEXT.$());
+			txt.setTextContent(tc.getLabel());
+			txt.setAttribute(
+					ESvg.ATTRIB_POS_X.$(),
+					Double.toString(tc.getLabelPosition().getX()));
+			txt.setAttribute(
+					ESvg.ATTRIB_POS_Y.$(),
+					Double.toString(tc.getLabelPosition().getY()));
+			txt.setAttribute(ESvg.ATTRIB_TEXT_DY.$(), "0.5ex"); //$NON-NLS-1$
+			txt.setAttribute(
+						ESvg.ATTRIB_TEXT_ANCHOR.$(),
+						ESvg.VALUE_TEXT_ANCHOR_MIDDLE.$());
+			g.appendChild(txt);
+		}
 
-		return path;
+		return g;
 	}
 
 	/** @return the control point for the sink anchor. */

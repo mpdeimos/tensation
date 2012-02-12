@@ -1,9 +1,9 @@
 package com.mpdeimos.tensation.impex.tdg;
 
 import com.mpdeimos.tensation.impex.IExporter;
+import com.mpdeimos.tensation.model.EDirection;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnectionAnchor;
-import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

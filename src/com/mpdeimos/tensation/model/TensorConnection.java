@@ -2,7 +2,10 @@ package com.mpdeimos.tensation.model;
 
 import com.mpdeimos.tensation.figure.AppearanceContainer;
 import com.mpdeimos.tensation.impex.export.Export;
-import com.mpdeimos.tensation.model.TensorConnectionAnchor.EDirection;
+import com.mpdeimos.tensation.util.StringUtil;
+import com.mpdeimos.tensation.util.VecMath;
+
+import java.awt.geom.Point2D;
 
 import resources.R;
 
@@ -35,6 +38,14 @@ public class TensorConnection extends ModelDataBase implements
 	/** The label of the connection. */
 	@Export
 	private String label;
+
+	/** The label position (relative to an anchor). */
+	@Export(name = "label.position", set = "setPosition")
+	private Point2D labelPosition;
+
+	/** the label attachment anchor. */
+	@Export(name = "label.attachment")
+	private EDirection labelAttachment;
 
 	/**
 	 * Constructor.
@@ -136,6 +147,56 @@ public class TensorConnection extends ModelDataBase implements
 	/** sets the label of this tensor. */
 	public void setLabel(String label)
 	{
+		if (StringUtil.isNullOrEmpty(label))
+		{
+			label = null;
+			this.labelPosition = null;
+			this.labelAttachment = null;
+		}
+
 		this.label = label;
+		this.fireOnModelDataChanged(this);
+	}
+
+	/** @return sets position of the label, if a label is set. */
+	public void setLabelPosition(Point2D position)
+	{
+		if (this.label == null)
+			return;
+
+		if (this.labelPosition == null)
+			this.labelPosition = VecMath.fresh();
+
+		this.labelPosition.setLocation(position);
+		this.fireOnModelDataChanged(this);
+	}
+
+	/**
+	 * @return the position of the label (a copy of), null if no label is set or
+	 *         position was not set.
+	 */
+	public Point2D getLabelPosition()
+	{
+		if (this.labelPosition == null)
+			return null;
+
+		return VecMath.fresh(this.labelPosition);
+	}
+
+	/**
+	 * @return the label attachment anchor. null if no label, or not previously
+	 *         set.
+	 */
+	public EDirection getLabelAttachment()
+	{
+		return this.labelAttachment;
+	}
+
+	/**
+	 * sets the label attachment to the given anchor.
+	 */
+	public void setLabelAttachment(EDirection anchor)
+	{
+		this.labelAttachment = anchor;
 	}
 }

@@ -48,7 +48,7 @@ public class DeleteSelectionAction extends ActionBase
 				public void redo()
 					{
 						for (IEditPart part : selectedEditParts)
-							root.removeChild(part.getModel());
+							part.getModel().remove();
 					}
 
 				@Override

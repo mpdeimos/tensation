@@ -4,6 +4,8 @@ import com.mpdeimos.tensation.util.Log;
 import com.mpdeimos.tensation.util.StringUtil;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,15 +41,44 @@ public class ExportHandler implements IExportable
 					name = field.getName();
 				try
 				{
-					field.setAccessible(true);
-					if (map.get(name) != null || annotation.nulls())
-						field.set(this.exportable, map.get(name));
+					Object value = map.get(name);
+					if (value != null || annotation.nulls())
+					{
+						String setter = annotation.set();
+						if (StringUtil.isNullOrEmpty(setter))
+						{
+							field.setAccessible(true);
+							field.set(this.exportable, value);
+							field.setAccessible(false);
+						}
+						else
+						{
+							for (Method method : this.exportable.getClass().getMethods())
+							{
+								if (method.getName().equals(setter))
+								{
+									try
+									{
+										method.invoke(this.exportable, value);
+										break;
+									}
+									catch (IllegalArgumentException e)
+									{
+										// swallow
+									}
+									catch (InvocationTargetException e)
+									{
+										// swallow
+									}
+								}
+							}
+						}
+					}
 				}
 				catch (IllegalAccessException e)
 				{
 					Log.e(this, e); // shouldn't happen anyways
 				}
-				field.setAccessible(false);
 			}
 		}
 	}

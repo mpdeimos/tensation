@@ -1,10 +1,10 @@
 package com.mpdeimos.tensation.editpart;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import com.mpdeimos.tensation.model.IModelData;
 import com.mpdeimos.tensation.util.Log;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * The EditPartFactory instantiates EditParts for model data.

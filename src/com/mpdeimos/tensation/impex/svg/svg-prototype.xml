@@ -13,14 +13,13 @@
 	font-size: 10px;
 	font-family: sans-serif;
 }
-text
-{
-	stroke: none !important;
-}
 .connection
 {
 	stroke: black;
 	stroke-width: 1px;
+}
+.connectionPath
+{
 	fill: none !important;
 }
 .tensor
@@ -28,6 +27,10 @@ text
 	stroke: black;
 	stroke-width: 1px;
 	fill: black; 
+}
+text
+{
+	stroke: none !important;
 }
 .g_tensor_circle { stroke: none; }
 .g_tensor_circle_unfilled { fill: none; }

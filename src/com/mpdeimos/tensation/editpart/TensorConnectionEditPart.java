@@ -5,9 +5,12 @@ package com.mpdeimos.tensation.editpart;
 
 import com.mpdeimos.tensation.editpart.feature.IConnectionControl;
 import com.mpdeimos.tensation.editpart.feature.IDuplicatable;
-import com.mpdeimos.tensation.editpart.feature.ILabelable;
+import com.mpdeimos.tensation.editpart.feature.ILabeled;
+import com.mpdeimos.tensation.editpart.feature.IMovableLabel;
 import com.mpdeimos.tensation.figure.IFigure;
 import com.mpdeimos.tensation.figure.TensorConnectionFigure;
+import com.mpdeimos.tensation.impex.export.ExportHandler;
+import com.mpdeimos.tensation.model.EDirection;
 import com.mpdeimos.tensation.model.IModelData;
 import com.mpdeimos.tensation.model.ModelChangedAdapter;
 import com.mpdeimos.tensation.model.ModelRoot;
@@ -15,6 +18,7 @@ import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnection;
 import com.mpdeimos.tensation.ui.Application;
 import com.mpdeimos.tensation.ui.DrawingCanvas;
+import com.mpdeimos.tensation.util.VecMath;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -28,7 +32,7 @@ import java.util.List;
  * 
  */
 public class TensorConnectionEditPart extends EditPartBase implements
-		IConnectionControl, IDuplicatable, ILabelable
+		IMovableLabel, IConnectionControl, IDuplicatable, ILabeled
 {
 	/** Constructor. */
 	public TensorConnectionEditPart(IModelData modelData)
@@ -126,11 +130,10 @@ public class TensorConnectionEditPart extends EditPartBase implements
 				source.getAnchors().get(connection.getSource().getId()),
 				sink.getAnchors().get(connection.getSink().getId()));
 
-		tc.setLabel(connection.getLabel());
 		tc.getAppearanceContainer().setValues(
 				connection.getAppearanceContainer().getValues());
-		tc.setSinkControlPointDistance(connection.getSinkDistance());
-		tc.setSourceControlPointDistance(connection.getSourceDistance());
+
+		new ExportHandler(tc).setValues(new ExportHandler(connection).getValues());
 
 		return tc;
 	}
@@ -165,5 +168,44 @@ public class TensorConnectionEditPart extends EditPartBase implements
 	public String getLabel()
 	{
 		return ((TensorConnection) this.getModel()).getLabel();
+	}
+
+	@Override
+	public Point2D getLabelPosition()
+	{
+		Point2D labelPosition = ((TensorConnection) this.getModel()).getLabelPosition();
+
+		Point2D attachment = getSinkAnchor();
+
+		if (EDirection.SOURCE == ((TensorConnection) this.getModel()).getLabelAttachment())
+			attachment = getSourceAnchor();
+
+		if (labelPosition == null)
+			return attachment;
+
+		return VecMath.add(labelPosition, attachment);
+	}
+
+	@Override
+	public void setLabelPosition(Point2D position)
+	{
+		TensorConnection tensorConnection = (TensorConnection) this.getModel();
+
+		if (position != null)
+		{
+			Point2D attachment = getSinkAnchor();
+			tensorConnection.setLabelAttachment(EDirection.SINK);
+
+			if (VecMath.distance(position, getSourceAnchor()) < VecMath.distance(
+					position,
+					getSinkAnchor()))
+			{
+				attachment = getSourceAnchor();
+				tensorConnection.setLabelAttachment(EDirection.SOURCE);
+			}
+			VecMath.sub(position, attachment);
+		}
+
+		tensorConnection.setLabelPosition(position);
 	}
 }

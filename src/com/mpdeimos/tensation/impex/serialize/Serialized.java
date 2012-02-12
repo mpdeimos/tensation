@@ -1,6 +1,7 @@
 package com.mpdeimos.tensation.impex.serialize;
 
 import com.mpdeimos.tensation.util.Log;
+import com.mpdeimos.tensation.util.Reflections;
 
 /**
  * Serialized data object.
@@ -29,7 +30,7 @@ public class Serialized
 		this.data = data;
 		try
 		{
-			this.type = Class.forName(type);
+			this.type = Reflections.getClassForName(type);
 		}
 		catch (ClassNotFoundException e)
 		{

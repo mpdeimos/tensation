@@ -17,4 +17,10 @@ public @interface Export
 
 	/** True if null values should be exported. Default false. */
 	boolean nulls() default false;
+
+	/**
+	 * Optional name of a setter method. Used instead of accessing the field
+	 * directly.
+	 */
+	String set() default "";
 }

@@ -20,7 +20,7 @@ import java.awt.geom.Rectangle2D;
 public class Gfx
 {
 	/** Antialiasing correction offset. */
-	private static final double AA_CORRECTION = .5;
+	public static final double AA_CORRECTION = .5;
 
 	/** Sans Serif Font, 12pt. */
 	public static final Font SANS_SERIF_12 = new Font(
@@ -67,6 +67,18 @@ public class Gfx
 		Point2D pos = aaCorrect(VecMath.fresh(rect.getX(), rect.getY()));
 
 		gfx.draw(new Rectangle2D.Double(
+				pos.getX(),
+				pos.getY(),
+				rect.getWidth(),
+				rect.getHeight()));
+	}
+
+	/** Fills a rectangle with antialiasing correction. */
+	public static void fillRect(Graphics2D gfx, Rectangle2D rect)
+	{
+		Point2D pos = aaCorrect(VecMath.fresh(rect.getX(), rect.getY()));
+
+		gfx.fill(new Rectangle2D.Double(
 				pos.getX(),
 				pos.getY(),
 				rect.getWidth(),
