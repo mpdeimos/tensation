@@ -40,7 +40,7 @@ public class TensorConnection extends ModelDataBase implements
 	private String label;
 
 	/** The label position (relative to an anchor). */
-	@Export(name = "label.position", set = "setPosition")
+	@Export(name = "label.position", set = "setLabelPosition")
 	private Point2D labelPosition;
 
 	/** the label attachment anchor. */
