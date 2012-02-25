@@ -4,10 +4,15 @@ import com.mpdeimos.tensation.editpart.IEditPart;
 import com.mpdeimos.tensation.editpart.feature.EditPartFeatureBase;
 import com.mpdeimos.tensation.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensation.feature.contract.ICanvasFeatureContract;
+import com.mpdeimos.tensation.model.IModelData;
+import com.mpdeimos.tensation.model.TensorBase;
+import com.mpdeimos.tensation.model.TensorConnection;
 import com.mpdeimos.tensation.ui.ContextPanelContentBase;
 import com.mpdeimos.tensation.ui.RefreshablePanel;
 import com.mpdeimos.tensation.util.Gfx;
+import com.mpdeimos.tensation.util.GraphUtil;
 import com.mpdeimos.tensation.util.ImmutableList;
+import com.mpdeimos.tensation.util.Tupel;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -19,6 +24,7 @@ import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -173,9 +179,44 @@ public class SelectEditPartAction extends CanvasActionBase
 							e,
 							MouseEvent.MOUSE_PRESSED);
 
-					return true;
+					break;
 				}
 			}
+
+			if (e.isControlDown() && this.newlySelectedEditPart != null)
+			{
+				IModelData modelData = this.newlySelectedEditPart.getModel();
+				Tupel<Set<TensorBase>, Set<TensorConnection>> completeSubgraph = null;
+				if (modelData instanceof TensorBase)
+				{
+					completeSubgraph = GraphUtil.getCompleteSubgraph((TensorBase) modelData);
+				}
+				else if (modelData instanceof TensorConnection)
+				{
+					completeSubgraph = GraphUtil.getCompleteSubgraph((TensorConnection) modelData);
+				}
+
+				if (completeSubgraph != null)
+				{
+					this.canvas.clearSelectedEditParts();
+
+					List<IEditPart> eps = new ArrayList<IEditPart>(
+							completeSubgraph.$1.size()
+									+ completeSubgraph.$2.size());
+					for (TensorBase t : completeSubgraph.$1)
+					{
+						eps.add(this.canvas.getEditPartForModelData(t));
+					}
+					for (TensorConnection c : completeSubgraph.$2)
+					{
+						eps.add(this.canvas.getEditPartForModelData(c));
+					}
+					this.canvas.setSelectedEditParts(eps);
+				}
+			}
+
+			if (this.newlySelectedEditPart != null)
+				return true;
 
 			this.selectionStartPoint = new Point(e.getPoint());
 

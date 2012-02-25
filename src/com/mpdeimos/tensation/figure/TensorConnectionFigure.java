@@ -142,14 +142,19 @@ public class TensorConnectionFigure extends FigureBase
 		ShapePack pack = new ShapePack(EDrawingMode.STROKE, shapes);
 		this.shapePacks.add(pack);
 
-		Dimension dim = Gfx.approximateTextWidth(
-				Gfx.SANS_SERIF_10,
-				connectionPart.getLabel());
-		Point2D corner = VecMath.fresh(connectionPart.getLabelPosition());
-		VecMath.add(corner, dim.width / 2 + 2, dim.height / 2 + 2);
-		Rectangle labelDummy = new Rectangle();
-		labelDummy.setFrameFromCenter(connectionPart.getLabelPosition(), corner);
-		this.shapePacks.add(new ShapePack(EDrawingMode.NONE, labelDummy));
+		if (connectionPart.getLabel() != null)
+		{
+			Dimension dim = Gfx.approximateTextWidth(
+					Gfx.SANS_SERIF_10,
+					connectionPart.getLabel());
+			Point2D corner = VecMath.fresh(connectionPart.getLabelPosition());
+			VecMath.add(corner, dim.width / 2 + 2, dim.height / 2 + 2);
+			Rectangle labelDummy = new Rectangle();
+			labelDummy.setFrameFromCenter(
+					connectionPart.getLabelPosition(),
+					corner);
+			this.shapePacks.add(new ShapePack(EDrawingMode.NONE, labelDummy));
+		}
 		// pack = new ShapePack(EDrawingMode.FILL, fills);
 		// this.shapePacks.add(pack);
 	}
