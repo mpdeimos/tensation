@@ -7,6 +7,7 @@ import com.mpdeimos.tensation.editpart.feature.IConnectionControl;
 import com.mpdeimos.tensation.editpart.feature.IDuplicatable;
 import com.mpdeimos.tensation.editpart.feature.ILabeled;
 import com.mpdeimos.tensation.editpart.feature.IMovableLabel;
+import com.mpdeimos.tensation.editpart.feature.IRestructurable;
 import com.mpdeimos.tensation.figure.IFigure;
 import com.mpdeimos.tensation.figure.TensorConnectionFigure;
 import com.mpdeimos.tensation.impex.export.ExportHandler;
@@ -23,7 +24,9 @@ import com.mpdeimos.tensation.util.VecMath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * EditPart for Tensor Connections
@@ -32,7 +35,8 @@ import java.util.List;
  * 
  */
 public class TensorConnectionEditPart extends EditPartBase implements
-		IMovableLabel, IConnectionControl, IDuplicatable, ILabeled
+		IMovableLabel, IConnectionControl, IDuplicatable, ILabeled,
+		IRestructurable
 {
 	/** Constructor. */
 	public TensorConnectionEditPart(IModelData modelData)
@@ -207,5 +211,16 @@ public class TensorConnectionEditPart extends EditPartBase implements
 		}
 
 		tensorConnection.setLabelPosition(position);
+	}
+
+	@Override
+	public Set<Point2D> getRestructionLabelPositions()
+	{
+		TensorConnectionFigure figure = ((TensorConnectionFigure) this.getFigure());
+		Set<Point2D> points = new HashSet<Point2D>();
+		points.add(figure.getSinkAnchor());
+		points.add(figure.getSourceAnchor());
+
+		return points;
 	}
 }

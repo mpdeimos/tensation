@@ -1,6 +1,7 @@
 package com.mpdeimos.tensation.figure;
 
 import com.mpdeimos.tensation.editpart.IEditPart;
+import com.mpdeimos.tensation.util.ImmutableList;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -126,5 +127,11 @@ public abstract class FigureBase implements IFigure
 			HashMap<String, Element> definitions)
 	{
 		return null;
+	}
+
+	/** @return the shape pack of a figure. */
+	public ImmutableList<ShapePack> getShapePacks()
+	{
+		return new ImmutableList<ShapePack>(this.shapePacks);
 	}
 }

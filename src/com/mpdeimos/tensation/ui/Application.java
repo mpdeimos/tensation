@@ -17,6 +17,7 @@ import com.mpdeimos.tensation.action.SaveAsAction;
 import com.mpdeimos.tensation.action.ScaleCanvasAction;
 import com.mpdeimos.tensation.action.UndoAction;
 import com.mpdeimos.tensation.action.canvas.DrawTensorAction;
+import com.mpdeimos.tensation.action.canvas.GraphRestructureAction;
 import com.mpdeimos.tensation.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensation.action.canvas.TensorConnectAction;
 import com.mpdeimos.tensation.layout.ForceDirectedPlacementLayouter;
@@ -220,6 +221,12 @@ public class Application extends JFrame
 				new TensorConnectAction());
 		connectButton.setHideActionText(true);
 		sideToolBar.add(connectButton);
+
+		JButton epsilonDeltaButton = new ToolBarButton(
+				sideToolBar,
+				new GraphRestructureAction());
+		epsilonDeltaButton.setHideActionText(true);
+		sideToolBar.add(epsilonDeltaButton);
 
 		sideToolBar.add(Box.createVerticalGlue());
 

@@ -127,7 +127,7 @@ public class Gfx
 	}
 
 	/** Aligns the text centered around the given point, no drawing. */
-	public static Dimension alignTextCentered(
+	public static Rectangle2D alignTextCentered(
 			Graphics2D gfx,
 			Point2D center,
 			String text)
@@ -137,25 +137,33 @@ public class Gfx
 
 		FontMetrics fm = gfx.getFontMetrics();
 		Dimension bounds = new Dimension(fm.stringWidth(text), fm.getAscent());
-		return bounds;
+
+		float x = (float) (center.getX() - (bounds.getWidth() / 2));
+		float y = (float) (center.getY() - (bounds.getHeight() / 2));
+
+		return new Rectangle2D.Double(
+				x,
+				y,
+				bounds.getWidth(),
+				bounds.getHeight());
 
 	}
 
 	/** Draws text centered around the given point. */
-	public static Dimension drawTextCentered(
+	public static Rectangle2D drawTextCentered(
 			Graphics2D gfx,
 			Point2D center,
 			String text)
 	{
-		Dimension bounds = alignTextCentered(gfx, center, text);
+		Rectangle2D bounds = alignTextCentered(gfx, center, text);
 
 		if (bounds == null)
 			return null;
 
 		gfx.drawString(
 				text,
-				(float) (center.getX() - (bounds.getWidth() / 2)),
-				(float) (center.getY() + (bounds.getHeight() / 4)));
+				(float) bounds.getX(),
+				(float) (bounds.getY() + bounds.getHeight() * 3 / 4));
 		return bounds;
 
 	}
@@ -172,5 +180,18 @@ public class Gfx
 		return new Dimension(
 				(int) stringBounds.getWidth(),
 				(int) stringBounds.getHeight());
+	}
+
+	/** @return enlarges (or shrinks) a given rectangle. */
+	public static Rectangle2D enlargeRectangle(
+			Rectangle2D rect,
+			double x,
+			double y)
+	{
+		return new Rectangle2D.Double(
+				rect.getX() - x,
+				rect.getY() - y,
+				rect.getWidth() + 2 * x,
+				rect.getHeight() + 2 * y);
 	}
 }
