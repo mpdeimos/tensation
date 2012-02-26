@@ -4,6 +4,7 @@ import com.mpdeimos.tensation.figure.AppearanceContainer.IAppearanceHolder;
 import com.mpdeimos.tensation.impex.export.ExportHandler;
 import com.mpdeimos.tensation.model.IModelData;
 import com.mpdeimos.tensation.model.ModelRoot;
+import com.mpdeimos.tensation.model.Operator;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnection;
 import com.mpdeimos.tensation.util.XmlUtil;
@@ -63,6 +64,19 @@ public class TdgExporter
 						xmlDoc, model, tensorsToIds);
 				commonExport(xmlDoc, e, model);
 				eConnections.appendChild(e);
+			}
+		}
+
+		Element eOperators = xmlDoc.createElement(ETdgGeneric.ELEMENT_OPERATORS.$());
+		eRoot.appendChild(eOperators);
+
+		for (IModelData model : modelRoot.getChildren())
+		{
+			if (model instanceof Operator)
+			{
+				Element e = xmlDoc.createElement(ETdgGeneric.ELEMENT_OPERATOR.$());
+				commonExport(xmlDoc, e, model);
+				eOperators.appendChild(e);
 			}
 		}
 

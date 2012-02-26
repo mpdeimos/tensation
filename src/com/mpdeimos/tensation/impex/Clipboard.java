@@ -7,6 +7,7 @@ import com.mpdeimos.tensation.model.ModelRoot;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.ui.Application;
 import com.mpdeimos.tensation.ui.DrawingCanvas;
+import com.mpdeimos.tensation.util.CompoundInfiniteUndoableEdit;
 import com.mpdeimos.tensation.util.InfiniteUndoableEdit;
 import com.mpdeimos.tensation.util.PointUtil;
 
@@ -18,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import resources.R;
@@ -72,9 +74,20 @@ public class Clipboard
 	/**
 	 * Copies the clipboard data to the active canvas.
 	 * 
-	 * @return the new editparts
+	 * @return the new editparts as map (old -> new)
 	 */
-	public List<IEditPart> copyToCanvas()
+	public Map<IDuplicatable, IModelData> copyToCanvas()
+	{
+		return copyToCanvas(null, true);
+	}
+
+	/**
+	 * Copies the clipboard data to the active canvas.
+	 * 
+	 * @return the new editparts as map (old -> new)
+	 */
+	public Map<IDuplicatable, IModelData> copyToCanvas(
+			CompoundInfiniteUndoableEdit edit, final boolean move)
 	{
 		Collections.sort(this.clipList, IDuplicatable.COMPARATOR);
 
@@ -83,11 +96,9 @@ public class Clipboard
 
 		DrawingCanvas activeCanvas = Application.getApp().getActiveCanvas();
 		final ModelRoot root = activeCanvas.getModel();
-		final List<IModelData> elements = new ArrayList<IModelData>();
-		activeCanvas.getUndoManager().addEdit(
-				new InfiniteUndoableEdit()
+		final HashMap<IDuplicatable, IModelData> elements = new HashMap<IDuplicatable, IModelData>();
+		InfiniteUndoableEdit operation = new InfiniteUndoableEdit()
 		{
-
 			@Override
 			public String getPresentationName()
 			{
@@ -98,12 +109,12 @@ public class Clipboard
 			public void redo()
 			{
 				elements.clear();
-				HashMap<IDuplicatable, IModelData> dupes = new HashMap<IDuplicatable, IModelData>();
 				for (IDuplicatable duplicatable : duplicatables)
 				{
-					IModelData d = duplicatable.duplicateModel(dupes);
+					IModelData d = duplicatable.duplicateModel(elements);
+
 					// TODO make positionable base ifc
-					if (d instanceof TensorBase)
+					if (move && d instanceof TensorBase)
 					{
 						TensorBase tensor = (TensorBase) d;
 						Point2D p = PointUtil.move(
@@ -114,8 +125,7 @@ public class Clipboard
 								(int) p.getX(),
 								(int) p.getY()));
 					}
-					dupes.put(duplicatable, d);
-					elements.add(d);
+					elements.put(duplicatable, d);
 					root.addChild(d);
 				}
 			}
@@ -123,22 +133,35 @@ public class Clipboard
 			@Override
 			public void undo()
 			{
-				for (IModelData d : elements)
+				Application.getApp().getActiveCanvas().setByPassModelEvents(
+						true);
+				for (IDuplicatable d : elements.keySet())
 				{
-					root.removeChild(d);
+					elements.get(d).remove();
 				}
+				Application.getApp().getActiveCanvas().setByPassModelEvents(
+						false);
 			}
-		}.act());
+		}.act();
+
+		if (edit == null)
+		{
+			activeCanvas.getUndoManager().addEdit(operation);
+		}
+		else
+		{
+			edit.add(operation);
+		}
 
 		final List<IEditPart> newParts = new ArrayList<IEditPart>();
-		for (IModelData d : elements)
+		for (IDuplicatable d : elements.keySet())
 		{
-			newParts.add(activeCanvas.getEditPartForModelData(d));
+			newParts.add(activeCanvas.getEditPartForModelData(elements.get(d)));
 		}
 
 		activeCanvas.setSelectedEditParts(newParts);
 
-		return newParts;
+		return elements;
 	}
 
 	/** Clips the active canvas selection. */

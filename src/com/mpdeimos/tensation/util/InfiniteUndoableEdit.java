@@ -1,7 +1,6 @@
 package com.mpdeimos.tensation.util;
 
 import javax.swing.undo.AbstractUndoableEdit;
-import javax.swing.undo.UndoableEdit;
 
 /**
  * UndoableEdit implementation that can always be done and redone.
@@ -47,7 +46,7 @@ abstract public class InfiniteUndoableEdit extends AbstractUndoableEdit
 	}
 
 	/** performs redo and returns itself (useful for constructor chaining). */
-	public UndoableEdit act()
+	public InfiniteUndoableEdit act()
 	{
 		this.redo();
 

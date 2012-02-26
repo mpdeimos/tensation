@@ -347,6 +347,15 @@ public class DrawingCanvas extends JPanel
 		}
 	}
 
+	/** flag for bypassing model events. */
+	private boolean byPassModelEvents = false;
+
+	/** sets the bypass model event flag. */
+	public void setByPassModelEvents(boolean b)
+	{
+		this.byPassModelEvents = b;
+	}
+
 	/**
 	 * listener class for model data changes
 	 */
@@ -382,7 +391,8 @@ public class DrawingCanvas extends JPanel
 
 			DrawingCanvas.this.editParts.removeAll(toBeRemoved);
 
-			stopCanvasAction();
+			if (!DrawingCanvas.this.byPassModelEvents)
+				stopCanvasAction();
 
 			repaint();
 		}

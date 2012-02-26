@@ -16,6 +16,12 @@ public enum ETdgGeneric implements INameEnum
 	/** root element for all tensors. */
 	ELEMENT_TENSORS("tensors"), //$NON-NLS-1$
 
+	/** operators element. */
+	ELEMENT_OPERATORS("operators"), //$NON-NLS-1$
+
+	/** operator element. */
+	ELEMENT_OPERATOR("operator"), //$NON-NLS-1$
+
 	/** the id of an XML tag. */
 	ATTRIB_ID("id"), //$NON-NLS-1$
 

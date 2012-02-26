@@ -10,6 +10,7 @@ import com.mpdeimos.tensation.util.XmlUtil;
 import java.awt.Rectangle;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -55,7 +56,7 @@ public class SvgExporter
 				ESvg.ATTRIB_HEIGHT.$(),
 				Integer.toString(Math.max(0, r.y) + r.height));
 
-		HashMap<String, Element> definitions = new HashMap<String, Element>();
+		HashMap<String, Element> definitions = new LinkedHashMap<String, Element>();
 		NodeList defsList = eRoot.getElementsByTagName(ESvg.ELEMENT_DEFS.$());
 		Element defs = null;
 		if (defsList.getLength() > 0)

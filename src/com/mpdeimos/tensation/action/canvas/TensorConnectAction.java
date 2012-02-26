@@ -2,7 +2,7 @@ package com.mpdeimos.tensation.action.canvas;
 
 import com.mpdeimos.tensation.editpart.feature.IConnectable.ConnectionPoint;
 import com.mpdeimos.tensation.editpart.feature.IFeatureEditPart;
-import com.mpdeimos.tensation.feature.contract.ICanvasFeatureContract;
+import com.mpdeimos.tensation.feature.ICanvasFeatureContract;
 import com.mpdeimos.tensation.model.ModelRoot;
 import com.mpdeimos.tensation.model.TensorConnection;
 import com.mpdeimos.tensation.util.InfiniteUndoableEdit;

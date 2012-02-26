@@ -3,7 +3,7 @@ package com.mpdeimos.tensation.action.canvas;
 import com.mpdeimos.tensation.editpart.IEditPart;
 import com.mpdeimos.tensation.editpart.feature.EditPartFeatureBase;
 import com.mpdeimos.tensation.editpart.feature.IFeatureEditPart;
-import com.mpdeimos.tensation.feature.contract.ICanvasFeatureContract;
+import com.mpdeimos.tensation.feature.ICanvasFeatureContract;
 import com.mpdeimos.tensation.model.IModelData;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnection;

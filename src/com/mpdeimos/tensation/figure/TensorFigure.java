@@ -400,7 +400,7 @@ public class TensorFigure extends FigureBase
 				marker.setAttribute(
 						ESvg.ATTRIB_FILL.$(),
 						ESvg.VALUE_HEX.$(appearance.getColor().getRGB()));
-				defs.put(markerStartID, marker);
+				defs.put(markerEndID, marker);
 			}
 
 			Element circle = doc.createElement(ESvg.ELEMENT_CIRCLE.$());
@@ -464,7 +464,8 @@ public class TensorFigure extends FigureBase
 
 		if (tensor.getLabel() != null)
 		{
-			name += ESvgDefinitions.TENSOR_DEF_LABEL_POSTFIX.$();
+			int radius = getCenterCircleRadius(tensor);
+			name += ESvgDefinitions.TENSOR_DEF_LABEL_POSTFIX.$() + radius;
 		}
 
 		return name;

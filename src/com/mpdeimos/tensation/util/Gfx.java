@@ -52,7 +52,7 @@ public class Gfx
 	}
 
 	/** corrects antialiasing. */
-	private static Point2D aaCorrect(Point2D pos)
+	public static Point2D aaCorrect(Point2D pos)
 	{
 		pos = VecMath.fresh(
 				(int) pos.getX() - AA_CORRECTION,

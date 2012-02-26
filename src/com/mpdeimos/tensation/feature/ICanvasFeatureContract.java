@@ -1,7 +1,6 @@
-package com.mpdeimos.tensation.feature.contract;
+package com.mpdeimos.tensation.feature;
 
 import com.mpdeimos.tensation.action.canvas.ICanvasAction;
-import com.mpdeimos.tensation.feature.IFeature;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;

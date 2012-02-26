@@ -2,7 +2,7 @@ package com.mpdeimos.tensation.action.canvas;
 
 import com.mpdeimos.tensation.editpart.feature.EditPartFeatureBase;
 import com.mpdeimos.tensation.editpart.feature.IFeatureEditPart;
-import com.mpdeimos.tensation.feature.contract.ICanvasFeatureContract;
+import com.mpdeimos.tensation.feature.ICanvasFeatureContract;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;

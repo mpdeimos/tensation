@@ -4,6 +4,7 @@ import com.mpdeimos.tensation.figure.AppearanceContainer.IAppearanceHolder;
 import com.mpdeimos.tensation.impex.export.ExportHandler;
 import com.mpdeimos.tensation.model.ModelDataBase;
 import com.mpdeimos.tensation.model.ModelRoot;
+import com.mpdeimos.tensation.model.Operator;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnection;
 import com.mpdeimos.tensation.util.Wrapper;
@@ -14,7 +15,6 @@ import java.util.HashMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -34,6 +34,7 @@ public class TdgImporter
 
 		NodeList tensorNodes = root.getElementsByTagName(ETdgTensor.ELEMENT_TENSOR.$());
 		NodeList connectionNodes = root.getElementsByTagName(ETdgConnection.ELEMENT_CONECTION.$());
+		NodeList operatorNodes = root.getElementsByTagName(ETdgGeneric.ELEMENT_OPERATOR.$());
 
 		ModelRoot mr = new ModelRoot();
 
@@ -41,38 +42,37 @@ public class TdgImporter
 		Wrapper<Integer> outId = new Wrapper<Integer>(-1);
 		HashMap<Integer, TensorBase> tensorIDs = new HashMap<Integer, TensorBase>();
 
-		for (int i = 0; i < tensorNodes.getLength(); i++)
+		for (Element item : XmlUtil.iterate(tensorNodes))
 		{
-			Node item = tensorNodes.item(i);
-			if (item instanceof Element)
-			{
-				TensorBase data = tensorImporter.importNode(
-						(Element) item,
+			TensorBase data = tensorImporter.importNode(
+						item,
 						mr,
 						outId);
 
-				commonImport((Element) item, data);
+			commonImport(item, data);
 
-				tensorIDs.put(outId.get(), data);
-				mr.addChild(data);
-			}
+			tensorIDs.put(outId.get(), data);
+			mr.addChild(data);
 		}
 
 		ConnectionImporter connectionImporter = new ConnectionImporter();
-		for (int i = 0; i < connectionNodes.getLength(); i++)
+		for (Element item : XmlUtil.iterate(connectionNodes))
 		{
-			Node item = connectionNodes.item(i);
-			if (item instanceof Element)
-			{
-				TensorConnection data = connectionImporter.importNode(
-						(Element) item,
+			TensorConnection data = connectionImporter.importNode(
+						item,
 						mr,
 						tensorIDs);
 
-				commonImport((Element) item, data);
+			commonImport(item, data);
 
-				mr.addChild(data);
-			}
+			mr.addChild(data);
+		}
+
+		for (Element item : XmlUtil.iterate(operatorNodes))
+		{
+			Operator data = new Operator(mr);
+			commonImport(item, data);
+			mr.addChild(data);
 		}
 
 		return mr;

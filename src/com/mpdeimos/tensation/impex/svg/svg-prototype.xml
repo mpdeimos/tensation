@@ -32,6 +32,16 @@ text
 {
 	stroke: none !important;
 }
+.operator
+{
+	font-size: 12px;
+}
+.g_operator_circle
+{
+	stroke: black;
+	stroke-width: 1px;
+	fill: none;
+}
 .g_tensor_circle { stroke: none; }
 .g_tensor_circle_unfilled { fill: none; }
     ]]></style>

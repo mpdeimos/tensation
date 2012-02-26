@@ -3,8 +3,6 @@ package com.mpdeimos.tensation.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.undo.UndoableEdit;
-
 /**
  * Compound version of an infinite undoable edit.
  * 
@@ -41,7 +39,7 @@ public class CompoundInfiniteUndoableEdit extends InfiniteUndoableEdit
 
 	/** performs redo and returns itself (useful for constructor chaining). */
 	@Override
-	public UndoableEdit act()
+	public CompoundInfiniteUndoableEdit act()
 	{
 		this.redo();
 

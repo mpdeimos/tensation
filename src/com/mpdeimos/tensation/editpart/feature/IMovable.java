@@ -121,8 +121,9 @@ public interface IMovable extends IFeatureEditPart
 				if (moveAlongCount == 0)
 					Feature.moveStartPoint = null;
 
-				if (Feature.this.editPart.getPosition().equals(
-						Feature.this.initialPosition))
+				if (Feature.this.initialPosition == null
+						|| Feature.this.editPart.getPosition().equals(
+								Feature.this.initialPosition))
 					return false;
 
 				InfiniteUndoableEdit edit = new InfiniteUndoableEdit()
@@ -133,7 +134,7 @@ public interface IMovable extends IFeatureEditPart
 					@Override
 					protected void init()
 					{
-						this.before = Feature.this.initialPosition;
+						this.before = new Point(Feature.this.initialPosition);
 						this.after = new Point(
 								Feature.this.editPart.getPosition());
 					}

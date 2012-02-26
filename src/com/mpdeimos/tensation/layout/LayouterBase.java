@@ -6,7 +6,7 @@ import com.mpdeimos.tensation.editpart.IEditPart;
 import com.mpdeimos.tensation.editpart.TensorConnectionEditPart;
 import com.mpdeimos.tensation.editpart.TensorEditPartBase;
 import com.mpdeimos.tensation.editpart.feature.IDuplicatable;
-import com.mpdeimos.tensation.feature.contract.ICanvasFeatureContract;
+import com.mpdeimos.tensation.feature.ICanvasFeatureContract;
 import com.mpdeimos.tensation.model.IModelData;
 import com.mpdeimos.tensation.model.ModelRoot;
 import com.mpdeimos.tensation.model.TensorBase;

@@ -26,6 +26,9 @@ public enum ESvgDefinitions implements INameEnum
 	/** prefix for tensor definitions. */
 	TENSOR_DEF_PREFIX("tensor_"), //$NON-NLS-1$
 
+	/** prefix for operator definitions. */
+	OPERATOR_DEF_PREFIX("operator_"), //$NON-NLS-1$
+
 	/** prefix for tensor definitions. */
 	TENSOR_DEF_COLOR_POSTFIX("_c%x"), //$NON-NLS-1$
 
@@ -43,6 +46,12 @@ public enum ESvgDefinitions implements INameEnum
 
 	/** connection css class name. */
 	CLASS_CONNECTION("connection"), //$NON-NLS-1$
+
+	/** operator css class name. */
+	CLASS_OPERATOR("operator"), //$NON-NLS-1$
+
+	/** operator circle css class name. */
+	CLASS_OPERATOR_CIRCLE("g_operator_circle"), //$NON-NLS-1$
 
 	/** connection path css class name. */
 	CLASS_CONNECTION_PATH("connectionPath"), //$NON-NLS-1$
