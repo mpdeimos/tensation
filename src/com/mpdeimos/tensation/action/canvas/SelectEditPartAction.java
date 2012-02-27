@@ -159,7 +159,7 @@ public class SelectEditPartAction extends CanvasActionBase
 
 		if (e.getButton() == MouseEvent.BUTTON1)
 		{
-			if (!e.isShiftDown())
+			if (!e.isControlDown())
 			{
 				this.canvas.clearSelectedEditParts();
 			}
@@ -183,7 +183,7 @@ public class SelectEditPartAction extends CanvasActionBase
 				}
 			}
 
-			if (e.isControlDown() && this.newlySelectedEditPart != null)
+			if (e.isShiftDown() && this.newlySelectedEditPart != null)
 			{
 				IModelData modelData = this.newlySelectedEditPart.getModel();
 				Tupel<Set<TensorBase>, Set<TensorConnection>> completeSubgraph = null;
@@ -198,8 +198,6 @@ public class SelectEditPartAction extends CanvasActionBase
 
 				if (completeSubgraph != null)
 				{
-					this.canvas.clearSelectedEditParts();
-
 					List<IEditPart> eps = new ArrayList<IEditPart>(
 							completeSubgraph.$1.size()
 									+ completeSubgraph.$2.size());
@@ -210,6 +208,14 @@ public class SelectEditPartAction extends CanvasActionBase
 					for (TensorConnection c : completeSubgraph.$2)
 					{
 						eps.add(this.canvas.getEditPartForModelData(c));
+					}
+					if (e.isControlDown())
+					{
+						for (IEditPart ep : this.canvas.getSelectedEditParts())
+						{
+							if (!eps.contains(ep))
+								eps.add(ep);
+						}
 					}
 					this.canvas.setSelectedEditParts(eps);
 				}
@@ -280,7 +286,7 @@ public class SelectEditPartAction extends CanvasActionBase
 				MouseEvent.MOUSE_RELEASED))
 			return true;
 
-		if (e.getButton() == MouseEvent.BUTTON1 && e.isShiftDown()
+		if (e.getButton() == MouseEvent.BUTTON1 && e.isControlDown()
 				&& this.newlySelectedEditPart == null)
 		{
 			for (IEditPart editPart : new LinkedList<IEditPart>(

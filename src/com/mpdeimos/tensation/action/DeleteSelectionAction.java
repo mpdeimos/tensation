@@ -47,8 +47,14 @@ public class DeleteSelectionAction extends ActionBase
 				@Override
 				public void redo()
 					{
+						Application.getApp().getActiveCanvas().setByPassModelEvents(
+								true);
+
 						for (IEditPart part : selectedEditParts)
 							part.getModel().remove();
+
+						Application.getApp().getActiveCanvas().setByPassModelEvents(
+								false);
 					}
 
 				@Override

@@ -59,14 +59,14 @@ public class EpsilonDeltaRestruction implements IRestruction
 			final TensorBase source = sourceAnchor.getTensor();
 
 			final TensorConnectionAnchor sinkNext = sink.getAnchors().get(
-					(sinkAnchor.getId() + 1) % 3).getConnection().getSource();
+					getAnchorID(sinkAnchor, true)).getConnection().getSource();
 			final TensorConnectionAnchor sinkPrev = sink.getAnchors().get(
-					(sinkAnchor.getId() - 1) % 3).getConnection().getSource();
+					getAnchorID(sinkAnchor, false)).getConnection().getSource();
 
 			final TensorConnectionAnchor sourceNext = source.getAnchors().get(
-					(sourceAnchor.getId() + 1) % 3).getConnection().getSink();
+					getAnchorID(sourceAnchor, true)).getConnection().getSink();
 			final TensorConnectionAnchor sourcePrev = source.getAnchors().get(
-					(sourceAnchor.getId() - 1) % 3).getConnection().getSink();
+					getAnchorID(sourceAnchor, false)).getConnection().getSink();
 
 			Application.getApp().getActiveCanvas().getUndoManager().addEdit(
 					new InfiniteUndoableEdit()
@@ -157,21 +157,17 @@ public class EpsilonDeltaRestruction implements IRestruction
 
 					TensorConnectionAnchor sinkNext2 =
 							sink2.getAnchors().get(
-									(sinkAnchor2.getId() + 1) %
-									3).getConnection().getSource();
+									getAnchorID(sinkAnchor2, true)).getConnection().getSource();
 					TensorConnectionAnchor sinkPrev2 =
 							sink2.getAnchors().get(
-									(sinkAnchor2.getId() - 1) %
-									3).getConnection().getSource();
+									getAnchorID(sinkAnchor2, false)).getConnection().getSource();
 
 					TensorConnectionAnchor sourceNext2 =
 							source2.getAnchors().get(
-									(sourceAnchor2.getId() + 1) %
-									3).getConnection().getSink();
+									getAnchorID(sourceAnchor2, true)).getConnection().getSink();
 					TensorConnectionAnchor sourcePrev2 =
 							source2.getAnchors().get(
-									(sourceAnchor2.getId() - 1) %
-									3).getConnection().getSink();
+									getAnchorID(sourceAnchor2, false)).getConnection().getSink();
 
 					sink.remove();
 					source.remove();
@@ -236,25 +232,25 @@ public class EpsilonDeltaRestruction implements IRestruction
 							(ModelDataBase) parent,
 							sinkNext,
 							sink.getAnchors().get(
-									(sinkAnchor.getId() + 1) % 3)));
+									getAnchorID(sinkAnchor, true))));
 
 					parent.addChild(new TensorConnection(
 							(ModelDataBase) parent,
 							sinkPrev,
 							sink.getAnchors().get(
-									(sinkAnchor.getId() - 1) % 3)));
+									getAnchorID(sinkAnchor, false))));
 
 					parent.addChild(new TensorConnection(
 							(ModelDataBase) parent,
 							sourceNext,
 							source.getAnchors().get(
-									(sourceAnchor.getId() + 1) % 3)));
+									getAnchorID(sourceAnchor, true))));
 
 					parent.addChild(new TensorConnection(
 							(ModelDataBase) parent,
 							sourcePrev,
 							source.getAnchors().get(
-									(sourceAnchor.getId() - 1) % 3)));
+									getAnchorID(sourceAnchor, false))));
 
 					canvas.setByPassModelEvents(false);
 				}
@@ -264,6 +260,22 @@ public class EpsilonDeltaRestruction implements IRestruction
 		{
 			throw new IllegalArgumentException();
 		}
+	}
+
+	/** @return the next/prev anchor id. */
+	private int getAnchorID(
+			final TensorConnectionAnchor sinkAnchor,
+			boolean next)
+	{
+		int offset = 1;
+		if (!next)
+			offset = -1;
+
+		int id = (sinkAnchor.getId() + offset) % 3;
+		if (id < 0)
+			id += 3;
+
+		return id;
 	}
 
 	@Override
