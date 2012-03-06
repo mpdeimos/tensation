@@ -37,12 +37,12 @@ import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -362,24 +362,24 @@ public class Application extends JFrame
 				R.string.WINDOW_MENU_VIEW_CANVASSCALE.string());
 		menuOptions.add(menuOptionsScale);
 
-		JCheckBoxMenuItem cbitem = new JCheckBoxMenuItem();
+		JRadioButtonMenuItem cbitem = new JRadioButtonMenuItem();
 		cbitem.setAction(new ScaleCanvasAction(50, cbitem));
 		menuOptionsScale.add(cbitem);
 
-		cbitem = new JCheckBoxMenuItem();
+		cbitem = new JRadioButtonMenuItem();
 		cbitem.setAction(new ScaleCanvasAction(75, cbitem));
 		menuOptionsScale.add(cbitem);
 
-		cbitem = new JCheckBoxMenuItem();
+		cbitem = new JRadioButtonMenuItem();
 		cbitem.setAction(new ScaleCanvasAction(100, cbitem));
 		cbitem.setSelected(true);
 		menuOptionsScale.add(cbitem);
 
-		cbitem = new JCheckBoxMenuItem();
+		cbitem = new JRadioButtonMenuItem();
 		cbitem.setAction(new ScaleCanvasAction(200, cbitem));
 		menuOptionsScale.add(cbitem);
 
-		cbitem = new JCheckBoxMenuItem();
+		cbitem = new JRadioButtonMenuItem();
 		cbitem.setAction(new ScaleCanvasAction(400, cbitem));
 		menuOptionsScale.add(cbitem);
 

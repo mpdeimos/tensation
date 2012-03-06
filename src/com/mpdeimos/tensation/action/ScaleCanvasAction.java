@@ -2,12 +2,11 @@ package com.mpdeimos.tensation.action;
 
 import com.mpdeimos.tensation.ui.Application;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButtonMenuItem;
 
 import resources.R;
 
@@ -23,14 +22,20 @@ public class ScaleCanvasAction extends ActionBase
 	private final int percent;
 
 	/** the parent options menu. */
-	private final JCheckBoxMenuItem parentMenu;
+	private final JRadioButtonMenuItem parentMenu;
+
+	/** Menu radio group. */
+	private static ButtonGroup radioGroup = new ButtonGroup();
+
+	/** list for updating the canvas scale */
+	private static HashMap<Integer, ScaleCanvasAction> radioList = new HashMap<Integer, ScaleCanvasAction>();
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param menuOptionsScale
 	 */
-	public ScaleCanvasAction(int percent, JCheckBoxMenuItem parentMenu)
+	public ScaleCanvasAction(int percent, JRadioButtonMenuItem parentMenu)
 	{
 		super(
 				String.format(
@@ -39,21 +44,23 @@ public class ScaleCanvasAction extends ActionBase
 				null);
 		this.percent = percent;
 		this.parentMenu = parentMenu;
+		radioList.put(percent, this);
+		radioGroup.add(this.parentMenu);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		Container parent = this.parentMenu.getParent();
-		if (parent instanceof JPopupMenu)
-		{
-			for (Component comp : ((JPopupMenu) parent).getComponents())
-			{
-				if (comp instanceof JCheckBoxMenuItem)
-					((JCheckBoxMenuItem) comp).setSelected(false);
-			}
-		}
 		Application.getApp().getActiveCanvas().setScale(this.percent / 100.0);
-		this.parentMenu.setSelected(true);
+	}
+
+	/** updates the scale ticks. */
+	public static void updateScaleTicks(int scale)
+	{
+		ScaleCanvasAction scaleCanvasAction = radioList.get(scale);
+		if (scaleCanvasAction != null)
+		{
+			scaleCanvasAction.parentMenu.setSelected(true);
+		}
 	}
 }

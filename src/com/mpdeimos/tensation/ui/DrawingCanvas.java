@@ -1,5 +1,6 @@
 package com.mpdeimos.tensation.ui;
 
+import com.mpdeimos.tensation.action.ScaleCanvasAction;
 import com.mpdeimos.tensation.action.canvas.ICanvasAction;
 import com.mpdeimos.tensation.editpart.EditPartFactory;
 import com.mpdeimos.tensation.editpart.IEditPart;
@@ -569,6 +570,7 @@ public class DrawingCanvas extends JPanel
 	{
 		this.canvasScale = scale;
 		repaint();
+		ScaleCanvasAction.updateScaleTicks((int) (scale * 100));
 	}
 
 	/** @return the scaling of the canvas. */
