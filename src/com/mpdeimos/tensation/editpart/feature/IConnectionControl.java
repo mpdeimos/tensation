@@ -5,6 +5,7 @@ import com.mpdeimos.tensation.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensation.model.TensorBase;
 import com.mpdeimos.tensation.model.TensorConnection;
 import com.mpdeimos.tensation.ui.Application;
+import com.mpdeimos.tensation.util.Gfx;
 import com.mpdeimos.tensation.util.InfiniteUndoableEdit;
 import com.mpdeimos.tensation.util.Log;
 import com.mpdeimos.tensation.util.PointUtil;
@@ -243,14 +244,17 @@ public interface IConnectionControl extends IFeatureEditPart
 			try
 			{
 				Image img = ImageIO.read(R.drawable.CIRCLE_GREEN.url());
-				gfx.drawImage(img,
-						(int) sourceControlPoint.getX() - 8,
-						(int) sourceControlPoint.getY() - 8,
-						null);
-				gfx.drawImage(img,
-						(int) sinkControlPoint.getX() - 8,
-						(int) sinkControlPoint.getY() - 8,
-						null);
+				Gfx.drawImageCentered(
+						gfx, img,
+						(int) sourceControlPoint.getX(),
+						(int) sourceControlPoint.getY()
+						);
+				Gfx.drawImageCentered(
+						gfx,
+						img,
+						(int) sinkControlPoint.getX(),
+						(int) sinkControlPoint.getY()
+						);
 
 			}
 			catch (IOException e)
@@ -269,9 +273,11 @@ public interface IConnectionControl extends IFeatureEditPart
 			Point2D sourceControlPoint = this.editPart.getSourceControlPoint(false);
 			Point2D sinkControlPoint = this.editPart.getSinkControlPoint(false);
 
-			if (sourceControlPoint.distance(e.getPoint().x, e.getPoint().y) < 10)
+			double s = Application.getApp().getActiveCanvas().getScale();
+
+			if (sourceControlPoint.distance(e.getPoint().x, e.getPoint().y) < 10 / s)
 				return 1;
-			if (sinkControlPoint.distance(e.getPoint().x, e.getPoint().y) < 10)
+			if (sinkControlPoint.distance(e.getPoint().x, e.getPoint().y) < 10 / s)
 				return -1;
 
 			return 0;

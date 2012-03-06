@@ -3,6 +3,7 @@ package com.mpdeimos.tensation.editpart.feature;
 import com.mpdeimos.tensation.action.canvas.ICanvasAction;
 import com.mpdeimos.tensation.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensation.ui.Application;
+import com.mpdeimos.tensation.util.Gfx;
 import com.mpdeimos.tensation.util.InfiniteUndoableEdit;
 import com.mpdeimos.tensation.util.Log;
 import com.mpdeimos.tensation.util.PointUtil;
@@ -207,12 +208,12 @@ public interface IRotatable extends IFeatureEditPart
 			{
 				Rectangle r = this.editPart.getBoundingRectangle();
 				Image img = ImageIO.read(R.drawable.OVERLAY_ROTATE.url());
-				gfx.drawImage(img,
+				Gfx.drawImageCentered(gfx, img,
 						(int) r.getCenterX()
-								+ this.rotationIndicator.x - 8,
+								+ this.rotationIndicator.x,
 						(int) r.getCenterY()
-								+ this.rotationIndicator.y - 8,
-						null);
+								+ this.rotationIndicator.y
+						);
 
 			}
 			catch (IOException e)
@@ -229,9 +230,10 @@ public interface IRotatable extends IFeatureEditPart
 		 */
 		private boolean hasHitRotationIndicator(Rectangle r, MouseEvent e)
 		{
+			double s = Application.getApp().getActiveCanvas().getScale();
 			return this.rotationIndicator.distance(
 					e.getPoint().x - r.getCenterX(),
-					e.getPoint().y - r.getCenterY()) < 10;
+					e.getPoint().y - r.getCenterY()) < 10 / s;
 		}
 
 		/** updates the rotation indicator */

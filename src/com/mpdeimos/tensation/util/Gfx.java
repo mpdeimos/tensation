@@ -1,11 +1,14 @@
 package com.mpdeimos.tensation.util;
 
+import com.mpdeimos.tensation.ui.Application;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
@@ -193,5 +196,20 @@ public class Gfx
 				rect.getY() - y,
 				rect.getWidth() + 2 * x,
 				rect.getHeight() + 2 * y);
+	}
+
+	/** draws an image centered at the given position. */
+	public static void drawImageCentered(Graphics2D gfx, Image img, int x, int y)
+	{
+		double s = Application.getApp().getActiveCanvas().getScale();
+		double w = img.getWidth(null) / s;
+		double h = img.getHeight(null) / s;
+		gfx.drawImage(
+				img,
+				x - (int) (w / 2),
+				y - (int) (h / 2),
+				(int) w,
+				(int) h,
+				null);
 	}
 }
