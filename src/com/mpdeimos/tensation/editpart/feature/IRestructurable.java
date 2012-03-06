@@ -59,9 +59,6 @@ public interface IRestructurable extends IFeatureEditPart
 				}
 			}
 
-			action.getCanvas().setCursor(
-					new Cursor(Cursor.DEFAULT_CURSOR));
-
 			return false;
 		}
 

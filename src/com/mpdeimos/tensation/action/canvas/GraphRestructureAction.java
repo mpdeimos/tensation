@@ -4,6 +4,7 @@ import com.mpdeimos.tensation.editpart.feature.IFeatureEditPart;
 import com.mpdeimos.tensation.feature.ICanvasFeatureContract;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -47,10 +48,14 @@ public class GraphRestructureAction extends CanvasActionBase
 	@Override
 	public boolean doOnMouseMoved(MouseEvent e)
 	{
-		return super.handleMouseEventForFeatures(
+		if (super.handleMouseEventForFeatures(
 				this.canvas.getEditParts(),
 				e,
-				MouseEvent.MOUSE_MOVED);
+				MouseEvent.MOUSE_MOVED))
+			return true;
+
+		this.canvas.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		return false;
 	}
 
 	@Override

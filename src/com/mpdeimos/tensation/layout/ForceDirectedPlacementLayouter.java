@@ -323,7 +323,7 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 	/** temperature cooling */
 	private Point2D coolDown(Point2D temperature)
 	{
-		return VecMath.mul(temperature, .99);
+		return VecMath.mul(temperature, .995);
 	}
 
 	/** @return the attractive force wrt z and k */
