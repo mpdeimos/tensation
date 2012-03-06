@@ -293,6 +293,18 @@ public class VecMath
 		return set(result, Math.signum(pos.getX()), Math.signum(pos.getY()));
 	}
 
+	/** @return the abs of the vector. */
+	public static Point2D abs(Point2D pos)
+	{
+		return abs(pos, pos);
+	}
+
+	/** @return the abs of the vector. */
+	public static Point2D abs(Point2D pos, Point2D result)
+	{
+		return VecMath.mul(VecMath.signum(pos), pos, result);
+	}
+
 	/** @return the dot product between p1 and p2. */
 	public static double dot(Point2D p1, Point2D p2)
 	{

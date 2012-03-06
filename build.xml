@@ -26,20 +26,20 @@
 			<sysproperty key="user.language" value="en"/>
 		</java>
 	</target>
-	
+
 	<target name="clean" description="Clean build output">
 		<delete dir="./build" />
 	</target>
-	
+
 	<target name="rc" description="Compile resources">
 		<taskdef name="resourceCompile" classname="com.mpdeimos.ant.resourcecompiler.ResourceCompilerTask" classpathref="build.antlib"/>
 		<resourceCompile path="./res"/>
 	</target>
-	
+
 	<target name="copy-arc" description="Copies Ant Resource Compiler jar from its dev env">
 		<copy file="../../AntResourceCompiler/build/jars/ant-resource-compiler.jar" todir="./lib"/>
 	</target>
-	
+
 	<target name="pot" description="Creates a POT file from main properties file">
 		<exec executable="prop2po">
 			<arg path="./res/string/string.properties" />
@@ -49,31 +49,37 @@
 			<arg value="--progress=none" />
 		</exec>
 	</target>
-	
+
 	<target name="prop2po" depends="pot" description="Creates PO files from properties files">
 		<exec executable="prop2po">
 			<arg path="./res/string" />
 			<arg path="./po/string" />
-			<arg value="-t"/> 
+			<arg value="-t"/>
 			<arg path="./res/string/string.properties" />
 			<arg value="--progress=none" />
 			<arg value="--encoding=utf-8" />
 		</exec>
 		<delete file="./po/string/string.po"/>
 	</target>
-	
+
 	<target name="po2prop" description="Creates properties files from PO files">
 		<exec executable="po2prop">
-			<arg path="./res/string" />
-			<arg path="./po/string" />
-			<arg value="-t"/> 
+			<arg value="-t"/>
 			<arg path="./res/string/string.properties" />
+			<arg path="./po/string" />
+			<arg path="./res/string" />
 			<arg value="--progress=none" />
 			<arg value="--encoding=utf-8" />
-			<arg value="--personality=java-utf8"/>
+			<arg value="--personality=java"/>
 		</exec>
+		<move todir="./res/string"  includeemptydirs="false">
+			<fileset dir="./res/string">
+				<exclude name="string*" />
+			</fileset>
+			<mapper type="glob" from="*" to="string_*" />
+		</move>
 	</target>
-	
+
 	<target name="build" description="Comiple classes" depends="rc">
 		<mkdir dir="./build" />
 		<mkdir dir="./build/classes" />
@@ -103,7 +109,7 @@
 				<attribute name="Main-Class" value="com.mpdeimos.tensation.Main" />
 				<attribute name="Class-Path" value="." />
 				<attribute name="Bzr-Revision" value="${bzr.revision}" />
-	        		<attribute name="Implementation-Version" value="${bzr.revision}" />
+				<attribute name="Implementation-Version" value="${bzr.revision}" />
 			</manifest>
 			<fileset dir="./build/classes" includes="**/*" />
 			<fileset dir="./res" includes="string/*.properties" />

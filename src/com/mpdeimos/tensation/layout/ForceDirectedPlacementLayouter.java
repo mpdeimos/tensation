@@ -24,8 +24,6 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 
 import resources.R;
 
@@ -39,9 +37,6 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 {
 	/** Offset for screen bounding mode. */
 	static final double SCREEN_MARGIN = 35;
-
-	/** algorithm iterations. */
-	private SpinnerNumberModel uiIterations;
 
 	/** reference boundings. */
 	private ComboBoxModel uiBounds;
@@ -109,6 +104,9 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 			HashMap<TensorBase, Double> rotations)
 
 	{
+		if (tensors.size() <= 1)
+			return false;
+
 		Rectangle2D imageRectangle = null;
 		Ellipse2D tensorRadius = null;
 		double radius = 0;
@@ -209,11 +207,14 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 		{
 			throw new IllegalStateException();
 		}
-		VecMath.div(temperature, 10);
 		double k = Math.sqrt(area / tensors.size());
 
-		for (int i = 1; i < this.uiIterations.getNumber().intValue(); i++)
+		double change = 0;
+		// this.uiIterations.getNumber().intValue();
+		for (int i = 0; i < Integer.MAX_VALUE; i++)
 		{
+			change = 0;
+
 			// calculate repulsive forces
 			for (TensorBase u : tensors)
 			{
@@ -260,10 +261,14 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 				Point2D disp = displacements.get(u);
 				Point2D pos = positions.get(u);
 
-				Point2D min = VecMath.min(VecMath.fresh(disp), temperature);
-				VecMath.mul(min, temperature);
+				Point2D min = VecMath.min(
+						VecMath.abs(VecMath.fresh(disp)),
+						temperature);
 				VecMath.normalize(disp);
+				VecMath.mul(disp, min);
 				VecMath.add(pos, disp);
+
+				change += Math.abs(disp.getX()) + Math.abs(disp.getY());
 
 				if (tensorRadius != null)
 				{
@@ -307,14 +312,18 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 			}
 
 			temperature = coolDown(temperature);
+
+			if (change < 0.5 || Double.isNaN(change))
+				break;
 		}
+
 		return true;
 	}
 
 	/** temperature cooling */
 	private Point2D coolDown(Point2D temperature)
 	{
-		return VecMath.mul(temperature, .95);
+		return VecMath.mul(temperature, .99);
 	}
 
 	/** @return the attractive force wrt z and k */
@@ -390,13 +399,6 @@ public class ForceDirectedPlacementLayouter extends LayouterBase
 	@Override
 	public void onContextPanelInit(ContextPanel panel)
 	{
-		panel.add(new DividerLabel(R.string.LAYOUT_FDP_ITERATIONS.string()));
-
-		this.uiIterations = new SpinnerNumberModel(500, 0, 10000, 100);
-		JSpinner spinner = new JSpinner(this.uiIterations);
-
-		panel.add(spinner);
-
 		panel.add(new DividerLabel(R.string.LAYOUT_FDP_BOUNDS.string()));
 
 		this.uiBounds = new DefaultComboBoxModel(new R.string[] {

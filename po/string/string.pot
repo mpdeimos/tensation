@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-12 13:40+0200\n"
+"POT-Creation-Date: 2012-03-06 19:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -147,6 +147,18 @@ msgstr ""
 msgid "Rotate"
 msgstr ""
 
+#: window_action_restructure
+msgid "Restructure Graph"
+msgstr ""
+
+#: window_action_restructure_epsilondelta
+msgid "ε-δ Rule"
+msgstr ""
+
+#: window_action_restructure_epsilondelta_label
+msgid "ε-δ"
+msgstr ""
+
 #. # layout actions
 #: layout_button
 msgctxt "layout_button"
@@ -192,10 +204,6 @@ msgstr ""
 
 #: layout_fdp
 msgid "Force-Directed Placement"
-msgstr ""
-
-#: layout_fdp_iterations
-msgid "Iterations"
 msgstr ""
 
 #: layout_fdp_bounds
@@ -304,6 +312,10 @@ msgstr ""
 msgid "Dashed"
 msgstr ""
 
+#: window_contextpanel_operator
+msgid "Operator"
+msgstr ""
+
 #: window_contextpanel_label
 msgid "Label"
 msgstr ""
@@ -349,7 +361,7 @@ msgstr ""
 
 #. #
 #: app_extension_tdx
-msgid "Tensor Diagram XML (.tdg)"
+msgid "Tensor Diagram XML (.tdx)"
 msgstr ""
 
 #: app_extension_png

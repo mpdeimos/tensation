@@ -182,7 +182,8 @@ public class TensorFigure extends FigureBase
 				top,
 				bottom,
 				triangleHead,
-				tensor.getRotation());
+				tensor.getRotation(),
+				tensor.getPosition());
 	}
 
 	/** inits the anchor points for a tensor. */
@@ -190,7 +191,7 @@ public class TensorFigure extends FigureBase
 			TensorBase tensor,
 			int i,
 			Point2D top,
-			Point2D bottom, Point2D triangleHead, double ang)
+			Point2D bottom, Point2D triangleHead, double ang, Point2D position)
 	{
 		ang = (((double) i) / tensor.getAnchors().size() + ang / 360)
 				* 2
@@ -207,17 +208,17 @@ public class TensorFigure extends FigureBase
 		if (bottom != null)
 		{
 			bottom.setLocation(
-					tensor.getPosition().x + (offset - 1) * cos,
-					tensor.getPosition().y + (offset - 1) * sin);
+					position.getX() + (offset - 1) * cos,
+					position.getY() + (offset - 1) * sin);
 
 			if (triangleHead != null && EDirection.SINK == direction)
 			{
 				triangleHead.setLocation(bottom);
 
 				bottom.setLocation(
-						tensor.getPosition().x
+						position.getX()
 								+ (offset + CONNECTOR_STROKE_OFFSET + 1) * cos,
-						tensor.getPosition().y
+						position.getY()
 								+ (offset + CONNECTOR_STROKE_OFFSET + 1) * sin);
 			}
 		}
@@ -225,21 +226,21 @@ public class TensorFigure extends FigureBase
 		if (top != null)
 		{
 			top.setLocation(
-					tensor.getPosition().x
+					position.getX()
 							+ (offset + 1 + CONNECTOR_STROKE_LENGTH)
 							* cos,
-					tensor.getPosition().y
+					position.getY()
 							+ (offset + 1 + CONNECTOR_STROKE_LENGTH)
 							* sin);
 			if (triangleHead != null && EDirection.SOURCE == direction)
 			{
 				triangleHead.setLocation(top);
 				top.setLocation(
-						tensor.getPosition().x
+						position.getX()
 								+ (offset - CONNECTOR_STROKE_OFFSET
 										+ CONNECTOR_STROKE_LENGTH - 1)
 								* cos,
-						tensor.getPosition().y
+						position.getY()
 								+ (offset - CONNECTOR_STROKE_OFFSET
 										+ CONNECTOR_STROKE_LENGTH - 1)
 								* sin);
@@ -332,7 +333,8 @@ public class TensorFigure extends FigureBase
 						top,
 						bottom,
 						dummy,
-						0);
+						0,
+						tensor.getPosition());
 
 				PointUtil.move(top, -position.x, -position.y);
 				PointUtil.move(bottom, -position.x, -position.y);

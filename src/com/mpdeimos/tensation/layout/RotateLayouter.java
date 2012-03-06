@@ -32,7 +32,7 @@ public class RotateLayouter extends LayouterBase
 			HashMap<TensorBase, Double> rotations,
 			Set<TensorConnection> connections)
 	{
-		return optimizeRotation(positions, rotations, connections);
+		return optimizeRotation(positions, rotations, connections) != 0;
 	}
 
 	/**
@@ -45,15 +45,14 @@ public class RotateLayouter extends LayouterBase
 	 *            original rotations are read from.
 	 * @param connections
 	 *            Tensor connection list.
-	 * 
-	 * @return true if rotations were adjusted.
 	 */
-	public static boolean optimizeRotation(
+	public static double optimizeRotation(
 			HashMap<TensorBase, Point2D> positions,
 			HashMap<TensorBase, Double> rotations,
 			Set<TensorConnection> connections)
 	{
 		HashMap<TensorBase, Double> rotationsClone = MapUtil.clone(rotations);
+		double rotation = 0;
 
 		for (TensorConnection connection : connections)
 		{
@@ -62,16 +61,22 @@ public class RotateLayouter extends LayouterBase
 			Point2D sink = positions.get(sinkAnchor.getTensor());
 			Point2D source = positions.get(sourceAnchor.getTensor());
 
-			Point2D sinkPoint = getConnectionPoint(rotations, sinkAnchor);
-			Point2D sourcePoint = getConnectionPoint(rotations, sourceAnchor);
+			Point2D sinkPoint = getConnectionPoint(
+					positions,
+					rotations,
+					sinkAnchor);
+			Point2D sourcePoint = getConnectionPoint(
+					positions,
+					rotations,
+					sourceAnchor);
 
-			updateRotation(
+			rotation += updateRotation(
 					rotationsClone,
 					sink,
 					source,
 					sourcePoint,
 					sourceAnchor.getTensor());
-			updateRotation(
+			rotation += updateRotation(
 					rotationsClone,
 					source,
 					sink,
@@ -80,7 +85,7 @@ public class RotateLayouter extends LayouterBase
 		}
 
 		rotations.putAll(rotationsClone);
-		return true;
+		return Math.abs(rotation);
 	}
 
 	/**
@@ -89,7 +94,7 @@ public class RotateLayouter extends LayouterBase
 	 * 
 	 * The result is stored within the rotation hash map.
 	 */
-	private static void updateRotation(
+	private static double updateRotation(
 			HashMap<TensorBase, Double> rotations,
 			Point2D otherTensor,
 			Point2D tensor,
@@ -104,13 +109,17 @@ public class RotateLayouter extends LayouterBase
 				tensor);
 
 		double rotation = rotations.get(otherTensorObj);
-
-		rotation += 180 * halfAng(VecMath.ang(anchorPoint, otherPoint))
+		double angle = 180 * halfAng(VecMath.ang(anchorPoint, otherPoint))
 				/ (Math.PI * otherTensorObj.getOccupiedAnchors().size());
 		// Division by # connected anchors is needed to normalize/weight the
 		// rotation.
 
+		rotation += angle;
+		rotation %= 360;
+
 		rotations.put(otherTensorObj, rotation);
+
+		return angle;
 	}
 
 	/** Converts a 0..2PI angle to -PI..PI */
@@ -124,10 +133,12 @@ public class RotateLayouter extends LayouterBase
 
 	/** @return the connection point for a given anchor. */
 	private static Point2D getConnectionPoint(
+			HashMap<TensorBase, Point2D> positions,
 			HashMap<TensorBase, Double> rotations,
 			TensorConnectionAnchor anchor)
 	{
 		double rot = rotations.get(anchor.getTensor());
+		Point2D pos = positions.get(anchor.getTensor());
 		Point2D connectionPoint = VecMath.fresh();
 		TensorFigure.initAnchorPoints(
 				anchor.getTensor(),
@@ -135,7 +146,8 @@ public class RotateLayouter extends LayouterBase
 				connectionPoint,
 				null,
 				null,
-				rot);
+				rot,
+				pos);
 
 		return connectionPoint;
 	}
