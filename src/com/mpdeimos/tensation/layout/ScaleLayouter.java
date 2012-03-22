@@ -197,7 +197,7 @@ public class ScaleLayouter extends LayouterBase
 		JComboBox bounds = new JComboBox(this.uiCentroid);
 		panel.add(bounds);
 
-		panel.add(new DividerLabel(R.string.LAYOUT_SCALE_METHOD.string()));
+		// panel.add(new DividerLabel(R.string.LAYOUT_SCALE_METHOD.string()));
 
 		// this.uiMethod = new DefaultComboBoxModel(new R.string[] {
 		// R.string.LAYOUT_SCALE_METHOD_LINEAR,

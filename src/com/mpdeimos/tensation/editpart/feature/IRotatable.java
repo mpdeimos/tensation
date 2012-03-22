@@ -111,7 +111,7 @@ public interface IRotatable extends IFeatureEditPart
 					ang += 180;
 
 				if (e.isControlDown())
-					ang = (int) (ang / 22.5) * 22.5;
+					ang = (int) (ang / 30) * 30;
 
 				updateRoatationIndicator(ang);
 				this.editPart.setRotation(ang);
