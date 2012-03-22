@@ -20,6 +20,7 @@ import com.mpdeimos.tensation.action.canvas.DrawTensorAction;
 import com.mpdeimos.tensation.action.canvas.GraphRestructureAction;
 import com.mpdeimos.tensation.action.canvas.SelectEditPartAction;
 import com.mpdeimos.tensation.action.canvas.TensorConnectAction;
+import com.mpdeimos.tensation.layout.AlignLayouter;
 import com.mpdeimos.tensation.layout.ForceDirectedPlacementLayouter;
 import com.mpdeimos.tensation.layout.RandomLayouter;
 import com.mpdeimos.tensation.layout.RotateLayouter;
@@ -348,6 +349,8 @@ public class Application extends JFrame
 		item = new JMenuItem(new ForceDirectedPlacementLayouter());
 		menuLayout.add(item);
 		item = new JMenuItem(new RotateLayouter());
+		menuLayout.add(item);
+		item = new JMenuItem(new AlignLayouter());
 		menuLayout.add(item);
 
 		// options menu
