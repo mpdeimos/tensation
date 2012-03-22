@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-06 19:21+0200\n"
-"PO-Revision-Date: 2012-02-12 12:57+0000\n"
+"PO-Revision-Date: 2011-12-05 14:58+0000\n"
 "Last-Translator: mpdeimos <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: exception_model_connection_missmatch
 msgid "A connection consists of exactly one sink and one source"
-msgstr "EIne Verbindung besteht aus genau einem Anfang und einem Ende"
+msgstr ""
 
 #. # windows
 #: window_main_title
@@ -28,7 +28,7 @@ msgstr ""
 
 #: window_main_tab
 msgid "Canvas %d"
-msgstr "Zeichnung %d"
+msgstr ""
 
 #. # menus
 #: window_menu_file
@@ -57,11 +57,11 @@ msgstr "Exportieren..."
 
 #: window_menu_file_closetab
 msgid "Close Canvas"
-msgstr "Zeichnung schließen"
+msgstr ""
 
 #: window_menu_file_closetab_description
 msgid "Close active drawing canvas"
-msgstr "Aktive Zeichnung schließen"
+msgstr ""
 
 #: window_menu_file_exit
 msgid "Exit"
@@ -81,23 +81,23 @@ msgstr "Wiederherstellen"
 
 #: window_menu_edit_copy
 msgid "Copy"
-msgstr "Kopieren"
+msgstr ""
 
 #: window_menu_edit_paste
 msgid "Paste"
-msgstr "Einfügen"
+msgstr ""
 
 #: window_menu_edit_duplicate
 msgid "Duplicate Selection"
-msgstr "Auswahl duplizieren"
+msgstr ""
 
 #: window_menu_edit_duplicate_newcanvas
 msgid "Duplicate Selection to Canvas"
-msgstr "Auswahl in neue Zeichenebene duplizieren"
+msgstr ""
 
 #: window_menu_edit_delete
 msgid "Delete Selection"
-msgstr "Auswahl löschen"
+msgstr ""
 
 #: window_menu_layout
 msgctxt "window_menu_layout"
@@ -210,11 +210,11 @@ msgstr "Rahmen"
 
 #: layout_fdp_bounds_tensors_rect
 msgid "Tensors (Rectangle)"
-msgstr "Tensoren (Rechteck)"
+msgstr ""
 
 #: layout_fdp_bounds_tensors_circle
 msgid "Tensors (Circle)"
-msgstr "Tensoren (Kreis)"
+msgstr ""
 
 #: layout_fdp_bounds_screen
 msgid "Screen"
@@ -236,12 +236,12 @@ msgstr "Getrennte Anordnung"
 #: layout_fdp_rotation
 msgctxt "layout_fdp_rotation"
 msgid "Rotation"
-msgstr "Drehung"
+msgstr ""
 
 #: layout_fdp_rotation_optimize
 msgctxt "layout_fdp_rotation_optimize"
 msgid "Optimize Rotation"
-msgstr "Drehung optimieren"
+msgstr ""
 
 #: layout_random
 msgid "Random"
@@ -258,12 +258,12 @@ msgstr "Position"
 #: layout_random_what_rotation
 msgctxt "layout_random_what_rotation"
 msgid "Rotation"
-msgstr "Drehung"
+msgstr ""
 
 #: layout_rotate
 msgctxt "layout_rotate"
 msgid "Optimize Rotation"
-msgstr "Drehung optimieren"
+msgstr ""
 
 #. # window context panel
 #: window_contextpanel_disabled
@@ -276,39 +276,39 @@ msgstr "Tensor auswählen"
 
 #: window_contextpanel_customize_appearance
 msgid "Appearance"
-msgstr "Darstellung"
+msgstr ""
 
 #: window_contextpanel_customize_appearance_color
 msgid "Color"
-msgstr "Farbe"
+msgstr ""
 
 #: window_contextpanel_customize_appearance_color_title
 msgid "Change Color"
-msgstr "Farbe ändern"
+msgstr ""
 
 #: window_contextpanel_customize_appearance_color_tooltip
 msgid "Click to change Color "
-msgstr "Klicken um Farbe zu ändern "
+msgstr ""
 
 #: window_contextpanel_customize_appearance_line_width
 msgid "Line Width"
-msgstr "Strichstärke"
+msgstr ""
 
 #: window_contextpanel_customize_appearance_line_style
 msgid "Line Style"
-msgstr "Stil"
+msgstr ""
 
 #: window_contextpanel_customize_appearance_line_style_solid
 msgid "Solid"
-msgstr "Durchgehend"
+msgstr ""
 
 #: window_contextpanel_customize_appearance_line_style_dotted
 msgid "Dotted"
-msgstr "Gepunktet"
+msgstr ""
 
 #: window_contextpanel_customize_appearance_line_style_dashed
 msgid "Dashed"
-msgstr "Gestrichelt"
+msgstr ""
 
 #: window_contextpanel_operator
 msgid "Operator"
@@ -316,7 +316,7 @@ msgstr ""
 
 #: window_contextpanel_label
 msgid "Label"
-msgstr "Beschriftung"
+msgstr ""
 
 #. # dialog messages
 #: dlg_question_save_before_new
