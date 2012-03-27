@@ -64,6 +64,8 @@ public class TensorConnectionAnchor
 
 		this.connection = connection;
 
+		this.tensor.fireOnModelDataChanged(this.tensor);
+
 		return true;
 	}
 
@@ -74,6 +76,8 @@ public class TensorConnectionAnchor
 			return false;
 
 		this.connection = null;
+
+		this.tensor.fireOnModelDataChanged(this.tensor);
 
 		return true;
 	}

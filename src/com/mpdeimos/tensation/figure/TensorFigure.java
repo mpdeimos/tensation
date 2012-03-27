@@ -108,44 +108,51 @@ public class TensorFigure extends FigureBase
 
 			this.connectionPoints[i] = top;
 
+			boolean noArrow = anchors.get(i).getDirection() == EDirection.SOURCE
+					&& anchors.get(i).isOccopied();
+
 			Point2D triangleL = null;
-			if (anchors.get(i).getDirection() == EDirection.SOURCE)
-				triangleL = new Point2D.Double(
-						CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH
-								+ centerCircleRadius - CENTER_CIRCLE_RADIUS,
-						-CENTER_CIRCLE_RADIUS);
-			else
-				triangleL = new Point2D.Double(
-						centerCircleRadius + CENTER_CIRCLE_RADIUS
-								+ CONNECTOR_STROKE_OFFSET,
-						-CENTER_CIRCLE_RADIUS);
 
-			PointUtil.rotate(triangleL, ang);
-			PointUtil.move(triangleL, x, y);
+			if (!noArrow)
+			{
+				if (anchors.get(i).getDirection() == EDirection.SOURCE)
+					triangleL = new Point2D.Double(
+							CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH
+									+ centerCircleRadius - CENTER_CIRCLE_RADIUS,
+							-CENTER_CIRCLE_RADIUS);
+				else
+					triangleL = new Point2D.Double(
+							centerCircleRadius + CENTER_CIRCLE_RADIUS
+									+ CONNECTOR_STROKE_OFFSET,
+							-CENTER_CIRCLE_RADIUS);
 
-			Point2D triangleR = null;
-			if (anchors.get(i).getDirection() == EDirection.SOURCE)
-				triangleR = new Point2D.Double(
+				PointUtil.rotate(triangleL, ang);
+				PointUtil.move(triangleL, x, y);
+
+				Point2D triangleR = null;
+				if (anchors.get(i).getDirection() == EDirection.SOURCE)
+					triangleR = new Point2D.Double(
 							CONNECTOR_STROKE_OFFSET + CONNECTOR_STROKE_LENGTH
 									+ centerCircleRadius - CENTER_CIRCLE_RADIUS,
 							CENTER_CIRCLE_RADIUS);
-			else
-				triangleR = new Point2D.Double(
-						centerCircleRadius + CENTER_CIRCLE_RADIUS
-								+ CONNECTOR_STROKE_OFFSET,
-						CENTER_CIRCLE_RADIUS);
+				else
+					triangleR = new Point2D.Double(
+							centerCircleRadius + CENTER_CIRCLE_RADIUS
+									+ CONNECTOR_STROKE_OFFSET,
+							CENTER_CIRCLE_RADIUS);
 
-			PointUtil.rotate(triangleR, ang);
-			PointUtil.move(triangleR, x, y);
+				PointUtil.rotate(triangleR, ang);
+				PointUtil.move(triangleR, x, y);
 
-			GeneralPath triangle = new GeneralPath();
-			triangle.moveTo(triangleHead.getX(), triangleHead.getY());
-			triangle.lineTo(triangleL.getX(), triangleL.getY());
-			triangle.lineTo(triangleR.getX(), triangleR.getY());
-			triangle.closePath();
-			fills.add(triangle);
+				GeneralPath triangle = new GeneralPath();
+				triangle.moveTo(triangleHead.getX(), triangleHead.getY());
+				triangle.lineTo(triangleL.getX(), triangleL.getY());
+				triangle.lineTo(triangleR.getX(), triangleR.getY());
+				triangle.closePath();
+				fills.add(triangle);
+			}
 
-			Shape line = new Line2D.Double(bottom, top);
+			Shape line = new Line2D.Double(bottom, noArrow ? triangleHead : top);
 			lines.add(line);
 		}
 
@@ -326,18 +333,19 @@ public class TensorFigure extends FigureBase
 			{
 				Point2D top = new Point2D.Double();
 				Point2D bottom = new Point2D.Double();
-				Point2D dummy = new Point2D.Double();
+				Point2D head = new Point2D.Double();
 				initAnchorPoints(
 						tensor,
 						i,
 						top,
 						bottom,
-						dummy,
+						head,
 						0,
 						tensor.getPosition());
 
 				PointUtil.move(top, -position.x, -position.y);
 				PointUtil.move(bottom, -position.x, -position.y);
+				PointUtil.move(head, -position.x, -position.y);
 
 				// TensorConnectionAnchor anchor = anchors.get(i);
 
@@ -359,15 +367,27 @@ public class TensorFigure extends FigureBase
 
 				if (anchors.get(i).getDirection() == EDirection.SOURCE)
 				{
-					String id = ESvgDefinitions.MARKER_TRIANGLE_END.$();
-					if (appearance.getColor() != null)
+					if (!anchors.get(i).isOccopied())
 					{
-						id = ESvgDefinitions.MARKER_TRIANGLE_END_COLOR.$(appearance.getColor().getRGB());
-						markerEndID = id;
+						String id = ESvgDefinitions.MARKER_TRIANGLE_END.$();
+						if (appearance.getColor() != null)
+						{
+							id = ESvgDefinitions.MARKER_TRIANGLE_END_COLOR.$(appearance.getColor().getRGB());
+							markerEndID = id;
+						}
+						line.setAttribute(
+								ESvg.ATTRIB_MARKER_END.$(),
+								ESvg.VALUE_REF_URL.$(id));
 					}
-					line.setAttribute(
-							ESvg.ATTRIB_MARKER_END.$(),
-							ESvg.VALUE_REF_URL.$(id));
+					else
+					{
+						line.setAttribute(
+								ESvg.ATTRIB_TO_X.$(),
+								Double.toString(head.getX()));
+						line.setAttribute(
+								ESvg.ATTRIB_TO_Y.$(),
+								Double.toString(head.getY()));
+					}
 				}
 				else
 				{
@@ -454,8 +474,19 @@ public class TensorFigure extends FigureBase
 
 		for (int i = 0; i < anchors.size(); i++)
 		{
-			name += anchors.get(i).getDirection() == EDirection.SINK ? ESvgDefinitions.TENSOR_DEF_SINK.$()
-					: ESvgDefinitions.TENSOR_DEF_SOURCE.$();
+			TensorConnectionAnchor tensorConnectionAnchor = anchors.get(i);
+			if (tensorConnectionAnchor.getDirection() == EDirection.SINK)
+			{
+				name += ESvgDefinitions.TENSOR_DEF_SINK.$();
+			}
+			else if (tensorConnectionAnchor.isOccopied())
+			{
+				name += ESvgDefinitions.TENSOR_DEF_SOURCE_CONNECTED.$();
+			}
+			else
+			{
+				name += ESvgDefinitions.TENSOR_DEF_SOURCE.$();
+			}
 		}
 
 		Color color = tensor.getAppearanceContainer().getColor();

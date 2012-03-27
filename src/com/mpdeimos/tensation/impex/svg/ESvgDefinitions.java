@@ -38,8 +38,11 @@ public enum ESvgDefinitions implements INameEnum
 	/** suffix for sink edges */
 	TENSOR_DEF_SINK("i"), //$NON-NLS-1$
 
-	/** suffix for sink edges */
+	/** suffix for source edges */
 	TENSOR_DEF_SOURCE("o"), //$NON-NLS-1$
+
+	/** suffix for connected source edges */
+	TENSOR_DEF_SOURCE_CONNECTED("c"), //$NON-NLS-1$
 
 	/** tensor css class name. */
 	CLASS_TENSOR("tensor"), //$NON-NLS-1$
