@@ -18,6 +18,7 @@ import com.mpdeimos.tensation.util.CompoundInfiniteUndoableEdit;
 import com.mpdeimos.tensation.util.GraphUtil;
 import com.mpdeimos.tensation.util.InfiniteUndoableEdit;
 import com.mpdeimos.tensation.util.Log;
+import com.mpdeimos.tensation.util.MiscUtil;
 import com.mpdeimos.tensation.util.Tupel;
 import com.mpdeimos.tensation.util.VecMath;
 import com.mpdeimos.tensation.util.Wrapper;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.swing.JOptionPane;
 
 import resources.R;
 
@@ -67,6 +70,25 @@ public class EpsilonDeltaRestruction implements IRestruction
 					getAnchorID(sourceAnchor, true)).getConnection().getSink();
 			final TensorConnectionAnchor sourcePrev = source.getAnchors().get(
 					getAnchorID(sourceAnchor, false)).getConnection().getSink();
+
+			if (MiscUtil.isOneOf(
+					sink,
+					sourceNext.getTensor(),
+					sourcePrev.getTensor())
+					&& MiscUtil.isOneOf(
+							source,
+							sinkNext.getTensor(),
+							sinkPrev.getTensor()))
+			{
+				JOptionPane.showMessageDialog(
+						Application.getApp(),
+						R.string.WINDOW_ACTION_RESTRUCTURE_EPSILONDELTA_LIMITATION.string());
+				return;
+
+				// FIXME
+				// we need a new tensor type here that is a special case of -o->
+				// where the tensor represents a unit matrix.
+			}
 
 			Application.getApp().getActiveCanvas().getUndoManager().addEdit(
 					new InfiniteUndoableEdit()
