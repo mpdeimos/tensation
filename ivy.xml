@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="1.0">
+    <info organisation="com.mpdeimos" module="tensation" status="release" revision="1.0">
+    </info>
+    <publications>
+      <artifact name="tensation" type="jar" />
+    </publications>
+    <dependencies>
+    	<dependency org="com.mpdeimos" name="ant-resource-compiler" rev="latest"/>
+		<dependency org="com.itextpdf" name="itextpdf" rev="5.4.0" transitive="false" />
+    </dependencies>
+</ivy-module>
